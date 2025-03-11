@@ -1,0 +1,124 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Complete Payment - LearnIspire{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">Complete Your Payment</h4>
+                </div>
+                <div class="card-body">
+                    <div class="text-center mb-4">
+                        <img src="{% static 'images/payment-secure.png' %}" alt="Secure Payment" class="img-fluid mb-3" style="max-height: 80px;">
+                        <h5>Your payment is secure and encrypted</h5>
+                    </div>
+                    
+                    <div class="alert alert-info">
+                        <h5>Payment Details</h5>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p><strong>Amount:</strong> ₹{{ payment.amount }}</p>
+                                <p><strong>Student:</strong> {{ request.user.get_full_name }}</p>
+                            </div>
+                            <div class="col-md-6">
+                                <p><strong>Month:</strong> {{ payment.month_year|date:"F Y" }}</p>
+                                <p><strong>Order ID:</strong> {{ payment.order_id }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card mb-4">
+                        <div class="card-header bg-light">
+                            <h5 class="mb-0">Payment Summary</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>Monthly Classes Fee</span>
+                                <span>₹{{ payment.amount }}</span>
+                            </div>
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>Taxes & Processing Fee</span>
+                                <span>₹0.00</span>
+                            </div>
+                            <hr>
+                            <div class="d-flex justify-content-between fw-bold">
+                                <span>Total Amount</span>
+                                <span>₹{{ payment.amount }}</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card mb-4">
+                        <div class="card-header bg-light">
+                            <h5 class="mb-0">Payment Options</h5>
+                        </div>
+                        <div class="card-body">
+                            <p class="text-muted mb-3">You'll be redirected to PayU's secure payment gateway to complete your payment.</p>
+                            
+                            <form action="{{ payu_url }}" method="post" id="payment-form">
+                                {% csrf_token %}
+                                
+                                {% for key, value in params.items %}
+                                    <input type="hidden" name="{{ key }}" value="{{ value }}">
+                                {% endfor %}
+                                
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="terms-checkbox" checked required>
+                                            <label class="form-check-label" for="terms-checkbox">
+                                                I agree to the <a href="{% url 'landing:terms' %}" target="_blank">Terms & Conditions</a>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <button type="submit" class="btn btn-primary">
+                                            <i class="fas fa-lock me-1"></i> Pay Now ₹{{ payment.amount }}
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    
+                    <div class="text-center">
+                        <p class="text-muted small">
+                            <i class="fas fa-shield-alt me-1"></i>
+                            Your payment information is encrypted and secure. We do not store your credit card details.
+                        </p>
+                        <div class="mt-2">
+                            <img src="{% static 'images/payment-methods.png' %}" alt="Payment Methods" class="img-fluid" style="max-height: 40px;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center mt-4">
+                <a href="{% url 'student_dashboard:payments' %}" class="btn btn-outline-secondary">
+                    <i class="fas fa-arrow-left me-1"></i> Back to Payments
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('payment-form');
+        const checkbox = document.getElementById('terms-checkbox');
+        
+        form.addEventListener('submit', function(e) {
+            if (!checkbox.checked) {
+                e.preventDefault();
+                alert('Please agree to the Terms & Conditions to proceed.');
+            }
+        });
+    });
+</script>
+{% endblock %}

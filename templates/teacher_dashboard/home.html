@@ -1,0 +1,271 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Teacher Dashboard - LearnIspire{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row">
+        <!-- Sidebar -->
+        <div class="col-md-3">
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Teacher Dashboard</h5>
+                </div>
+                <div class="list-group list-group-flush">
+                    <a href="{% url 'teacher_dashboard:home' %}" class="list-group-item list-group-item-action active">
+                        <i class="fa fa-dashboard me-2"></i> Dashboard
+                    </a>
+                    <a href="{% url 'teacher_dashboard:profile' %}" class="list-group-item list-group-item-action">
+                        <i class="fa fa-user me-2"></i> My Profile
+                    </a>
+                    <a href="{% url 'teacher_dashboard:availability' %}" class="list-group-item list-group-item-action">
+                        <i class="fa fa-clock-o me-2"></i> Availability
+                    </a>
+                    <a href="{% url 'teacher_dashboard:classes' %}" class="list-group-item list-group-item-action">
+                        <i class="fa fa-calendar me-2"></i> My Classes
+                    </a>
+                    <a href="{% url 'teacher_dashboard:leave_request' %}" class="list-group-item list-group-item-action">
+                        <i class="fa fa-calendar-minus-o me-2"></i> Leave Requests
+                    </a>
+                    <a href="{% url 'teacher_dashboard:earnings' %}" class="list-group-item list-group-item-action">
+                        <i class="fa fa-money me-2"></i> Earnings
+                    </a>
+                    <a href="{% url 'teacher_dashboard:bank_details' %}" class="list-group-item list-group-item-action">
+                        <i class="fa fa-university me-2"></i> Bank Details
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Teacher Status -->
+            <div class="card mb-4">
+                <div class="card-header bg-info text-white">
+                    <h5 class="mb-0">My Status</h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="me-3">
+                            <span class="badge bg-{% if profile.status == 'ACTIVE' %}success{% elif profile.status == 'APPROVED' %}info{% elif profile.status == 'PENDING' %}warning{% else %}danger{% endif %} p-2">
+                                {{ profile.get_status_display }}
+                            </span>
+                        </div>
+                        <div>
+                            <small class="text-muted">Last updated: {{ profile.updated_at|date:'M d, Y' }}</small>
+                        </div>
+                    </div>
+                    
+                    <div class="progress mb-3" style="height: 20px;">
+                        {% if profile.status == 'PENDING' %}
+                            <div class="progress-bar progress-bar-striped bg-warning" role="progressbar" style="width: 25%">25%</div>
+                        {% elif profile.status == 'APPROVED' %}
+                            <div class="progress-bar progress-bar-striped bg-info" role="progressbar" style="width: 75%">75%</div>
+                        {% elif profile.status == 'ACTIVE' %}
+                            <div class="progress-bar bg-success" role="progressbar" style="width: 100%">100%</div>
+                        {% elif profile.status == 'REJECTED' %}
+                            <div class="progress-bar bg-danger" role="progressbar" style="width: 100%">0%</div>
+                        {% else %}
+                            <div class="progress-bar progress-bar-striped bg-secondary" role="progressbar" style="width: 50%">50%</div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="d-grid gap-2">
+                        {% if profile.status == 'PENDING' %}
+                            <button class="btn btn-secondary btn-sm" disabled>Awaiting Admin Review</button>
+                        {% elif profile.status == 'APPROVED' and not profile.is_bank_details_complete %}
+                            <a href="{% url 'teacher_dashboard:bank_details' %}" class="btn btn-primary btn-sm">Complete Bank Details</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="col-md-9">
+            <!-- Welcome Card -->
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h2 class="card-title">Welcome, {{ request.user.first_name }}!</h2>
+                    <p class="card-text">
+                        {% if profile.status == 'ACTIVE' %}
+                            Your account is fully active. You can view your scheduled classes and start teaching!
+                        {% elif profile.status == 'APPROVED' %}
+                            Your profile has been approved! Please complete your bank details to start receiving assignments.
+                        {% elif profile.status == 'PENDING' %}
+                            Your profile is under review. We'll notify you once approved.
+                        {% elif profile.status == 'REJECTED' %}
+                            Your profile was not approved. Please update your profile with the required qualifications and resubmit.
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Stats Cards -->
+            <div class="row mb-4">
+                <div class="col-md-3">
+                    <div class="card bg-primary text-white h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">Today's Classes</h5>
+                            <h2 class="display-4">{{ upcoming_classes.count }}</h2>
+                            <p class="card-text">{{ completed_today }} completed</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-3">
+                    <div class="card bg-success text-white h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">This Month</h5>
+                            <h2 class="display-4">{{ total_classes_month }}</h2>
+                            <p class="card-text">{{ completed_classes_month }} completed</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-3">
+                    <div class="card bg-info text-white h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">Pending Leaves</h5>
+                            <h2 class="display-4">{{ pending_leaves.count }}</h2>
+                            <p class="card-text">Awaiting approval</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-3">
+                    <div class="card bg-warning text-dark h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">Earnings</h5>
+                            <h2 class="display-4">₹{{ earnings.amount|floatformat:0 }}</h2>
+                            <p class="card-text">This month</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Today's Classes -->
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Today's Classes</h5>
+                </div>
+                <div class="card-body">
+                    {% if upcoming_classes %}
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Subject</th>
+                                        <th>Time</th>
+                                        <th>Student</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for class in upcoming_classes %}
+                                        <tr>
+                                            <td>{{ class.subject.name }}</td>
+                                            <td>{{ class.start_time|time:'h:i A' }} - {{ class.end_time|time:'h:i A' }}</td>
+                                            <td>{{ class.student.get_full_name }}</td>
+                                            <td>
+                                                {% if class.is_demo %}
+                                                    <span class="badge bg-info">Demo</span>
+                                                {% endif %}
+                                                <span class="badge bg-{% if class.status == 'SCHEDULED' %}primary{% elif class.status == 'IN_PROGRESS' %}warning{% else %}secondary{% endif %}">
+                                                    {{ class.get_status_display }}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                {% if class.can_join %}
+                                                    <a href="{% url 'teacher_dashboard:join_class' class.id %}" class="btn btn-success btn-sm">Join</a>
+                                                {% else %}
+                                                    <a href="{% url 'teacher_dashboard:class_detail' class.id %}" class="btn btn-outline-primary btn-sm">Details</a>
+                                                {% endif %}
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <div class="alert alert-info">
+                            No classes scheduled for today.
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <!-- Weekly Schedule -->
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Weekly Schedule ({{ week_start|date:'d M' }} - {{ week_end|date:'d M' }})</h5>
+                </div>
+                <div class="card-body">
+                    {% if weekly_classes %}
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Day</th>
+                                        <th>Classes</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for day_offset in '0123456'|make_list %}
+                                        {% with day=week_start|date:'Y-m-d'|add_days:day_offset %}
+                                            <tr>
+                                                <td class="{% if day == today|date:'Y-m-d' %}table-primary{% endif %}">
+                                                    <strong>{{ day|date:'l' }}</strong><br>
+                                                    <small>{{ day|date:'d M' }}</small>
+                                                </td>
+                                                <td>
+                                                    {% with day_classes=weekly_classes|filter_by_day:day %}
+                                                        {% if day_classes %}
+                                                            <div class="d-flex flex-column">
+                                                                {% for class in day_classes %}
+                                                                    <div class="mb-2 p-2 rounded {% if class.is_demo %}bg-info text-white{% else %}bg-light{% endif %}">
+                                                                        <div><strong>{{ class.subject.name }}</strong></div>
+                                                                        <div class="small">{{ class.start_time|time:'h:i A' }} - {{ class.end_time|time:'h:i A' }}</div>
+                                                                        <div class="small">Student: {{ class.student.get_full_name }}</div>
+                                                                    </div>
+                                                                {% endfor %}
+                                                            </div>
+                                                        {% else %}
+                                                            <div class="text-muted small">No classes scheduled</div>
+                                                        {% endif %}
+                                                    {% endwith %}
+                                                </td>
+                                            </tr>
+                                        {% endwith %}
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <div class="alert alert-info">
+                            No classes scheduled for this week.
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Helper function for template filter
+    function filterByDay(classes, day) {
+        return classes.filter(function(cls) {
+            return cls.start_time.toDateString() === new Date(day).toDateString();
+        });
+    }
+    
+    // Helper function to add days to a date
+    function addDays(date, days) {
+        var result = new Date(date);
+        result.setDate(result.getDate() + parseInt(days));
+        return result;
+    }
+</script>
+{% endblock %}

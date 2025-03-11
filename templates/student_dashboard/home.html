@@ -1,0 +1,230 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Student Dashboard - LearnIspire{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row">
+        <!-- Sidebar -->
+        <div class="col-md-3">
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Student Dashboard</h5>
+                </div>
+                <div class="list-group list-group-flush">
+                    <a href="{% url 'student_dashboard:home' %}" class="list-group-item list-group-item-action active">
+                        <i class="fa fa-dashboard me-2"></i> Dashboard
+                    </a>
+                    <a href="{% url 'student_dashboard:profile' %}" class="list-group-item list-group-item-action">
+                        <i class="fa fa-user me-2"></i> My Profile
+                    </a>
+                    <a href="{% url 'student_dashboard:subject_selection' %}" class="list-group-item list-group-item-action">
+                        <i class="fa fa-book me-2"></i> Subject Selection
+                    </a>
+                    <a href="{% url 'student_dashboard:availability' %}" class="list-group-item list-group-item-action">
+                        <i class="fa fa-clock-o me-2"></i> Set Availability
+                    </a>
+                    <a href="{% url 'student_dashboard:classes' %}" class="list-group-item list-group-item-action">
+                        <i class="fa fa-calendar me-2"></i> My Classes
+                    </a>
+                    <a href="{% url 'student_dashboard:payments' %}" class="list-group-item list-group-item-action">
+                        <i class="fa fa-credit-card me-2"></i> Payments
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Student Status -->
+            <div class="card mb-4">
+                <div class="card-header bg-info text-white">
+                    <h5 class="mb-0">My Status</h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="me-3">
+                            <span class="badge bg-{% if profile.status == 'ACTIVE' %}success{% else %}warning{% endif %} p-2">
+                                {{ profile.get_status_display }}
+                            </span>
+                        </div>
+                        <div>
+                            <small class="text-muted">Last updated: {{ profile.updated_at|date:'M d, Y' }}</small>
+                        </div>
+                    </div>
+                    
+                    <div class="progress mb-3" style="height: 20px;">
+                        {% if profile.status == 'NEW' %}
+                            <div class="progress-bar progress-bar-striped bg-info" role="progressbar" style="width: 10%">10%</div>
+                        {% elif profile.status == 'PRICING_REQUESTED' %}
+                            <div class="progress-bar progress-bar-striped bg-info" role="progressbar" style="width: 25%">25%</div>
+                        {% elif profile.status == 'AVAILABILITY_SET' %}
+                            <div class="progress-bar progress-bar-striped bg-info" role="progressbar" style="width: 50%">50%</div>
+                        {% elif profile.status == 'DEMO_PENDING' %}
+                            <div class="progress-bar progress-bar-striped bg-info" role="progressbar" style="width: 60%">60%</div>
+                        {% elif profile.status == 'DEMO_SCHEDULED' %}
+                            <div class="progress-bar progress-bar-striped bg-info" role="progressbar" style="width: 75%">75%</div>
+                        {% elif profile.status == 'DEMO_ACCEPTED' %}
+                            <div class="progress-bar progress-bar-striped bg-info" role="progressbar" style="width: 90%">90%</div>
+                        {% elif profile.status == 'ACTIVE' %}
+                            <div class="progress-bar bg-success" role="progressbar" style="width: 100%">100%</div>
+                        {% else %}
+                            <div class="progress-bar progress-bar-striped bg-warning" role="progressbar" style="width: 50%">50%</div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="d-grid gap-2">
+                        {% if profile.status == 'NEW' %}
+                            <a href="{% url 'student_dashboard:profile' %}" class="btn btn-primary btn-sm">Complete Profile</a>
+                        {% elif profile.status == 'PRICING_REQUESTED' %}
+                            <a href="{% url 'student_dashboard:availability' %}" class="btn btn-primary btn-sm">Set Availability</a>
+                        {% elif profile.status == 'AVAILABILITY_SET' %}
+                            <a href="{% url 'student_dashboard:demo_request' %}" class="btn btn-primary btn-sm">Request Demo Class</a>
+                        {% elif profile.status == 'DEMO_PENDING' %}
+                            <button class="btn btn-secondary btn-sm" disabled>Demo Pending</button>
+                        {% elif profile.status == 'DEMO_SCHEDULED' %}
+                            <a href="{% url 'student_dashboard:classes' %}" class="btn btn-primary btn-sm">Join Demo Class</a>
+                        {% elif profile.status == 'DEMO_ACCEPTED' %}
+                            <a href="{% url 'student_dashboard:payments' %}" class="btn btn-primary btn-sm">Complete Payment</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="col-md-9">
+            <!-- Welcome Card -->
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h2 class="card-title">Welcome, {{ request.user.first_name }}!</h2>
+                    <p class="card-text">
+                        {% if profile.status == 'ACTIVE' %}
+                            Your account is fully active. You can view your scheduled classes and start learning!
+                        {% elif profile.status == 'DEMO_ACCEPTED' %}
+                            You've accepted your demo class! Complete payment to start regular classes.
+                        {% elif profile.status == 'DEMO_SCHEDULED' %}
+                            Your demo class has been scheduled. Join at the scheduled time.
+                        {% elif profile.status == 'DEMO_PENDING' %}
+                            Your demo class request is being processed. We'll notify you once scheduled.
+                        {% elif profile.status == 'AVAILABILITY_SET' %}
+                            Please request a demo class to continue.
+                        {% elif profile.status == 'PRICING_REQUESTED' %}
+                            Please set your availability to continue (minimum 3 slots per week).
+                        {% elif profile.status == 'NEW' %}
+                            Please complete your profile to get started.
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Upcoming Classes -->
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Upcoming Classes</h5>
+                </div>
+                <div class="card-body">
+                    {% if upcoming_classes %}
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Subject</th>
+                                        <th>Date & Time</th>
+                                        <th>Teacher</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for class in upcoming_classes %}
+                                        <tr>
+                                            <td>{{ class.subject.name }}</td>
+                                            <td>{{ class.start_time|date:'M d, Y' }} at {{ class.start_time|time:'h:i A' }}</td>
+                                            <td>{{ class.teacher.get_full_name }}</td>
+                                            <td>
+                                                {% if class.is_demo %}
+                                                    <span class="badge bg-info">Demo</span>
+                                                {% endif %}
+                                                <span class="badge bg-{% if class.status == 'SCHEDULED' %}primary{% elif class.status == 'IN_PROGRESS' %}warning{% else %}secondary{% endif %}">
+                                                    {{ class.get_status_display }}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                {% if class.can_join %}
+                                                    <a href="{% url 'student_dashboard:join_class' class.id %}" class="btn btn-success btn-sm">Join</a>
+                                                {% else %}
+                                                    <a href="{% url 'student_dashboard:class_detail' class.id %}" class="btn btn-outline-primary btn-sm">Details</a>
+                                                {% endif %}
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="mt-3">
+                            <a href="{% url 'student_dashboard:classes' %}" class="btn btn-outline-primary btn-sm">View All Classes</a>
+                        </div>
+                    {% else %}
+                        <div class="alert alert-info">
+                            No upcoming classes scheduled.
+                            {% if profile.status == 'DEMO_PENDING' %}
+                                Your demo class will be scheduled soon.
+                            {% elif profile.status == 'AVAILABILITY_SET' %}
+                                Please request a demo class.
+                            {% elif profile.status == 'PRICING_REQUESTED' %}
+                                Please set your availability.
+                            {% endif %}
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <!-- Recent Payments -->
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Recent Payments</h5>
+                </div>
+                <div class="card-body">
+                    {% if recent_payments %}
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Amount</th>
+                                        <th>Month</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for payment in recent_payments %}
+                                        <tr>
+                                            <td>{{ payment.created_at|date:'M d, Y' }}</td>
+                                            <td>₹{{ payment.amount }}</td>
+                                            <td>{{ payment.month_year|date:'F Y' }}</td>
+                                            <td>
+                                                <span class="badge bg-{% if payment.status == 'COMPLETED' %}success{% elif payment.status == 'PENDING' or payment.status == 'INITIATED' %}warning{% else %}danger{% endif %}">
+                                                    {{ payment.get_status_display }}
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="mt-3">
+                            <a href="{% url 'student_dashboard:payments' %}" class="btn btn-outline-primary btn-sm">View Payment History</a>
+                        </div>
+                    {% else %}
+                        <div class="alert alert-info">
+                            No payment records found.
+                            {% if profile.status == 'DEMO_ACCEPTED' %}
+                                Please complete payment to start regular classes.
+                            {% endif %}
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

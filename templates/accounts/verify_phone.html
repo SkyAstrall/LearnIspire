@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load static %} 
+{% block title %}{% trans "Verify Phone Number" %} - LearnIspire{% endblock %}
+
+{% block content %}
+<section class="py-5 bg-primary text-white">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center">
+                <h1 class="fw-bold mb-4">{% trans "Verify Your Phone Number" %}</h1>
+                <p class="lead">We've sent a verification code to your WhatsApp account.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 mx-auto">
+                <div class="card border-0 shadow">
+                    <div class="card-body p-5">
+                        <div class="text-center mb-4">
+                            <img src="{% static 'images/whatsapp-verification.png' %}" alt="WhatsApp Verification" class="img-fluid mb-3" style="max-height: 100px;" onerror="this.style.display='none'">
+                            <h4>{% trans "Enter Verification Code" %}</h4>
+                            <p class="text-muted">{% trans "A 6-digit verification code has been sent to your WhatsApp number" %}</p>
+                            <p class="fw-bold">{{ user.phone_number }}</p>
+                        </div>
+                        
+                        <form method="post">
+                            {% csrf_token %}
+                            
+                            {% if form.errors %}
+                                <div class="alert alert-danger">
+                                    {% for error in form.non_field_errors %}
+                                        <p class="mb-0">{{ error }}</p>
+                                    {% endfor %}
+                                    {% for field in form %}
+                                        {% for error in field.errors %}
+                                            <p class="mb-0">{{ error }}</p>
+                                        {% endfor %}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                            
+                            <div class="mb-4">
+                                <label for="id_otp" class="form-label">{% trans "Verification Code" %}</label>
+                                <input type="text" name="otp" class="form-control form-control-lg text-center" id="id_otp" placeholder="Enter 6-digit code" maxlength="6" required>
+                            </div>
+                            
+                            <div class="d-grid gap-2">
+                                <button type="submit" class="btn btn-primary btn-lg">{% trans "Verify" %}</button>
+                            </div>
+                            
+                            <div class="text-center mt-3">
+                                <p id="timer" class="mb-1">{% trans "Resend code in" %} <span id="countdown">01:00</span></p>
+                                <a href="{% url 'accounts:resend_otp' %}" class="btn btn-link" id="resend-btn" disabled>{% trans "Resend Code" %}</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                
+                <div class="mt-4">
+                    <div class="alert alert-info">
+                        <h5><i class="fas fa-info-circle me-2"></i> {% trans "Trouble receiving the code?" %}</h5>
+                        <ul class="mb-0">
+                            <li>{% trans "Make sure your WhatsApp number is correct" %}</li>
+                            <li>{% trans "Check your WhatsApp messages" %}</li>
+                            <li>{% trans "Try clicking 'Resend Code' after the timer expires" %}</li>
+                            <li>{% trans "Contact support if you continue to face issues" %}</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Timer for resend OTP button
+    let timer;
+    const countdownEl = document.getElementById('countdown');
+    const resendBtn = document.getElementById('resend-btn');
+    
+    function startTimer(duration) {
+        let timeLeft = duration;
+        resendBtn.setAttribute('disabled', 'disabled');
+        
+        timer = setInterval(function() {
+            const minutes = parseInt(timeLeft / 60, 10);
+            const seconds = parseInt(timeLeft % 60, 10);
+            
+            countdownEl.textContent = minutes.toString().padStart(2, '0') + ':' + seconds.toString().padStart(2, '0');
+            
+            if (--timeLeft < 0) {
+                clearInterval(timer);
+                document.getElementById('timer').style.display = 'none';
+                resendBtn.removeAttribute('disabled');
+            }
+        }, 1000);
+    }
+    
+    // Start timer when page loads
+    document.addEventListener('DOMContentLoaded', function() {
+        startTimer(60); // 60 seconds
+    });
+    
+    // OTP input formatting
+    const otpInput = document.getElementById('id_otp');
+    otpInput.addEventListener('input', function() {
+        this.value = this.value.replace(/[^0-9]/g, ''); // Only allow numbers
+    });
+</script>
+{% endblock %}

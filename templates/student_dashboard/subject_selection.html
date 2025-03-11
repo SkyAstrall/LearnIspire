@@ -1,0 +1,223 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load custom_tags %}
+
+{% block title %}Subject Selection - LearnIspire{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row">
+        <!-- Sidebar -->
+        <div class="col-md-3">
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Student Dashboard</h5>
+                </div>
+                <div class="list-group list-group-flush">
+                    <a href="{% url 'student_dashboard:home' %}" class="list-group-item list-group-item-action">
+                        <i class="fas fa-dashboard me-2"></i> Dashboard
+                    </a>
+                    <a href="{% url 'student_dashboard:profile' %}" class="list-group-item list-group-item-action">
+                        <i class="fas fa-user me-2"></i> My Profile
+                    </a>
+                    <a href="{% url 'student_dashboard:subject_selection' %}" class="list-group-item list-group-item-action active">
+                        <i class="fas fa-book me-2"></i> Subject Selection
+                    </a>
+                    <a href="{% url 'student_dashboard:availability' %}" class="list-group-item list-group-item-action">
+                        <i class="fas fa-clock me-2"></i> Set Availability
+                    </a>
+                    <a href="{% url 'student_dashboard:classes' %}" class="list-group-item list-group-item-action">
+                        <i class="fas fa-calendar me-2"></i> My Classes
+                    </a>
+                    <a href="{% url 'student_dashboard:payments' %}" class="list-group-item list-group-item-action">
+                        <i class="fas fa-credit-card me-2"></i> Payments
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Student Status -->
+            <div class="card mb-4">
+                <div class="card-header bg-info text-white">
+                    <h5 class="mb-0">My Status</h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="me-3">
+                            <span class="badge bg-{% if profile.status == 'ACTIVE' %}success{% else %}warning{% endif %} p-2">
+                                {{ profile.get_status_display }}
+                            </span>
+                        </div>
+                        <div>
+                            <small class="text-muted">Last updated: {{ profile.updated_at|date:'M d, Y' }}</small>
+                        </div>
+                    </div>
+                    
+                    <div class="progress mb-3" style="height: 20px;">
+                        {% if profile.status == 'NEW' %}
+                            <div class="progress-bar progress-bar-striped bg-info" role="progressbar" style="width: 10%">10%</div>
+                        {% elif profile.status == 'PRICING_REQUESTED' %}
+                            <div class="progress-bar progress-bar-striped bg-info" role="progressbar" style="width: 25%">25%</div>
+                        {% elif profile.status == 'AVAILABILITY_SET' %}
+                            <div class="progress-bar progress-bar-striped bg-info" role="progressbar" style="width: 50%">50%</div>
+                        {% elif profile.status == 'DEMO_PENDING' %}
+                            <div class="progress-bar progress-bar-striped bg-info" role="progressbar" style="width: 60%">60%</div>
+                        {% elif profile.status == 'DEMO_SCHEDULED' %}
+                            <div class="progress-bar progress-bar-striped bg-info" role="progressbar" style="width: 75%">75%</div>
+                        {% elif profile.status == 'DEMO_ACCEPTED' %}
+                            <div class="progress-bar progress-bar-striped bg-info" role="progressbar" style="width: 90%">90%</div>
+                        {% elif profile.status == 'ACTIVE' %}
+                            <div class="progress-bar bg-success" role="progressbar" style="width: 100%">100%</div>
+                        {% else %}
+                            <div class="progress-bar progress-bar-striped bg-warning" role="progressbar" style="width: 50%">50%</div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="d-grid gap-2">
+                        {% if profile.status == 'NEW' %}
+                            <a href="{% url 'student_dashboard:profile' %}" class="btn btn-primary btn-sm">Complete Profile</a>
+                        {% elif profile.status == 'PRICING_REQUESTED' %}
+                            <a href="{% url 'student_dashboard:availability' %}" class="btn btn-primary btn-sm">Set Availability</a>
+                        {% elif profile.status == 'AVAILABILITY_SET' %}
+                            <a href="{% url 'student_dashboard:demo_request' %}" class="btn btn-primary btn-sm">Request Demo Class</a>
+                        {% elif profile.status == 'DEMO_PENDING' %}
+                            <button class="btn btn-secondary btn-sm" disabled>Demo Pending</button>
+                        {% elif profile.status == 'DEMO_SCHEDULED' %}
+                            <a href="{% url 'student_dashboard:classes' %}" class="btn btn-primary btn-sm">Join Demo Class</a>
+                        {% elif profile.status == 'DEMO_ACCEPTED' %}
+                            <a href="{% url 'student_dashboard:payments' %}" class="btn btn-primary btn-sm">Complete Payment</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="col-md-9">
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Select Your Subjects</h5>
+                </div>
+                <div class="card-body">
+                    {% if not profile.grade or not profile.board %}
+                        <div class="alert alert-warning mb-0">
+                            <h5><i class="fas fa-exclamation-triangle me-2"></i> Profile Incomplete</h5>
+                            <p class="mb-0">Please <a href="{% url 'student_dashboard:profile' %}">complete your profile</a> first by selecting your grade and board before proceeding with subject selection.</p>
+                        </div>
+                    {% else %}
+                        <p class="mb-4">Select the subjects you're interested in learning. You can select multiple subjects based on your learning needs.</p>
+                        
+                        <form method="post" action="{% url 'student_dashboard:subject_selection' %}">
+                            {% csrf_token %}
+                            
+                            <div class="row row-cols-1 row-cols-md-3 g-4 mb-4">
+                                {% for subject in subjects %}
+                                    <div class="col">
+                                        <div class="card h-100">
+                                            <div class="card-body">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" name="subjects" value="{{ subject.id }}" id="subject_{{ subject.id }}"
+                                                        {% if subject in selected_subjects %}checked{% endif %}>
+                                                    <label class="form-check-label" for="subject_{{ subject.id }}">
+                                                        <h5 class="card-title mb-1">{{ subject.name }}</h5>
+                                                    </label>
+                                                </div>
+                                                <p class="card-text small text-muted mt-2">{{ subject.description|truncatechars:100 }}</p>
+                                            </div>
+                                            <div class="card-footer bg-transparent">
+                                                {% with pricing_rule=subject|get_pricing_rule:profile %}
+                                                    {% if pricing_rule %}
+                                                        <small class="text-muted">Price: ₹{{ pricing_rule.price_per_session }}/session</small>
+                                                    {% else %}
+                                                        <small class="text-muted">Price: Contact for pricing</small>
+                                                    {% endif %}
+                                                {% endwith %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                            
+                            <div class="alert alert-info">
+                                <h5><i class="fas fa-info-circle me-2"></i> Important Note</h5>
+                                <p class="mb-0">You'll need to attend a minimum of 3 classes per week for each subject. Please select subjects accordingly.</p>
+                            </div>
+                            
+                            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                <button type="submit" class="btn btn-primary">Save Subject Selection</button>
+                            </div>
+                        </form>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <!-- Selected Subjects -->
+            {% if selected_subjects %}
+                <div class="card">
+                    <div class="card-header bg-light">
+                        <h5 class="mb-0">My Selected Subjects</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Subject</th>
+                                        <th>Price Per Session</th>
+                                        <th>Estimated Monthly Cost</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for subject in selected_subjects %}
+                                        <tr>
+                                            <td>{{ subject.name }}</td>
+                                            <td>
+                                                {% with pricing_rule=subject|get_pricing_rule:profile %}
+                                                    {% if pricing_rule %}
+                                                        ₹{{ pricing_rule.price_per_session }}
+                                                    {% else %}
+                                                        Contact for pricing
+                                                    {% endif %}
+                                                {% endwith %}
+                                            </td>
+                                            <td>
+                                                {% with pricing_rule=subject|get_pricing_rule:profile %}
+                                                    {% if pricing_rule %}
+                                                        ₹{{ pricing_rule.price_per_session|multiply:12 }}
+                                                        <small class="text-muted">(3 classes/week × 4 weeks)</small>
+                                                    {% else %}
+                                                        Contact for pricing
+                                                    {% endif %}
+                                                {% endwith %}
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                                <tfoot class="table-light">
+                                    <tr>
+                                        <th>Total</th>
+                                        <th></th>
+                                        <th>
+                                            {% with total_monthly=0 %}
+                                                {% for subject in selected_subjects %}
+                                                    {% with pricing_rule=subject|get_pricing_rule:profile %}
+                                                        {% if pricing_rule %}
+                                                            {% with subject_monthly=pricing_rule.price_per_session|multiply:12 %}
+                                                                {% with total_monthly=total_monthly|add:subject_monthly %}{% endwith %}
+                                                            {% endwith %}
+                                                        {% endif %}
+                                                    {% endwith %}
+                                                {% endfor %}
+                                                ₹{{ total_monthly }}
+                                            {% endwith %}
+                                        </th>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

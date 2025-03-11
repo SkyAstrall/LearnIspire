@@ -1,0 +1,317 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Pricing - LearnIspire{% endblock %}
+
+{% block content %}
+<!-- Header Section -->
+<section class="py-5 bg-primary text-white">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center">
+                <h1 class="fw-bold mb-4">Transparent Pricing</h1>
+                <p class="lead">Quality education at affordable rates. Pay only for the classes you take.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Pricing Selector Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <div class="card border-0 shadow">
+                    <div class="card-body p-4">
+                        <h3 class="card-title text-center mb-4">Check Pricing for Your Grade</h3>
+                        
+                        <form method="get" class="mb-4">
+                            <div class="row g-3">
+                                <div class="col-md-5">
+                                    <label for="grade" class="form-label">Grade</label>
+                                    <select class="form-select" id="grade" name="grade" required>
+                                        <option value="" selected disabled>Select Grade</option>
+                                        {% for grade in grades %}
+                                            <option value="{{ grade.id }}" {% if selected_grade == grade.id|stringformat:"i" %}selected{% endif %}>{{ grade.name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                
+                                <div class="col-md-5">
+                                    <label for="board" class="form-label">Board</label>
+                                    <select class="form-select" id="board" name="board" required>
+                                        <option value="" selected disabled>Select Board</option>
+                                        {% for board in boards %}
+                                            <option value="{{ board.id }}" {% if selected_board == board.id|stringformat:"i" %}selected{% endif %}>{{ board.name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                
+                                <div class="col-md-2 d-flex align-items-end">
+                                    <button type="submit" class="btn btn-primary w-100">Check</button>
+                                </div>
+                            </div>
+                        </form>
+                        
+                        {% if pricing_rules %}
+                            <!-- Display pricing information -->
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Subject</th>
+                                            <th class="text-end">Price per Session</th>
+                                            <th class="text-end">Monthly (12 sessions)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for rule in pricing_rules %}
+                                            <tr>
+                                                <td>{{ rule.subject.name }}</td>
+                                                <td class="text-end">₹{{ rule.price_per_session }}</td>
+                                                <td class="text-end">₹{{ rule.price_per_session|multiply:12 }}</td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                            
+                            <div class="alert alert-info mt-3">
+                                <h5><i class="fas fa-info-circle me-2"></i> How our pricing works</h5>
+                                <p class="mb-0">Prices are per 60-minute session. You'll need to attend a minimum of 3 classes per week for each subject. Monthly billing is based on the actual number of sessions attended.</p>
+                            </div>
+                        {% elif selected_grade and selected_board %}
+                            <div class="alert alert-warning">
+                                <p class="mb-0">No pricing information available for the selected grade and board. Please contact us for custom pricing.</p>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Pricing Information Section -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row text-center mb-5">
+            <div class="col-lg-8 mx-auto">
+                <h2 class="fw-bold">Flexible Pricing to Fit Your Needs</h2>
+                <p class="text-muted">Our pricing is designed to be fair, transparent, and affordable</p>
+            </div>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-lg-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body p-4">
+                        <div class="feature-icon bg-primary bg-gradient text-white rounded-circle mb-3">
+                            <i class="fas fa-calendar-check fa-2x"></i>
+                        </div>
+                        <h4 class="card-title">Pay As You Learn</h4>
+                        <p class="card-text">Pay only for the classes you actually attend. You'll be billed at the end of each month based on completed sessions.</p>
+                        <ul class="list-unstyled mt-3">
+                            <li><i class="fas fa-check text-success me-2"></i> No long-term contracts</li>
+                            <li><i class="fas fa-check text-success me-2"></i> Monthly billing</li>
+                            <li><i class="fas fa-check text-success me-2"></i> Transparent pricing</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body p-4">
+                        <div class="feature-icon bg-primary bg-gradient text-white rounded-circle mb-3">
+                            <i class="fas fa-users fa-2x"></i>
+                        </div>
+                        <h4 class="card-title">Family Discounts</h4>
+                        <p class="card-text">Enroll multiple children and receive discounts on their combined learning packages. The more you learn, the more you save.</p>
+                        <ul class="list-unstyled mt-3">
+                            <li><i class="fas fa-check text-success me-2"></i> 5% off for 2 students</li>
+                            <li><i class="fas fa-check text-success me-2"></i> 10% off for 3+ students</li>
+                            <li><i class="fas fa-check text-success me-2"></i> Applied automatically</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body p-4">
+                        <div class="feature-icon bg-primary bg-gradient text-white rounded-circle mb-3">
+                            <i class="fas fa-award fa-2x"></i>
+                        </div>
+                        <h4 class="card-title">Loyalty Rewards</h4>
+                        <p class="card-text">Stay with us longer and earn rewards. Long-term students receive benefits like free classes and special workshops.</p>
+                        <ul class="list-unstyled mt-3">
+                            <li><i class="fas fa-check text-success me-2"></i> Free class after 3 months</li>
+                            <li><i class="fas fa-check text-success me-2"></i> Special workshops access</li>
+                            <li><i class="fas fa-check text-success me-2"></i> Referral bonuses</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Payment Methods Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="row text-center mb-5">
+            <div class="col-lg-8 mx-auto">
+                <h2 class="fw-bold">Easy and Secure Payments</h2>
+                <p class="text-muted">Multiple payment options for your convenience</p>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <div class="card border-0 shadow">
+                    <div class="card-body p-4">
+                        <div class="row g-4 text-center">
+                            <div class="col-md-3">
+                                <img src="{% static 'images/payment/visa.png' %}" alt="Visa" class="img-fluid mb-3" style="height: 40px;">
+                                <h5>Credit Cards</h5>
+                                <p class="text-muted small">Visa, Mastercard, Amex</p>
+                            </div>
+                            
+                            <div class="col-md-3">
+                                <img src="{% static 'images/payment/upi.png' %}" alt="UPI" class="img-fluid mb-3" style="height: 40px;">
+                                <h5>UPI</h5>
+                                <p class="text-muted small">Google Pay, PhonePe, Paytm</p>
+                            </div>
+                            
+                            <div class="col-md-3">
+                                <img src="{% static 'images/payment/netbanking.png' %}" alt="Net Banking" class="img-fluid mb-3" style="height: 40px;">
+                                <h5>Net Banking</h5>
+                                <p class="text-muted small">All major banks</p>
+                            </div>
+                            
+                            <div class="col-md-3">
+                                <img src="{% static 'images/payment/wallet.png' %}" alt="Wallet" class="img-fluid mb-3" style="height: 40px;">
+                                <h5>Wallets</h5>
+                                <p class="text-muted small">Paytm, PhonePe, Mobikwik</p>
+                            </div>
+                        </div>
+                        
+                        <hr class="my-4">
+                        
+                        <div class="text-center">
+                            <p class="mb-0"><i class="fas fa-lock me-2"></i> All payments are processed securely through PayU, India's leading payment gateway.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FAQ Section -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row text-center mb-5">
+            <div class="col-lg-8 mx-auto">
+                <h2 class="fw-bold">Pricing FAQs</h2>
+                <p class="text-muted">Common questions about our pricing</p>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <div class="accordion" id="pricingFaqAccordion">
+                    <div class="accordion-item border-0 mb-3 shadow-sm">
+                        <h2 class="accordion-header" id="headingOne">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                Are there any hidden fees?
+                            </button>
+                        </h2>
+                        <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#pricingFaqAccordion">
+                            <div class="accordion-body">
+                                No, there are no hidden fees. The price you see for each session is what you pay. You'll receive a detailed breakdown of charges before making any payment, showing exactly how many sessions you've had and the corresponding amount.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="accordion-item border-0 mb-3 shadow-sm">
+                        <h2 class="accordion-header" id="headingTwo">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                What happens if I miss a scheduled class?
+                            </button>
+                        </h2>
+                        <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#pricingFaqAccordion">
+                            <div class="accordion-body">
+                                If you notify us at least 24 hours in advance, we can reschedule the class without any charge. For last-minute cancellations (less than 24 hours notice) or no-shows, the session will still be counted and charged as part of your monthly billing.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="accordion-item border-0 mb-3 shadow-sm">
+                        <h2 class="accordion-header" id="headingThree">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                Can I change subjects mid-month?
+                            </button>
+                        </h2>
+                        <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#pricingFaqAccordion">
+                            <div class="accordion-body">
+                                Yes, you can add new subjects at any time. However, we recommend completing the current month's schedule for subjects you're already enrolled in before making major changes. This ensures continuity in your learning and helps maintain a consistent schedule.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="accordion-item border-0 mb-3 shadow-sm">
+                        <h2 class="accordion-header" id="headingFour">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                                Do you offer any scholarships or financial aid?
+                            </button>
+                        </h2>
+                        <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#pricingFaqAccordion">
+                            <div class="accordion-body">
+                                Yes, we offer limited scholarships to students with exceptional academic records or those who demonstrate financial need. Please contact our support team for more information about the application process and eligibility criteria.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="accordion-item border-0 mb-3 shadow-sm">
+                        <h2 class="accordion-header" id="headingFive">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+                                Is the demo class really free?
+                            </button>
+                        </h2>
+                        <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive" data-bs-parent="#pricingFaqAccordion">
+                            <div class="accordion-body">
+                                Yes, your first demo class is completely free with no obligation to continue. This allows you to experience our teaching methodology and platform before committing to regular sessions.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="py-5 bg-primary text-white">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-8 mx-auto text-center">
+                <h2 class="fw-bold mb-4">Ready to Start Learning?</h2>
+                <p class="lead mb-4">Begin with a free demo class and experience our personalized approach to education.</p>
+                <a href="{% url 'account_signup' %}" class="btn btn-light btn-lg px-4 me-2">Get Started</a>
+                <a href="{% url 'landing:contact' %}" class="btn btn-outline-light btn-lg px-4">Contact Us</a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Simple template filter to multiply values
+    function multiply(a, b) {
+        return (a * b).toFixed(2);
+    }
+</script>
+{% endblock %}

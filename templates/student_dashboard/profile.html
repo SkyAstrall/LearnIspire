@@ -1,0 +1,263 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}My Profile - LearnIspire{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row">
+        <!-- Sidebar -->
+        <div class="col-md-3">
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Student Dashboard</h5>
+                </div>
+                <div class="list-group list-group-flush">
+                    <a href="{% url 'student_dashboard:home' %}" class="list-group-item list-group-item-action">
+                        <i class="fas fa-dashboard me-2"></i> Dashboard
+                    </a>
+                    <a href="{% url 'student_dashboard:profile' %}" class="list-group-item list-group-item-action active">
+                        <i class="fas fa-user me-2"></i> My Profile
+                    </a>
+                    <a href="{% url 'student_dashboard:subject_selection' %}" class="list-group-item list-group-item-action">
+                        <i class="fas fa-book me-2"></i> Subject Selection
+                    </a>
+                    <a href="{% url 'student_dashboard:availability' %}" class="list-group-item list-group-item-action">
+                        <i class="fas fa-clock me-2"></i> Set Availability
+                    </a>
+                    <a href="{% url 'student_dashboard:classes' %}" class="list-group-item list-group-item-action">
+                        <i class="fas fa-calendar me-2"></i> My Classes
+                    </a>
+                    <a href="{% url 'student_dashboard:payments' %}" class="list-group-item list-group-item-action">
+                        <i class="fas fa-credit-card me-2"></i> Payments
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Student Status -->
+            <div class="card mb-4">
+                <div class="card-header bg-info text-white">
+                    <h5 class="mb-0">My Status</h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="me-3">
+                            <span class="badge bg-{% if profile.status == 'ACTIVE' %}success{% else %}warning{% endif %} p-2">
+                                {{ profile.get_status_display }}
+                            </span>
+                        </div>
+                        <div>
+                            <small class="text-muted">Last updated: {{ profile.updated_at|date:'M d, Y' }}</small>
+                        </div>
+                    </div>
+                    
+                    <div class="progress mb-3" style="height: 20px;">
+                        {% if profile.status == 'NEW' %}
+                            <div class="progress-bar progress-bar-striped bg-info" role="progressbar" style="width: 10%">10%</div>
+                        {% elif profile.status == 'PRICING_REQUESTED' %}
+                            <div class="progress-bar progress-bar-striped bg-info" role="progressbar" style="width: 25%">25%</div>
+                        {% elif profile.status == 'AVAILABILITY_SET' %}
+                            <div class="progress-bar progress-bar-striped bg-info" role="progressbar" style="width: 50%">50%</div>
+                        {% elif profile.status == 'DEMO_PENDING' %}
+                            <div class="progress-bar progress-bar-striped bg-info" role="progressbar" style="width: 60%">60%</div>
+                        {% elif profile.status == 'DEMO_SCHEDULED' %}
+                            <div class="progress-bar progress-bar-striped bg-info" role="progressbar" style="width: 75%">75%</div>
+                        {% elif profile.status == 'DEMO_ACCEPTED' %}
+                            <div class="progress-bar progress-bar-striped bg-info" role="progressbar" style="width: 90%">90%</div>
+                        {% elif profile.status == 'ACTIVE' %}
+                            <div class="progress-bar bg-success" role="progressbar" style="width: 100%">100%</div>
+                        {% else %}
+                            <div class="progress-bar progress-bar-striped bg-warning" role="progressbar" style="width: 50%">50%</div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="d-grid gap-2">
+                        {% if profile.status == 'NEW' %}
+                            <p class="text-muted small mb-2">Complete your profile to proceed with subject selection.</p>
+                        {% elif profile.status == 'PRICING_REQUESTED' %}
+                            <a href="{% url 'student_dashboard:availability' %}" class="btn btn-primary btn-sm">Set Availability</a>
+                        {% elif profile.status == 'AVAILABILITY_SET' %}
+                            <a href="{% url 'student_dashboard:demo_request' %}" class="btn btn-primary btn-sm">Request Demo Class</a>
+                        {% elif profile.status == 'DEMO_PENDING' %}
+                            <button class="btn btn-secondary btn-sm" disabled>Demo Pending</button>
+                        {% elif profile.status == 'DEMO_SCHEDULED' %}
+                            <a href="{% url 'student_dashboard:classes' %}" class="btn btn-primary btn-sm">Join Demo Class</a>
+                        {% elif profile.status == 'DEMO_ACCEPTED' %}
+                            <a href="{% url 'student_dashboard:payments' %}" class="btn btn-primary btn-sm">Complete Payment</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="col-md-9">
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">My Profile</h5>
+                </div>
+                <div class="card-body">
+                    <div class="profile-header mb-4">
+                        <div class="row align-items-center">
+                            <div class="col-md-3 text-center">
+                                <img src="{% static 'images/default-avatar.png' %}" alt="{{ request.user.get_full_name }}" class="profile-picture" onerror="this.src='https://ui-avatars.com/api/?name={{ request.user.get_full_name|urlencode }}&size=120&background=random';">
+                            </div>
+                            <div class="col-md-9">
+                                <h3>{{ request.user.get_full_name }}</h3>
+                                <p class="text-muted mb-2">{{ request.user.email }}</p>
+                                <p class="mb-0"><i class="fas fa-phone me-2"></i> {{ request.user.phone_number }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <ul class="nav nav-tabs mb-4" id="profileTabs" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="personal-tab" data-bs-toggle="tab" data-bs-target="#personal" type="button" role="tab" aria-controls="personal" aria-selected="true">
+                                Personal Information
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="education-tab" data-bs-toggle="tab" data-bs-target="#education" type="button" role="tab" aria-controls="education" aria-selected="false">
+                                Education Details
+                            </button>
+                        </li>
+                    </ul>
+                    
+                    <div class="tab-content" id="profileTabsContent">
+                        <!-- Personal Information Tab -->
+                        <div class="tab-pane fade show active" id="personal" role="tabpanel" aria-labelledby="personal-tab">
+                            <form method="post" action="{% url 'student_dashboard:profile' %}">
+                                {% csrf_token %}
+                                
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label for="first_name" class="form-label">First Name</label>
+                                        <input type="text" class="form-control" id="first_name" name="first_name" value="{{ request.user.first_name }}" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="last_name" class="form-label">Last Name</label>
+                                        <input type="text" class="form-control" id="last_name" name="last_name" value="{{ request.user.last_name }}" required>
+                                    </div>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="email" class="form-label">Email</label>
+                                    <input type="email" class="form-control" id="email" value="{{ request.user.email }}" readonly>
+                                    <div class="form-text">Email cannot be changed. Contact support if needed.</div>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="phone_number" class="form-label">Phone Number</label>
+                                    <input type="tel" class="form-control" id="phone_number" value="{{ request.user.phone_number }}" readonly>
+                                    <div class="form-text">Phone number cannot be changed after verification.</div>
+                                </div>
+                                
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                    <button type="submit" class="btn btn-primary">Update Personal Information</button>
+                                </div>
+                                <input type="hidden" name="form_type" value="personal_info">
+                            </form>
+                        </div>
+                        
+                        <!-- Education Details Tab -->
+                        <div class="tab-pane fade" id="education" role="tabpanel" aria-labelledby="education-tab">
+                            <form method="post" action="{% url 'student_dashboard:profile' %}">
+                                {% csrf_token %}
+                                
+                                <div class="mb-3">
+                                    <label for="grade" class="form-label">Grade</label>
+                                    <select class="form-select" id="grade" name="grade" required>
+                                        <option value="" selected disabled>Select Grade</option>
+                                        {% for grade in grades %}
+                                            <option value="{{ grade.id }}" {% if profile.grade.id == grade.id %}selected{% endif %}>{{ grade.name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="board" class="form-label">Board</label>
+                                    <select class="form-select" id="board" name="board" required>
+                                        <option value="" selected disabled>Select Board</option>
+                                        {% for board in boards %}
+                                            <option value="{{ board.id }}" {% if profile.board.id == board.id %}selected{% endif %}>{{ board.name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                    <button type="submit" class="btn btn-primary">Update Education Details</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Next Steps Card -->
+            <div class="card">
+                <div class="card-header bg-light">
+                    <h5 class="mb-0">Next Steps</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <div class="card h-100 {% if profile.status == 'NEW' %}border-primary{% else %}border-success{% endif %}">
+                                <div class="card-body text-center">
+                                    <h5 class="card-title">
+                                        <span class="badge {% if profile.status == 'NEW' %}bg-primary{% else %}bg-success{% endif %} rounded-circle mb-2">1</span><br>
+                                        Complete Profile
+                                    </h5>
+                                    <p class="card-text small">Add your grade and educational details</p>
+                                    {% if profile.grade and profile.board %}
+                                        <span class="text-success"><i class="fas fa-check-circle"></i> Completed</span>
+                                    {% else %}
+                                        <span class="text-primary">Current Step</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-4 mb-3">
+                            <div class="card h-100 {% if profile.status == 'PRICING_REQUESTED' %}border-primary{% elif profile.status == 'NEW' %}border-secondary{% else %}border-success{% endif %}">
+                                <div class="card-body text-center">
+                                    <h5 class="card-title">
+                                        <span class="badge {% if profile.status == 'PRICING_REQUESTED' %}bg-primary{% elif profile.status == 'NEW' %}bg-secondary{% else %}bg-success{% endif %} rounded-circle mb-2">2</span><br>
+                                        Select Subjects
+                                    </h5>
+                                    <p class="card-text small">Choose the subjects you want to learn</p>
+                                    {% if profile.selected_subjects.exists %}
+                                        <span class="text-success"><i class="fas fa-check-circle"></i> Completed</span>
+                                    {% elif profile.status == 'PRICING_REQUESTED' %}
+                                        <span class="text-primary">Current Step</span>
+                                    {% else %}
+                                        <span class="text-muted">Coming Up</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-4 mb-3">
+                            <div class="card h-100 {% if profile.status == 'AVAILABILITY_SET' %}border-primary{% elif profile.status == 'NEW' or profile.status == 'PRICING_REQUESTED' %}border-secondary{% else %}border-success{% endif %}">
+                                <div class="card-body text-center">
+                                    <h5 class="card-title">
+                                        <span class="badge {% if profile.status == 'AVAILABILITY_SET' %}bg-primary{% elif profile.status == 'NEW' or profile.status == 'PRICING_REQUESTED' %}bg-secondary{% else %}bg-success{% endif %} rounded-circle mb-2">3</span><br>
+                                        Set Availability
+                                    </h5>
+                                    <p class="card-text small">Set your weekly availability (min. 3 slots)</p>
+                                    {% if profile.status == 'AVAILABILITY_SET' %}
+                                        <span class="text-primary">Current Step</span>
+                                    {% elif profile.status == 'DEMO_PENDING' or profile.status == 'DEMO_SCHEDULED' or profile.status == 'DEMO_ACCEPTED' or profile.status == 'ACTIVE' %}
+                                        <span class="text-success"><i class="fas fa-check-circle"></i> Completed</span>
+                                    {% else %}
+                                        <span class="text-muted">Coming Up</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

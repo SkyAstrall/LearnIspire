@@ -1,0 +1,364 @@
+/* -------------------- Base Styles -------------------- */
+:root {
+    --primary-color: #0d6efd;
+    --secondary-color: #6c757d;
+    --success-color: #198754;
+    --info-color: #0dcaf0;
+    --warning-color: #ffc107;
+    --danger-color: #dc3545;
+    --light-color: #f8f9fa;
+    --dark-color: #212529;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #333;
+    line-height: 1.6;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1;
+}
+
+/* -------------------- Navbar Styles -------------------- */
+.navbar-brand img {
+    margin-right: 10px;
+}
+
+/* -------------------- Hero Section -------------------- */
+.hero-section {
+    padding: 5rem 0;
+    background: linear-gradient(to right, var(--primary-color), #0a58ca);
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-section::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-image: url('../images/pattern.png');
+    opacity: 0.1;
+    z-index: 0;
+}
+
+.hero-section .container {
+    position: relative;
+    z-index: 1;
+}
+
+/* -------------------- Feature Icons -------------------- */
+.feature-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 4rem;
+    height: 4rem;
+    border-radius: 50%;
+    box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.1);
+}
+
+/* -------------------- Timeline -------------------- */
+.timeline {
+    position: relative;
+    padding: 0;
+    list-style: none;
+}
+
+.timeline::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 2px;
+    height: 100%;
+    background-color: #dee2e6;
+}
+
+.timeline-badge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    font-weight: bold;
+    margin: 0 auto;
+    z-index: 100;
+    position: relative;
+}
+
+.timeline-item {
+    position: relative;
+    margin-bottom: 30px;
+}
+
+@media (max-width: 767px) {
+    .timeline::before {
+        left: 40px;
+    }
+
+    .timeline-badge {
+        margin: 0;
+    }
+}
+
+/* -------------------- Dashboard -------------------- */
+.dashboard-stat-card {
+    border-radius: 0.5rem;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    transition: transform 0.2s;
+}
+
+.dashboard-stat-card:hover {
+    transform: translateY(-5px);
+}
+
+/* -------------------- Class Cards -------------------- */
+.class-card {
+    border-left: 5px solid var(--primary-color);
+    transition: transform 0.2s;
+}
+
+.class-card:hover {
+    transform: translateY(-5px);
+}
+
+.class-card.demo {
+    border-left-color: var(--info-color);
+}
+
+.class-card.completed {
+    border-left-color: var(--success-color);
+}
+
+.class-card.cancelled {
+    border-left-color: var(--danger-color);
+}
+
+/* -------------------- Meeting Frame -------------------- */
+.meet-frame {
+    border: none;
+    width: 100%;
+    height: 100%;
+    min-height: 500px;
+}
+
+/* -------------------- Availability Form -------------------- */
+.availability-slot {
+    background-color: #f8f9fa;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border: 1px solid #dee2e6;
+}
+
+.availability-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+}
+
+/* -------------------- Profile Page -------------------- */
+.profile-header {
+    background-color: var(--light-color);
+    border-radius: 0.5rem;
+    padding: 2rem;
+    margin-bottom: 2rem;
+}
+
+.profile-picture {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 5px solid white;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+/* -------------------- Subject Cards -------------------- */
+.subject-card {
+    transition: transform 0.2s;
+    border-radius: 0.5rem;
+    overflow: hidden;
+}
+
+.subject-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+.subject-icon {
+    height: 80px;
+    width: 80px;
+    margin: 0 auto 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background-color: rgba(13, 110, 253, 0.1);
+}
+
+/* -------------------- Testimonial Cards -------------------- */
+.testimonial-card {
+    border-radius: 0.5rem;
+    overflow: hidden;
+    transition: transform 0.2s;
+}
+
+.testimonial-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+/* -------------------- Footer -------------------- */
+footer {
+    margin-top: auto;
+}
+
+footer a.text-white {
+    text-decoration: none;
+    transition: opacity 0.2s;
+}
+
+footer a.text-white:hover {
+    opacity: 0.8;
+    text-decoration: underline;
+}
+
+.social-links a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.1);
+    transition: background-color 0.2s;
+}
+
+.social-links a:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* -------------------- Responsive Adjustments -------------------- */
+@media (max-width: 767px) {
+    .hero-section {
+        text-align: center;
+        padding: 3rem 0;
+    }
+
+    .profile-header {
+        text-align: center;
+    }
+
+    .profile-picture {
+        margin: 0 auto 1rem;
+    }
+}
+/* -------------------- Authentication Pages -------------------- */
+.signup-section,
+.login-section {
+    padding: 5rem 0;
+    background: linear-gradient(to right, var(--primary-color), #0a58ca);
+    margin-bottom: 3rem;
+}
+
+.auth-card {
+    border-radius: 0.75rem;
+    box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.15);
+    transition: transform 0.3s ease;
+}
+
+.auth-card:hover {
+    transform: translateY(-5px);
+}
+
+.auth-card .card-footer {
+    border-bottom-left-radius: 0.75rem;
+    border-bottom-right-radius: 0.75rem;
+}
+
+.form-control {
+    border-radius: 0.5rem;
+    padding: 0.75rem 1rem;
+    border: 1px solid #ced4da;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-control:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}
+
+.btn-primary {
+    padding: 0.75rem 1.5rem;
+    font-weight: 600;
+    border-radius: 0.5rem;
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+.form-check-input:checked {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+/* Make text fields consistent */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="tel"] {
+    font-size: 1rem;
+    min-height: 48px;
+}
+
+/* Style for error messages */
+.alert-danger {
+    border-radius: 0.5rem;
+    border-left: 4px solid var(--danger-color);
+}
+
+/* What happens next section */
+.alert-info {
+    border-radius: 0.5rem;
+    border-left: 4px solid var(--info-color);
+}
+
+.alert-info h5 {
+    color: var(--primary-color);
+}
+
+/* Auth page background pattern */
+.py-5.bg-primary {
+    position: relative;
+    overflow: hidden;
+}
+
+.py-5.bg-primary::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-image: url('../images/pattern.png');
+    opacity: 0.1;
+    z-index: 0;
+}
+
+.py-5.bg-primary .container {
+    position: relative;
+    z-index: 1;
+}

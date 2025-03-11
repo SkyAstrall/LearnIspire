@@ -1,0 +1,315 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Join Class - LearnIspire{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <div class="row">
+        <!-- Video Conference Area -->
+        <div class="col-lg-9">
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">{{ class.subject.name }} 
+                        {% if class.is_demo %}
+                            <span class="badge bg-info ms-2">Demo Class</span>
+                        {% endif %}
+                    </h5>
+                    <div>
+                        <span id="class-timer" class="badge bg-light text-dark me-2">00:00:00</span>
+                        <a href="{% url 'teacher_dashboard:class_detail' class.id %}" class="btn btn-sm btn-outline-light">
+                            <i class="fa fa-external-link me-1"></i> Class Details
+                        </a>
+                    </div>
+                </div>
+                <div class="card-body p-0">
+                    <div id="video-container" class="video-conference-area">
+                        <!-- Video conference will be loaded here -->
+                        <div class="text-center py-5">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                            <p class="mt-3">Loading video conference...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Class Controls -->
+            <div class="card mb-4">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-9">
+                            <div class="d-flex justify-content-start">
+                                <button id="btn-mic" class="btn btn-outline-primary me-2">
+                                    <i class="fa fa-microphone"></i>
+                                </button>
+                                <button id="btn-camera" class="btn btn-outline-primary me-2">
+                                    <i class="fa fa-video-camera"></i>
+                                </button>
+                                <button id="btn-share" class="btn btn-outline-primary me-2">
+                                    <i class="fa fa-desktop"></i>
+                                </button>
+                                <button id="btn-whiteboard" class="btn btn-outline-primary me-2">
+                                    <i class="fa fa-pencil"></i>
+                                </button>
+                                <button id="btn-chat" class="btn btn-outline-primary me-2">
+                                    <i class="fa fa-comments"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-md-3 text-end">
+                            {% if class.status == 'IN_PROGRESS' %}
+                                <a href="{% url 'teacher_dashboard:complete_class' class.id %}" class="btn btn-success">
+                                    <i class="fa fa-check-circle me-1"></i> Complete Class
+                                </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Sidebar -->
+        <div class="col-lg-3">
+            <!-- Class Info -->
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Class Details</h5>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <div class="small text-muted">Subject</div>
+                        <div class="fw-bold">{{ class.subject.name }}</div>
+                    </div>
+                    <div class="mb-3">
+                        <div class="small text-muted">Student</div>
+                        <div class="fw-bold">{{ class.student.get_full_name }}</div>
+                    </div>
+                    <div class="mb-3">
+                        <div class="small text-muted">Date & Time</div>
+                        <div class="fw-bold">
+                            {{ class.start_time|date:"D, M d, Y" }}<br>
+                            {{ class.start_time|time:"h:i A" }} - {{ class.end_time|time:"h:i A" }}
+                        </div>
+                    </div>
+                    {% if class.topic %}
+                    <div class="mb-3">
+                        <div class="small text-muted">Topic</div>
+                        <div>{{ class.topic }}</div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <!-- Quick Notes -->
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Quick Notes</h5>
+                </div>
+                <div class="card-body">
+                    <textarea id="class-notes" class="form-control" rows="8" placeholder="Take notes during class..."></textarea>
+                    <div class="d-grid mt-2">
+                        <button id="save-notes" class="btn btn-outline-primary">
+                            <i class="fa fa-save me-1"></i> Save Notes
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Materials -->
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Class Materials</h5>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group">
+                        {% for material in class.materials.all %}
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <div>
+                                    <div class="fw-bold">{{ material.title }}</div>
+                                    <small class="text-muted">{{ material.created_at|date:"M d, Y" }}</small>
+                                </div>
+                                <a href="{{ material.file.url }}" class="btn btn-sm btn-outline-primary" target="_blank">
+                                    <i class="fa fa-download"></i>
+                                </a>
+                            </li>
+                        {% empty %}
+                            <li class="list-group-item text-center">No materials uploaded</li>
+                        {% endfor %}
+                    </ul>
+                    <div class="d-grid mt-3">
+                        <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#uploadMaterialModal">
+                            <i class="fa fa-upload me-1"></i> Upload Material
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Upload Material Modal -->
+<div class="modal fade" id="uploadMaterialModal" tabindex="-1" aria-labelledby="uploadMaterialModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form action="{% url 'teacher_dashboard:upload_material' class.id %}" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="modal-header">
+                    <h5 class="modal-title" id="uploadMaterialModalLabel">Upload Class Material</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="material_title" class="form-label">Title</label>
+                        <input type="text" class="form-control" id="material_title" name="material_title" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="material_description" class="form-label">Description</label>
+                        <textarea class="form-control" id="material_description" name="material_description" rows="3"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="material_file" class="form-label">File</label>
+                        <input type="file" class="form-control" id="material_file" name="material_file" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Upload</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- End Class Confirmation Modal -->
+<div class="modal fade" id="endClassModal" tabindex="-1" aria-labelledby="endClassModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="endClassModalLabel">End Class</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to end this class?</p>
+                <p class="text-danger">This action cannot be undone.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <a href="{% url 'teacher_dashboard:complete_class' class.id %}" class="btn btn-danger">End Class</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .video-conference-area {
+        min-height: 480px;
+        background-color: #f8f9fa;
+    }
+    
+    #class-timer {
+        font-family: monospace;
+        font-size: 1rem;
+    }
+    
+    /* Make the page full height for better video conf experience */
+    html, body {
+        height: 100%;
+    }
+    
+    /* Hide footer for class page */
+    footer {
+        display: none;
+    }
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    $(document).ready(function() {
+        // Initialize class timer
+        let classStart = new Date("{{ class.start_time|date:'Y-m-d H:i:s' }}");
+        let classEnd = new Date("{{ class.end_time|date:'Y-m-d H:i:s' }}");
+        let now = new Date();
+        let elapsedSeconds = Math.floor((now - classStart) / 1000);
+        
+        // Only start timer if class has actually started
+        if (elapsedSeconds > 0) {
+            updateTimer(elapsedSeconds);
+            
+            // Update timer every second
+            setInterval(function() {
+                elapsedSeconds++;
+                updateTimer(elapsedSeconds);
+                
+                // If class time is up, show alert
+                let totalSeconds = Math.floor((classEnd - classStart) / 1000);
+                if (elapsedSeconds >= totalSeconds) {
+                    $('#class-timer').removeClass('bg-light text-dark').addClass('bg-danger text-white');
+                }
+            }, 1000);
+        }
+        
+        // Toggle buttons
+        $('#btn-mic').click(function() {
+            $(this).toggleClass('btn-outline-primary btn-primary');
+        });
+        
+        $('#btn-camera').click(function() {
+            $(this).toggleClass('btn-outline-primary btn-primary');
+        });
+        
+        $('#btn-share').click(function() {
+            $(this).toggleClass('btn-outline-primary btn-primary');
+        });
+        
+        $('#btn-whiteboard').click(function() {
+            $(this).toggleClass('btn-outline-primary btn-primary');
+        });
+        
+        $('#btn-chat').click(function() {
+            $(this).toggleClass('btn-outline-primary btn-primary');
+        });
+        
+        // Save notes
+        $('#save-notes').click(function() {
+            let notes = $('#class-notes').val();
+            if (notes) {
+                // Save notes via AJAX
+                // This is a placeholder - you would implement actual AJAX logic here
+                alert('Notes saved successfully!');
+            }
+        });
+        
+        // Function to update timer display
+        function updateTimer(seconds) {
+            let hours = Math.floor(seconds / 3600);
+            seconds %= 3600;
+            let minutes = Math.floor(seconds / 60);
+            seconds %= 60;
+            
+            $('#class-timer').text(
+                String(hours).padStart(2, '0') + ':' +
+                String(minutes).padStart(2, '0') + ':' +
+                String(seconds).padStart(2, '0')
+            );
+        }
+        
+        // For demo purposes, simulate video loading
+        setTimeout(function() {
+            $('#video-container').html(`
+                <div class="d-flex justify-content-center align-items-center bg-dark text-white" style="height: 480px;">
+                    <div class="text-center">
+                        <i class="fa fa-video-camera fa-5x mb-3"></i>
+                        <h4>Video Conference Placeholder</h4>
+                        <p>In a real implementation, this would load your video conferencing solution.</p>
+                    </div>
+                </div>
+            `);
+        }, 2000);
+    });
+</script>
+{% endblock %}

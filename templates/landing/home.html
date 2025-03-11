@@ -1,0 +1,494 @@
+{% extends 'base.html' %} {% load static %} {% block title %}LearnIspire -
+Personalized Online Learning Platform{% endblock %} {% block content %}
+<!-- Hero Section -->
+<section class="hero-section py-5 bg-primary text-white">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-lg-6 py-5">
+        <h1 class="display-4 fw-bold mb-4">
+          Transform Your Learning Experience
+        </h1>
+        <p class="lead mb-4">
+          Personalized online tutoring with qualified teachers. Learn at your
+          own pace, on your schedule, with minimum 3 classes per week.
+        </p>
+        <div class="d-grid gap-2 d-md-flex justify-content-md-start">
+          <a
+            href="{% url 'account_signup' %}"
+            class="btn btn-light btn-lg px-4 me-md-2"
+            >Get Started</a
+          >
+          <a
+            href="{% url 'landing:about' %}"
+            class="btn btn-outline-light btn-lg px-4"
+            >Learn More</a
+          >
+        </div>
+      </div>
+      <div class="col-lg-6 d-none d-lg-block">
+        <img
+          src="{% static 'images/hero-image.png' %}"
+          alt="Online Learning"
+          class="img-fluid rounded shadow"
+        />
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Features Section -->
+<section class="py-5">
+  <div class="container">
+    <div class="text-center mb-5">
+      <h2 class="fw-bold">Why Choose LearnIspire?</h2>
+      <p class="text-muted">
+        Our unique approach to personalized online learning
+      </p>
+    </div>
+
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="card h-100 border-0 shadow-sm">
+          <div class="card-body text-center p-4">
+            <div
+              class="feature-icon bg-primary bg-gradient text-white rounded-circle mb-3"
+            >
+              <i class="fas fa-chalkboard-teacher fa-2x"></i>
+            </div>
+            <h4 class="card-title">Qualified Teachers</h4>
+            <p class="card-text">
+              Learn from experienced, verified teachers who specialize in your
+              subjects.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="card h-100 border-0 shadow-sm">
+          <div class="card-body text-center p-4">
+            <div
+              class="feature-icon bg-primary bg-gradient text-white rounded-circle mb-3"
+            >
+              <i class="fas fa-calendar-alt fa-2x"></i>
+            </div>
+            <h4 class="card-title">Flexible Scheduling</h4>
+            <p class="card-text">
+              Set your availability and we'll create a schedule that works for
+              you.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="card h-100 border-0 shadow-sm">
+          <div class="card-body text-center p-4">
+            <div
+              class="feature-icon bg-primary bg-gradient text-white rounded-circle mb-3"
+            >
+              <i class="fas fa-video fa-2x"></i>
+            </div>
+            <h4 class="card-title">Interactive Classes</h4>
+            <p class="card-text">
+              Engage in real-time interactive sessions through our integrated
+              platform.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- How It Works Section -->
+<section class="py-5 bg-light">
+  <div class="container">
+    <div class="text-center mb-5">
+      <h2 class="fw-bold">How It Works</h2>
+      <p class="text-muted">
+        Simple steps to start your personalized learning journey
+      </p>
+    </div>
+
+    <div class="row">
+      <div class="col-lg-8 mx-auto">
+        <div class="timeline">
+          <div class="timeline-item mb-5">
+            <div class="row">
+              <div class="col-md-2 text-center">
+                <div class="timeline-badge bg-primary text-white">1</div>
+              </div>
+              <div class="col-md-10">
+                <div class="timeline-content">
+                  <h4>Register & Verify</h4>
+                  <p>Sign up and verify your account through WhatsApp.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="timeline-item mb-5">
+            <div class="row">
+              <div class="col-md-2 text-center">
+                <div class="timeline-badge bg-primary text-white">2</div>
+              </div>
+              <div class="col-md-10">
+                <div class="timeline-content">
+                  <h4>Complete Your Profile</h4>
+                  <p>Select your grade, board, and subjects of interest.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="timeline-item mb-5">
+            <div class="row">
+              <div class="col-md-2 text-center">
+                <div class="timeline-badge bg-primary text-white">3</div>
+              </div>
+              <div class="col-md-10">
+                <div class="timeline-content">
+                  <h4>Set Your Availability</h4>
+                  <p>
+                    Choose at least 3 time slots per week that work for you.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="timeline-item mb-5">
+            <div class="row">
+              <div class="col-md-2 text-center">
+                <div class="timeline-badge bg-primary text-white">4</div>
+              </div>
+              <div class="col-md-10">
+                <div class="timeline-content">
+                  <h4>Experience a Demo Class</h4>
+                  <p>Try a free demo class with one of our teachers.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="timeline-item">
+            <div class="row">
+              <div class="col-md-2 text-center">
+                <div class="timeline-badge bg-primary text-white">5</div>
+              </div>
+              <div class="col-md-10">
+                <div class="timeline-content">
+                  <h4>Start Regular Classes</h4>
+                  <p>
+                    Once satisfied, confirm your schedule and make payment to
+                    begin your regular classes.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Subjects Section -->
+<section class="py-5">
+  <div class="container">
+    <div class="text-center mb-5">
+      <h2 class="fw-bold">Subjects We Offer</h2>
+      <p class="text-muted">Comprehensive coverage of all major subjects</p>
+    </div>
+
+    <div class="row row-cols-2 row-cols-md-4 g-4">
+      <div class="col">
+        <div class="card h-100 text-center border-0 shadow-sm">
+          <div class="card-body">
+            <img
+              src="{% static 'images/subjects/mathematics.png' %}"
+              alt="Mathematics"
+              class="img-fluid mb-3"
+              style="max-height: 80px"
+            />
+            <h5 class="card-title">Mathematics</h5>
+          </div>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="card h-100 text-center border-0 shadow-sm">
+          <div class="card-body">
+            <img
+              src="{% static 'images/subjects/science.png' %}"
+              alt="Science"
+              class="img-fluid mb-3"
+              style="max-height: 80px"
+            />
+            <h5 class="card-title">Science</h5>
+          </div>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="card h-100 text-center border-0 shadow-sm">
+          <div class="card-body">
+            <img
+              src="{% static 'images/subjects/english.png' %}"
+              alt="English"
+              class="img-fluid mb-3"
+              style="max-height: 80px"
+            />
+            <h5 class="card-title">English</h5>
+          </div>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="card h-100 text-center border-0 shadow-sm">
+          <div class="card-body">
+            <img
+              src="{% static 'images/subjects/social-studies.png' %}"
+              alt="Social Studies"
+              class="img-fluid mb-3"
+              style="max-height: 80px"
+            />
+            <h5 class="card-title">Social Studies</h5>
+          </div>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="card h-100 text-center border-0 shadow-sm">
+          <div class="card-body">
+            <img
+              src="{% static 'images/subjects/physics.png' %}"
+              alt="Physics"
+              class="img-fluid mb-3"
+              style="max-height: 80px"
+            />
+            <h5 class="card-title">Physics</h5>
+          </div>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="card h-100 text-center border-0 shadow-sm">
+          <div class="card-body">
+            <img
+              src="{% static 'images/subjects/chemistry.png' %}"
+              alt="Chemistry"
+              class="img-fluid mb-3"
+              style="max-height: 80px"
+            />
+            <h5 class="card-title">Chemistry</h5>
+          </div>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="card h-100 text-center border-0 shadow-sm">
+          <div class="card-body">
+            <img
+              src="{% static 'images/subjects/biology.png' %}"
+              alt="Biology"
+              class="img-fluid mb-3"
+              style="max-height: 80px"
+            />
+            <h5 class="card-title">Biology</h5>
+          </div>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="card h-100 text-center border-0 shadow-sm">
+          <div class="card-body">
+            <img
+              src="{% static 'images/subjects/computer-science.png' %}"
+              alt="Computer Science"
+              class="img-fluid mb-3"
+              style="max-height: 80px"
+            />
+            <h5 class="card-title">Computer Science</h5>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="text-center mt-4">
+      <a href="{% url 'landing:subjects' %}" class="btn btn-outline-primary"
+        >View All Subjects</a
+      >
+    </div>
+  </div>
+</section>
+
+<!-- Testimonials Section -->
+<section class="py-5 bg-light">
+  <div class="container">
+    <div class="text-center mb-5">
+      <h2 class="fw-bold">What Our Students Say</h2>
+      <p class="text-muted">Success stories from our platform</p>
+    </div>
+
+    <div class="row">
+      <div class="col-md-4 mb-4">
+        <div class="card h-100 border-0 shadow-sm">
+          <div class="card-body p-4">
+            <div class="d-flex align-items-center mb-3">
+              <img
+                src="{% static 'images/testimonials/student1.jpg' %}"
+                alt="Student"
+                class="rounded-circle me-3"
+                width="60"
+              />
+              <div>
+                <h5 class="mb-0">Priya Sharma</h5>
+                <p class="text-muted mb-0">Grade 10, CBSE</p>
+              </div>
+            </div>
+            <div class="mb-3">
+              <i class="fas fa-star text-warning"></i>
+              <i class="fas fa-star text-warning"></i>
+              <i class="fas fa-star text-warning"></i>
+              <i class="fas fa-star text-warning"></i>
+              <i class="fas fa-star text-warning"></i>
+            </div>
+            <p class="card-text">
+              "LearnIspire has transformed my approach to mathematics. My
+              teacher's guidance and personalized attention helped me overcome
+              my fear of the subject."
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4 mb-4">
+        <div class="card h-100 border-0 shadow-sm">
+          <div class="card-body p-4">
+            <div class="d-flex align-items-center mb-3">
+              <img
+                src="{% static 'images/testimonials/student2.jpg' %}"
+                alt="Student"
+                class="rounded-circle me-3"
+                width="60"
+              />
+              <div>
+                <h5 class="mb-0">Arjun Patel</h5>
+                <p class="text-muted mb-0">Grade 12, ICSE</p>
+              </div>
+            </div>
+            <div class="mb-3">
+              <i class="fas fa-star text-warning"></i>
+              <i class="fas fa-star text-warning"></i>
+              <i class="fas fa-star text-warning"></i>
+              <i class="fas fa-star text-warning"></i>
+              <i class="fas fa-star-half-alt text-warning"></i>
+            </div>
+            <p class="card-text">
+              "The flexible scheduling allowed me to balance my studies with
+              other activities. My physics and chemistry scores improved
+              significantly."
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4 mb-4">
+        <div class="card h-100 border-0 shadow-sm">
+          <div class="card-body p-4">
+            <div class="d-flex align-items-center mb-3">
+              <img
+                src="{% static 'images/testimonials/student3.jpg' %}"
+                alt="Student"
+                class="rounded-circle me-3"
+                width="60"
+              />
+              <div>
+                <h5 class="mb-0">Neha Gupta</h5>
+                <p class="text-muted mb-0">Grade 8, State Board</p>
+              </div>
+            </div>
+            <div class="mb-3">
+              <i class="fas fa-star text-warning"></i>
+              <i class="fas fa-star text-warning"></i>
+              <i class="fas fa-star text-warning"></i>
+              <i class="fas fa-star text-warning"></i>
+              <i class="fas fa-star text-warning"></i>
+            </div>
+            <p class="card-text">
+              "My English teacher is amazing! The regular classes and
+              personalized attention have boosted my confidence in writing and
+              speaking."
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA Section -->
+<section class="py-5 bg-primary text-white">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-lg-8 mx-auto text-center">
+        <h2 class="fw-bold mb-4">
+          Ready to Transform Your Learning Experience?
+        </h2>
+        <p class="lead mb-4">
+          Join LearnIspire today and experience personalized education that fits
+          your schedule.
+        </p>
+        <a
+          href="{% url 'account_signup' %}"
+          class="btn btn-light btn-lg px-4 me-2"
+          >Get Started</a
+        >
+        <a
+          href="{% url 'landing:contact' %}"
+          class="btn btn-outline-light btn-lg px-4"
+          >Contact Us</a
+        >
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %} {% block extra_css %}
+<style>
+  .feature-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 80px;
+    height: 80px;
+  }
+
+  .timeline-badge {
+    width: 50px;
+    height: 50px;
+    line-height: 50px;
+    border-radius: 50%;
+    font-weight: bold;
+  }
+
+  .timeline-item {
+    position: relative;
+  }
+
+  .timeline-item:before {
+    content: "";
+    position: absolute;
+    left: calc(2rem - 1px);
+    top: 0;
+    height: 100%;
+    width: 2px;
+    background-color: #dee2e6;
+  }
+
+  .hero-section {
+    background: linear-gradient(to right, #0d6efd, #0a58ca);
+  }
+</style>
+{% endblock %}

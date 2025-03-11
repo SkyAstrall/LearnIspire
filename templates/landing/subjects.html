@@ -1,0 +1,391 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Our Subjects - LearnIspire{% endblock %}
+
+{% block content %}
+<!-- Header Section -->
+<section class="py-5 bg-primary text-white">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center">
+                <h1 class="fw-bold mb-4">Our Subjects</h1>
+                <p class="lead">Comprehensive coverage across all major academic disciplines</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Subjects Overview Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="row text-center mb-5">
+            <div class="col-lg-8 mx-auto">
+                <h2 class="fw-bold">Expert Instruction in Every Subject</h2>
+                <p class="text-muted">Our qualified teachers provide personalized instruction across all core and specialized subjects</p>
+            </div>
+        </div>
+        
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            {% for subject in subjects %}
+                <div class="col">
+                    <div class="card h-100 border-0 shadow-sm subject-card">
+                        <div class="card-body p-4 text-center">
+                            <div class="subject-icon">
+                                {% if subject.icon %}
+                                    <img src="{{ subject.icon.url }}" alt="{{ subject.name }}" class="img-fluid mb-3" style="max-height: 80px;">
+                                {% else %}
+                                    <i class="fas fa-book fa-3x text-primary"></i>
+                                {% endif %}
+                            </div>
+                            <h4 class="card-title">{{ subject.name }}</h4>
+                            <p class="card-text">{{ subject.description|truncatechars:150 }}</p>
+                        </div>
+                    </div>
+                </div>
+            {% empty %}
+                <div class="col-12 text-center">
+                    <div class="alert alert-info">
+                        <p class="mb-0">We're updating our subject catalog. Please check back soon!</p>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Teaching Approach Section -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6 mb-4 mb-lg-0">
+                <h2 class="fw-bold mb-4">Our Teaching Approach</h2>
+                <p class="mb-4">At LearnIspire, we believe in a comprehensive approach to education that combines strong foundational knowledge with practical applications and critical thinking.</p>
+                
+                <h5><i class="fas fa-check-circle text-primary me-2"></i> Concept-First Learning</h5>
+                <p class="mb-3">We focus on ensuring students understand core concepts thoroughly before advancing to more complex topics. This builds a strong foundation for future learning.</p>
+                
+                <h5><i class="fas fa-check-circle text-primary me-2"></i> Interactive Engagement</h5>
+                <p class="mb-3">Our classes are designed to be interactive and engaging, with plenty of opportunities for questions, discussions, and collaborative problem-solving.</p>
+                
+                <h5><i class="fas fa-check-circle text-primary me-2"></i> Real-World Applications</h5>
+                <p class="mb-3">We connect academic concepts to real-world scenarios, helping students understand the practical relevance of what they're learning.</p>
+                
+                <h5><i class="fas fa-check-circle text-primary me-2"></i> Personalized Pace</h5>
+                <p>Each student learns at their own pace, with our teachers adapting their approach to match individual learning styles and needs.</p>
+            </div>
+            <div class="col-lg-6">
+                <img src="{% static 'images/teaching-approach.jpg' %}" alt="Teaching Approach" class="img-fluid rounded shadow">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Subject Categories Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="row text-center mb-5">
+            <div class="col-lg-8 mx-auto">
+                <h2 class="fw-bold">Subject Categories</h2>
+                <p class="text-muted">Explore our subjects by category</p>
+            </div>
+        </div>
+        
+        <!-- Mathematics -->
+        <div class="row mb-5">
+            <div class="col-12">
+                <div class="card border-0 shadow">
+                    <div class="card-header bg-primary text-white">
+                        <h3 class="mb-0">Mathematics</h3>
+                    </div>
+                    <div class="card-body p-4">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <h5>Primary Grades (1-5)</h5>
+                                <ul class="list-unstyled">
+                                    <li><i class="fas fa-angle-right text-primary me-2"></i> Basic Arithmetic</li>
+                                    <li><i class="fas fa-angle-right text-primary me-2"></i> Number Sense</li>
+                                    <li><i class="fas fa-angle-right text-primary me-2"></i> Patterns & Shapes</li>
+                                    <li><i class="fas fa-angle-right text-primary me-2"></i> Basic Measurement</li>
+                                </ul>
+                            </div>
+                            <div class="col-md-4">
+                                <h5>Middle Grades (6-8)</h5>
+                                <ul class="list-unstyled">
+                                    <li><i class="fas fa-angle-right text-primary me-2"></i> Pre-Algebra</li>
+                                    <li><i class="fas fa-angle-right text-primary me-2"></i> Geometry Basics</li>
+                                    <li><i class="fas fa-angle-right text-primary me-2"></i> Data Analysis</li>
+                                    <li><i class="fas fa-angle-right text-primary me-2"></i> Percentages & Ratios</li>
+                                </ul>
+                            </div>
+                            <div class="col-md-4">
+                                <h5>High School (9-12)</h5>
+                                <ul class="list-unstyled">
+                                    <li><i class="fas fa-angle-right text-primary me-2"></i> Algebra I & II</li>
+                                    <li><i class="fas fa-angle-right text-primary me-2"></i> Geometry</li>
+                                    <li><i class="fas fa-angle-right text-primary me-2"></i> Trigonometry</li>
+                                    <li><i class="fas fa-angle-right text-primary me-2"></i> Calculus</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Science -->
+        <div class="row mb-5">
+            <div class="col-12">
+                <div class="card border-0 shadow">
+                    <div class="card-header bg-success text-white">
+                        <h3 class="mb-0">Science</h3>
+                    </div>
+                    <div class="card-body p-4">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <h5>Primary Grades (1-5)</h5>
+                                <ul class="list-unstyled">
+                                    <li><i class="fas fa-angle-right text-success me-2"></i> Environmental Science</li>
+                                    <li><i class="fas fa-angle-right text-success me-2"></i> Life Cycles</li>
+                                    <li><i class="fas fa-angle-right text-success me-2"></i> Human Body</li>
+                                    <li><i class="fas fa-angle-right text-success me-2"></i> Basic Physics Concepts</li>
+                                </ul>
+                            </div>
+                            <div class="col-md-4">
+                                <h5>Middle Grades (6-8)</h5>
+                                <ul class="list-unstyled">
+                                    <li><i class="fas fa-angle-right text-success me-2"></i> General Science</li>
+                                    <li><i class="fas fa-angle-right text-success me-2"></i> Earth Science</li>
+                                    <li><i class="fas fa-angle-right text-success me-2"></i> Life Science</li>
+                                    <li><i class="fas fa-angle-right text-success me-2"></i> Physical Science</li>
+                                </ul>
+                            </div>
+                            <div class="col-md-4">
+                                <h5>High School (9-12)</h5>
+                                <ul class="list-unstyled">
+                                    <li><i class="fas fa-angle-right text-success me-2"></i> Biology</li>
+                                    <li><i class="fas fa-angle-right text-success me-2"></i> Chemistry</li>
+                                    <li><i class="fas fa-angle-right text-success me-2"></i> Physics</li>
+                                    <li><i class="fas fa-angle-right text-success me-2"></i> Environmental Science</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Languages & Humanities -->
+        <div class="row mb-5">
+            <div class="col-12">
+                <div class="card border-0 shadow">
+                    <div class="card-header bg-info text-white">
+                        <h3 class="mb-0">Languages & Humanities</h3>
+                    </div>
+                    <div class="card-body p-4">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <h5>English Language</h5>
+                                <ul class="list-unstyled">
+                                    <li><i class="fas fa-angle-right text-info me-2"></i> Reading & Comprehension</li>
+                                    <li><i class="fas fa-angle-right text-info me-2"></i> Grammar & Writing</li>
+                                    <li><i class="fas fa-angle-right text-info me-2"></i> Literature</li>
+                                    <li><i class="fas fa-angle-right text-info me-2"></i> Creative Writing</li>
+                                </ul>
+                            </div>
+                            <div class="col-md-4">
+                                <h5>Social Studies</h5>
+                                <ul class="list-unstyled">
+                                    <li><i class="fas fa-angle-right text-info me-2"></i> History</li>
+                                    <li><i class="fas fa-angle-right text-info me-2"></i> Geography</li>
+                                    <li><i class="fas fa-angle-right text-info me-2"></i> Civics</li>
+                                    <li><i class="fas fa-angle-right text-info me-2"></i> Economics</li>
+                                </ul>
+                            </div>
+                            <div class="col-md-4">
+                                <h5>Foreign Languages</h5>
+                                <ul class="list-unstyled">
+                                    <li><i class="fas fa-angle-right text-info me-2"></i> Hindi</li>
+                                    <li><i class="fas fa-angle-right text-info me-2"></i> Sanskrit</li>
+                                    <li><i class="fas fa-angle-right text-info me-2"></i> French</li>
+                                    <li><i class="fas fa-angle-right text-info me-2"></i> German</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Computer Science & Technology -->
+        <div class="row">
+            <div class="col-12">
+                <div class="card border-0 shadow">
+                    <div class="card-header bg-warning text-dark">
+                        <h3 class="mb-0">Computer Science & Technology</h3>
+                    </div>
+                    <div class="card-body p-4">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <h5>Computer Fundamentals</h5>
+                                <ul class="list-unstyled">
+                                    <li><i class="fas fa-angle-right text-warning me-2"></i> Basic Computer Skills</li>
+                                    <li><i class="fas fa-angle-right text-warning me-2"></i> MS Office Suite</li>
+                                    <li><i class="fas fa-angle-right text-warning me-2"></i> Internet & Web</li>
+                                    <li><i class="fas fa-angle-right text-warning me-2"></i> Typing Skills</li>
+                                </ul>
+                            </div>
+                            <div class="col-md-4">
+                                <h5>Programming</h5>
+                                <ul class="list-unstyled">
+                                    <li><i class="fas fa-angle-right text-warning me-2"></i> Scratch & Block Coding</li>
+                                    <li><i class="fas fa-angle-right text-warning me-2"></i> Python Basics</li>
+                                    <li><i class="fas fa-angle-right text-warning me-2"></i> Web Development</li>
+                                    <li><i class="fas fa-angle-right text-warning me-2"></i> App Development Intro</li>
+                                </ul>
+                            </div>
+                            <div class="col-md-4">
+                                <h5>Advanced Topics</h5>
+                                <ul class="list-unstyled">
+                                    <li><i class="fas fa-angle-right text-warning me-2"></i> Computer Science Theory</li>
+                                    <li><i class="fas fa-angle-right text-warning me-2"></i> Data Structures & Algorithms</li>
+                                    <li><i class="fas fa-angle-right text-warning me-2"></i> Advanced Python</li>
+                                    <li><i class="fas fa-angle-right text-warning me-2"></i> AI & ML Fundamentals</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Teacher Highlight Section -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row text-center mb-5">
+            <div class="col-lg-8 mx-auto">
+                <h2 class="fw-bold">Meet Our Expert Teachers</h2>
+                <p class="text-muted">Learn from qualified and experienced educators</p>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-md-6 mb-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="row g-0">
+                        <div class="col-md-4">
+                            <img src="{% static 'images/teachers/teacher1.jpg' %}" class="img-fluid rounded-start h-100 object-fit-cover" alt="Teacher">
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <h5 class="card-title">Dr. Ankit Sharma</h5>
+                                <p class="card-text text-muted mb-2">Mathematics | 12+ years experience</p>
+                                <p class="card-text">PhD in Mathematics with expertise in helping students understand complex concepts through practical examples and clear explanations.</p>
+                                <div class="mt-2">
+                                    <span class="badge bg-primary me-1">Algebra</span>
+                                    <span class="badge bg-primary me-1">Calculus</span>
+                                    <span class="badge bg-primary">Statistics</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-6 mb-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="row g-0">
+                        <div class="col-md-4">
+                            <img src="{% static 'images/teachers/teacher2.jpg' %}" class="img-fluid rounded-start h-100 object-fit-cover" alt="Teacher">
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <h5 class="card-title">Ms. Priya Desai</h5>
+                                <p class="card-text text-muted mb-2">Science | 8+ years experience</p>
+                                <p class="card-text">Masters in Chemistry with a passion for making science engaging through interactive experiments and real-world applications.</p>
+                                <div class="mt-2">
+                                    <span class="badge bg-success me-1">Chemistry</span>
+                                    <span class="badge bg-success me-1">Biology</span>
+                                    <span class="badge bg-success">Environmental Science</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-6 mb-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="row g-0">
+                        <div class="col-md-4">
+                            <img src="{% static 'images/teachers/teacher3.jpg' %}" class="img-fluid rounded-start h-100 object-fit-cover" alt="Teacher">
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <h5 class="card-title">Mr. Rahul Verma</h5>
+                                <p class="card-text text-muted mb-2">English & Literature | 10+ years experience</p>
+                                <p class="card-text">Masters in English Literature with experience in helping students develop strong language skills and appreciation for literary works.</p>
+                                <div class="mt-2">
+                                    <span class="badge bg-info me-1">Grammar</span>
+                                    <span class="badge bg-info me-1">Creative Writing</span>
+                                    <span class="badge bg-info">Literature Analysis</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-6 mb-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="row g-0">
+                        <div class="col-md-4">
+                            <img src="{% static 'images/teachers/teacher4.jpg' %}" class="img-fluid rounded-start h-100 object-fit-cover" alt="Teacher">
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <h5 class="card-title">Ms. Neha Gupta</h5>
+                                <p class="card-text text-muted mb-2">Computer Science | 7+ years experience</p>
+                                <p class="card-text">Computer Science graduate with industry experience who makes programming accessible and engaging for students of all ages.</p>
+                                <div class="mt-2">
+                                    <span class="badge bg-warning text-dark me-1">Python</span>
+                                    <span class="badge bg-warning text-dark me-1">Web Development</span>
+                                    <span class="badge bg-warning text-dark">Computer Fundamentals</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="text-center mt-4">
+            <p class="mb-0">These are just a few examples of our experienced teaching faculty. All our teachers undergo a rigorous selection process to ensure they have the knowledge, skills, and passion to provide exceptional learning experiences.</p>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="py-5 bg-primary text-white">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-8 mx-auto text-center">
+                <h2 class="fw-bold mb-4">Find the Perfect Subject for Your Learning Journey</h2>
+                <p class="lead mb-4">Start with a free demo class in any subject of your choice.</p>
+                <a href="{% url 'account_signup' %}" class="btn btn-light btn-lg px-4 me-2">Get Started</a>
+                <a href="{% url 'landing:contact' %}" class="btn btn-outline-light btn-lg px-4">Contact Us</a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .object-fit-cover {
+        object-fit: cover;
+    }
+</style>
+{% endblock %}

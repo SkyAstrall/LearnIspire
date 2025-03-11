@@ -1,0 +1,207 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Bank Details - LearnIspire{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row">
+        <!-- Sidebar -->
+        <div class="col-md-3">
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Teacher Dashboard</h5>
+                </div>
+                <div class="list-group list-group-flush">
+                    <a href="{% url 'teacher_dashboard:home' %}" class="list-group-item list-group-item-action">
+                        <i class="fa fa-dashboard me-2"></i> Dashboard
+                    </a>
+                    <a href="{% url 'teacher_dashboard:profile' %}" class="list-group-item list-group-item-action">
+                        <i class="fa fa-user me-2"></i> My Profile
+                    </a>
+                    <a href="{% url 'teacher_dashboard:availability' %}" class="list-group-item list-group-item-action">
+                        <i class="fa fa-clock-o me-2"></i> Availability
+                    </a>
+                    <a href="{% url 'teacher_dashboard:classes' %}" class="list-group-item list-group-item-action">
+                        <i class="fa fa-calendar me-2"></i> My Classes
+                    </a>
+                    <a href="{% url 'teacher_dashboard:leave_request' %}" class="list-group-item list-group-item-action">
+                        <i class="fa fa-calendar-minus-o me-2"></i> Leave Requests
+                    </a>
+                    <a href="{% url 'teacher_dashboard:earnings' %}" class="list-group-item list-group-item-action">
+                        <i class="fa fa-money me-2"></i> Earnings
+                    </a>
+                    <a href="{% url 'teacher_dashboard:bank_details' %}" class="list-group-item list-group-item-action active">
+                        <i class="fa fa-university me-2"></i> Bank Details
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="col-md-9">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Bank Account Details</h5>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-info mb-4">
+                        <h5 class="alert-heading"><i class="fa fa-info-circle me-2"></i>Important Information</h5>
+                        <p>Please provide your correct bank account details for receiving payments. These details will be used to transfer your earnings at the end of each month.</p>
+                        <hr>
+                        <p class="mb-0">All information is securely stored and will only be used for payment purposes.</p>
+                    </div>
+                    
+                    <form method="post">
+                        {% csrf_token %}
+                        
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="account_holder_name" class="form-label">Account Holder Name</label>
+                                    <input type="text" class="form-control" id="account_holder_name" name="account_holder_name" value="{{ profile.account_holder_name }}" required>
+                                    <div class="form-text">Name as it appears on your bank account</div>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="bank_name" class="form-label">Bank Name</label>
+                                    <input type="text" class="form-control" id="bank_name" name="bank_name" value="{{ profile.bank_name }}" required>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="branch_name" class="form-label">Branch Name</label>
+                                    <input type="text" class="form-control" id="branch_name" name="branch_name" value="{{ profile.branch_name }}">
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="account_number" class="form-label">Account Number</label>
+                                    <input type="text" class="form-control" id="account_number" name="account_number" value="{{ profile.account_number }}" required>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="confirm_account_number" class="form-label">Confirm Account Number</label>
+                                    <input type="text" class="form-control" id="confirm_account_number" name="confirm_account_number" value="{{ profile.account_number }}" required>
+                                    <div class="form-text">Re-enter your account number to confirm</div>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="ifsc_code" class="form-label">IFSC Code</label>
+                                    <input type="text" class="form-control" id="ifsc_code" name="ifsc_code" value="{{ profile.ifsc_code }}" required>
+                                    <div class="form-text">11-digit IFSC code of your bank branch</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label for="account_type" class="form-label">Account Type</label>
+                            <select class="form-select" id="account_type" name="account_type">
+                                <option value="Savings" {% if profile.account_type == 'Savings' %}selected{% endif %}>Savings Account</option>
+                                <option value="Current" {% if profile.account_type == 'Current' %}selected{% endif %}>Current Account</option>
+                            </select>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="declaration" name="declaration" required>
+                                <label class="form-check-label" for="declaration">
+                                    I hereby declare that the information provided above is true and correct. I understand that providing incorrect bank details may result in payment delays.
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fa fa-save me-1"></i> Save Bank Details
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- Payment History -->
+            <div class="card mt-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Payment History</h5>
+                </div>
+                <div class="card-body">
+                    {% if payment_history %}
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Month</th>
+                                        <th>Amount</th>
+                                        <th>Transaction ID</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for payment in payment_history %}
+                                        <tr>
+                                            <td>{{ payment.payment_date|date:"M d, Y" }}</td>
+                                            <td>{{ payment.for_month|date:"F Y" }}</td>
+                                            <td>₹{{ payment.amount|floatformat:2 }}</td>
+                                            <td>{{ payment.transaction_id }}</td>
+                                            <td>
+                                                <span class="badge bg-{% if payment.status == 'SUCCESS' %}success{% elif payment.status == 'FAILED' %}danger{% elif payment.status == 'PENDING' %}warning{% else %}secondary{% endif %}">
+                                                    {{ payment.get_status_display }}
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <div class="alert alert-info">
+                            <i class="fa fa-info-circle me-2"></i> No payment history is available yet.
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    $(document).ready(function() {
+        // Confirm account number validation
+        $('#confirm_account_number').on('input', function() {
+            if ($(this).val() !== $('#account_number').val()) {
+                $(this).addClass('is-invalid');
+            } else {
+                $(this).removeClass('is-invalid');
+            }
+        });
+        
+        // IFSC code validation
+        $('#ifsc_code').on('input', function() {
+            $(this).val($(this).val().toUpperCase());
+            
+            // Simple IFSC format validation (11 characters, first 4 alpha, last 7 alphanumeric)
+            const ifscRegex = /^[A-Z]{4}0[A-Z0-9]{6}$/;
+            if ($(this).val().length === 11 && !ifscRegex.test($(this).val())) {
+                $(this).addClass('is-invalid');
+            } else {
+                $(this).removeClass('is-invalid');
+            }
+        });
+        
+        // Form submission validation
+        $('form').on('submit', function(e) {
+            if ($('#account_number').val() !== $('#confirm_account_number').val()) {
+                e.preventDefault();
+                alert('Account number and confirmation do not match!');
+                return false;
+            }
+            
+            return true;
+        });
+    });
+</script>
+{% endblock %}

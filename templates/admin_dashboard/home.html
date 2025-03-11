@@ -1,0 +1,310 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Admin Dashboard - LearnIspire{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <div class="row">
+        <!-- Sidebar -->
+        <div class="col-md-2">
+            <div class="card mb-4">
+                <div class="card-header bg-dark text-white">
+                    <h5 class="mb-0">Admin Portal</h5>
+                </div>
+                <div class="list-group list-group-flush">
+                    <a href="{% url 'admin_dashboard:home' %}" class="list-group-item list-group-item-action active">
+                        <i class="fa fa-dashboard me-2"></i> Dashboard
+                    </a>
+                    <a href="{% url 'admin_dashboard:students' %}" class="list-group-item list-group-item-action">
+                        <i class="fa fa-users me-2"></i> Students
+                    </a>
+                    <a href="{% url 'admin_dashboard:teachers' %}" class="list-group-item list-group-item-action">
+                        <i class="fa fa-chalkboard-teacher me-2"></i> Teachers
+                    </a>
+                    <a href="{% url 'admin_dashboard:pending_demos' %}" class="list-group-item list-group-item-action">
+                        <i class="fa fa-clock-o me-2"></i> Pending Demos
+                        {% if pending_demo_count %}<span class="badge bg-warning ms-2">{{ pending_demo_count }}</span>{% endif %}
+                    </a>
+                    <a href="{% url 'admin_dashboard:leave_requests' %}" class="list-group-item list-group-item-action">
+                        <i class="fa fa-calendar-minus-o me-2"></i> Leave Requests
+                        {% if pending_leave_count %}<span class="badge bg-warning ms-2">{{ pending_leave_count }}</span>{% endif %}
+                    </a>
+                    <a href="{% url 'admin_dashboard:payments' %}" class="list-group-item list-group-item-action">
+                        <i class="fa fa-credit-card me-2"></i> Payments
+                    </a>
+                    <a href="{% url 'admin_dashboard:teacher_earnings' %}" class="list-group-item list-group-item-action">
+                        <i class="fa fa-money me-2"></i> Teacher Payments
+                    </a>
+                    <a href="{% url 'admin:index' %}" class="list-group-item list-group-item-action">
+                        <i class="fa fa-cogs me-2"></i> Django Admin
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="col-md-10">
+            <div class="row">
+                <div class="col-12">
+                    <h2 class="mb-4">Admin Dashboard</h2>
+                </div>
+            </div>
+            
+            <!-- Stats Cards Row 1 -->
+            <div class="row mb-4">
+                <div class="col-md-3">
+                    <div class="card bg-primary text-white h-100">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h6 class="text-uppercase">Students</h6>
+                                    <h2 class="mb-0">{{ total_students }}</h2>
+                                </div>
+                                <div>
+                                    <i class="fas fa-users fa-3x opacity-75"></i>
+                                </div>
+                            </div>
+                            <div class="mt-2">
+                                <small>{{ active_students }} active</small>
+                            </div>
+                        </div>
+                        <div class="card-footer bg-transparent border-0">
+                            <a href="{% url 'admin_dashboard:students' %}" class="text-white">View all students <i class="fas fa-arrow-right ms-1"></i></a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-3">
+                    <div class="card bg-success text-white h-100">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h6 class="text-uppercase">Teachers</h6>
+                                    <h2 class="mb-0">{{ total_teachers }}</h2>
+                                </div>
+                                <div>
+                                    <i class="fas fa-chalkboard-teacher fa-3x opacity-75"></i>
+                                </div>
+                            </div>
+                            <div class="mt-2">
+                                <small>{{ active_teachers }} active</small>
+                            </div>
+                        </div>
+                        <div class="card-footer bg-transparent border-0">
+                            <a href="{% url 'admin_dashboard:teachers' %}" class="text-white">View all teachers <i class="fas fa-arrow-right ms-1"></i></a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-3">
+                    <div class="card bg-info text-white h-100">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h6 class="text-uppercase">Classes Today</h6>
+                                    <h2 class="mb-0">{{ today_classes }}</h2>
+                                </div>
+                                <div>
+                                    <i class="fas fa-calendar-day fa-3x opacity-75"></i>
+                                </div>
+                            </div>
+                            <div class="mt-2">
+                                <small>{{ month_classes }} this month</small>
+                            </div>
+                        </div>
+                        <div class="card-footer bg-transparent border-0">
+                            <a href="#" class="text-white">View class schedule <i class="fas fa-arrow-right ms-1"></i></a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-3">
+                    <div class="card bg-warning text-dark h-100">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h6 class="text-uppercase">Revenue</h6>
+                                    <h2 class="mb-0">₹{{ month_earnings|floatformat:0 }}</h2>
+                                </div>
+                                <div>
+                                    <i class="fas fa-rupee-sign fa-3x opacity-75"></i>
+                                </div>
+                            </div>
+                            <div class="mt-2">
+                                <small>This month</small>
+                            </div>
+                        </div>
+                        <div class="card-footer bg-transparent border-0">
+                            <a href="{% url 'admin_dashboard:payments' %}" class="text-dark">View payment history <i class="fas fa-arrow-right ms-1"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Pending Tasks Section -->
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header bg-dark text-white">
+                            <h5 class="mb-0">Pending Tasks</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="card h-100">
+                                        <div class="card-body">
+                                            <h5 class="card-title">
+                                                <i class="fas fa-user-check text-primary me-2"></i> 
+                                                Teacher Approvals
+                                                {% if pending_teacher_count %}
+                                                    <span class="badge bg-primary ms-2">{{ pending_teacher_count }}</span>
+                                                {% endif %}
+                                            </h5>
+                                            {% if pending_teacher_count %}
+                                                <p class="card-text">{{ pending_teacher_count }} teachers waiting for approval.</p>
+                                                <a href="{% url 'admin_dashboard:teachers' %}?status=PENDING" class="btn btn-outline-primary btn-sm">Review Applications</a>
+                                            {% else %}
+                                                <p class="card-text">No pending teacher applications.</p>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-4">
+                                    <div class="card h-100">
+                                        <div class="card-body">
+                                            <h5 class="card-title">
+                                                <i class="fas fa-video text-info me-2"></i> 
+                                                Demo Requests
+                                                {% if pending_demo_count %}
+                                                    <span class="badge bg-info ms-2">{{ pending_demo_count }}</span>
+                                                {% endif %}
+                                            </h5>
+                                            {% if pending_demo_count %}
+                                                <p class="card-text">{{ pending_demo_count }} students waiting for demo scheduling.</p>
+                                                <a href="{% url 'admin_dashboard:pending_demos' %}" class="btn btn-outline-info btn-sm">Schedule Demos</a>
+                                            {% else %}
+                                                <p class="card-text">No pending demo requests.</p>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-4">
+                                    <div class="card h-100">
+                                        <div class="card-body">
+                                            <h5 class="card-title">
+                                                <i class="fas fa-calendar-minus text-warning me-2"></i> 
+                                                Leave Requests
+                                                {% if pending_leave_count %}
+                                                    <span class="badge bg-warning ms-2">{{ pending_leave_count }}</span>
+                                                {% endif %}
+                                            </h5>
+                                            {% if pending_leave_count %}
+                                                <p class="card-text">{{ pending_leave_count }} leave requests waiting for approval.</p>
+                                                <a href="{% url 'admin_dashboard:leave_requests' %}" class="btn btn-outline-warning btn-sm">Review Requests</a>
+                                            {% else %}
+                                                <p class="card-text">No pending leave requests.</p>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Recent Activity Section -->
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card mb-4">
+                        <div class="card-header bg-dark text-white">
+                            <h5 class="mb-0">Recent Student Registrations</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Grade</th>
+                                            <th>Status</th>
+                                            <th>Date</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for student in recent_students %}
+                                            <tr>
+                                                <td>{{ student.user.get_full_name }}</td>
+                                                <td>{{ student.grade.name|default:"Not set" }}</td>
+                                                <td>
+                                                    <span class="badge bg-{% if student.status == 'ACTIVE' %}success{% elif student.status == 'DEMO_PENDING' %}warning{% else %}info{% endif %}">
+                                                        {{ student.get_status_display }}
+                                                    </span>
+                                                </td>
+                                                <td>{{ student.created_at|date:"d M Y" }}</td>
+                                            </tr>
+                                        {% empty %}
+                                            <tr>
+                                                <td colspan="4" class="text-center">No recent registrations</td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <a href="{% url 'admin_dashboard:students' %}" class="btn btn-sm btn-outline-primary">View All Students</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6">
+                    <div class="card mb-4">
+                        <div class="card-header bg-dark text-white">
+                            <h5 class="mb-0">Recent Payments</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Student</th>
+                                            <th>Amount</th>
+                                            <th>Status</th>
+                                            <th>Date</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for payment in recent_payments %}
+                                            <tr>
+                                                <td>{{ payment.student.get_full_name }}</td>
+                                                <td>₹{{ payment.amount }}</td>
+                                                <td>
+                                                    <span class="badge bg-{% if payment.status == 'COMPLETED' %}success{% elif payment.status == 'PENDING' %}warning{% else %}danger{% endif %}">
+                                                        {{ payment.get_status_display }}
+                                                    </span>
+                                                </td>
+                                                <td>{{ payment.created_at|date:"d M Y" }}</td>
+                                            </tr>
+                                        {% empty %}
+                                            <tr>
+                                                <td colspan="4" class="text-center">No recent payments</td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <a href="{% url 'admin_dashboard:payments' %}" class="btn btn-sm btn-outline-primary">View All Payments</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

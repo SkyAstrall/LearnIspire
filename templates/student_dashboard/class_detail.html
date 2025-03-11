@@ -1,0 +1,330 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Class Details - LearnIspire{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row">
+        <!-- Sidebar -->
+        <div class="col-md-3">
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Student Dashboard</h5>
+                </div>
+                <div class="list-group list-group-flush">
+                    <a href="{% url 'student_dashboard:home' %}" class="list-group-item list-group-item-action">
+                        <i class="fas fa-dashboard me-2"></i> Dashboard
+                    </a>
+                    <a href="{% url 'student_dashboard:profile' %}" class="list-group-item list-group-item-action">
+                        <i class="fas fa-user me-2"></i> My Profile
+                    </a>
+                    <a href="{% url 'student_dashboard:subject_selection' %}" class="list-group-item list-group-item-action">
+                        <i class="fas fa-book me-2"></i> Subject Selection
+                    </a>
+                    <a href="{% url 'student_dashboard:availability' %}" class="list-group-item list-group-item-action">
+                        <i class="fas fa-clock me-2"></i> Set Availability
+                    </a>
+                    <a href="{% url 'student_dashboard:classes' %}" class="list-group-item list-group-item-action active">
+                        <i class="fas fa-calendar me-2"></i> My Classes
+                    </a>
+                    <a href="{% url 'student_dashboard:payments' %}" class="list-group-item list-group-item-action">
+                        <i class="fas fa-credit-card me-2"></i> Payments
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="col-md-9">
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Class Details</h5>
+                    <a href="{% url 'student_dashboard:classes' %}" class="btn btn-light btn-sm">
+                        <i class="fas fa-arrow-left me-1"></i> Back to Classes
+                    </a>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-4">
+                        <div class="col-md-8">
+                            <h3>
+                                {{ class.subject.name }}
+                                {% if class.is_demo %}
+                                    <span class="badge bg-info align-middle">Demo</span>
+                                {% endif %}
+                            </h3>
+                            <p class="text-muted">
+                                <span class="badge bg-{% if class.status == 'SCHEDULED' %}primary{% elif class.status == 'IN_PROGRESS' %}warning{% elif class.status == 'COMPLETED' %}success{% elif class.status == 'CANCELLED' %}danger{% elif class.status == 'MISSED' %}secondary{% endif %}">
+                                    {{ class.get_status_display }}
+                                </span>
+                            </p>
+                        </div>
+                        <div class="col-md-4 text-md-end">
+                            {% if class.can_join %}
+                                <a href="{% url 'student_dashboard:join_class' class.id %}" class="btn btn-success">
+                                    <i class="fas fa-video me-1"></i> Join Class
+                                </a>
+                            {% elif class.is_upcoming %}
+                                <p class="text-muted mb-1">
+                                    <small>Class link will be available 15 minutes before start time.</small>
+                                </p>
+                            {% elif class.is_demo and class.status == 'COMPLETED' %}
+                                <a href="{% url 'student_dashboard:demo_feedback' class.id %}" class="btn btn-primary">
+                                    <i class="fas fa-comments me-1"></i> Provide Feedback
+                                </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <div class="card h-100">
+                                <div class="card-header bg-light">
+                                    <h6 class="mb-0">Class Information</h6>
+                                </div>
+                                <div class="card-body">
+                                    <table class="table table-borderless">
+                                        <tr>
+                                            <th width="40%"><i class="fas fa-calendar me-2 text-primary"></i> Date:</th>
+                                            <td>{{ class.start_time|date:"l, F d, Y" }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th><i class="fas fa-clock me-2 text-primary"></i> Time:</th>
+                                            <td>{{ class.start_time|time:"g:i A" }} - {{ class.end_time|time:"g:i A" }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th><i class="fas fa-hourglass-half me-2 text-primary"></i> Duration:</th>
+                                            <td>{{ class.start_time|timesince:class.end_time|replace_negative }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th><i class="fas fa-chalkboard-teacher me-2 text-primary"></i> Teacher:</th>
+                                            <td>{{ class.teacher.get_full_name }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th><i class="fas fa-map-marker-alt me-2 text-primary"></i> Location:</th>
+                                            <td>Online via Google Meet</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card h-100">
+                                <div class="card-header bg-light">
+                                    <h6 class="mb-0">Status & Countdown</h6>
+                                </div>
+                                <div class="card-body text-center">
+                                    <div class="mb-3">
+                                        {% if class.status == 'SCHEDULED' or class.status == 'IN_PROGRESS' %}
+                                            {% if class.is_upcoming %}
+                                                <div class="display-6 mb-2" id="countdown-timer">--:--:--</div>
+                                                <p class="text-muted" id="countdown-label">Loading...</p>
+                                            {% elif class.is_ongoing %}
+                                                <div class="display-6 mb-2 text-success">In Progress</div>
+                                                <p class="text-success">Class is currently in session</p>
+                                            {% endif %}
+                                        {% elif class.status == 'COMPLETED' %}
+                                            <div class="display-6 mb-2 text-success">Completed</div>
+                                            <p class="text-muted">This class has been completed</p>
+                                        {% elif class.status == 'CANCELLED' %}
+                                            <div class="display-6 mb-2 text-danger">Cancelled</div>
+                                            <p class="text-muted">This class was cancelled</p>
+                                        {% elif class.status == 'MISSED' %}
+                                            <div class="display-6 mb-2 text-warning">Missed</div>
+                                            <p class="text-muted">You missed this class</p>
+                                        {% endif %}
+                                    </div>
+                                    
+                                    {% if class.can_join %}
+                                        <div class="d-grid">
+                                            <a href="{% url 'student_dashboard:join_class' class.id %}" class="btn btn-success btn-lg">
+                                                <i class="fas fa-video me-1"></i> Join Class Now
+                                            </a>
+                                        </div>
+                                    {% elif class.is_upcoming %}
+                                        <div class="alert alert-info mb-0">
+                                            <p class="mb-0">The class link will be available 15 minutes before the scheduled start time.</p>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Class Materials -->
+                    <div class="card">
+                        <div class="card-header bg-light">
+                            <h6 class="mb-0">Class Materials</h6>
+                        </div>
+                        <div class="card-body">
+                            {% if class.materials.exists %}
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>Title</th>
+                                                <th>Description</th>
+                                                <th>Uploaded</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for material in class.materials.all %}
+                                                <tr>
+                                                    <td>{{ material.title }}</td>
+                                                    <td>{{ material.description|default:"No description" }}</td>
+                                                    <td>{{ material.uploaded_at|date:"M d, Y" }}</td>
+                                                    <td>
+                                                        <a href="{{ material.file.url }}" class="btn btn-outline-primary btn-sm" download>
+                                                            <i class="fas fa-download me-1"></i> Download
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            {% else %}
+                                <div class="text-center py-3">
+                                    <p class="text-muted mb-0">No materials have been uploaded for this class yet.</p>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Teacher Information -->
+            <div class="card">
+                <div class="card-header bg-light">
+                    <h5 class="mb-0">About Your Teacher</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3 text-center">
+                            {% if class.teacher.teacher_profile.profile_picture %}
+                                <img src="{{ class.teacher.teacher_profile.profile_picture.url }}" alt="{{ class.teacher.get_full_name }}" class="img-fluid rounded-circle mb-3" style="max-width: 120px;">
+                            {% else %}
+                                <img src="https://ui-avatars.com/api/?name={{ class.teacher.get_full_name|urlencode }}&size=120&background=random" alt="{{ class.teacher.get_full_name }}" class="img-fluid rounded-circle mb-3">
+                            {% endif %}
+                        </div>
+                        <div class="col-md-9">
+                            <h4>{{ class.teacher.get_full_name }}</h4>
+                            <p class="text-muted">{{ class.subject.name }} Teacher</p>
+                            
+                            {% if class.teacher.teacher_profile.bio %}
+                                <p>{{ class.teacher.teacher_profile.bio }}</p>
+                            {% endif %}
+                            
+                            {% if class.teacher.teacher_profile.education %}
+                                <p><strong>Education:</strong> {{ class.teacher.teacher_profile.education }}</p>
+                            {% endif %}
+                            
+                            {% if class.teacher.teacher_profile.experience %}
+                                <p><strong>Experience:</strong> {{ class.teacher.teacher_profile.experience }}</p>
+                            {% endif %}
+                            
+                            <p><strong>Subjects:</strong> 
+                                {% for subject in class.teacher.teacher_profile.subjects.all %}
+                                    <span class="badge bg-primary me-1">{{ subject.name }}</span>
+                                {% endfor %}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Countdown Timer
+    function updateCountdown() {
+        const now = new Date();
+        const startTime = new Date("{{ class.start_time|date:'Y-m-d H:i:s' }}");
+        const endTime = new Date("{{ class.end_time|date:'Y-m-d H:i:s' }}");
+        
+        const countdownTimer = document.getElementById('countdown-timer');
+        const countdownLabel = document.getElementById('countdown-label');
+        
+        if (!countdownTimer || !countdownLabel) return;
+        
+        let remaining, days, hours, minutes, seconds;
+        let timerClass = 'text-primary';
+        let labelText = '';
+        
+        if (now < startTime) {
+            // Before class starts
+            remaining = Math.floor((startTime - now) / 1000);
+            days = Math.floor(remaining / 86400);
+            hours = Math.floor((remaining % 86400) / 3600);
+            minutes = Math.floor((remaining % 3600) / 60);
+            seconds = remaining % 60;
+            
+            if (days > 0) {
+                countdownTimer.textContent = `${days}d ${hours}h ${minutes}m`;
+                labelText = 'until class starts';
+            } else {
+                countdownTimer.textContent = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                
+                // Check if class is starting soon (within 15 minutes)
+                if (remaining <= 900) {
+                    timerClass = 'text-success';
+                    labelText = 'Class starting soon!';
+                    
+                    // Check if class link is available
+                    if (remaining <= 900) {
+                        const joinButton = document.createElement('a');
+                        joinButton.href = "{% url 'student_dashboard:join_class' class.id %}";
+                        joinButton.className = "btn btn-success btn-lg";
+                        joinButton.innerHTML = '<i class="fas fa-video me-1"></i> Join Class Now';
+                        
+                        // Replace the alert with the join button
+                        const alertDiv = document.querySelector('.alert-info');
+                        if (alertDiv) {
+                            alertDiv.parentNode.replaceChild(joinButton, alertDiv);
+                        }
+                    }
+                } else {
+                    labelText = 'until class starts';
+                }
+            }
+        } else if (now <= endTime) {
+            // Class in progress
+            remaining = Math.floor((endTime - now) / 1000);
+            hours = Math.floor(remaining / 3600);
+            minutes = Math.floor((remaining % 3600) / 60);
+            seconds = remaining % 60;
+            
+            countdownTimer.textContent = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            timerClass = 'text-success';
+            labelText = 'remaining in class';
+        } else {
+            // Class has ended
+            countdownTimer.textContent = 'Completed';
+            timerClass = 'text-muted';
+            labelText = 'Class has ended';
+            
+            // Stop the timer
+            clearInterval(countdownInterval);
+        }
+        
+        countdownTimer.className = `display-6 mb-2 ${timerClass}`;
+        countdownLabel.textContent = labelText;
+    }
+    
+    // Initialize countdown
+    const countdownInterval = setInterval(updateCountdown, 1000);
+    updateCountdown();
+    
+    // Helper function to replace negative timesince values
+    function replace_negative(timestring) {
+        if (timestring.includes('-')) {
+            return timestring.replace('-', '');
+        }
+        return timestring;
+    }
+</script>
+{% endblock %}

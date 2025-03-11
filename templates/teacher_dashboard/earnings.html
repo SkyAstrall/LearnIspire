@@ -1,0 +1,195 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Earnings - LearnIspire{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row">
+        <!-- Sidebar -->
+        <div class="col-md-3">
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Teacher Dashboard</h5>
+                </div>
+                <div class="list-group list-group-flush">
+                    <a href="{% url 'teacher_dashboard:home' %}" class="list-group-item list-group-item-action">
+                        <i class="fa fa-dashboard me-2"></i> Dashboard
+                    </a>
+                    <a href="{% url 'teacher_dashboard:profile' %}" class="list-group-item list-group-item-action">
+                        <i class="fa fa-user me-2"></i> My Profile
+                    </a>
+                    <a href="{% url 'teacher_dashboard:availability' %}" class="list-group-item list-group-item-action">
+                        <i class="fa fa-clock-o me-2"></i> Availability
+                    </a>
+                    <a href="{% url 'teacher_dashboard:classes' %}" class="list-group-item list-group-item-action">
+                        <i class="fa fa-calendar me-2"></i> My Classes
+                    </a>
+                    <a href="{% url 'teacher_dashboard:leave_request' %}" class="list-group-item list-group-item-action">
+                        <i class="fa fa-calendar-minus-o me-2"></i> Leave Requests
+                    </a>
+                    <a href="{% url 'teacher_dashboard:earnings' %}" class="list-group-item list-group-item-action active">
+                        <i class="fa fa-money me-2"></i> Earnings
+                    </a>
+                    <a href="{% url 'teacher_dashboard:bank_details' %}" class="list-group-item list-group-item-action">
+                        <i class="fa fa-university me-2"></i> Bank Details
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="col-md-9">
+            <!-- Earnings Summary -->
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Earnings Summary</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="card bg-light mb-3">
+                                <div class="card-body">
+                                    <h6 class="card-title text-muted">Total Earnings</h6>
+                                    <h2 class="mb-0">₹{{ total_earnings|floatformat:2 }}</h2>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card bg-light mb-3">
+                                <div class="card-body">
+                                    <h6 class="card-title text-muted">Total Classes Conducted</h6>
+                                    <h2 class="mb-0">{{ total_classes }}</h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Quick Stats -->
+                    <div class="row mt-3">
+                        <div class="col-md-4">
+                            <div class="border rounded p-3 text-center">
+                                <div class="text-muted mb-1">This Month</div>
+                                <h4 class="mb-0">₹{{ earnings.0.amount|floatformat:2 }}</h4>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="border rounded p-3 text-center">
+                                <div class="text-muted mb-1">Last Month</div>
+                                <h4 class="mb-0">₹{{ earnings.1.amount|floatformat:2 }}</h4>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="border rounded p-3 text-center">
+                                <div class="text-muted mb-1">Avg. per Class</div>
+                                <h4 class="mb-0">₹{{ total_earnings|divide:total_classes|floatformat:2 }}</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Earnings Chart -->
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Monthly Earnings</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="earningsChart" width="400" height="200"></canvas>
+                </div>
+            </div>
+            
+            <!-- Earnings Detail -->
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Earnings History</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Month</th>
+                                    <th>Classes Conducted</th>
+                                    <th>Total Hours</th>
+                                    <th>Amount</th>
+                                    <th>Payment Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for earning in earnings %}
+                                    <tr>
+                                        <td>{{ earning.month_year|date:"F Y" }}</td>
+                                        <td>{{ earning.classes_count }}</td>
+                                        <td>{{ earning.hours|floatformat:1 }}</td>
+                                        <td>₹{{ earning.amount|floatformat:2 }}</td>
+                                        <td>
+                                            <span class="badge bg-{% if earning.is_paid %}success{% else %}warning{% endif %}">
+                                                {% if earning.is_paid %}Paid{% else %}Pending{% endif %}
+                                            </span>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    $(document).ready(function() {
+        // Prepare data for chart
+        const months = [];
+        const amounts = [];
+        
+        {% for earning in earnings %}
+            months.unshift("{{ earning.month_year|date:'M Y' }}");
+            amounts.unshift({{ earning.amount }});
+        {% endfor %}
+        
+        // Create chart
+        const ctx = document.getElementById('earningsChart').getContext('2d');
+        const earningsChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: months,
+                datasets: [{
+                    label: 'Monthly Earnings (₹)',
+                    data: amounts,
+                    backgroundColor: 'rgba(13, 110, 253, 0.7)',
+                    borderColor: 'rgba(13, 110, 253, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(value) {
+                                return '₹' + value;
+                            }
+                        }
+                    }
+                },
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return '₹' + context.parsed.y.toFixed(2);
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    });
+</script>
+{% endblock %}

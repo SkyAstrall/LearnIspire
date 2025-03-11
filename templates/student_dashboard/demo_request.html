@@ -1,0 +1,271 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Request Demo Class - LearnIspire{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row">
+        <!-- Sidebar -->
+        <div class="col-md-3">
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Student Dashboard</h5>
+                </div>
+                <div class="list-group list-group-flush">
+                    <a href="{% url 'student_dashboard:home' %}" class="list-group-item list-group-item-action">
+                        <i class="fas fa-dashboard me-2"></i> Dashboard
+                    </a>
+                    <a href="{% url 'student_dashboard:profile' %}" class="list-group-item list-group-item-action">
+                        <i class="fas fa-user me-2"></i> My Profile
+                    </a>
+                    <a href="{% url 'student_dashboard:subject_selection' %}" class="list-group-item list-group-item-action">
+                        <i class="fas fa-book me-2"></i> Subject Selection
+                    </a>
+                    <a href="{% url 'student_dashboard:availability' %}" class="list-group-item list-group-item-action">
+                        <i class="fas fa-clock me-2"></i> Set Availability
+                    </a>
+                    <a href="{% url 'student_dashboard:classes' %}" class="list-group-item list-group-item-action">
+                        <i class="fas fa-calendar me-2"></i> My Classes
+                    </a>
+                    <a href="{% url 'student_dashboard:payments' %}" class="list-group-item list-group-item-action">
+                        <i class="fas fa-credit-card me-2"></i> Payments
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Student Status -->
+            <div class="card mb-4">
+                <div class="card-header bg-info text-white">
+                    <h5 class="mb-0">My Status</h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="me-3">
+                            <span class="badge bg-{% if profile.status == 'ACTIVE' %}success{% else %}warning{% endif %} p-2">
+                                {{ profile.get_status_display }}
+                            </span>
+                        </div>
+                        <div>
+                            <small class="text-muted">Last updated: {{ profile.updated_at|date:'M d, Y' }}</small>
+                        </div>
+                    </div>
+                    
+                    <div class="progress mb-3" style="height: 20px;">
+                        {% if profile.status == 'NEW' %}
+                            <div class="progress-bar progress-bar-striped bg-info" role="progressbar" style="width: 10%">10%</div>
+                        {% elif profile.status == 'PRICING_REQUESTED' %}
+                            <div class="progress-bar progress-bar-striped bg-info" role="progressbar" style="width: 25%">25%</div>
+                        {% elif profile.status == 'AVAILABILITY_SET' %}
+                            <div class="progress-bar progress-bar-striped bg-info" role="progressbar" style="width: 50%">50%</div>
+                        {% elif profile.status == 'DEMO_PENDING' %}
+                            <div class="progress-bar progress-bar-striped bg-info" role="progressbar" style="width: 60%">60%</div>
+                        {% elif profile.status == 'DEMO_SCHEDULED' %}
+                            <div class="progress-bar progress-bar-striped bg-info" role="progressbar" style="width: 75%">75%</div>
+                        {% elif profile.status == 'DEMO_ACCEPTED' %}
+                            <div class="progress-bar progress-bar-striped bg-info" role="progressbar" style="width: 90%">90%</div>
+                        {% elif profile.status == 'ACTIVE' %}
+                            <div class="progress-bar bg-success" role="progressbar" style="width: 100%">100%</div>
+                        {% else %}
+                            <div class="progress-bar progress-bar-striped bg-warning" role="progressbar" style="width: 50%">50%</div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="col-md-9">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Request a Free Demo Class</h5>
+                </div>
+                <div class="card-body">
+                    {% if profile.selected_subjects.count == 0 %}
+                        <div class="alert alert-warning mb-0">
+                            <h5><i class="fas fa-exclamation-triangle me-2"></i> Subject Selection Required</h5>
+                            <p class="mb-0">Please <a href="{% url 'student_dashboard:subject_selection' %}">select your subjects</a> before requesting a demo class.</p>
+                        </div>
+                    {% elif not profile.availabilities.exists or profile.availabilities.count < 3 %}
+                        <div class="alert alert-warning mb-0">
+                            <h5><i class="fas fa-exclamation-triangle me-2"></i> Availability Setup Required</h5>
+                            <p class="mb-0">Please <a href="{% url 'student_dashboard:availability' %}">set your availability</a> (minimum 3 slots per week) before requesting a demo class.</p>
+                        </div>
+                    {% elif demo_class %}
+                        <div class="alert alert-info mb-4">
+                            <h5><i class="fas fa-info-circle me-2"></i> Demo Class Already Scheduled</h5>
+                            <p>You already have a demo class scheduled:</p>
+                            <div class="card border-info">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-8">
+                                            <h5>{{ demo_class.subject.name }} with {{ demo_class.teacher.get_full_name }}</h5>
+                                            <p class="mb-1"><i class="fas fa-calendar me-2"></i> {{ demo_class.start_time|date:"l, F d, Y" }}</p>
+                                            <p class="mb-1"><i class="fas fa-clock me-2"></i> {{ demo_class.start_time|time:"g:i A" }} - {{ demo_class.end_time|time:"g:i A" }}</p>
+                                            <p class="mb-0"><i class="fas fa-map-marker-alt me-2"></i> Online via Google Meet</p>
+                                        </div>
+                                        <div class="col-md-4 text-end">
+                                            {% if demo_class.can_join %}
+                                                <a href="{% url 'student_dashboard:join_class' demo_class.id %}" class="btn btn-success">
+                                                    <i class="fas fa-video me-1"></i> Join Class
+                                                </a>
+                                            {% else %}
+                                                <p class="text-muted mb-1">
+                                                    <small>Class link will be available 15 minutes before start time.</small>
+                                                </p>
+                                                <a href="{% url 'student_dashboard:class_detail' demo_class.id %}" class="btn btn-primary">
+                                                    <i class="fas fa-info-circle me-1"></i> View Details
+                                                </a>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <p class="text-muted">If you need to reschedule your demo, please contact our support team.</p>
+                    {% else %}
+                        <div class="alert alert-info mb-4">
+                            <h5><i class="fas fa-lightbulb me-2"></i> About Demo Classes</h5>
+                            <p class="mb-0">A free demo class allows you to experience our teaching methodology and platform before committing to regular classes. You'll meet one of our qualified teachers and get a taste of how our personalized learning approach works.</p>
+                        </div>
+                        
+                        <form method="post" action="{% url 'student_dashboard:demo_request' %}">
+                            {% csrf_token %}
+                            
+                            <div class="mb-4">
+                                <label for="subject" class="form-label">Select a Subject for Your Demo Class</label>
+                                <select class="form-select" id="subject" name="subject" required>
+                                    <option value="" selected disabled>Choose a subject</option>
+                                    {% for subject in subjects %}
+                                        <option value="{{ subject.id }}">{{ subject.name }}</option>
+                                    {% endfor %}
+                                </select>
+                                <div class="form-text">Choose one subject for your demo class. You can request additional demos for other subjects later if needed.</div>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <h6>Your Availability</h6>
+                                <p class="text-muted small">The admin will schedule your demo based on your availability and the availability of suitable teachers.</p>
+                                
+                                <div class="table-responsive">
+                                    <table class="table table-bordered">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th>Day</th>
+                                                <th>Time Slots</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% regroup profile.availabilities.all by day_of_week as day_list %}
+                                            {% for day in day_list %}
+                                                <tr>
+                                                    <td>{{ day.list.0.get_day_of_week_display }}</td>
+                                                    <td>
+                                                        {% for slot in day.list %}
+                                                            <span class="badge bg-light text-dark me-2">
+                                                                {{ slot.start_time|time:"g:i A" }} - {{ slot.end_time|time:"g:i A" }}
+                                                            </span>
+                                                        {% endfor %}
+                                                    </td>
+                                                </tr>
+                                            {% empty %}
+                                                <tr>
+                                                    <td colspan="2" class="text-center">No availability set.</td>
+                                                </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                                
+                                <p class="mt-2 mb-0">
+                                    <a href="{% url 'student_dashboard:availability' %}" class="btn btn-sm btn-outline-primary">
+                                        <i class="fas fa-edit me-1"></i> Edit Availability
+                                    </a>
+                                </p>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="confirmation" required>
+                                    <label class="form-check-label" for="confirmation">
+                                        I understand that my demo class will be scheduled based on my availability and I will receive a WhatsApp notification with the details.
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-paper-plane me-1"></i> Submit Demo Request
+                                </button>
+                            </div>
+                        </form>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <!-- What to Expect -->
+            <div class="card mt-4">
+                <div class="card-header bg-light">
+                    <h5 class="mb-0">What to Expect in Your Demo Class</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="d-flex mb-3">
+                                <div class="me-3">
+                                    <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                                        <i class="fas fa-user-check"></i>
+                                    </div>
+                                </div>
+                                <div>
+                                    <h6>Meet Your Teacher</h6>
+                                    <p class="text-muted small mb-0">Get to know your teacher who specializes in the subject you've selected.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="d-flex mb-3">
+                                <div class="me-3">
+                                    <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                                        <i class="fas fa-chalkboard"></i>
+                                    </div>
+                                </div>
+                                <div>
+                                    <h6>Interactive Learning</h6>
+                                    <p class="text-muted small mb-0">Experience our teaching methodology with interactive exercises and discussions.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="d-flex mb-3">
+                                <div class="me-3">
+                                    <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                                        <i class="fas fa-laptop"></i>
+                                    </div>
+                                </div>
+                                <div>
+                                    <h6>Try Our Platform</h6>
+                                    <p class="text-muted small mb-0">Familiarize yourself with our online learning platform and tools.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="d-flex">
+                                <div class="me-3">
+                                    <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                                        <i class="fas fa-comments"></i>
+                                    </div>
+                                </div>
+                                <div>
+                                    <h6>Ask Questions</h6>
+                                    <p class="text-muted small mb-0">Get answers to any questions you have about the subject or our program.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

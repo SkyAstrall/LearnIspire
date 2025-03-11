@@ -1,0 +1,288 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}My Classes - LearnIspire{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row">
+        <!-- Sidebar -->
+        <div class="col-md-3">
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Student Dashboard</h5>
+                </div>
+                <div class="list-group list-group-flush">
+                    <a href="{% url 'student_dashboard:home' %}" class="list-group-item list-group-item-action">
+                        <i class="fas fa-dashboard me-2"></i> Dashboard
+                    </a>
+                    <a href="{% url 'student_dashboard:profile' %}" class="list-group-item list-group-item-action">
+                        <i class="fas fa-user me-2"></i> My Profile
+                    </a>
+                    <a href="{% url 'student_dashboard:subject_selection' %}" class="list-group-item list-group-item-action">
+                        <i class="fas fa-book me-2"></i> Subject Selection
+                    </a>
+                    <a href="{% url 'student_dashboard:availability' %}" class="list-group-item list-group-item-action">
+                        <i class="fas fa-clock me-2"></i> Set Availability
+                    </a>
+                    <a href="{% url 'student_dashboard:classes' %}" class="list-group-item list-group-item-action active">
+                        <i class="fas fa-calendar me-2"></i> My Classes
+                    </a>
+                    <a href="{% url 'student_dashboard:payments' %}" class="list-group-item list-group-item-action">
+                        <i class="fas fa-credit-card me-2"></i> Payments
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Quick Stats -->
+            <div class="card mb-4">
+                <div class="card-header bg-info text-white">
+                    <h5 class="mb-0">Class Stats</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row text-center">
+                        <div class="col-6 mb-3">
+                            <h2 class="mb-0">{{ upcoming_classes.count }}</h2>
+                            <p class="text-muted small">Upcoming</p>
+                        </div>
+                        <div class="col-6 mb-3">
+                            <h2 class="mb-0">{{ past_classes|length }}</h2>
+                            <p class="text-muted small">Completed</p>
+                        </div>
+                    </div>
+                    
+                    {% if upcoming_classes.exists %}
+                        <div class="d-grid">
+                            <a href="#upcoming-classes" class="btn btn-outline-primary btn-sm">
+                                <i class="fas fa-arrow-down me-1"></i> View Upcoming Classes
+                            </a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="col-md-9">
+            <!-- Upcoming Classes -->
+            <div class="card mb-4" id="upcoming-classes">
+                <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Upcoming Classes</h5>
+                    <div class="btn-group btn-group-sm">
+                        <button type="button" class="btn btn-light active" data-view="card">
+                            <i class="fas fa-th-large"></i>
+                        </button>
+                        <button type="button" class="btn btn-light" data-view="list">
+                            <i class="fas fa-list"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    {% if upcoming_classes %}
+                        <!-- Card View (Default) -->
+                        <div class="view-container" id="card-view">
+                            <div class="row row-cols-1 row-cols-md-2 g-4">
+                                {% for class in upcoming_classes %}
+                                    <div class="col">
+                                        <div class="card h-100 class-card {% if class.is_demo %}border-info{% endif %}">
+                                            <div class="card-header bg-light d-flex justify-content-between align-items-center">
+                                                <h5 class="mb-0">{{ class.subject.name }}</h5>
+                                                {% if class.is_demo %}
+                                                    <span class="badge bg-info">Demo</span>
+                                                {% endif %}
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="mb-3">
+                                                    <p class="mb-1"><i class="fas fa-chalkboard-teacher me-2 text-primary"></i> <strong>Teacher:</strong> {{ class.teacher.get_full_name }}</p>
+                                                    <p class="mb-1"><i class="fas fa-calendar me-2 text-primary"></i> <strong>Date:</strong> {{ class.start_time|date:"l, F d, Y" }}</p>
+                                                    <p class="mb-1"><i class="fas fa-clock me-2 text-primary"></i> <strong>Time:</strong> {{ class.start_time|time:"g:i A" }} - {{ class.end_time|time:"g:i A" }}</p>
+                                                    <p class="mb-0"><i class="fas fa-tag me-2 text-primary"></i> <strong>Status:</strong> 
+                                                        <span class="badge bg-{% if class.status == 'SCHEDULED' %}primary{% elif class.status == 'IN_PROGRESS' %}warning{% else %}secondary{% endif %}">
+                                                            {{ class.get_status_display }}
+                                                        </span>
+                                                    </p>
+                                                </div>
+                                                <div class="d-grid gap-2">
+                                                    {% if class.can_join %}
+                                                        <a href="{% url 'student_dashboard:join_class' class.id %}" class="btn btn-success">
+                                                            <i class="fas fa-video me-1"></i> Join Class
+                                                        </a>
+                                                    {% else %}
+                                                        <a href="{% url 'student_dashboard:class_detail' class.id %}" class="btn btn-primary">
+                                                            <i class="fas fa-info-circle me-1"></i> Details
+                                                        </a>
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                            <div class="card-footer bg-white text-muted">
+                                                <small>
+                                                    {% if class.can_join %}
+                                                        <span class="text-success"><i class="fas fa-unlock me-1"></i> Class link is active</span>
+                                                    {% else %}
+                                                        <span><i class="fas fa-lock me-1"></i> Link activates 15 min before class</span>
+                                                    {% endif %}
+                                                </small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        
+                        <!-- List View (Hidden by default) -->
+                        <div class="view-container d-none" id="list-view">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Subject</th>
+                                            <th>Date & Time</th>
+                                            <th>Teacher</th>
+                                            <th>Status</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for class in upcoming_classes %}
+                                            <tr>
+                                                <td>
+                                                    {{ class.subject.name }}
+                                                    {% if class.is_demo %}
+                                                        <span class="badge bg-info ms-1">Demo</span>
+                                                    {% endif %}
+                                                </td>
+                                                <td>{{ class.start_time|date:"M d, Y" }} at {{ class.start_time|time:"g:i A" }}</td>
+                                                <td>{{ class.teacher.get_full_name }}</td>
+                                                <td>
+                                                    <span class="badge bg-{% if class.status == 'SCHEDULED' %}primary{% elif class.status == 'IN_PROGRESS' %}warning{% else %}secondary{% endif %}">
+                                                        {{ class.get_status_display }}
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    {% if class.can_join %}
+                                                        <a href="{% url 'student_dashboard:join_class' class.id %}" class="btn btn-success btn-sm">
+                                                            <i class="fas fa-video me-1"></i> Join
+                                                        </a>
+                                                    {% else %}
+                                                        <a href="{% url 'student_dashboard:class_detail' class.id %}" class="btn btn-primary btn-sm">
+                                                            <i class="fas fa-info-circle me-1"></i> Details
+                                                        </a>
+                                                    {% endif %}
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    {% else %}
+                        <div class="text-center py-5">
+                            <img src="{% static 'images/empty-classes.png' %}" alt="No Classes" class="img-fluid mb-3" style="max-height: 150px;" onerror="this.style.display='none'">
+                            <h5>No Upcoming Classes</h5>
+                            <p class="text-muted">You don't have any upcoming classes scheduled at the moment.</p>
+                            {% if profile.status == 'AVAILABILITY_SET' %}
+                                <a href="{% url 'student_dashboard:demo_request' %}" class="btn btn-primary">
+                                    <i class="fas fa-plus me-1"></i> Request Demo Class
+                                </a>
+                            {% endif %}
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <!-- Past Classes -->
+            <div class="card">
+                <div class="card-header bg-light d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Past Classes</h5>
+                    <div class="btn-group btn-group-sm">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-toggle="collapse" data-bs-target="#past-classes-collapse">
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="collapse" id="past-classes-collapse">
+                    <div class="card-body">
+                        {% if past_classes %}
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Subject</th>
+                                            <th>Date</th>
+                                            <th>Teacher</th>
+                                            <th>Status</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for class in past_classes %}
+                                            <tr>
+                                                <td>
+                                                    {{ class.subject.name }}
+                                                    {% if class.is_demo %}
+                                                        <span class="badge bg-info ms-1">Demo</span>
+                                                    {% endif %}
+                                                </td>
+                                                <td>{{ class.start_time|date:"M d, Y" }}</td>
+                                                <td>{{ class.teacher.get_full_name }}</td>
+                                                <td>
+                                                    <span class="badge bg-{% if class.status == 'COMPLETED' %}success{% elif class.status == 'CANCELLED' %}danger{% elif class.status == 'MISSED' %}warning{% else %}secondary{% endif %}">
+                                                        {{ class.get_status_display }}
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    <a href="{% url 'student_dashboard:class_detail' class.id %}" class="btn btn-outline-secondary btn-sm">
+                                                        <i class="fas fa-info-circle me-1"></i> Details
+                                                    </a>
+                                                    {% if class.is_demo and class.status == 'COMPLETED' %}
+                                                        <a href="{% url 'student_dashboard:demo_feedback' class.id %}" class="btn btn-outline-primary btn-sm">
+                                                            <i class="fas fa-comments me-1"></i> Feedback
+                                                        </a>
+                                                    {% endif %}
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        {% else %}
+                            <div class="text-center py-3">
+                                <p class="text-muted">No past classes found.</p>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // View toggle functionality
+        const viewButtons = document.querySelectorAll('[data-view]');
+        const viewContainers = document.querySelectorAll('.view-container');
+        
+        viewButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const viewType = this.getAttribute('data-view');
+                
+                // Update active button
+                viewButtons.forEach(btn => btn.classList.remove('active'));
+                this.classList.add('active');
+                
+                // Show/hide views
+                viewContainers.forEach(container => {
+                    if (container.id === viewType + '-view') {
+                        container.classList.remove('d-none');
+                    } else {
+                        container.classList.add('d-none');
+                    }
+                });
+            });
+        });
+    });
+</script>
+{% endblock %}
