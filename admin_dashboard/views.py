@@ -19,10 +19,51 @@ class AdminAccessMixin(LoginRequiredMixin):
     """Mixin to ensure only admins can access a view."""
 
     def dispatch(self, request, *args, **kwargs):
-        if not request.user.is_admin_user:
+        if not request.user.is_superuser:
             messages.error(request, "Access denied. Admin account required.")
             return redirect("landing:home")
         return super().dispatch(request, *args, **kwargs)
+
+
+class ActivateApprovedTeachersView(AdminAccessMixin, View):
+    """
+    Temporary utility view to activate teachers that were previously approved but not set to active.
+    """
+
+    def get(self, request):
+        # Count how many teachers are in APPROVED status
+        approved_count = TeacherProfile.objects.filter(status="APPROVED").count()
+
+        context = {
+            "approved_count": approved_count,
+            # Add these for sidebar notifications
+            "pending_demo_count": StudentProfile.objects.filter(
+                status="DEMO_PENDING"
+            ).count(),
+            "pending_teacher_count": TeacherProfile.objects.filter(
+                status="PENDING"
+            ).count(),
+            "pending_leave_count": LeaveRequest.objects.filter(
+                status="PENDING"
+            ).count(),
+        }
+
+        return render(
+            request, "admin_dashboard/activate_approved_teachers.html", context
+        )
+
+    def post(self, request):
+        # Get all teachers with APPROVED status
+        approved_teachers = TeacherProfile.objects.filter(status="APPROVED")
+        count = approved_teachers.count()
+
+        # Update all to ACTIVE
+        approved_teachers.update(status="ACTIVE")
+
+        messages.success(
+            request, f"Successfully activated {count} previously approved teachers."
+        )
+        return redirect("admin_dashboard:teachers")
 
 
 class AdminDashboardHomeView(AdminAccessMixin, View):
@@ -163,6 +204,11 @@ class StudentDetailView(AdminAccessMixin, View):
         availabilities = Availability.objects.filter(user=student).order_by(
             "day_of_week", "start_time"
         )
+        pending_demos = StudentProfile.objects.filter(status="DEMO_PENDING").count()
+        pending_teacher_approvals = TeacherProfile.objects.filter(
+            status="PENDING"
+        ).count()
+        pending_leave_requests = LeaveRequest.objects.filter(status="PENDING").count()
 
         context = {
             "profile": student_profile,
@@ -171,6 +217,9 @@ class StudentDetailView(AdminAccessMixin, View):
             "past_classes": past_classes,
             "payments": payments,
             "availabilities": availabilities,
+            "pending_demo_count": pending_demos,
+            "pending_teacher_count": pending_teacher_approvals,
+            "pending_leave_count": pending_leave_requests,
         }
 
         return render(request, self.template_name, context)
@@ -271,10 +320,10 @@ class TeacherApprovalView(AdminAccessMixin, View):
         action = request.POST.get("action")
 
         if action == "approve":
-            teacher_profile.status = "APPROVED"
+            teacher_profile.status = "ACTIVE"
             messages.success(
                 request,
-                f"{teacher_profile.user.get_full_name()}'s profile has been approved.",
+                f"{teacher_profile.user.get_full_name()}'s profile has been approved and activated",
             )
 
             # Send WhatsApp notification

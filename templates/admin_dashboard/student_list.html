@@ -1,0 +1,160 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Students - LearnIspire Admin{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <div class="row">
+        <!-- Sidebar -->
+        <div class="col-md-2">
+            <div class="card mb-4">
+                <div class="card-header bg-dark text-white">
+                    <h5 class="mb-0">Admin Portal</h5>
+                </div>
+                <div class="list-group list-group-flush">
+                    <a href="{% url 'admin_dashboard:home' %}" class="list-group-item list-group-item-action">
+                        <i class="fa fa-dashboard me-2"></i> Dashboard
+                    </a>
+                    <a href="{% url 'admin_dashboard:students' %}" class="list-group-item list-group-item-action active">
+                        <i class="fa fa-users me-2"></i> Students
+                    </a>
+                    <a href="{% url 'admin_dashboard:teachers' %}" class="list-group-item list-group-item-action">
+                        <i class="fa fa-chalkboard-teacher me-2"></i> Teachers
+                    </a>
+                    <a href="{% url 'admin_dashboard:pending_demos' %}" class="list-group-item list-group-item-action">
+                        <i class="fa fa-clock-o me-2"></i> Pending Demos
+                        {% if pending_demo_count %}<span class="badge bg-warning ms-2">{{ pending_demo_count }}</span>{% endif %}
+                    </a>
+                    <a href="{% url 'admin_dashboard:leave_requests' %}" class="list-group-item list-group-item-action">
+                        <i class="fa fa-calendar-minus-o me-2"></i> Leave Requests
+                        {% if pending_leave_count %}<span class="badge bg-warning ms-2">{{ pending_leave_count }}</span>{% endif %}
+                    </a>
+                    <a href="{% url 'admin_dashboard:payments' %}" class="list-group-item list-group-item-action">
+                        <i class="fa fa-credit-card me-2"></i> Payments
+                    </a>
+                    <a href="{% url 'admin_dashboard:teacher_earnings' %}" class="list-group-item list-group-item-action">
+                        <i class="fa fa-money me-2"></i> Teacher Payments
+                    </a>
+                    <a href="{% url 'admin:index' %}" class="list-group-item list-group-item-action">
+                        <i class="fa fa-cogs me-2"></i> Django Admin
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="col-md-10">
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Students</h5>
+                    <div>
+                        <a href="{% url 'admin_dashboard:pending_demos' %}" class="btn btn-sm btn-light me-2">
+                            <i class="fas fa-video me-1"></i> Pending Demos
+                            {% if pending_demo_count %}<span class="badge bg-warning ms-1">{{ pending_demo_count }}</span>{% endif %}
+                        </a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <!-- Filters -->
+                    <form method="get" class="mb-4">
+                        <div class="row g-3">
+                            <div class="col-md-3">
+                                <label for="status" class="form-label">Status</label>
+                                <select name="status" id="status" class="form-select">
+                                    <option value="">All Statuses</option>
+                                    {% for value, display in status_choices %}
+                                        <option value="{{ value }}" {% if current_status == value %}selected{% endif %}>{{ display }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="grade" class="form-label">Grade</label>
+                                <select name="grade" id="grade" class="form-select">
+                                    <option value="">All Grades</option>
+                                    {% for grade in grades %}
+                                        <option value="{{ grade.id }}" {% if current_grade == grade.id|stringformat:"s" %}selected{% endif %}>{{ grade.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="board" class="form-label">Board</label>
+                                <select name="board" id="board" class="form-select">
+                                    <option value="">All Boards</option>
+                                    {% for board in boards %}
+                                        <option value="{{ board.id }}" {% if current_board == board.id|stringformat:"s" %}selected{% endif %}>{{ board.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="search" class="form-label">Search</label>
+                                <div class="input-group">
+                                    <input type="text" name="search" id="search" class="form-control" placeholder="Name or Email" value="{{ search }}">
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="fas fa-search"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    
+                    <!-- Students List -->
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Phone</th>
+                                    <th>Grade</th>
+                                    <th>Board</th>
+                                    <th>Status</th>
+                                    <th>Registered</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for student in students %}
+                                    <tr>
+                                        <td>{{ student.id }}</td>
+                                        <td>{{ student.user.get_full_name }}</td>
+                                        <td>{{ student.user.email }}</td>
+                                        <td>{{ student.phone|default:"-" }}</td>
+                                        <td>{{ student.grade.name|default:"-" }}</td>
+                                        <td>{{ student.board.name|default:"-" }}</td>
+                                        <td>
+                                            <span class="badge bg-{% if student.status == 'ACTIVE' %}success{% elif student.status == 'DEMO_PENDING' %}warning{% elif student.status == 'NEW' %}secondary{% else %}info{% endif %}">
+                                                {{ student.get_status_display }}
+                                            </span>
+                                        </td>
+                                        <td>{{ student.created_at|date:"d M Y" }}</td>
+                                        <td>
+                                            <a href="{% url 'admin_dashboard:student_detail' student_id=student.id %}" class="btn btn-sm btn-info">
+                                                <i class="fas fa-eye"></i>
+                                            </a>
+                                            {% if student.status == 'DEMO_PENDING' %}
+                                                <a href="{% url 'admin_dashboard:schedule_demo' student_id=student.id %}" class="btn btn-sm btn-warning">
+                                                    <i class="fas fa-calendar-plus"></i>
+                                                </a>
+                                            {% elif student.status == 'DEMO_SCHEDULED' or student.status == 'DEMO_ACCEPTED' or student.status == 'ACTIVE' %}
+                                                <a href="{% url 'admin_dashboard:schedule_classes' student_id=student.id %}" class="btn btn-sm btn-success">
+                                                    <i class="fas fa-calendar-alt"></i>
+                                                </a>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                {% empty %}
+                                    <tr>
+                                        <td colspan="9" class="text-center">No students found matching the criteria.</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

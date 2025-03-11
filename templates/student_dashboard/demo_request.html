@@ -86,7 +86,7 @@
                             <h5><i class="fas fa-exclamation-triangle me-2"></i> Subject Selection Required</h5>
                             <p class="mb-0">Please <a href="{% url 'student_dashboard:subject_selection' %}">select your subjects</a> before requesting a demo class.</p>
                         </div>
-                    {% elif not profile.availabilities.exists or profile.availabilities.count < 3 %}
+                    {% elif Availability < 3 %}
                         <div class="alert alert-warning mb-0">
                             <h5><i class="fas fa-exclamation-triangle me-2"></i> Availability Setup Required</h5>
                             <p class="mb-0">Please <a href="{% url 'student_dashboard:availability' %}">set your availability</a> (minimum 3 slots per week) before requesting a demo class.</p>

@@ -121,6 +121,48 @@ class TeacherProfileView(TeacherAccessMixin, View):
         }
 
         return render(request, self.template_name, context)
+    
+    def post(self, request):
+        try:
+            profile = request.user.teacher_profile
+        except TeacherProfile.DoesNotExist:
+            profile = TeacherProfile.objects.create(user=request.user)
+
+        # Update user info
+        request.user.first_name = request.POST.get('first_name', '')
+        request.user.last_name = request.POST.get('last_name', '')
+        request.user.save()
+
+        # Update profile info
+        profile.phone = request.POST.get('phone')
+        profile.highest_qualification = request.POST.get('highest_qualification', '')
+        profile.university = request.POST.get('university', '')
+        profile.graduation_year = request.POST.get('graduation_year', None)
+        profile.specialization = request.POST.get('specialization', '')
+        profile.skills = request.POST.get('skills', '')
+        profile.years_of_experience = request.POST.get('years_of_experience', 0)
+        profile.experience = request.POST.get('experience', '')
+        profile.bio = request.POST.get('bio', '')
+        print(request.POST.get('phone', ''))
+
+        # Handle profile picture upload
+        if 'profile_picture' in request.FILES:
+            profile.profile_picture = request.FILES['profile_picture']
+
+        # Update subjects
+        selected_subjects = request.POST.getlist('subjects', [])
+        profile.subjects.clear()
+        for subject_id in selected_subjects:
+            try:
+                subject = Subject.objects.get(id=subject_id)
+                profile.subjects.add(subject)
+            except Subject.DoesNotExist:
+                pass
+
+        profile.save()
+
+        messages.success(request, "Profile updated successfully.")
+        return redirect('teacher_dashboard:profile')
 
 
 class AvailabilitySetupView(TeacherAccessMixin, View):
@@ -455,6 +497,8 @@ class BankDetailsView(TeacherAccessMixin, View):
         profile.bank_name = request.POST.get("bank_name", "")
         profile.account_number = request.POST.get("account_number", "")
         profile.ifsc_code = request.POST.get("ifsc_code", "")
+        profile.account_holder_name = request.POST.get("account_holder_name", "")
+        profile.branch_name = request.POST.get("branch_name", "")
         profile.save()
 
         messages.success(request, "Bank details updated successfully.")

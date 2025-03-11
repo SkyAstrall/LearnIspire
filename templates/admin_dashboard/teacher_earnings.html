@@ -1,0 +1,353 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Teacher Payments - Admin Dashboard - LearnIspire{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <div class="row">
+        <!-- Sidebar -->
+        <div class="col-md-2">
+            <div class="card mb-4">
+                <div class="card-header bg-dark text-white">
+                    <h5 class="mb-0">Admin Portal</h5>
+                </div>
+                <div class="list-group list-group-flush">
+                    <a href="{% url 'admin_dashboard:home' %}" class="list-group-item list-group-item-action">
+                        <i class="fa fa-dashboard me-2"></i> Dashboard
+                    </a>
+                    <a href="{% url 'admin_dashboard:students' %}" class="list-group-item list-group-item-action">
+                        <i class="fa fa-users me-2"></i> Students
+                    </a>
+                    <a href="{% url 'admin_dashboard:teachers' %}" class="list-group-item list-group-item-action">
+                        <i class="fa fa-chalkboard-teacher me-2"></i> Teachers
+                    </a>
+                    <a href="{% url 'admin_dashboard:pending_demos' %}" class="list-group-item list-group-item-action">
+                        <i class="fa fa-clock-o me-2"></i> Pending Demos
+                        {% if pending_demo_count %}<span class="badge bg-warning ms-2">{{ pending_demo_count }}</span>{% endif %}
+                    </a>
+                    <a href="{% url 'admin_dashboard:leave_requests' %}" class="list-group-item list-group-item-action">
+                        <i class="fa fa-calendar-minus-o me-2"></i> Leave Requests
+                        {% if pending_leave_count %}<span class="badge bg-warning ms-2">{{ pending_leave_count }}</span>{% endif %}
+                    </a>
+                    <a href="{% url 'admin_dashboard:payments' %}" class="list-group-item list-group-item-action">
+                        <i class="fa fa-credit-card me-2"></i> Payments
+                    </a>
+                    <a href="{% url 'admin_dashboard:teacher_earnings' %}" class="list-group-item list-group-item-action active">
+                        <i class="fa fa-money me-2"></i> Teacher Payments
+                    </a>
+                    <a href="{% url 'admin:index' %}" class="list-group-item list-group-item-action">
+                        <i class="fa fa-cogs me-2"></i> Django Admin
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="col-md-10">
+            <div class="row mb-4">
+                <div class="col-12 d-flex justify-content-between align-items-center">
+                    <h2>Teacher Payments</h2>
+                    <div>
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#filterModal">
+                            <i class="fas fa-filter me-2"></i>Filter
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Stats Cards -->
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <div class="card bg-success text-white h-100">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h6 class="text-uppercase">Total Payments</h6>
+                                    <h2 class="mb-0">₹{{ total_amount|floatformat:0 }}</h2>
+                                </div>
+                                <div>
+                                    <i class="fas fa-rupee-sign fa-3x opacity-75"></i>
+                                </div>
+                            </div>
+                            <div class="mt-2">
+                                <small>All teacher earnings</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6">
+                    <div class="card bg-warning text-dark h-100">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h6 class="text-uppercase">Pending Payments</h6>
+                                    <h2 class="mb-0">₹{{ pending_amount|floatformat:0 }}</h2>
+                                </div>
+                                <div>
+                                    <i class="fas fa-hourglass-half fa-3x opacity-75"></i>
+                                </div>
+                            </div>
+                            <div class="mt-2">
+                                <small>Payments to be processed</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Filter Applied Alert -->
+            {% if current_status or current_month or current_year %}
+            <div class="row mb-3">
+                <div class="col-12">
+                    <div class="alert alert-info d-flex justify-content-between align-items-center">
+                        <div>
+                            <strong>Filters applied:</strong> 
+                            {% if current_status %}<span class="badge bg-primary me-2">Status: {{ current_status }}</span>{% endif %}
+                            {% if current_month and current_year %}<span class="badge bg-primary me-2">Month: {{ current_month }}/{{ current_year }}</span>{% endif %}
+                        </div>
+                        <a href="{% url 'admin_dashboard:teacher_earnings' %}" class="btn btn-sm btn-outline-dark">Clear All</a>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+            
+            <!-- Teacher Earnings List -->
+            <div class="card">
+                <div class="card-header bg-white">
+                    <div class="row align-items-center">
+                        <div class="col">
+                            <h5 class="mb-0">Teacher Earnings Records</h5>
+                        </div>
+                        <div class="col-auto">
+                            <button class="btn btn-sm btn-outline-success">
+                                <i class="fas fa-file-excel me-1"></i> Export
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Teacher</th>
+                                    <th>Month</th>
+                                    <th>Classes</th>
+                                    <th>Amount</th>
+                                    <th>Status</th>
+                                    <th>Payment Date</th>
+                                    <th>Reference</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for earning in earnings %}
+                                <tr>
+                                    <td>{{ earning.id }}</td>
+                                    <td>
+                                        <a href="{% url 'admin_dashboard:teacher_detail' teacher_id=earning.teacher.teacherprofile.id %}">
+                                            {{ earning.teacher.get_full_name }}
+                                        </a>
+                                    </td>
+                                    <td>{{ earning.month_year|date:"F Y" }}</td>
+                                    <td>{{ earning.class_count }}</td>
+                                    <td>₹{{ earning.amount }}</td>
+                                    <td>
+                                        <span class="badge bg-{% if earning.payment_status == 'COMPLETED' %}success{% elif earning.payment_status == 'PENDING' %}warning{% else %}secondary{% endif %}">
+                                            {{ earning.get_payment_status_display }}
+                                        </span>
+                                    </td>
+                                    <td>{{ earning.payment_date|date:"d M Y"|default:"-" }}</td>
+                                    <td>{{ earning.payment_reference|default:"-" }}</td>
+                                    <td>
+                                        {% if earning.payment_status == 'PENDING' %}
+                                            <button class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#processPaymentModal{{ earning.id }}">
+                                                <i class="fas fa-money-bill me-1"></i> Process
+                                            </button>
+                                        {% else %}
+                                            <button class="btn btn-sm btn-outline-info" data-bs-toggle="modal" data-bs-target="#paymentDetailModal{{ earning.id }}">
+                                                <i class="fas fa-eye me-1"></i> Details
+                                            </button>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                
+                                <!-- Process Payment Modal -->
+                                {% if earning.payment_status == 'PENDING' %}
+                                <div class="modal fade" id="processPaymentModal{{ earning.id }}" tabindex="-1" aria-labelledby="processPaymentModalLabel{{ earning.id }}" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="processPaymentModalLabel{{ earning.id }}">Process Teacher Payment</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <form method="post" action="{% url 'admin_dashboard:process_teacher_payment' earning_id=earning.id %}">
+                                                {% csrf_token %}
+                                                <div class="modal-body">
+                                                    <div class="alert alert-info">
+                                                        <div class="fw-bold">Payment Details:</div>
+                                                        <div>Teacher: {{ earning.teacher.get_full_name }}</div>
+                                                        <div>Month: {{ earning.month_year|date:"F Y" }}</div>
+                                                        <div>Classes: {{ earning.class_count }}</div>
+                                                        <div>Amount: ₹{{ earning.amount }}</div>
+                                                    </div>
+                                                    
+                                                    <div class="mb-3">
+                                                        <label for="payment_reference{{ earning.id }}" class="form-label">Payment Reference</label>
+                                                        <input type="text" class="form-control" id="payment_reference{{ earning.id }}" name="payment_reference" required>
+                                                        <small class="form-text text-muted">Enter transaction ID, UTR, or reference number</small>
+                                                    </div>
+                                                    
+                                                    <div class="mb-3">
+                                                        <label for="payment_date{{ earning.id }}" class="form-label">Payment Date</label>
+                                                        <input type="date" class="form-control" id="payment_date{{ earning.id }}" name="payment_date" value="{{ now|date:'Y-m-d' }}" required>
+                                                    </div>
+                                                    
+                                                    <div class="mb-3">
+                                                        <label for="notes{{ earning.id }}" class="form-label">Notes</label>
+                                                        <textarea class="form-control" id="notes{{ earning.id }}" name="notes" rows="3"></textarea>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                    <button type="submit" class="btn btn-success">Confirm Payment</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% else %}
+                                <!-- Payment Detail Modal -->
+                                <div class="modal fade" id="paymentDetailModal{{ earning.id }}" tabindex="-1" aria-labelledby="paymentDetailModalLabel{{ earning.id }}" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="paymentDetailModalLabel{{ earning.id }}">Payment Details</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="mb-3 row">
+                                                    <label class="col-sm-4 fw-bold">Teacher</label>
+                                                    <div class="col-sm-8">{{ earning.teacher.get_full_name }}</div>
+                                                </div>
+                                                <div class="mb-3 row">
+                                                    <label class="col-sm-4 fw-bold">Month</label>
+                                                    <div class="col-sm-8">{{ earning.month_year|date:"F Y" }}</div>
+                                                </div>
+                                                <div class="mb-3 row">
+                                                    <label class="col-sm-4 fw-bold">Classes Conducted</label>
+                                                    <div class="col-sm-8">{{ earning.class_count }}</div>
+                                                </div>
+                                                <div class="mb-3 row">
+                                                    <label class="col-sm-4 fw-bold">Amount</label>
+                                                    <div class="col-sm-8">₹{{ earning.amount }}</div>
+                                                </div>
+                                                <div class="mb-3 row">
+                                                    <label class="col-sm-4 fw-bold">Status</label>
+                                                    <div class="col-sm-8">
+                                                        <span class="badge bg-{% if earning.payment_status == 'COMPLETED' %}success{% else %}secondary{% endif %}">
+                                                            {{ earning.get_payment_status_display }}
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="mb-3 row">
+                                                    <label class="col-sm-4 fw-bold">Payment Date</label>
+                                                    <div class="col-sm-8">{{ earning.payment_date|date:"d M Y" }}</div>
+                                                </div>
+                                                <div class="mb-3 row">
+                                                    <label class="col-sm-4 fw-bold">Payment Reference</label>
+                                                    <div class="col-sm-8">{{ earning.payment_reference }}</div>
+                                                </div>
+                                                <div class="mb-3 row">
+                                                    <label class="col-sm-4 fw-bold">Notes</label>
+                                                    <div class="col-sm-8">{{ earning.notes|default:"No notes" }}</div>
+                                                </div>
+                                                <div class="mb-3 row">
+                                                    <label class="col-sm-4 fw-bold">Bank Details</label>
+                                                    <div class="col-sm-8">
+                                                        <strong>{{ earning.teacher.teacherprofile.bank_account_name }}</strong><br>
+                                                        {{ earning.teacher.teacherprofile.bank_name }}<br>
+                                                        Acc: {{ earning.teacher.teacherprofile.bank_account_number }}<br>
+                                                        IFSC: {{ earning.teacher.teacherprofile.bank_ifsc }}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endif %}
+                                {% empty %}
+                                <tr>
+                                    <td colspan="9" class="text-center py-4">
+                                        <div class="py-5">
+                                            <i class="fas fa-file-invoice-dollar text-muted fa-3x mb-3"></i>
+                                            <h5>No teacher earnings found</h5>
+                                            <p class="text-muted">No earnings records matching your filter criteria.</p>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Filter Modal -->
+<div class="modal fade" id="filterModal" tabindex="-1" aria-labelledby="filterModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="filterModalLabel">Filter Teacher Earnings</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="get">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="status" class="form-label">Payment Status</label>
+                        <select class="form-select" id="status" name="status">
+                            <option value="">All Statuses</option>
+                            {% for status_value, status_name in status_choices %}
+                            <option value="{{ status_value }}" {% if current_status == status_value %}selected{% endif %}>{{ status_name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="month" class="form-label">Month</label>
+                            <select class="form-select" id="month" name="month">
+                                <option value="">All Months</option>
+                                {% for month_num, month_name in months %}
+                                <option value="{{ month_num }}" {% if current_month == month_num|stringformat:"i" %}selected{% endif %}>{{ month_name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="year" class="form-label">Year</label>
+                            <select class="form-select" id="year" name="year">
+                                <option value="">All Years</option>
+                                {% for year in years %}
+                                <option value="{{ year }}" {% if current_year == year|stringformat:"i" %}selected{% endif %}>{{ year }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a href="{% url 'admin_dashboard:teacher_earnings' %}" class="btn btn-outline-secondary">Clear Filters</a>
+                    <button type="submit" class="btn btn-primary">Apply Filters</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

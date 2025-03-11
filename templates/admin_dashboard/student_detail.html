@@ -1,0 +1,289 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Student Details - LearnIspire Admin{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <div class="row">
+        <!-- Sidebar - Keep your existing sidebar code here -->
+        <div class="col-md-2">
+            <!-- Sidebar code from home.html -->
+            <div class="card mb-4">
+                <div class="card-header bg-dark text-white">
+                    <h5 class="mb-0">Admin Portal</h5>
+                </div>
+                <div class="list-group list-group-flush">
+                    <a href="{% url 'admin_dashboard:home' %}" class="list-group-item list-group-item-action">
+                        <i class="fa fa-dashboard me-2"></i> Dashboard
+                    </a>
+                    <a href="{% url 'admin_dashboard:students' %}" class="list-group-item list-group-item-action active">
+                        <i class="fa fa-users me-2"></i> Students
+                    </a>
+                    <!-- Other sidebar items -->
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="col-md-10">
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Student Profile: {{ student.get_full_name }}</h5>
+                    <a href="{% url 'admin_dashboard:students' %}" class="btn btn-sm btn-light">
+                        <i class="fa fa-arrow-left me-1"></i> Back to Students
+                    </a>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <!-- Personal Information -->
+                        <div class="col-md-6">
+                            <div class="card mb-3">
+                                <div class="card-header bg-light">
+                                    <h6 class="mb-0">Personal Information</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row mb-2">
+                                        <div class="col-md-4 fw-bold">Full Name:</div>
+                                        <div class="col-md-8">{{ student.get_full_name }}</div>
+                                    </div>
+                                    <div class="row mb-2">
+                                        <div class="col-md-4 fw-bold">Email:</div>
+                                        <div class="col-md-8">{{ student.email }}</div>
+                                    </div>
+                                    <div class="row mb-2">
+                                        <div class="col-md-4 fw-bold">Phone:</div>
+                                        <div class="col-md-8">{{ profile.phone|default:"Not provided" }}</div>
+                                    </div>
+                                    <div class="row mb-2">
+                                        <div class="col-md-4 fw-bold">Status:</div>
+                                        <div class="col-md-8">
+                                            <span class="badge bg-{% if profile.status == 'ACTIVE' %}success{% elif profile.status == 'DEMO_PENDING' %}warning{% else %}info{% endif %}">
+                                                {{ profile.get_status_display }}
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-2">
+                                        <div class="col-md-4 fw-bold">Joined:</div>
+                                        <div class="col-md-8">{{ profile.created_at|date:"d M Y" }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Academic Information -->
+                        <div class="col-md-6">
+                            <div class="card mb-3">
+                                <div class="card-header bg-light">
+                                    <h6 class="mb-0">Academic Information</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row mb-2">
+                                        <div class="col-md-4 fw-bold">Grade:</div>
+                                        <div class="col-md-8">{{ profile.grade.name|default:"Not set" }}</div>
+                                    </div>
+                                    <div class="row mb-2">
+                                        <div class="col-md-4 fw-bold">Board:</div>
+                                        <div class="col-md-8">{{ profile.board.name|default:"Not set" }}</div>
+                                    </div>
+                                    <div class="row mb-2">
+                                        <div class="col-md-4 fw-bold">Subjects:</div>
+                                        <div class="col-md-8">
+                                            {% for subject in profile.selected_subjects.all %}
+                                                <span class="badge bg-info me-1">{{ subject.name }}</span>
+                                            {% empty %}
+                                                No subjects selected
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Availability Section -->
+                    <div class="row mt-3">
+                        <div class="col-12">
+                            <div class="card mb-3">
+                                <div class="card-header bg-light">
+                                    <h6 class="mb-0">Availability</h6>
+                                </div>
+                                <div class="card-body">
+                                    {% if availabilities %}
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered table-hover">
+                                                <thead class="table-light">
+                                                    <tr>
+                                                        <th>Day</th>
+                                                        <th>Start Time</th>
+                                                        <th>End Time</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {% for slot in availabilities %}
+                                                        <tr>
+                                                            <td>{{ slot.get_day_of_week_display }}</td>
+                                                            <td>{{ slot.start_time|time:"g:i A" }}</td>
+                                                            <td>{{ slot.end_time|time:"g:i A" }}</td>
+                                                        </tr>
+                                                    {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    {% else %}
+                                        <p class="text-muted">No availability slots set.</p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Upcoming Classes Section -->
+                    <div class="row mt-3">
+                        <div class="col-12">
+                            <div class="card mb-3">
+                                <div class="card-header bg-light">
+                                    <h6 class="mb-0">Upcoming Classes</h6>
+                                </div>
+                                <div class="card-body">
+                                    {% if upcoming_classes %}
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered table-hover">
+                                                <thead class="table-light">
+                                                    <tr>
+                                                        <th>Subject</th>
+                                                        <th>Teacher</th>
+                                                        <th>Date</th>
+                                                        <th>Time</th>
+                                                        <th>Status</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {% for class in upcoming_classes %}
+                                                        <tr>
+                                                            <td>{{ class.subject.name }}</td>
+                                                            <td>{{ class.teacher.get_full_name }}</td>
+                                                            <td>{{ class.start_time|date:"d M Y" }}</td>
+                                                            <td>{{ class.start_time|time:"g:i A" }} - {{ class.end_time|time:"g:i A" }}</td>
+                                                            <td>
+                                                                <span class="badge bg-{% if class.status == 'SCHEDULED' %}info{% elif class.status == 'IN_PROGRESS' %}primary{% else %}success{% endif %}">
+                                                                    {{ class.get_status_display }}
+                                                                </span>
+                                                            </td>
+                                                        </tr>
+                                                    {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    {% else %}
+                                        <p class="text-muted">No upcoming classes scheduled.</p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Past Classes Section -->
+                    <div class="row mt-3">
+                        <div class="col-12">
+                            <div class="card mb-3">
+                                <div class="card-header bg-light">
+                                    <h6 class="mb-0">Past Classes</h6>
+                                </div>
+                                <div class="card-body">
+                                    {% if past_classes %}
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered table-hover">
+                                                <thead class="table-light">
+                                                    <tr>
+                                                        <th>Subject</th>
+                                                        <th>Teacher</th>
+                                                        <th>Date</th>
+                                                        <th>Time</th>
+                                                        <th>Status</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {% for class in past_classes %}
+                                                        <tr>
+                                                            <td>{{ class.subject.name }}</td>
+                                                            <td>{{ class.teacher.get_full_name }}</td>
+                                                            <td>{{ class.start_time|date:"d M Y" }}</td>
+                                                            <td>{{ class.start_time|time:"g:i A" }} - {{ class.end_time|time:"g:i A" }}</td>
+                                                            <td>
+                                                                <span class="badge bg-{% if class.status == 'COMPLETED' %}success{% elif class.status == 'MISSED' %}danger{% else %}warning{% endif %}">
+                                                                    {{ class.get_status_display }}
+                                                                </span>
+                                                            </td>
+                                                        </tr>
+                                                    {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    {% else %}
+                                        <p class="text-muted">No past classes.</p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Payment History Section -->
+                    <div class="row mt-3">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header bg-light">
+                                    <h6 class="mb-0">Payment History</h6>
+                                </div>
+                                <div class="card-body">
+                                    {% if payments %}
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered table-hover">
+                                                <thead class="table-light">
+                                                    <tr>
+                                                        <th>Amount</th>
+                                                        <th>Month</th>
+                                                        <th>Status</th>
+                                                        <th>Date</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {% for payment in payments %}
+                                                        <tr>
+                                                            <td>₹{{ payment.amount }}</td>
+                                                            <td>{{ payment.month_year|date:"F Y" }}</td>
+                                                            <td>
+                                                                <span class="badge bg-{% if payment.status == 'COMPLETED' %}success{% elif payment.status == 'PENDING' %}warning{% else %}info{% endif %}">
+                                                                    {{ payment.get_status_display }}
+                                                                </span>
+                                                            </td>
+                                                            <td>{{ payment.created_at|date:"d M Y" }}</td>
+                                                        </tr>
+                                                    {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    {% else %}
+                                        <p class="text-muted">No payment history.</p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    {% if profile.status == 'DEMO_PENDING' %}
+                        <a href="{% url 'admin_dashboard:schedule_demo' student_id=profile.id %}" class="btn btn-primary">
+                            <i class="fas fa-calendar-plus me-1"></i> Schedule Demo Class
+                        </a>
+                    {% elif profile.status == 'DEMO_SCHEDULED' or profile.status == 'DEMO_ACCEPTED' or profile.status == 'ACTIVE' %}
+                        <a href="{% url 'admin_dashboard:schedule_classes' student_id=profile.id %}" class="btn btn-success">
+                            <i class="fas fa-calendar-alt me-1"></i> Schedule Regular Classes
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

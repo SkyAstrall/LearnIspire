@@ -98,6 +98,15 @@ class TeacherProfile(models.Model):
     ifsc_code = models.CharField(max_length=20, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    account_holder_name = models.CharField(max_length=100, blank=True)
+    branch_name = models.CharField(max_length=100, blank=True)
+    phone = models.CharField(max_length=15, blank=True)
+    highest_qualification = models.CharField(max_length=100, blank=True)
+    years_of_experience = models.IntegerField(default=0)
+    university = models.CharField(max_length=200, blank=True)
+    graduation_year = models.IntegerField(default=0)
+    specialization = models.CharField(max_length=200, blank=True)
+    skills = models.TextField(blank=True)
 
     def __str__(self):
         return f"{self.user.email} - {self.get_status_display()}"

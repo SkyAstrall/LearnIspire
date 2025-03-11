@@ -1,0 +1,500 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Schedule Classes - {{ student.get_full_name }} - LearnIspire{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <div class="row">
+        <!-- Sidebar -->
+        <div class="col-md-2">
+            <div class="card mb-4">
+                <div class="card-header bg-dark text-white">
+                    <h5 class="mb-0">Admin Portal</h5>
+                </div>
+                <div class="list-group list-group-flush">
+                    <a href="{% url 'admin_dashboard:home' %}" class="list-group-item list-group-item-action">
+                        <i class="fa fa-dashboard me-2"></i> Dashboard
+                    </a>
+                    <a href="{% url 'admin_dashboard:students' %}" class="list-group-item list-group-item-action active">
+                        <i class="fa fa-users me-2"></i> Students
+                    </a>
+                    <a href="{% url 'admin_dashboard:teachers' %}" class="list-group-item list-group-item-action">
+                        <i class="fa fa-chalkboard-teacher me-2"></i> Teachers
+                    </a>
+                    <a href="{% url 'admin_dashboard:pending_demos' %}" class="list-group-item list-group-item-action">
+                        <i class="fa fa-clock-o me-2"></i> Pending Demos
+                        {% if pending_demo_count %}<span class="badge bg-warning ms-2">{{ pending_demo_count }}</span>{% endif %}
+                    </a>
+                    <a href="{% url 'admin_dashboard:leave_requests' %}" class="list-group-item list-group-item-action">
+                        <i class="fa fa-calendar-minus-o me-2"></i> Leave Requests
+                        {% if pending_leave_count %}<span class="badge bg-warning ms-2">{{ pending_leave_count }}</span>{% endif %}
+                    </a>
+                    <a href="{% url 'admin_dashboard:payments' %}" class="list-group-item list-group-item-action">
+                        <i class="fa fa-credit-card me-2"></i> Payments
+                    </a>
+                    <a href="{% url 'admin_dashboard:teacher_earnings' %}" class="list-group-item list-group-item-action">
+                        <i class="fa fa-money me-2"></i> Teacher Payments
+                    </a>
+                    <a href="{% url 'admin:index' %}" class="list-group-item list-group-item-action">
+                        <i class="fa fa-cogs me-2"></i> Django Admin
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="col-md-10">
+            <div class="row mb-4">
+                <div class="col-12">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="{% url 'admin_dashboard:students' %}">Students</a></li>
+                            <li class="breadcrumb-item"><a href="{% url 'admin_dashboard:student_detail' student_id=profile.id %}">{{ student.get_full_name }}</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Schedule Classes</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+            
+            <div class="row mb-4">
+                <div class="col-md-4">
+                    <!-- Student Info Card -->
+                    <div class="card mb-4">
+                        <div class="card-header bg-white">
+                            <h5 class="mb-0">Student Information</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <label class="form-label text-muted">Name</label>
+                                <p class="fs-5">{{ student.get_full_name }}</p>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label text-muted">Grade</label>
+                                <p>{{ profile.grade.name|default:"Not set" }}</p>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label text-muted">Board</label>
+                                <p>{{ profile.board.name|default:"Not set" }}</p>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label text-muted">Status</label>
+                                <p>
+                                    <span class="badge bg-{% if profile.status == 'ACTIVE' %}success{% elif profile.status == 'DEMO_ACCEPTED' %}primary{% else %}secondary{% endif %}">
+                                        {{ profile.get_status_display }}
+                                    </span>
+                                </p>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label text-muted">Selected Subjects</label>
+                                <div>
+                                    {% for subject in subjects %}
+                                        <span class="badge bg-primary mb-1 me-1">{{ subject.name }}</span>
+                                    {% empty %}
+                                        <p class="text-muted">No subjects selected</p>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Student Availability Card -->
+                    <div class="card">
+                        <div class="card-header bg-white">
+                            <h5 class="mb-0">Student Availability</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-sm">
+                                    <thead>
+                                        <tr>
+                                            <th>Day</th>
+                                            <th>Time Slots</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for day_num, day_name in days_of_week %}
+                                        <tr>
+                                            <td>{{ day_name }}</td>
+                                            <td>
+                                                {% for slot in availability %}
+                                                    {% if slot.day_of_week == day_num %}
+                                                        <span class="badge bg-info me-1">
+                                                            {{ slot.start_time|time:"h:i A" }} - {{ slot.end_time|time:"h:i A" }}
+                                                        </span>
+                                                    {% endif %}
+                                                {% empty %}
+                                                    <span class="text-muted">No availability</span>
+                                                {% endfor %}
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-8">
+                    <!-- Month Navigation -->
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <form method="get" class="row align-items-center">
+                                <div class="col-md-5">
+                                    <h5 class="mb-0">{{ month_name }} {{ year }} Schedule</h5>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="input-group">
+                                        <select name="month" class="form-select">
+                                            {% for i in "123456789012"|make_list %}
+                                                {% with month_num=forloop.counter %}
+                                                <option value="{{ month_num }}" {% if month == month_num %}selected{% endif %}>
+                                                    {{ month_num|add:0 }}. {{ month_num|date:"F" }}
+                                                </option>
+                                                {% endwith %}
+                                            {% endfor %}
+                                        </select>
+                                        <select name="year" class="form-select">
+                                            {% for i in '012'|make_list %}
+                                                {% with yr=year|add:i|add:-1 %}
+                                                <option value="{{ yr }}" {% if year == yr %}selected{% endif %}>{{ yr }}</option>
+                                                {% endwith %}
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 text-end">
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="fas fa-sync-alt me-2"></i>Update
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    
+                    <!-- Schedule Classes Form -->
+                    <div class="card">
+                        <div class="card-header bg-white">
+                            <h5 class="mb-0">Schedule Regular Classes</h5>
+                        </div>
+                        <div class="card-body">
+                            <form method="post">
+                                {% csrf_token %}
+                                <input type="hidden" name="month" value="{{ month }}">
+                                <input type="hidden" name="year" value="{{ year }}">
+                                
+                                <!-- Existing Classes Display -->
+                                {% if existing_classes %}
+                                <div class="mb-4">
+                                    <h6>Already Scheduled Classes</h6>
+                                    <div class="table-responsive">
+                                        <table class="table table-sm">
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th>Subject</th>
+                                                    <th>Teacher</th>
+                                                    <th>Date</th>
+                                                    <th>Time</th>
+                                                    <th>Status</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for class in existing_classes %}
+                                                <tr>
+                                                    <td>{{ class.subject.name }}</td>
+                                                    <td>{{ class.teacher.get_full_name }}</td>
+                                                    <td>{{ class.start_time|date:"d M Y" }}</td>
+                                                    <td>{{ class.start_time|date:"h:i A" }} - {{ class.end_time|date:"h:i A" }}</td>
+                                                    <td>
+                                                        <span class="badge bg-{% if class.status == 'SCHEDULED' %}info{% elif class.status == 'COMPLETED' %}success{% elif class.status == 'CANCELLED' %}danger{% else %}secondary{% endif %}">
+                                                            {{ class.get_status_display }}
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                {% endif %}
+                                
+                                <!-- Dynamic Class Scheduling Form -->
+                                <div id="classFormContainer">
+                                    <h6>Add New Classes</h6>
+                                    <p class="text-muted small">Schedule classes for {{ month_name }} {{ year }}</p>
+                                    
+                                    <div class="class-form mb-3 p-3 border rounded">
+                                        <div class="row mb-3">
+                                            <div class="col-md-6">
+                                                <label for="subject_0" class="form-label">Subject <span class="text-danger">*</span></label>
+                                                <select class="form-select subject-select" id="subject_0" name="subject_0" required>
+                                                    <option value="">Select Subject</option>
+                                                    {% for subject in subjects %}
+                                                        <option value="{{ subject.id }}">{{ subject.name }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label for="teacher_0" class="form-label">Teacher <span class="text-danger">*</span></label>
+                                                <select class="form-select teacher-select" id="teacher_0" name="teacher_0" required disabled>
+                                                    <option value="">Select Subject First</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="row mb-3">
+                                            <div class="col-md-4">
+                                                <label for="date_0" class="form-label">Date <span class="text-danger">*</span></label>
+                                                <input type="date" class="form-control" id="date_0" name="date_0" required min="{{ year }}-{{ month|stringformat:'02d' }}-01" max="{{ year }}-{{ month|stringformat:'02d' }}-{{ days_in_month }}">
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label for="start_time_0" class="form-label">Start Time <span class="text-danger">*</span></label>
+                                                <input type="time" class="form-control" id="start_time_0" name="start_time_0" required>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label for="duration_0" class="form-label">Duration</label>
+                                                <select class="form-select" id="duration_0" name="duration_0">
+                                                    <option value="30">30 minutes</option>
+                                                    <option value="45">45 minutes</option>
+                                                    <option value="60" selected>60 minutes</option>
+                                                    <option value="90">90 minutes</option>
+                                                    <option value="120">120 minutes</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="d-flex mb-4">
+                                    <button type="button" id="addClassBtn" class="btn btn-outline-primary">
+                                        <i class="fas fa-plus me-2"></i>Add Another Class
+                                    </button>
+                                </div>
+                                
+                                <input type="hidden" id="class_count" name="class_count" value="1">
+                                
+                                <div class="alert alert-warning">
+                                    <i class="fas fa-info-circle me-2"></i>
+                                    <strong>Important:</strong> Please ensure the selected time slots align with both student and teacher availability.
+                                </div>
+                                
+                                <div class="d-flex justify-content-end mt-4">
+                                    <a href="{% url 'admin_dashboard:student_detail' student_id=profile.id %}" class="btn btn-outline-secondary me-2">Cancel</a>
+                                    <button type="submit" class="btn btn-primary">Schedule Classes</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    
+                    <!-- Calendar View -->
+                    <div class="card mt-4">
+                        <div class="card-header bg-white">
+                            <h5 class="mb-0">Monthly Calendar View</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>Sun</th>
+                                            <th>Mon</th>
+                                            <th>Tue</th>
+                                            <th>Wed</th>
+                                            <th>Thu</th>
+                                            <th>Fri</th>
+                                            <th>Sat</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- Calendar would be dynamically generated based on the selected month and year -->
+                                        <!-- This is just a placeholder structure -->
+                                        <tr>
+                                            <td class="text-muted">30</td>
+                                            <td class="text-muted">31</td>
+                                            <td>1</td>
+                                            <td>2</td>
+                                            <td>3</td>
+                                            <td>4</td>
+                                            <td>5</td>
+                                        </tr>
+                                        <tr>
+                                            <td>6</td>
+                                            <td>7</td>
+                                            <td>8</td>
+                                            <td>9</td>
+                                            <td>10</td>
+                                            <td>11</td>
+                                            <td>12</td>
+                                        </tr>
+                                        <tr>
+                                            <td>13</td>
+                                            <td>14</td>
+                                            <td>15</td>
+                                            <td>16</td>
+                                            <td>17</td>
+                                            <td>18</td>
+                                            <td>19</td>
+                                        </tr>
+                                        <tr>
+                                            <td>20</td>
+                                            <td>21</td>
+                                            <td>22</td>
+                                            <td>23</td>
+                                            <td>24</td>
+                                            <td>25</td>
+                                            <td>26</td>
+                                        </tr>
+                                        <tr>
+                                            <td>27</td>
+                                            <td>28</td>
+                                            <td>29</td>
+                                            <td>30</td>
+                                            <td class="text-muted">1</td>
+                                            <td class="text-muted">2</td>
+                                            <td class="text-muted">3</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Teacher data organized by subject
+        const teachersBySubject = {
+            {% for subject_id, teachers in eligible_teachers.items %}
+                "{{ subject_id }}": [
+                    {% for teacher in teachers %}
+                        {
+                            id: "{{ teacher.user.id }}",
+                            name: "{{ teacher.user.get_full_name }}",
+                            experience: "{{ teacher.years_of_experience }}"
+                        },
+                    {% endfor %}
+                ],
+            {% endfor %}
+        };
+        
+        // Subject change handler - to filter teachers based on subject
+        function handleSubjectChange(event) {
+            const subjectSelect = event.target;
+            const formGroup = subjectSelect.closest('.class-form');
+            const index = formGroup.dataset.index || 0;
+            const teacherSelect = document.getElementById(`teacher_${index}`);
+            const subjectId = subjectSelect.value;
+            
+            // Reset teacher dropdown
+            teacherSelect.innerHTML = '<option value="">Select Teacher</option>';
+            teacherSelect.disabled = !subjectId;
+            
+            if (!subjectId) return;
+            
+            // Get teachers for this subject
+            const teachers = teachersBySubject[subjectId] || [];
+            
+            // Populate teacher dropdown with filtered teachers
+            teachers.forEach(teacher => {
+                const option = document.createElement('option');
+                option.value = teacher.id;
+                option.textContent = `${teacher.name} (${teacher.experience} yrs exp)`;
+                teacherSelect.appendChild(option);
+            });
+        }
+        
+        // Dynamic form handling
+        const classFormContainer = document.getElementById('classFormContainer');
+        const addClassBtn = document.getElementById('addClassBtn');
+        const classCountInput = document.getElementById('class_count');
+        let classCount = 1;
+        
+        // Initial setup
+        document.querySelectorAll('.subject-select').forEach(select => {
+            select.addEventListener('change', handleSubjectChange);
+        });
+        
+        // Add new class form
+        addClassBtn.addEventListener('click', function() {
+            classCount++;
+            classCountInput.value = classCount;
+            
+            const newForm = document.createElement('div');
+            newForm.className = 'class-form mb-3 p-3 border rounded';
+            newForm.dataset.index = classCount - 1;
+            
+            newForm.innerHTML = `
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <h6 class="mb-0">Class ${classCount}</h6>
+                    <button type="button" class="btn btn-sm btn-outline-danger remove-class-btn">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label for="subject_${classCount-1}" class="form-label">Subject <span class="text-danger">*</span></label>
+                        <select class="form-select subject-select" id="subject_${classCount-1}" name="subject_${classCount-1}" required>
+                            <option value="">Select Subject</option>
+                            {% for subject in subjects %}
+                                <option value="{{ subject.id }}">{{ subject.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="teacher_${classCount-1}" class="form-label">Teacher <span class="text-danger">*</span></label>
+                        <select class="form-select teacher-select" id="teacher_${classCount-1}" name="teacher_${classCount-1}" required disabled>
+                            <option value="">Select Subject First</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="row mb-3">
+                    <div class="col-md-4">
+                        <label for="date_${classCount-1}" class="form-label">Date <span class="text-danger">*</span></label>
+                        <input type="date" class="form-control" id="date_${classCount-1}" name="date_${classCount-1}" required min="{{ year }}-{{ month|stringformat:'02d' }}-01" max="{{ year }}-{{ month|stringformat:'02d' }}-{{ days_in_month }}">
+                    </div>
+                    <div class="col-md-4">
+                        <label for="start_time_${classCount-1}" class="form-label">Start Time <span class="text-danger">*</span></label>
+                        <input type="time" class="form-control" id="start_time_${classCount-1}" name="start_time_${classCount-1}" required>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="duration_${classCount-1}" class="form-label">Duration</label>
+                        <select class="form-select" id="duration_${classCount-1}" name="duration_${classCount-1}">
+                            <option value="30">30 minutes</option>
+                            <option value="45">45 minutes</option>
+                            <option value="60" selected>60 minutes</option>
+                            <option value="90">90 minutes</option>
+                            <option value="120">120 minutes</option>
+                        </select>
+                    </div>
+                </div>
+            `;
+            
+            classFormContainer.appendChild(newForm);
+            
+            // Add event listeners to new form
+            newForm.querySelector('.subject-select').addEventListener('change', handleSubjectChange);
+            
+            newForm.querySelector('.remove-class-btn').addEventListener('click', function() {
+                newForm.remove();
+                classCount--;
+                classCountInput.value = classCount;
+                
+                // Update form indices
+                const forms = document.querySelectorAll('.class-form');
+                forms.forEach((form, index) => {
+                    form.dataset.index = index;
+                });
+            });
+        });
+    });
+</script>
+{% endblock %}
+
+{% endblock %}

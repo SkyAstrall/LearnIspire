@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Activate Approved Teachers - LearnIspire Admin{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <div class="row">
+        <!-- Sidebar -->
+        <div class="col-md-2">
+            <!-- Include your standard sidebar here -->
+        </div>
+        
+        <!-- Main Content -->
+        <div class="col-md-10">
+            <div class="card mb-4">
+                <div class="card-header bg-warning text-white">
+                    <h5 class="mb-0">Activate Approved Teachers</h5>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-info mb-4">
+                        <h5 class="alert-heading">One-time Action</h5>
+                        <p>This is a one-time operation to activate teachers that were previously approved but not set to active status. After using this functionality, you should remove this page from your application.</p>
+                    </div>
+                    
+                    <p>There are currently <strong>{{ approved_count }}</strong> teachers with "APPROVED" status who are not yet active.</p>
+                    
+                    {% if approved_count > 0 %}
+                        <form method="post">
+                            {% csrf_token %}
+                            <div class="alert alert-warning">
+                                <p>This action will change the status of all {{ approved_count }} teachers from "APPROVED" to "ACTIVE".</p>
+                                <p>This cannot be undone. Are you sure you want to proceed?</p>
+                            </div>
+                            <button type="submit" class="btn btn-warning">
+                                <i class="fas fa-check-circle me-1"></i> Yes, Activate All Approved Teachers
+                            </button>
+                            <a href="{% url 'admin_dashboard:teachers' %}" class="btn btn-secondary ms-2">
+                                <i class="fas fa-times-circle me-1"></i> Cancel
+                            </a>
+                        </form>
+                    {% else %}
+                        <div class="alert alert-success">
+                            <p>There are no teachers that need to be activated. All approved teachers are already active.</p>
+                        </div>
+                        <a href="{% url 'admin_dashboard:teachers' %}" class="btn btn-primary">
+                            <i class="fas fa-arrow-left me-1"></i> Back to Teachers
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -56,4 +56,9 @@ urlpatterns = [
         views.ProcessTeacherPaymentView.as_view(),
         name="process_teacher_payment",
     ),
+    path(
+        "activate-approved-teachers/",
+        views.ActivateApprovedTeachersView.as_view(),
+        name="activate_approved_teachers",
+    ),
 ]

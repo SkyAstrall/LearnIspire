@@ -1,0 +1,176 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Teachers - LearnIspire Admin{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <div class="row">
+        <!-- Sidebar -->
+        <div class="col-md-2">
+            <div class="card mb-4">
+                <div class="card-header bg-dark text-white">
+                    <h5 class="mb-0">Admin Portal</h5>
+                </div>
+                <div class="list-group list-group-flush">
+                    <a href="{% url 'admin_dashboard:home' %}" class="list-group-item list-group-item-action">
+                        <i class="fa fa-dashboard me-2"></i> Dashboard
+                    </a>
+                    <a href="{% url 'admin_dashboard:students' %}" class="list-group-item list-group-item-action">
+                        <i class="fa fa-users me-2"></i> Students
+                    </a>
+                    <a href="{% url 'admin_dashboard:teachers' %}" class="list-group-item list-group-item-action active">
+                        <i class="fa fa-chalkboard-teacher me-2"></i> Teachers
+                    </a>
+                    <a href="{% url 'admin_dashboard:pending_demos' %}" class="list-group-item list-group-item-action">
+                        <i class="fa fa-clock-o me-2"></i> Pending Demos
+                        {% if pending_demo_count %}<span class="badge bg-warning ms-2">{{ pending_demo_count }}</span>{% endif %}
+                    </a>
+                    <a href="{% url 'admin_dashboard:leave_requests' %}" class="list-group-item list-group-item-action">
+                        <i class="fa fa-calendar-minus-o me-2"></i> Leave Requests
+                        {% if pending_leave_count %}<span class="badge bg-warning ms-2">{{ pending_leave_count }}</span>{% endif %}
+                    </a>
+                    <a href="{% url 'admin_dashboard:payments' %}" class="list-group-item list-group-item-action">
+                        <i class="fa fa-credit-card me-2"></i> Payments
+                    </a>
+                    <a href="{% url 'admin_dashboard:teacher_earnings' %}" class="list-group-item list-group-item-action">
+                        <i class="fa fa-money me-2"></i> Teacher Payments
+                    </a>
+                    <a href="{% url 'admin:index' %}" class="list-group-item list-group-item-action">
+                        <i class="fa fa-cogs me-2"></i> Django Admin
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="col-md-10">
+            <div class="card mb-4">
+                <div class="card-header bg-success text-white d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Teachers</h5>
+                    <div>
+                        {% if pending_approvals_count %}
+                            <a href="{% url 'admin_dashboard:teachers' %}?status=PENDING" class="btn btn-sm btn-light me-2">
+                                <i class="fas fa-user-check me-1"></i> Pending Approvals
+                                <span class="badge bg-warning ms-1">{{ pending_approvals_count }}</span>
+                            </a>
+                        {% endif %}
+                        <a href="{% url 'admin_dashboard:activate_approved_teachers' %}" class="btn btn-sm btn-warning">
+                            <i class="fas fa-user-shield me-1"></i> Activate Approved Teachers
+                        </a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <!-- Filters -->
+                    <form method="get" class="mb-4">
+                        <div class="row g-3">
+                            <div class="col-md-4">
+                                <label for="status" class="form-label">Status</label>
+                                <select name="status" id="status" class="form-select">
+                                    <option value="">All Statuses</option>
+                                    {% for value, display in status_choices %}
+                                        <option value="{{ value }}" {% if current_status == value %}selected{% endif %}>{{ display }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="subject" class="form-label">Subject</label>
+                                <select name="subject" id="subject" class="form-select">
+                                    <option value="">All Subjects</option>
+                                    {% for subject in subjects %}
+                                        <option value="{{ subject.id }}" {% if current_subject == subject.id|stringformat:"s" %}selected{% endif %}>{{ subject.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="search" class="form-label">Search</label>
+                                <div class="input-group">
+                                    <input type="text" name="search" id="search" class="form-control" placeholder="Name or Email" value="{{ search }}">
+                                    <button type="submit" class="btn btn-success">
+                                        <i class="fas fa-search"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    
+                    <!-- Teachers List -->
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Phone</th>
+                                    <th>Qualification</th>
+                                    <th>Experience</th>
+                                    <th>Subjects</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for teacher in teachers %}
+                                    <tr>
+                                        <td>{{ teacher.id }}</td>
+                                        <td>{{ teacher.user.get_full_name }}</td>
+                                        <td>{{ teacher.user.email }}</td>
+                                        <td>{{ teacher.phone|default:"-" }}</td>
+                                        <td>{{ teacher.highest_qualification|default:"-" }}</td>
+                                        <td>{{ teacher.years_of_experience|default:"0" }} years</td>
+                                        <td>
+                                            {% with subj_count=teacher.subjects.count %}
+                                                {% for subject in teacher.subjects.all %}
+                                                    {% if forloop.counter <= 3 %}
+                                                        <span class="badge bg-info me-1">{{ subject.name }}</span>
+                                                    {% endif %}
+                                                    {% if forloop.counter == 3 and subj_count > 3 %}
+                                                        <span class="badge bg-secondary">+{{ subj_count|add:"-3" }}</span>
+                                                    {% endif %}
+                                                {% empty %}
+                                                    -
+                                                {% endfor %}
+                                            {% endwith %}
+                                        </td>
+                                        <td>
+                                            <span class="badge bg-{% if teacher.status == 'ACTIVE' %}success{% elif teacher.status == 'PENDING' %}warning{% elif teacher.status == 'REJECTED' %}danger{% else %}info{% endif %}">
+                                                {{ teacher.get_status_display }}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <a href="{% url 'admin_dashboard:teacher_detail' teacher_id=teacher.id %}" class="btn btn-sm btn-info">
+                                                <i class="fas fa-eye"></i>
+                                            </a>
+                                            {% if teacher.status == 'PENDING' %}
+                                                <form method="post" action="{% url 'admin_dashboard:teacher_approval' teacher_id=teacher.id %}" class="d-inline">
+                                                    {% csrf_token %}
+                                                    <input type="hidden" name="action" value="approve">
+                                                    <button type="submit" class="btn btn-sm btn-success">
+                                                        <i class="fas fa-check"></i>
+                                                    </button>
+                                                </form>
+                                                <form method="post" action="{% url 'admin_dashboard:teacher_approval' teacher_id=teacher.id %}" class="d-inline">
+                                                    {% csrf_token %}
+                                                    <input type="hidden" name="action" value="reject">
+                                                    <button type="submit" class="btn btn-sm btn-danger">
+                                                        <i class="fas fa-times"></i>
+                                                    </button>
+                                                </form>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                {% empty %}
+                                    <tr>
+                                        <td colspan="9" class="text-center">No teachers found matching the criteria.</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

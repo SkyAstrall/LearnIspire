@@ -1,0 +1,350 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Schedule Demo - {{ student.get_full_name }} - LearnIspire{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <div class="row">
+        <!-- Sidebar -->
+        <div class="col-md-2">
+            <div class="card mb-4">
+                <div class="card-header bg-dark text-white">
+                    <h5 class="mb-0">Admin Portal</h5>
+                </div>
+                <div class="list-group list-group-flush">
+                    <a href="{% url 'admin_dashboard:home' %}" class="list-group-item list-group-item-action">
+                        <i class="fa fa-dashboard me-2"></i> Dashboard
+                    </a>
+                    <a href="{% url 'admin_dashboard:students' %}" class="list-group-item list-group-item-action">
+                        <i class="fa fa-users me-2"></i> Students
+                    </a>
+                    <a href="{% url 'admin_dashboard:teachers' %}" class="list-group-item list-group-item-action">
+                        <i class="fa fa-chalkboard-teacher me-2"></i> Teachers
+                    </a>
+                    <a href="{% url 'admin_dashboard:pending_demos' %}" class="list-group-item list-group-item-action active">
+                        <i class="fa fa-clock-o me-2"></i> Pending Demos
+                        {% if pending_demo_count %}<span class="badge bg-warning ms-2">{{ pending_demo_count }}</span>{% endif %}
+                    </a>
+                    <a href="{% url 'admin_dashboard:leave_requests' %}" class="list-group-item list-group-item-action">
+                        <i class="fa fa-calendar-minus-o me-2"></i> Leave Requests
+                        {% if pending_leave_count %}<span class="badge bg-warning ms-2">{{ pending_leave_count }}</span>{% endif %}
+                    </a>
+                    <a href="{% url 'admin_dashboard:payments' %}" class="list-group-item list-group-item-action">
+                        <i class="fa fa-credit-card me-2"></i> Payments
+                    </a>
+                    <a href="{% url 'admin_dashboard:teacher_earnings' %}" class="list-group-item list-group-item-action">
+                        <i class="fa fa-money me-2"></i> Teacher Payments
+                    </a>
+                    <a href="{% url 'admin:index' %}" class="list-group-item list-group-item-action">
+                        <i class="fa fa-cogs me-2"></i> Django Admin
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="col-md-10">
+            <div class="row mb-4">
+                <div class="col-12">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="{% url 'admin_dashboard:pending_demos' %}">Pending Demos</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Schedule Demo for {{ student.get_full_name }}</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+            
+            <div class="row mb-4">
+                <div class="col-md-4">
+                    <!-- Student Info Card -->
+                    <div class="card mb-4">
+                        <div class="card-header bg-white">
+                            <h5 class="mb-0">Student Information</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <label class="form-label text-muted">Name</label>
+                                <p class="fs-5">{{ student.get_full_name }}</p>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label text-muted">Grade</label>
+                                <p>{{ profile.grade.name|default:"Not set" }}</p>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label text-muted">Board</label>
+                                <p>{{ profile.board.name|default:"Not set" }}</p>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label text-muted">Contact</label>
+                                <p>{{ profile.phone_number }}</p>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label text-muted">Email</label>
+                                <p>{{ student.email }}</p>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label text-muted">Selected Subjects</label>
+                                <div>
+                                    {% for subject in subjects %}
+                                        <span class="badge bg-primary mb-1 me-1">{{ subject.name }}</span>
+                                    {% empty %}
+                                        <p class="text-muted">No subjects selected</p>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Student Availability Card -->
+                    <div class="card">
+                        <div class="card-header bg-white">
+                            <h5 class="mb-0">Student Availability</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-sm">
+                                    <thead>
+                                        <tr>
+                                            <th>Day</th>
+                                            <th>Time Slots</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for day_num, day_name in days_of_week %}
+                                        <tr>
+                                            <td>{{ day_name }}</td>
+                                            <td>
+                                                {% for slot in availability %}
+                                                    {% if slot.day_of_week == day_num %}
+                                                        <span class="badge bg-info me-1">
+                                                            {{ slot.start_time|time:"h:i A" }} - {{ slot.end_time|time:"h:i A" }}
+                                                        </span>
+                                                    {% endif %}
+                                                {% empty %}
+                                                    <span class="text-muted">No availability</span>
+                                                {% endfor %}
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-8">
+                    <!-- Schedule Demo Form Card -->
+                    <div class="card">
+                        <div class="card-header bg-white">
+                            <h5 class="mb-0">Schedule Demo Class</h5>
+                        </div>
+                        <div class="card-body">
+                            <form method="post">
+                                {% csrf_token %}
+                                
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label for="subject" class="form-label">Subject <span class="text-danger">*</span></label>
+                                        <select class="form-select" id="subject" name="subject" required>
+                                            <option value="">Select Subject</option>
+                                            {% for subject in subjects %}
+                                                <option value="{{ subject.id }}">{{ subject.name }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="teacher" class="form-label">Teacher <span class="text-danger">*</span></label>
+                                        <select class="form-select" id="teacher" name="teacher" required>
+                                            <option value="">Select Teacher</option>
+                                            {% for teacher in eligible_teachers %}
+                                                <option value="{{ teacher.user.id }}">{{ teacher.user.get_full_name }} ({{ teacher.years_of_experience }} yrs exp)</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label for="date" class="form-label">Date <span class="text-danger">*</span></label>
+                                        <input type="date" class="form-control" id="date" name="date" required min="{{ now|date:'Y-m-d' }}">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="start_time" class="form-label">Start Time <span class="text-danger">*</span></label>
+                                        <input type="time" class="form-control" id="start_time" name="start_time" required>
+                                    </div>
+                                </div>
+                                
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label for="duration" class="form-label">Duration (minutes)</label>
+                                        <select class="form-select" id="duration" name="duration">
+                                            <option value="30">30 minutes</option>
+                                            <option value="45">45 minutes</option>
+                                            <option value="60" selected>60 minutes</option>
+                                            <option value="90">90 minutes</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <div class="alert alert-warning">
+                                    <i class="fas fa-info-circle me-2"></i>
+                                    <strong>Important:</strong> Please ensure the selected time slot aligns with both student and teacher availability.
+                                </div>
+                                
+                                <div class="d-flex justify-content-end mt-4">
+                                    <a href="{% url 'admin_dashboard:pending_demos' %}" class="btn btn-outline-secondary me-2">Cancel</a>
+                                    <button type="submit" class="btn btn-primary">Schedule Demo</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    
+                    <!-- Teacher Availability Section -->
+                    <div class="card mt-4">
+                        <div class="card-header bg-white">
+                            <h5 class="mb-0">Teacher Availability</h5>
+                        </div>
+                        <div class="card-body">
+                            <div id="teacherAvailabilitySection">
+                                <p class="text-center text-muted">
+                                    <i class="fas fa-user-clock fa-2x mb-2"></i><br>
+                                    Please select a teacher to view their availability
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Subject change handler - to filter teachers based on subject
+        const subjectSelect = document.getElementById('subject');
+        const teacherSelect = document.getElementById('teacher');
+        const teachersBySubject = {};
+         {% for teacher in eligible_teachers %}
+            {% for subject in teacher.subjects.all %}
+                const subjectId = {{ subject.id }};
+                if (!teachersBySubject[subjectId]) {
+                    teachersBySubject[subjectId] = [];
+                }
+                const teacherData = {
+                    id: {{ teacher.user.id }},
+                    name: "{{ teacher.user.get_full_name }}",
+                    experience: {{ teacher.years_of_experience|default:0 }}
+                };
+                teachersBySubject[subjectId].push(teacherData);
+                console.log(`Added teacher ${teacherData.name} to subject ${subjectId}`);
+            {% endfor %}
+        {% endfor %}
+        console.log("Teacher mapping by subject:", teachersBySubject);
+        subjectSelect.addEventListener('change', function() {
+            const subjectId = this.value;
+            console.log(`Subject selected: ${subjectId}`);
+            
+            // Reset teacher dropdown
+            teacherSelect.innerHTML = '<option value="">Select Teacher</option>';
+            
+            if (!subjectId) return;
+            
+            // Filter teachers based on subject
+            // This would typically be an AJAX call to get teachers for this subject
+            // For demo purposes, we're using the initial list and just filtering it
+            
+            // Then populate teacher dropdown with filtered teachers
+            // This is a placeholder for the actual implementation
+        });
+        
+        // Teacher change handler - to show teacher availability
+        teacherSelect.addEventListener('change', function() {
+            const teacherId = this.value;
+            const availabilitySection = document.getElementById('teacherAvailabilitySection');
+            
+            if (!teacherId) {
+                availabilitySection.innerHTML = '<p class="text-center text-muted"><i class="fas fa-user-clock fa-2x mb-2"></i><br>Please select a teacher to view their availability</p>';
+                return;
+            }
+            
+            // Fetch and display teacher availability
+            // This would typically be an AJAX call to get teacher availability
+            // For demo purposes, we'll just show a placeholder
+            availabilitySection.innerHTML = '<div class="text-center"><div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div><p class="mt-2">Loading availability...</p></div>';
+            
+            // Simulate loading
+            setTimeout(() => {
+                availabilitySection.innerHTML = `
+                    <div class="table-responsive">
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Day</th>
+                                    <th>Time Slots</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Monday</td>
+                                    <td>
+                                        <span class="badge bg-info me-1">09:00 AM - 11:00 AM</span>
+                                        <span class="badge bg-info me-1">02:00 PM - 04:00 PM</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Tuesday</td>
+                                    <td>
+                                        <span class="badge bg-info me-1">10:00 AM - 12:00 PM</span>
+                                        <span class="badge bg-info me-1">03:00 PM - 05:00 PM</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Wednesday</td>
+                                    <td>
+                                        <span class="badge bg-info me-1">09:00 AM - 11:00 AM</span>
+                                        <span class="badge bg-info me-1">01:00 PM - 03:00 PM</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Thursday</td>
+                                    <td>
+                                        <span class="badge bg-info me-1">10:00 AM - 12:00 PM</span>
+                                        <span class="badge bg-info me-1">04:00 PM - 06:00 PM</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Friday</td>
+                                    <td>
+                                        <span class="badge bg-info me-1">11:00 AM - 01:00 PM</span>
+                                        <span class="badge bg-info me-1">03:00 PM - 05:00 PM</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Saturday</td>
+                                    <td>
+                                        <span class="badge bg-info me-1">09:00 AM - 11:00 AM</span>
+                                        <span class="badge bg-info me-1">02:00 PM - 04:00 PM</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Sunday</td>
+                                    <td>
+                                        <span class="text-muted">Not available</span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                `;
+            }, 1000);
+        });
+    });
+</script>
+{% endblock %}
+
+{% endblock %}

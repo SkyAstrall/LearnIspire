@@ -49,16 +49,16 @@
                                 {{ user.first_name|default:user.email }}
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end">
-                                {% if user.is_student %}
-                                    <li><a class="dropdown-item" href="{% url 'student_dashboard:home' %}">Dashboard</a></li>
-                                    <li><a class="dropdown-item" href="{% url 'student_dashboard:classes' %}">My Classes</a></li>
-                                    <li><a class="dropdown-item" href="{% url 'student_dashboard:profile' %}">Profile</a></li>
-                                {% elif user.is_teacher %}
+                                {% if user.is_superuser %}
+                                    <li><a class="dropdown-item" href="{% url 'admin_dashboard:home' %}">Admin Portal</a></li>
+                                    {% elif user.is_teacher %}
                                     <li><a class="dropdown-item" href="{% url 'teacher_dashboard:home' %}">Dashboard</a></li>
                                     <li><a class="dropdown-item" href="{% url 'teacher_dashboard:classes' %}">My Classes</a></li>
                                     <li><a class="dropdown-item" href="{% url 'teacher_dashboard:profile' %}">Profile</a></li>
-                                {% elif user.is_admin_user %}
-                                    <li><a class="dropdown-item" href="{% url 'admin_dashboard:home' %}">Admin Portal</a></li>
+                                    {% elif user.is_student %}
+                                    <li><a class="dropdown-item" href="{% url 'student_dashboard:home' %}">Dashboard</a></li>
+                                    <li><a class="dropdown-item" href="{% url 'student_dashboard:classes' %}">My Classes</a></li>
+                                    <li><a class="dropdown-item" href="{% url 'student_dashboard:profile' %}">Profile</a></li>
                                 {% endif %}
                                 <li><hr class="dropdown-divider"></li>
                                 <li>

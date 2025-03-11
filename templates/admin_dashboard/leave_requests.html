@@ -1,0 +1,309 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Leave Requests - Admin Dashboard - LearnIspire{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <div class="row">
+        <!-- Sidebar -->
+        <div class="col-md-2">
+            <div class="card mb-4">
+                <div class="card-header bg-dark text-white">
+                    <h5 class="mb-0">Admin Portal</h5>
+                </div>
+                <div class="list-group list-group-flush">
+                    <a href="{% url 'admin_dashboard:home' %}" class="list-group-item list-group-item-action">
+                        <i class="fa fa-dashboard me-2"></i> Dashboard
+                    </a>
+                    <a href="{% url 'admin_dashboard:students' %}" class="list-group-item list-group-item-action">
+                        <i class="fa fa-users me-2"></i> Students
+                    </a>
+                    <a href="{% url 'admin_dashboard:teachers' %}" class="list-group-item list-group-item-action">
+                        <i class="fa fa-chalkboard-teacher me-2"></i> Teachers
+                    </a>
+                    <a href="{% url 'admin_dashboard:pending_demos' %}" class="list-group-item list-group-item-action">
+                        <i class="fa fa-clock-o me-2"></i> Pending Demos
+                        {% if pending_demo_count %}<span class="badge bg-warning ms-2">{{ pending_demo_count }}</span>{% endif %}
+                    </a>
+                    <a href="{% url 'admin_dashboard:leave_requests' %}" class="list-group-item list-group-item-action active">
+                        <i class="fa fa-calendar-minus-o me-2"></i> Leave Requests
+                        {% if pending_leave_count %}<span class="badge bg-warning ms-2">{{ pending_leave_count }}</span>{% endif %}
+                    </a>
+                    <a href="{% url 'admin_dashboard:payments' %}" class="list-group-item list-group-item-action">
+                        <i class="fa fa-credit-card me-2"></i> Payments
+                    </a>
+                    <a href="{% url 'admin_dashboard:teacher_earnings' %}" class="list-group-item list-group-item-action">
+                        <i class="fa fa-money me-2"></i> Teacher Payments
+                    </a>
+                    <a href="{% url 'admin:index' %}" class="list-group-item list-group-item-action">
+                        <i class="fa fa-cogs me-2"></i> Django Admin
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="col-md-10">
+            <div class="row mb-4">
+                <div class="col-12 d-flex justify-content-between align-items-center">
+                    <h2>Leave Requests</h2>
+                    <div class="btn-group" role="group">
+                        <a href="{% url 'admin_dashboard:leave_requests' %}?status=PENDING" class="btn btn-{% if current_status == 'PENDING' %}primary{% else %}outline-primary{% endif %}">
+                            Pending
+                            {% if pending_leave_count %}<span class="badge bg-danger ms-1">{{ pending_leave_count }}</span>{% endif %}
+                        </a>
+                        <a href="{% url 'admin_dashboard:leave_requests' %}?status=APPROVED" class="btn btn-{% if current_status == 'APPROVED' %}primary{% else %}outline-primary{% endif %}">Approved</a>
+                        <a href="{% url 'admin_dashboard:leave_requests' %}?status=REJECTED" class="btn btn-{% if current_status == 'REJECTED' %}primary{% else %}outline-primary{% endif %}">Rejected</a>
+                        <a href="{% url 'admin_dashboard:leave_requests' %}" class="btn btn-{% if current_status == '' %}primary{% else %}outline-primary{% endif %}">All</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Info Alert for Pending Requests -->
+            {% if current_status == 'PENDING' and pending_leave_count %}
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="alert alert-warning">
+                        <i class="fas fa-info-circle me-2"></i>
+                        There {% if pending_leave_count == 1 %}is{% else %}are{% endif %} <strong>{{ pending_leave_count }}</strong> pending leave request{% if pending_leave_count != 1 %}s{% endif %} that require{% if pending_leave_count == 1 %}s{% endif %} your approval.
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+            
+            <!-- Leave Requests List -->
+            <div class="card">
+                <div class="card-header bg-white">
+                    <div class="row align-items-center">
+                        <div class="col">
+                            <h5 class="mb-0">
+                                {% if current_status == 'PENDING' %}
+                                    Pending Leave Requests
+                                {% elif current_status == 'APPROVED' %}
+                                    Approved Leave Requests
+                                {% elif current_status == 'REJECTED' %}
+                                    Rejected Leave Requests
+                                {% else %}
+                                    All Leave Requests
+                                {% endif %}
+                            </h5>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Teacher</th>
+                                    <th>Leave Type</th>
+                                    <th>From</th>
+                                    <th>To</th>
+                                    <th>Duration</th>
+                                    <th>Status</th>
+                                    <th>Requested On</th>
+                                    <th>Reason</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for leave in leave_requests %}
+                                <tr>
+                                    <td>
+                                        <a href="{% url 'admin_dashboard:teacher_detail' teacher_id=leave.user.teacherprofile.id %}">
+                                            {{ leave.user.get_full_name }}
+                                        </a>
+                                    </td>
+                                    <td>{{ leave.get_leave_type_display }}</td>
+                                    <td>{{ leave.start_date|date:"d M Y" }}</td>
+                                    <td>{{ leave.end_date|date:"d M Y" }}</td>
+                                    <td>{{ leave.duration }} day(s)</td>
+                                    <td>
+                                        <span class="badge bg-{% if leave.status == 'APPROVED' %}success{% elif leave.status == 'PENDING' %}warning{% elif leave.status == 'REJECTED' %}danger{% else %}secondary{% endif %}">
+                                            {{ leave.get_status_display }}
+                                        </span>
+                                    </td>
+                                    <td>{{ leave.created_at|date:"d M Y" }}</td>
+                                    <td>
+                                        <button class="btn btn-sm btn-outline-info" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ leave.reason }}">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                    </td>
+                                    <td>
+                                        {% if leave.status == 'PENDING' %}
+                                        <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#leaveRequestModal{{ leave.id }}">
+                                            Review
+                                        </button>
+                                        {% else %}
+                                        <button class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#leaveDetailModal{{ leave.id }}">
+                                            Details
+                                        </button>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                
+                                {% if leave.status == 'PENDING' %}
+                                <!-- Review Modal -->
+                                <div class="modal fade" id="leaveRequestModal{{ leave.id }}" tabindex="-1" aria-labelledby="leaveRequestModalLabel{{ leave.id }}" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="leaveRequestModalLabel{{ leave.id }}">Review Leave Request</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="mb-3">
+                                                    <label class="form-label fw-bold">Teacher</label>
+                                                    <p>{{ leave.user.get_full_name }}</p>
+                                                </div>
+                                                <div class="row mb-3">
+                                                    <div class="col-md-6">
+                                                        <label class="form-label fw-bold">Leave Type</label>
+                                                        <p>{{ leave.get_leave_type_display }}</p>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <label class="form-label fw-bold">Duration</label>
+                                                        <p>{{ leave.duration }} day(s)</p>
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-3">
+                                                    <div class="col-md-6">
+                                                        <label class="form-label fw-bold">From Date</label>
+                                                        <p>{{ leave.start_date|date:"d M Y" }}</p>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <label class="form-label fw-bold">To Date</label>
+                                                        <p>{{ leave.end_date|date:"d M Y" }}</p>
+                                                    </div>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label class="form-label fw-bold">Reason</label>
+                                                    <p>{{ leave.reason }}</p>
+                                                </div>
+                                                
+                                                <form method="post" action="{% url 'admin_dashboard:leave_request_action' leave_id=leave.id %}">
+                                                    {% csrf_token %}
+                                                    <div class="mb-3">
+                                                        <label for="comments{{ leave.id }}" class="form-label fw-bold">Admin Comments</label>
+                                                        <textarea class="form-control" id="comments{{ leave.id }}" name="comments" rows="3" placeholder="Add your comments here..."></textarea>
+                                                    </div>
+                                                    <div class="alert alert-warning">
+                                                        <i class="fas fa-exclamation-triangle me-2"></i>
+                                                        Please review the teacher's schedule before approving or rejecting the leave request.
+                                                    </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                <button type="submit" name="action" value="reject" class="btn btn-danger">Reject</button>
+                                                <button type="submit" name="action" value="approve" class="btn btn-success">Approve</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% else %}
+                                <!-- Details Modal -->
+                                <div class="modal fade" id="leaveDetailModal{{ leave.id }}" tabindex="-1" aria-labelledby="leaveDetailModalLabel{{ leave.id }}" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="leaveDetailModalLabel{{ leave.id }}">Leave Request Details</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="mb-3">
+                                                    <label class="form-label fw-bold">Teacher</label>
+                                                    <p>{{ leave.user.get_full_name }}</p>
+                                                </div>
+                                                <div class="row mb-3">
+                                                    <div class="col-md-6">
+                                                        <label class="form-label fw-bold">Leave Type</label>
+                                                        <p>{{ leave.get_leave_type_display }}</p>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <label class="form-label fw-bold">Duration</label>
+                                                        <p>{{ leave.duration }} day(s)</p>
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-3">
+                                                    <div class="col-md-6">
+                                                        <label class="form-label fw-bold">From Date</label>
+                                                        <p>{{ leave.start_date|date:"d M Y" }}</p>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <label class="form-label fw-bold">To Date</label>
+                                                        <p>{{ leave.end_date|date:"d M Y" }}</p>
+                                                    </div>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label class="form-label fw-bold">Reason</label>
+                                                    <p>{{ leave.reason }}</p>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label class="form-label fw-bold">Status</label>
+                                                    <p>
+                                                        <span class="badge bg-{% if leave.status == 'APPROVED' %}success{% elif leave.status == 'REJECTED' %}danger{% else %}secondary{% endif %}">
+                                                            {{ leave.get_status_display }}
+                                                        </span>
+                                                    </p>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label class="form-label fw-bold">Reviewed By</label>
+                                                    <p>{{ leave.reviewed_by.get_full_name|default:"Not reviewed yet" }}</p>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label class="form-label fw-bold">Admin Comments</label>
+                                                    <p>{{ leave.admin_comments|default:"No comments provided" }}</p>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endif %}
+                                {% empty %}
+                                <tr>
+                                    <td colspan="9" class="text-center py-4">
+                                        <div class="py-5">
+                                            <i class="fas fa-calendar-check text-success fa-3x mb-3"></i>
+                                            <h5>No leave requests found</h5>
+                                            <p class="text-muted">
+                                                {% if current_status == 'PENDING' %}
+                                                There are no pending leave requests to review.
+                                                {% elif current_status == 'APPROVED' %}
+                                                No approved leave requests available.
+                                                {% elif current_status == 'REJECTED' %}
+                                                No rejected leave requests available.
+                                                {% else %}
+                                                No leave requests have been submitted.
+                                                {% endif %}
+                                            </p>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% block extra_js %}
+<script>
+    // Initialize tooltips
+    document.addEventListener('DOMContentLoaded', function() {
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        });
+    });
+</script>
+{% endblock %}
+
+{% endblock %}

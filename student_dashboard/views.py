@@ -94,12 +94,6 @@ class StudentProfileView(StudentAccessMixin, View):
             first_name = request.POST.get("first_name", "").strip()
             last_name = request.POST.get("last_name", "").strip()
 
-            # Print debug info
-            print(f"Updating user: {request.user.username}")
-            print(
-                f"Current values - First name: '{request.user.first_name}', Last name: '{request.user.last_name}'"
-            )
-            print(f"New values - First name: '{first_name}', Last name: '{last_name}'")
 
             # Update user directly in the database to ensure it's saved
             from django.contrib.auth import get_user_model
@@ -121,8 +115,6 @@ class StudentProfileView(StudentAccessMixin, View):
 
             if grade_id and board_id:
                 # Print debug info
-                print(f"Updating profile: {profile.id}")
-                print(f"New values - Grade ID: {grade_id}, Board ID: {board_id}")
 
                 # Update profile
                 profile.grade_id = grade_id
@@ -195,6 +187,9 @@ class SubjectSelectionView(StudentAccessMixin, View):
         return redirect("student_dashboard:availability")
 
 
+# Add these modified methods to your views.py file
+
+
 class AvailabilitySetupView(StudentAccessMixin, View):
     template_name = "student_dashboard/availability_setup.html"
 
@@ -235,34 +230,48 @@ class AvailabilitySetupView(StudentAccessMixin, View):
         start_times = request.POST.getlist("start_time")
         end_times = request.POST.getlist("end_time")
 
-        # Clear existing availability
-        Availability.objects.filter(user=request.user).delete()
 
         # Add new availability slots
+        created_slots = []
         for i in range(len(days)):
             if i < len(start_times) and i < len(end_times):
-                Availability.objects.create(
+                slot = Availability.objects.create(
                     user=request.user,
                     day_of_week=int(days[i]),
                     start_time=start_times[i],
                     end_time=end_times[i],
                     is_recurring=True,
                 )
+                created_slots.append(slot.id)
 
-        # Check if minimum 3 slots are provided
-        if Availability.objects.filter(user=request.user).count() >= 3:
-            print(Availability.objects.filter(user=request.user).count())
+
+        # Force database commit to ensure all changes are saved
+        from django.db import transaction
+
+        transaction.commit()
+
+        # Check if minimum 3 slots are provided - with additional debugging
+        current_slots = Availability.objects.filter(user=request.user)
+        slot_count = current_slots.count()
+
+
+        if slot_count >= 3:
             # Update status
             if profile.status == "PRICING_REQUESTED":
                 profile.update_status("AVAILABILITY_SET")
+                
 
             messages.success(request, "Availability settings saved successfully.")
+
             return redirect("student_dashboard:demo_request")
         else:
             messages.error(
-                request, "Please provide at least 3 availability slots per week."
+                request,
+                f"Please provide at least 3 availability slots per week. Currently you have {slot_count}.",
             )
+            
             return redirect("student_dashboard:availability")
+from scheduling.models import Availability, Class
 
 
 class DemoRequestView(StudentAccessMixin, View):
@@ -274,12 +283,15 @@ class DemoRequestView(StudentAccessMixin, View):
         except StudentProfile.DoesNotExist:
             messages.error(request, "Please complete your profile first.")
             return redirect("student_dashboard:profile")
-        print(Availability.objects.filter(user=request.user).count())
-        # Check if availability is set
-        if Availability.objects.filter(user=request.user).count() < 3:
-            print(Availability.objects.filter(user=request.user).count())
+
+        # Check if availability is set - with enhanced debugging
+        availabilities = Availability.objects.filter(user=request.user)
+        availability_count = availabilities.count()
+
+        if availability_count < 3:
             messages.error(
-                request, "Please set your availability first (minimum 3 slots)."
+                request,
+                f"Please set your availability first (minimum 3 slots). Currently found: {availability_count}",
             )
             return redirect("student_dashboard:availability")
 
@@ -291,12 +303,14 @@ class DemoRequestView(StudentAccessMixin, View):
             student=request.user, is_demo=True, status__in=["SCHEDULED", "IN_PROGRESS"]
         ).first()
 
+
         context = {
             "profile": profile,
             "subjects": subjects,
             "demo_class": demo_class,
+            "Availability": availability_count,
         }
-        print(context)
+        
 
         return render(request, self.template_name, context)
 

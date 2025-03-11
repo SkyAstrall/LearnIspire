@@ -1,22 +1,8 @@
 from django import template
 from datetime import datetime, timedelta
 
+
 register = template.Library()
-
-@register.filter
-def get_pricing_rule(subject, profile):
-    """Get pricing rule for a subject based on profile's grade and board"""
-    return subject.pricing_rules.filter(grade=profile.grade, board=profile.board).first()
-
-@register.filter
-def multiply(value, arg):
-    """Multiply the arg and the value"""
-    try:
-        return float(value) * float(arg)
-    except (ValueError, TypeError):
-        return 0
-
-
 @register.filter
 def add_days(value, days):
     """Add a given number of days to a date."""
@@ -39,18 +25,13 @@ def days_until(start_date, end_date):
 
 
 @register.filter
-def filter_by_day(classes, day):
+def filter_by_day(slots, day):
     """Filter classes by the given day."""
-    try:
-        if isinstance(day, str):
-            # If day is a date string
-            day_date = datetime.strptime(day, "%Y-%m-%d").date()
-            return [cls for cls in classes if cls.start_time.date() == day_date]
-        else:
-            # If day is a weekday number (0-6)
-            return [cls for cls in classes if cls.start_time.weekday() == int(day)]
-    except (ValueError, TypeError, AttributeError):
-        return []
+    filtered_slots = []
+    for slot in slots:
+        if slot.day_of_week == int(day):
+            filtered_slots.append(slot)
+    return filtered_slots
 
 
 @register.filter
