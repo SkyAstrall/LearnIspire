@@ -71,7 +71,7 @@ class StudentProfileView(StudentAccessMixin, View):
         # Get available grades and boards
         grades = Grade.objects.filter(is_active=True)
         boards = Board.objects.filter(is_active=True)
-
+        print(profile.user.phone_number)
         context = {
             "profile": profile,
             "grades": grades,
@@ -229,7 +229,10 @@ class AvailabilitySetupView(StudentAccessMixin, View):
         days = request.POST.getlist("day")
         start_times = request.POST.getlist("start_time")
         end_times = request.POST.getlist("end_time")
+        slot_ids = request.POST.getlist("slot_id")
 
+        # First, delete all existing availability slots
+        Availability.objects.filter(user=request.user).delete()
 
         # Add new availability slots
         created_slots = []
@@ -244,32 +247,26 @@ class AvailabilitySetupView(StudentAccessMixin, View):
                 )
                 created_slots.append(slot.id)
 
-
         # Force database commit to ensure all changes are saved
         from django.db import transaction
-
         transaction.commit()
 
-        # Check if minimum 3 slots are provided - with additional debugging
+        # Check if minimum 3 slots are provided
         current_slots = Availability.objects.filter(user=request.user)
         slot_count = current_slots.count()
-
 
         if slot_count >= 3:
             # Update status
             if profile.status == "PRICING_REQUESTED":
                 profile.update_status("AVAILABILITY_SET")
-                
-
+            
             messages.success(request, "Availability settings saved successfully.")
-
             return redirect("student_dashboard:demo_request")
         else:
             messages.error(
                 request,
                 f"Please provide at least 3 availability slots per week. Currently you have {slot_count}.",
             )
-            
             return redirect("student_dashboard:availability")
 from scheduling.models import Availability, Class
 
@@ -368,6 +365,7 @@ class ClassesListView(StudentAccessMixin, View):
         context = {
             "upcoming_classes": upcoming_classes,
             "past_classes": past_classes,
+            "meetings": Class.meeting_link,
         }
 
         return render(request, self.template_name, context)

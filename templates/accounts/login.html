@@ -1,11 +1,17 @@
-{% extends "base.html" %}
+<!-- Add this at the very top of login.html and signup.html -->
+<div style="background:red; color:white; padding:5px;">
+  Debug: CSS Link: {% static 'css/style.css' %}
+</div>
+{% extends 'base.html' %}
 {% load i18n %}
+{% load static %} 
+
 {% load account %}
 
 {% block title %}{% trans "Sign In" %} - LearnIspire{% endblock %}
 
 {% block content %}
-<section class="py-5 bg-primary text-white">
+<section class="py-5 bg-primary text-white login-section">
     <div class="container">
         <div class="row">
             <div class="col-lg-8 mx-auto text-center">

@@ -17,24 +17,14 @@ class GoogleMeetService:
     def get_service():
         """Get Google Calendar API service."""
         try:
-            # Load credentials from settings
-            # In a real implementation, you would likely store the service account
-            # credentials securely and load them here
+            # Load credentials from service account file
+            credentials = service_account.Credentials.from_service_account_file(
+                settings.GOOGLE_SERVICE_ACCOUNT_FILE,
+                scopes=["https://www.googleapis.com/auth/calendar"],
+            )
 
-            # This is a simplified example - in production, use environment
-            # variables or secure storage for credentials
-
-            # credentials = service_account.Credentials.from_service_account_file(
-            #     settings.GOOGLE_SERVICE_ACCOUNT_FILE,
-            #     scopes=['https://www.googleapis.com/auth/calendar']
-            # )
-
-            # For demonstration purposes, we'll just return None
-            # In a real implementation, return the actual service
-            # return build('calendar', 'v3', credentials=credentials)
-
-            logger.warning("Using mock Google Calendar service in development mode")
-            return None
+            # Build and return the service
+            return build("calendar", "v3", credentials=credentials)
 
         except Exception as e:
             logger.error(f"Error creating Google Calendar service: {str(e)}")
@@ -43,38 +33,12 @@ class GoogleMeetService:
     @classmethod
     def create_meeting(cls, class_session):
         """Create a Google Meet meeting for a class session."""
-        try:
-            # For demonstration purposes, create a mock meeting link
-            # In a real implementation, use the Google Calendar API to create a meeting
+        # Always try to create a real meeting first
+        result = cls.create_real_meeting(class_session)
 
-            # Generate a unique meeting ID
-            meeting_id = str(uuid.uuid4()).replace("-", "")[:12]
-
-            # Format start and end time
-            start_time = class_session.start_time
-            end_time = class_session.end_time
-
-            # Create mock meeting link
-            meeting_link = f"https://meet.google.com/{meeting_id}"
-
-            # Update class session with meeting details
-            class_session.meeting_link = meeting_link
-            class_session.meeting_id = meeting_id
-            class_session.save()
-
-            logger.info(
-                f"Created mock meeting: {meeting_link} for class {class_session.id}"
-            )
-
-            return {
-                "meeting_link": meeting_link,
-                "meeting_id": meeting_id,
-                "success": True,
-            }
-
-        except Exception as e:
-            logger.error(f"Error creating meeting: {str(e)}")
-            return {"success": False, "error": str(e)}
+        # If real meeting creation fails, the create_real_meeting method
+        # will already fall back to the mock method
+        return result
 
     @classmethod
     def create_real_meeting(cls, class_session):
@@ -83,7 +47,7 @@ class GoogleMeetService:
 
         if not service:
             logger.error("Failed to create Calendar service")
-            return cls.create_meeting(class_session)  # Fallback to mock method
+            return cls._create_mock_meeting(class_session)  # Fallback to mock method
 
         try:
             # Format event details
@@ -156,7 +120,7 @@ class GoogleMeetService:
                 logger.info(
                     f"Created meeting: {meeting_link} for class {class_session.id}"
                 )
-
+                print("Created meeting: {meeting_link} for class {class_session.id}")
                 return {
                     "meeting_link": meeting_link,
                     "meeting_id": meeting_id,
@@ -167,8 +131,40 @@ class GoogleMeetService:
                 logger.error(
                     "Failed to create meeting: No conference link found in response"
                 )
-                return cls.create_meeting(class_session)  # Fallback to mock method
+                return cls._create_mock_meeting(
+                    class_session
+                )  # Fallback to mock method
 
         except Exception as e:
             logger.error(f"Error creating real meeting: {str(e)}")
-            return cls.create_meeting(class_session)  # Fallback to mock method
+            return cls._create_mock_meeting(class_session)  # Fallback to mock method
+
+    @classmethod
+    def _create_mock_meeting(cls, class_session):
+        """Create a mock Google Meet meeting (for development/fallback)."""
+        try:
+            # Generate a unique meeting ID
+            meeting_id = str(uuid.uuid4()).replace("-", "")[:12]
+
+            # Create mock meeting link
+            meeting_link = f"https://meet.google.com/{meeting_id}"
+
+            # Update class session with meeting details
+            class_session.meeting_link = meeting_link
+            class_session.meeting_id = meeting_id
+            class_session.save()
+
+            logger.info(
+                f"Created mock meeting: {meeting_link} for class {class_session.id}"
+            )
+
+            return {
+                "meeting_link": meeting_link,
+                "meeting_id": meeting_id,
+                "success": True,
+                "is_mock": True,
+            }
+
+        except Exception as e:
+            logger.error(f"Error creating mock meeting: {str(e)}")
+            return {"success": False, "error": str(e)}

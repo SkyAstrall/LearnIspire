@@ -36,9 +36,7 @@
                     <a href="{% url 'admin_dashboard:teacher_earnings' %}" class="list-group-item list-group-item-action active">
                         <i class="fa fa-money me-2"></i> Teacher Payments
                     </a>
-                    <a href="{% url 'admin:index' %}" class="list-group-item list-group-item-action">
-                        <i class="fa fa-cogs me-2"></i> Django Admin
-                    </a>
+                    
                 </div>
             </div>
         </div>
@@ -148,10 +146,14 @@
                                 <tr>
                                     <td>{{ earning.id }}</td>
                                     <td>
-                                        <a href="{% url 'admin_dashboard:teacher_detail' teacher_id=earning.teacher.teacherprofile.id %}">
-                                            {{ earning.teacher.get_full_name }}
-                                        </a>
-                                    </td>
+    {% if earning.teacher.teacherprofile and earning.teacher.teacherprofile.id %}
+        <a href="{% url 'admin_dashboard:teacher_detail' teacher_id=earning.teacher.teacherprofile.id %}">
+            {{ earning.teacher.get_full_name }}
+        </a>
+    {% else %}
+        {{ earning.teacher.get_full_name }}
+    {% endif %}
+</td>
                                     <td>{{ earning.month_year|date:"F Y" }}</td>
                                     <td>{{ earning.class_count }}</td>
                                     <td>₹{{ earning.amount }}</td>

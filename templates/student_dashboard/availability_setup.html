@@ -108,118 +108,122 @@
                             <p class="mb-0">Please <a href="{% url 'student_dashboard:subject_selection' %}">select your subjects</a> before setting your availability.</p>
                         </div>
                     {% else %}
-                        <form id="availability-form" method="post" action="{% url 'student_dashboard:availability' %}">
-                            {% csrf_token %}
-                            
-                            <div id="availability-slots">
-                                {% if availabilities %}
-                                    {% for availability in availabilities %}
-                                        <div class="availability-slot mb-4">
-                                            <div class="row align-items-center">
-                                                <div class="col-md-3">
-                                                    <label class="form-label">Day of Week</label>
-                                                    <select class="form-select" name="day" required>
-                                                        {% for value, name in days_of_week.items %}
-                                                            <option value="{{ value }}" {% if availability.day_of_week == value %}selected{% endif %}>{{ name }}</option>
-                                                        {% endfor %}
-                                                    </select>
-                                                </div>
-                                                
-                                                <div class="col-md-3">
-                                                    <label class="form-label">Start Time</label>
-                                                    <input type="time" class="form-control" name="start_time" value="{{ availability.start_time|time:'H:i' }}" required>
-                                                </div>
-                                                
-                                                <div class="col-md-3">
-                                                    <label class="form-label">End Time</label>
-                                                    <input type="time" class="form-control" name="end_time" value="{{ availability.end_time|time:'H:i' }}" required>
-                                                </div>
-                                                
-                                                <div class="col-md-3">
-                                                    <label class="form-label d-block">&nbsp;</label>
-                                                    <button type="button" class="btn btn-danger remove-slot">
-                                                        <i class="fas fa-trash-alt"></i> Remove
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    {% endfor %}
-                                {% else %}
-                                    <div class="availability-slot mb-4">
-                                        <div class="row align-items-center">
-                                            <div class="col-md-3">
-                                                <label class="form-label">Day of Week</label>
-                                                <select class="form-select" name="day" required>
-                                                    {% for value, name in days_of_week.items %}
-                                                        <option value="{{ value }}">{{ name }}</option>
-                                                    {% endfor %}
-                                                </select>
-                                            </div>
-                                            
-                                            <div class="col-md-3">
-                                                <label class="form-label">Start Time</label>
-                                                <input type="time" class="form-control" name="start_time" required>
-                                            </div>
-                                            
-                                            <div class="col-md-3">
-                                                <label class="form-label">End Time</label>
-                                                <input type="time" class="form-control" name="end_time" required>
-                                            </div>
-                                            
-                                            <div class="col-md-3">
-                                                <label class="form-label d-block">&nbsp;</label>
-                                                <button type="button" class="btn btn-danger remove-slot">
-                                                    <i class="fas fa-trash-alt"></i> Remove
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                {% endif %}
-                            </div>
-                            
-                            <div class="mb-4">
-                                <button type="button" id="add-slot" class="btn btn-success">
-                                    <i class="fas fa-plus"></i> Add Time Slot
-                                </button>
-                            </div>
-                            
-                            <!-- Slot template for JavaScript cloning -->
-                            <template id="slot-template">
-                                <div class="availability-slot mb-4">
-                                    <div class="row align-items-center">
-                                        <div class="col-md-3">
-                                            <label class="form-label">Day of Week</label>
-                                            <select class="form-select" name="day" required>
-                                                {% for value, name in days_of_week.items %}
-                                                    <option value="{{ value }}">{{ name }}</option>
-                                                {% endfor %}
-                                            </select>
-                                        </div>
-                                        
-                                        <div class="col-md-3">
-                                            <label class="form-label">Start Time</label>
-                                            <input type="time" class="form-control" name="start_time" required>
-                                        </div>
-                                        
-                                        <div class="col-md-3">
-                                            <label class="form-label">End Time</label>
-                                            <input type="time" class="form-control" name="end_time" required>
-                                        </div>
-                                        
-                                        <div class="col-md-3">
-                                            <label class="form-label d-block">&nbsp;</label>
-                                            <button type="button" class="btn btn-danger remove-slot">
-                                                <i class="fas fa-trash-alt"></i> Remove
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </template>
-                            
-                            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                                <button type="submit" class="btn btn-primary">Save Availability</button>
-                            </div>
-                        </form>
+                        <!-- Replace the existing form section in availability_setup.html -->
+<form id="availability-form" method="post" action="{% url 'student_dashboard:availability' %}">
+    {% csrf_token %}
+    
+    <div id="availability-slots">
+        {% if availabilities %}
+            {% for availability in availabilities %}
+                <div class="availability-slot mb-4">
+                    <div class="row align-items-center">
+                        <div class="col-md-3">
+                            <label class="form-label">Day of Week</label>
+                            <select class="form-select" name="day" required>
+                                {% for value, name in days_of_week.items %}
+                                    <option value="{{ value }}" {% if availability.day_of_week == value %}selected{% endif %}>{{ name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        
+                        <div class="col-md-3">
+                            <label class="form-label">Start Time</label>
+                            <input type="time" class="form-control" name="start_time" value="{{ availability.start_time|time:'H:i' }}" required>
+                        </div>
+                        
+                        <div class="col-md-3">
+                            <label class="form-label">End Time</label>
+                            <input type="time" class="form-control" name="end_time" value="{{ availability.end_time|time:'H:i' }}" required>
+                        </div>
+                        
+                        <div class="col-md-3">
+                            <label class="form-label d-block">&nbsp;</label>
+                            <button type="button" class="btn btn-danger remove-slot">
+                                <i class="fas fa-trash-alt"></i> Remove
+                            </button>
+                            <input type="hidden" name="slot_id" value="{{ availability.id }}">
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="availability-slot mb-4">
+                <div class="row align-items-center">
+                    <div class="col-md-3">
+                        <label class="form-label">Day of Week</label>
+                        <select class="form-select" name="day" required>
+                            {% for value, name in days_of_week.items %}
+                                <option value="{{ value }}">{{ name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    
+                    <div class="col-md-3">
+                        <label class="form-label">Start Time</label>
+                        <input type="time" class="form-control" name="start_time" required>
+                    </div>
+                    
+                    <div class="col-md-3">
+                        <label class="form-label">End Time</label>
+                        <input type="time" class="form-control" name="end_time" required>
+                    </div>
+                    
+                    <div class="col-md-3">
+                        <label class="form-label d-block">&nbsp;</label>
+                        <button type="button" class="btn btn-danger remove-slot">
+                            <i class="fas fa-trash-alt"></i> Remove
+                        </button>
+                        <input type="hidden" name="slot_id" value="">
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+    
+    <div class="mb-4">
+        <button type="button" id="add-slot" class="btn btn-success">
+            <i class="fas fa-plus"></i> Add Time Slot
+        </button>
+    </div>
+    
+    <!-- Slot template for JavaScript cloning -->
+    <template id="slot-template">
+        <div class="availability-slot mb-4">
+            <div class="row align-items-center">
+                <div class="col-md-3">
+                    <label class="form-label">Day of Week</label>
+                    <select class="form-select" name="day" required>
+                        {% for value, name in days_of_week.items %}
+                            <option value="{{ value }}">{{ name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                
+                <div class="col-md-3">
+                    <label class="form-label">Start Time</label>
+                    <input type="time" class="form-control" name="start_time" required>
+                </div>
+                
+                <div class="col-md-3">
+                    <label class="form-label">End Time</label>
+                    <input type="time" class="form-control" name="end_time" required>
+                </div>
+                
+                <div class="col-md-3">
+                    <label class="form-label d-block">&nbsp;</label>
+                    <button type="button" class="btn btn-danger remove-slot">
+                        <i class="fas fa-trash-alt"></i> Remove
+                    </button>
+                    <input type="hidden" name="slot_id" value="">
+                </div>
+            </div>
+        </div>
+    </template>
+    
+    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+        <button type="submit" class="btn btn-primary">Save Availability</button>
+    </div>
+</form>
                     {% endif %}
                 </div>
             </div>

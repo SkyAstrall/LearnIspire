@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-lbtp9=ydf=^(u(o4wo8+n8k)i&1ycpbfdrz)yaaipv-(68^$3t
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["192.168.29.191", "localhost", "127.0.0.1"]
+ALLOWED_HOSTS = ["192.168.29.191", "localhost", "127.0.0.1", "172.17.21.14"]
 
 
 # Application definition
@@ -95,7 +95,9 @@ DATABASES = {
     }
 }
 
-
+# In settings.py
+GOOGLE_SERVICE_ACCOUNT_FILE = "edulance-452011-f1970b2af93f.json"
+GOOGLE_CALENDAR_ID = "primary"  # Or your specific calendar ID
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
 
@@ -150,7 +152,7 @@ SITE_ID = 1
 ACCOUNT_AUTHENTICATION_METHOD = "email"
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_USERNAME_REQUIRED = False
-ACCOUNT_EMAIL_VERIFICATION = "mandatory"
+ACCOUNT_EMAIL_VERIFICATION = "none"
 ACCOUNT_ADAPTER = "accounts.adapters.CustomAccountAdapter"
 
 # Login/logout URLs
