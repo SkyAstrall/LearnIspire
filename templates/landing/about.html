@@ -441,6 +441,42 @@ LearnIspire{% endblock %} {% block content %}
   </div>
 </section>
 
+<!-- Our Mission Section -->
+<section class="py-5">
+  <div class="container">
+    <div class="mission-wrapper">
+      <div class="mission-content">
+        <div class="mission-text">
+          <h2>Our Mission</h2>
+          <p class="lead">
+            To revolutionize education by making quality learning accessible to
+            everyone, connecting passionate teachers with eager students, and
+            fostering a global community of lifelong learners.
+          </p>
+          <div class="mission-buttons">
+            <a href="{% url 'account_signup' %}" class="btn btn-primary btn-lg">
+              <i class="fas fa-graduation-cap me-2"></i>Start Learning
+            </a>
+            <a
+              href="{% url 'landing:subjects' %}"
+              class="btn btn-outline-primary btn-lg"
+            >
+              <i class="fas fa-chalkboard-teacher me-2"></i>Become a Teacher
+            </a>
+          </div>
+        </div>
+        <div class="mission-image">
+          <img
+            src="{% static 'images/about/mission.jpg' %}"
+            alt="Our Mission"
+            class="img-fluid rounded-4 shadow-lg"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- CTA Section -->
 <section class="py-5 bg-primary cta-section">
   <div class="container">
@@ -1168,6 +1204,139 @@ LearnIspire{% endblock %} {% block content %}
     .icon {
       width: 35px;
       height: 35px;
+    }
+  }
+
+  /* Mission Section */
+  .mission-wrapper {
+    padding: 4rem 0;
+  }
+
+  .mission-content {
+    display: flex;
+    align-items: center;
+    gap: 4rem;
+  }
+
+  .mission-text {
+    flex: 1;
+  }
+
+  .mission-text h2 {
+    color: #1976d2;
+    margin-bottom: 1.5rem;
+    position: relative;
+    padding-bottom: 1rem;
+  }
+
+  .mission-text h2::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 80px;
+    height: 4px;
+    background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%);
+    border-radius: 2px;
+  }
+
+  .mission-text .lead {
+    font-size: 1.25rem;
+    color: #555;
+    margin-bottom: 2rem;
+    line-height: 1.8;
+  }
+
+  .mission-buttons {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .mission-buttons .btn {
+    padding: 1rem 2rem;
+    font-size: 1.1rem;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .mission-buttons .btn-primary {
+    background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%);
+    border: none;
+    color: white;
+  }
+
+  .mission-buttons .btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(13, 110, 253, 0.2);
+  }
+
+  .mission-buttons .btn-outline-primary {
+    border: 2px solid #0d6efd;
+    color: #0d6efd;
+  }
+
+  .mission-buttons .btn-outline-primary:hover {
+    background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%);
+    color: white;
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(13, 110, 253, 0.2);
+  }
+
+  .mission-image {
+    flex: 1;
+  }
+
+  .mission-image img {
+    width: 100%;
+    height: auto;
+    transition: transform 0.5s ease;
+  }
+
+  .mission-image img:hover {
+    transform: scale(1.02);
+  }
+
+  @media (max-width: 992px) {
+    .mission-content {
+      flex-direction: column;
+      gap: 2rem;
+      text-align: center;
+    }
+
+    .mission-text h2::after {
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .mission-buttons {
+      justify-content: center;
+    }
+
+    .mission-image {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .mission-wrapper {
+      padding: 3rem 0;
+    }
+
+    .mission-text .lead {
+      font-size: 1.1rem;
+    }
+
+    .mission-buttons {
+      flex-direction: column;
+    }
+
+    .mission-buttons .btn {
+      width: 100%;
     }
   }
 </style>
