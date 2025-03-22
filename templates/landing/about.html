@@ -1,192 +1,582 @@
-{% extends 'base.html' %}
-{% load static %}
-
-{% block title %}About Us - LearnIspire{% endblock %}
-
-{% block content %}
+{% extends 'base.html' %} {% load static %} {% block title %}About Us -
+LearnIspire{% endblock %} {% block content %}
 <!-- Header Section -->
 <section class="py-5 bg-primary text-white">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-8 mx-auto text-center">
-                <h1 class="fw-bold mb-4">About LearnIspire</h1>
-                <p class="lead">Transforming education through personalized learning experiences.</p>
-            </div>
+  <div class="container">
+    <div class="grid-container">
+      <!-- Left column with heading, subheading, and button -->
+      <div class="grid-item">
+        <div class="grid-item-content">
+          <h2>Bridging the Gap in Education</h2>
+          <h5>
+            LearnIspire is a revolutionary platform connecting passionate
+            educators with eager learners, making quality education accessible
+            to everyone.
+          </h5>
+          <button class="button-primary">Join Our Community</button>
         </div>
+      </div>
+
+      <!-- Right column with stats -->
+      <div class="grid-item">
+        <div class="stats-container">
+          <div class="stats-grid">
+            <!-- Stats item 1 -->
+            <div class="stats-item">
+              <div class="grid-item-content">
+                <div class="stats-content">
+                  <h3>1000+</h3>
+                  <p>Active Students</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Stats item 2 -->
+            <div class="stats-item">
+              <div class="grid-item-content">
+                <div class="stats-content">
+                  <h3>500+</h3>
+                  <p>Expert Teachers</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Stats item 3 -->
+            <div class="stats-item">
+              <div class="grid-item-content">
+                <div class="stats-content">
+                  <h3>50+</h3>
+                  <p>Subjects</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Stats item 4 -->
+            <div class="stats-item">
+              <div class="grid-item-content">
+                <div class="stats-content">
+                  <h3>98%</h3>
+                  <p>Satisfaction Rate</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
 </section>
 
 <!-- About Section -->
 <section class="py-5">
-    <div class="container">
-        <div class="row align-items-center">
-            <div class="col-lg-6">
-                <h2 class="fw-bold mb-4">Our Mission</h2>
-                <p class="mb-4">At LearnIspire, we believe that every student deserves a personalized learning experience tailored to their unique needs and strengths. Our mission is to make quality education accessible and effective through technology and personalized instruction.</p>
-                <p>We're committed to:</p>
-                <ul class="list-unstyled">
-                    <li><i class="fas fa-check-circle text-primary me-2"></i> Personalized learning paths for every student</li>
-                    <li><i class="fas fa-check-circle text-primary me-2"></i> Qualified and passionate teachers</li>
-                    <li><i class="fas fa-check-circle text-primary me-2"></i> Flexible scheduling to accommodate busy lives</li>
-                    <li><i class="fas fa-check-circle text-primary me-2"></i> Affordable and transparent pricing</li>
-                    <li><i class="fas fa-check-circle text-primary me-2"></i> Continuous improvement through feedback</li>
-                </ul>
-            </div>
-            <div class="col-lg-6">
-                <img src="{% static 'images/about/mission.jpg' %}" alt="Our Mission" class="img-fluid rounded shadow">
-            </div>
-        </div>
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-lg-6">
+        <h2 class="fw-bold mb-4">Our Mission</h2>
+        <p class="mb-4">
+          At LearnIspire, we believe that every student deserves a personalized
+          learning experience tailored to their unique needs and strengths. Our
+          mission is to make quality education accessible and effective through
+          technology and personalized instruction.
+        </p>
+        <p>We're committed to:</p>
+        <ul class="list-unstyled">
+          <li>
+            <i class="fas fa-check-circle text-primary me-2"></i> Personalized
+            learning paths for every student
+          </li>
+          <li>
+            <i class="fas fa-check-circle text-primary me-2"></i> Qualified and
+            passionate teachers
+          </li>
+          <li>
+            <i class="fas fa-check-circle text-primary me-2"></i> Flexible
+            scheduling to accommodate busy lives
+          </li>
+          <li>
+            <i class="fas fa-check-circle text-primary me-2"></i> Affordable and
+            transparent pricing
+          </li>
+          <li>
+            <i class="fas fa-check-circle text-primary me-2"></i> Continuous
+            improvement through feedback
+          </li>
+        </ul>
+      </div>
+      <div class="col-lg-6">
+        <img
+          src="{% static 'images/about/mission.jpg' %}"
+          alt="Our Mission"
+          class="img-fluid rounded shadow"
+        />
+      </div>
     </div>
+  </div>
 </section>
 
 <!-- Our Story Section -->
 <section class="py-5 bg-light">
-    <div class="container">
-        <div class="row align-items-center">
-            <div class="col-lg-6 order-lg-2">
-                <h2 class="fw-bold mb-4">Our Story</h2>
-                <p class="mb-4">LearnIspire was founded in 2022 by a group of educators and technologists who saw the potential for technology to transform how students learn and how teachers teach.</p>
-                <p class="mb-4">After years of working in traditional educational settings, our founders realized that many students were not getting the personalized attention they needed to excel. Meanwhile, talented teachers were often constrained by rigid systems that didn't allow them to fully apply their skills.</p>
-                <p>LearnIspire was born from this realization—a platform that connects students with teachers in a way that maximizes learning outcomes while providing flexibility for both.</p>
-            </div>
-            <div class="col-lg-6 order-lg-1">
-                <img src="{% static 'images/about/story.jpg' %}" alt="Our Story" class="img-fluid rounded shadow">
-            </div>
-        </div>
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-lg-6 order-lg-2">
+        <h2 class="fw-bold mb-4">Our Story</h2>
+        <p class="mb-4">
+          LearnIspire was founded in 2022 by a group of educators and
+          technologists who saw the potential for technology to transform how
+          students learn and how teachers teach.
+        </p>
+        <p class="mb-4">
+          After years of working in traditional educational settings, our
+          founders realized that many students were not getting the personalized
+          attention they needed to excel. Meanwhile, talented teachers were
+          often constrained by rigid systems that didn't allow them to fully
+          apply their skills.
+        </p>
+        <p>
+          LearnIspire was born from this realization—a platform that connects
+          students with teachers in a way that maximizes learning outcomes while
+          providing flexibility for both.
+        </p>
+      </div>
+      <div class="col-lg-6 order-lg-1">
+        <img
+          src="{% static 'images/about/story.jpg' %}"
+          alt="Our Story"
+          class="img-fluid rounded shadow"
+        />
+      </div>
     </div>
+  </div>
 </section>
 
 <!-- Our Team Section -->
 <section class="py-5">
-    <div class="container">
-        <div class="text-center mb-5">
-            <h2 class="fw-bold">Our Leadership Team</h2>
-            <p class="text-muted">Meet the educators and innovators behind LearnIspire</p>
-        </div>
-        
-        <div class="row">
-            <div class="col-md-3 mb-4">
-                <div class="card h-100 border-0 shadow-sm">
-                    <img src="{% static 'images/team/founder1.jpg' %}" class="card-img-top" alt="Founder">
-                    <div class="card-body text-center">
-                        <h5 class="card-title mb-1">Rajesh Kumar</h5>
-                        <p class="text-muted small">Co-Founder & CEO</p>
-                        <p class="card-text">Former Principal with 15+ years in education administration and technology integration.</p>
-                    </div>
-                    <div class="card-footer bg-transparent border-0 text-center">
-                        <a href="#" class="text-primary mx-1"><i class="fab fa-linkedin fa-lg"></i></a>
-                        <a href="#" class="text-primary mx-1"><i class="fab fa-twitter fa-lg"></i></a>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="col-md-3 mb-4">
-                <div class="card h-100 border-0 shadow-sm">
-                    <img src="{% static 'images/team/founder2.jpg' %}" class="card-img-top" alt="Founder">
-                    <div class="card-body text-center">
-                        <h5 class="card-title mb-1">Meera Patel</h5>
-                        <p class="text-muted small">Co-Founder & COO</p>
-                        <p class="card-text">Former Math Teacher with expertise in curriculum development and ed-tech.</p>
-                    </div>
-                    <div class="card-footer bg-transparent border-0 text-center">
-                        <a href="#" class="text-primary mx-1"><i class="fab fa-linkedin fa-lg"></i></a>
-                        <a href="#" class="text-primary mx-1"><i class="fab fa-twitter fa-lg"></i></a>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="col-md-3 mb-4">
-                <div class="card h-100 border-0 shadow-sm">
-                    <img src="{% static 'images/team/founder3.jpg' %}" class="card-img-top" alt="Founder">
-                    <div class="card-body text-center">
-                        <h5 class="card-title mb-1">Vikram Singh</h5>
-                        <p class="text-muted small">CTO</p>
-                        <p class="card-text">Tech entrepreneur with experience building scalable platforms for education.</p>
-                    </div>
-                    <div class="card-footer bg-transparent border-0 text-center">
-                        <a href="#" class="text-primary mx-1"><i class="fab fa-linkedin fa-lg"></i></a>
-                        <a href="#" class="text-primary mx-1"><i class="fab fa-github fa-lg"></i></a>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="col-md-3 mb-4">
-                <div class="card h-100 border-0 shadow-sm">
-                    <img src="{% static 'images/team/founder4.jpg' %}" class="card-img-top" alt="Founder">
-                    <div class="card-body text-center">
-                        <h5 class="card-title mb-1">Aisha Sharma</h5>
-                        <p class="text-muted small">Head of Teacher Success</p>
-                        <p class="card-text">Educational psychologist specializing in teacher training and development.</p>
-                    </div>
-                    <div class="card-footer bg-transparent border-0 text-center">
-                        <a href="#" class="text-primary mx-1"><i class="fab fa-linkedin fa-lg"></i></a>
-                        <a href="#" class="text-primary mx-1"><i class="fab fa-twitter fa-lg"></i></a>
-                    </div>
-                </div>
-            </div>
-        </div>
+  <div class="container">
+    <div class="text-center mb-5">
+      <h2 class="fw-bold">Our Leadership Team</h2>
+      <p class="text-muted">
+        Meet the educators and innovators behind LearnIspire
+      </p>
     </div>
+
+    <div class="row">
+      <div class="col-md-3 mb-4">
+        <div class="card h-100 border-0 shadow-sm">
+          <img
+            src="{% static 'images/team/founder1.jpg' %}"
+            class="card-img-top"
+            alt="Founder"
+          />
+          <div class="card-body text-center">
+            <h5 class="card-title mb-1">Rajesh Kumar</h5>
+            <p class="text-muted small">Co-Founder & CEO</p>
+            <p class="card-text">
+              Former Principal with 15+ years in education administration and
+              technology integration.
+            </p>
+          </div>
+          <div class="card-footer bg-transparent border-0 text-center">
+            <a href="#" class="text-primary mx-1"
+              ><i class="fab fa-linkedin fa-lg"></i
+            ></a>
+            <a href="#" class="text-primary mx-1"
+              ><i class="fab fa-twitter fa-lg"></i
+            ></a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3 mb-4">
+        <div class="card h-100 border-0 shadow-sm">
+          <img
+            src="{% static 'images/team/founder2.jpg' %}"
+            class="card-img-top"
+            alt="Founder"
+          />
+          <div class="card-body text-center">
+            <h5 class="card-title mb-1">Meera Patel</h5>
+            <p class="text-muted small">Co-Founder & COO</p>
+            <p class="card-text">
+              Former Math Teacher with expertise in curriculum development and
+              ed-tech.
+            </p>
+          </div>
+          <div class="card-footer bg-transparent border-0 text-center">
+            <a href="#" class="text-primary mx-1"
+              ><i class="fab fa-linkedin fa-lg"></i
+            ></a>
+            <a href="#" class="text-primary mx-1"
+              ><i class="fab fa-twitter fa-lg"></i
+            ></a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3 mb-4">
+        <div class="card h-100 border-0 shadow-sm">
+          <img
+            src="{% static 'images/team/founder3.jpg' %}"
+            class="card-img-top"
+            alt="Founder"
+          />
+          <div class="card-body text-center">
+            <h5 class="card-title mb-1">Vikram Singh</h5>
+            <p class="text-muted small">CTO</p>
+            <p class="card-text">
+              Tech entrepreneur with experience building scalable platforms for
+              education.
+            </p>
+          </div>
+          <div class="card-footer bg-transparent border-0 text-center">
+            <a href="#" class="text-primary mx-1"
+              ><i class="fab fa-linkedin fa-lg"></i
+            ></a>
+            <a href="#" class="text-primary mx-1"
+              ><i class="fab fa-github fa-lg"></i
+            ></a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3 mb-4">
+        <div class="card h-100 border-0 shadow-sm">
+          <img
+            src="{% static 'images/team/founder4.jpg' %}"
+            class="card-img-top"
+            alt="Founder"
+          />
+          <div class="card-body text-center">
+            <h5 class="card-title mb-1">Aisha Sharma</h5>
+            <p class="text-muted small">Head of Teacher Success</p>
+            <p class="card-text">
+              Educational psychologist specializing in teacher training and
+              development.
+            </p>
+          </div>
+          <div class="card-footer bg-transparent border-0 text-center">
+            <a href="#" class="text-primary mx-1"
+              ><i class="fab fa-linkedin fa-lg"></i
+            ></a>
+            <a href="#" class="text-primary mx-1"
+              ><i class="fab fa-twitter fa-lg"></i
+            ></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </section>
 
 <!-- Values Section -->
 <section class="py-5 bg-light">
-    <div class="container">
-        <div class="text-center mb-5">
-            <h2 class="fw-bold">Our Values</h2>
-            <p class="text-muted">The principles that guide everything we do</p>
-        </div>
-        
-        <div class="row g-4">
-            <div class="col-md-4">
-                <div class="card h-100 border-0 shadow-sm">
-                    <div class="card-body text-center p-4">
-                        <div class="feature-icon bg-primary bg-gradient text-white rounded-circle mb-3">
-                            <i class="fas fa-user-graduate fa-2x"></i>
-                        </div>
-                        <h4 class="card-title">Student-Centered</h4>
-                        <p class="card-text">We put students at the center of everything we do, designing every feature and process to maximize their learning experience.</p>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="col-md-4">
-                <div class="card h-100 border-0 shadow-sm">
-                    <div class="card-body text-center p-4">
-                        <div class="feature-icon bg-primary bg-gradient text-white rounded-circle mb-3">
-                            <i class="fas fa-shield-alt fa-2x"></i>
-                        </div>
-                        <h4 class="card-title">Quality & Trust</h4>
-                        <p class="card-text">We maintain rigorous standards for our teachers and content, ensuring that students receive the highest quality education.</p>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="col-md-4">
-                <div class="card h-100 border-0 shadow-sm">
-                    <div class="card-body text-center p-4">
-                        <div class="feature-icon bg-primary bg-gradient text-white rounded-circle mb-3">
-                            <i class="fas fa-seedling fa-2x"></i>
-                        </div>
-                        <h4 class="card-title">Continuous Improvement</h4>
-                        <p class="card-text">We're committed to constantly improving our platform and methodologies based on feedback and educational research.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
+  <div class="container">
+    <div class="text-center mb-5">
+      <h2 class="fw-bold">Our Values</h2>
+      <p class="text-muted">The principles that guide everything we do</p>
     </div>
+
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="card h-100 border-0 shadow-sm">
+          <div class="card-body text-center p-4">
+            <div
+              class="feature-icon bg-primary bg-gradient text-white rounded-circle mb-3"
+            >
+              <i class="fas fa-user-graduate fa-2x"></i>
+            </div>
+            <h4 class="card-title">Student-Centered</h4>
+            <p class="card-text">
+              We put students at the center of everything we do, designing every
+              feature and process to maximize their learning experience.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="card h-100 border-0 shadow-sm">
+          <div class="card-body text-center p-4">
+            <div
+              class="feature-icon bg-primary bg-gradient text-white rounded-circle mb-3"
+            >
+              <i class="fas fa-shield-alt fa-2x"></i>
+            </div>
+            <h4 class="card-title">Quality & Trust</h4>
+            <p class="card-text">
+              We maintain rigorous standards for our teachers and content,
+              ensuring that students receive the highest quality education.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="card h-100 border-0 shadow-sm">
+          <div class="card-body text-center p-4">
+            <div
+              class="feature-icon bg-primary bg-gradient text-white rounded-circle mb-3"
+            >
+              <i class="fas fa-seedling fa-2x"></i>
+            </div>
+            <h4 class="card-title">Continuous Improvement</h4>
+            <p class="card-text">
+              We're committed to constantly improving our platform and
+              methodologies based on feedback and educational research.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </section>
 
 <!-- CTA Section -->
 <section class="py-5 bg-primary text-white">
-    <div class="container">
-        <div class="row align-items-center">
-            <div class="col-lg-8 mx-auto text-center">
-                <h2 class="fw-bold mb-4">Join Our Learning Community</h2>
-                <p class="lead mb-4">Experience the LearnIspire difference today. Start with a free demo class.</p>
-                <a href="{% url 'account_signup' %}" class="btn btn-light btn-lg px-4 me-2">Get Started</a>
-                <a href="{% url 'landing:contact' %}" class="btn btn-outline-light btn-lg px-4">Contact Us</a>
-            </div>
-        </div>
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-lg-8 mx-auto text-center">
+        <h2 class="fw-bold mb-4">Join Our Learning Community</h2>
+        <p class="lead mb-4">
+          Experience the LearnIspire difference today. Start with a free demo
+          class.
+        </p>
+        <a
+          href="{% url 'account_signup' %}"
+          class="btn btn-light btn-lg px-4 me-2"
+          >Get Started</a
+        >
+        <a
+          href="{% url 'landing:contact' %}"
+          class="btn btn-outline-light btn-lg px-4"
+          >Contact Us</a
+        >
+      </div>
     </div>
+  </div>
 </section>
+{% endblock %} {% block extra_css %}
+<style>
+  /* Header Section */
+  
+  .bg-primary {
+    background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%) !important;
+  }
+
+  .grid-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    align-items: center;
+  }
+
+  .grid-item {
+    padding: 1rem;
+  }
+
+  .grid-item-content h2 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    line-height: 1.2;
+  }
+
+  .grid-item-content h5 {
+    font-size: 1.1rem;
+    font-weight: 400;
+    margin-bottom: 2rem;
+    opacity: 0.9;
+  }
+
+  .button-primary {
+    padding: 0.8rem 2rem;
+    font-size: 1.1rem;
+    border-radius: 8px;
+    border: 2px solid white;
+    background: transparent;
+    color: white;
+    transition: all 0.3s ease;
+  }
+
+  .button-primary:hover {
+    background: white;
+    color: #0d6efd;
+    transform: translateY(-2px);
+  }
+
+  /* Stats Section */
+  .stats-container {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 2rem;
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+
+  .stats-item {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 1.5rem;
+    text-align: center;
+    transition: transform 0.3s ease;
+  }
+
+  .stats-item:hover {
+    transform: translateY(-5px);
+  }
+
+  .stats-content h3 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+
+  .stats-content p {
+    font-size: 1rem;
+    opacity: 0.9;
+    margin: 0;
+  }
+
+  /* About Section */
+  .list-unstyled li {
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+  }
+
+  .list-unstyled li i {
+    color: #0d6efd;
+    margin-right: 0.75rem;
+  }
+
+  /* Our Story Section */
+  .bg-light {
+    background-color: #f8f9fa !important;
+  }
+
+  /* Team Section */
+  .card {
+    border: none;
+    border-radius: 16px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+  }
+
+  .card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+  }
+
+  .card-img-top {
+    height: 250px;
+    object-fit: cover;
+  }
+
+  .card-body {
+    padding: 1.5rem;
+  }
+
+  .card-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #2c3e50;
+  }
+
+  .card-text {
+    color: #666;
+    font-size: 0.9rem;
+    line-height: 1.6;
+  }
+
+  .card-footer {
+    padding: 1rem;
+  }
+
+  .card-footer a {
+    transition: all 0.3s ease;
+  }
+
+  .card-footer a:hover {
+    transform: translateY(-3px);
+    color: #0a58ca !important;
+  }
+
+  /* Values Section */
+  .feature-icon {
+    width: 80px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%);
+  }
+
+  .feature-icon i {
+    font-size: 2rem;
+  }
+
+  /* CTA Section */
+  .btn-light {
+    background: white;
+    color: #0d6efd;
+    border: none;
+    transition: all 0.3s ease;
+  }
+
+  .btn-light:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(255, 255, 255, 0.2);
+  }
+
+  .btn-outline-light {
+    border-width: 2px;
+    transition: all 0.3s ease;
+  }
+
+  .btn-outline-light:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(255, 255, 255, 0.2);
+  }
+
+  /* Responsive Adjustments */
+  @media (max-width: 992px) {
+    .grid-container {
+      grid-template-columns: 1fr;
+      text-align: center;
+    }
+
+    .grid-item-content h2 {
+      font-size: 2rem;
+    }
+
+    .stats-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 768px) {
+    .stats-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .grid-item-content h2 {
+      font-size: 1.75rem;
+    }
+
+    .grid-item-content h5 {
+      font-size: 1rem;
+    }
+
+    .stats-content h3 {
+      font-size: 2rem;
+    }
+
+    .card-img-top {
+      height: 200px;
+    }
+  }
+</style>
 {% endblock %}
