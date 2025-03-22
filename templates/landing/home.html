@@ -6,22 +6,21 @@ Personalized Online Learning Platform{% endblock %} {% block content %}
     <div class="row align-items-center">
       <div class="col-lg-6 py-5">
         <h1 class="display-4 fw-bold mb-4">
-          Transform Your Learning Experience
+          Welcome to LearnIspire
         </h1>
         <p class="lead mb-4">
-          Personalized online tutoring with qualified teachers. Learn at your
-          own pace, on your schedule, with minimum 3 classes per week.
+          Embark on a journey of personalized learning with expert guidance and innovative teaching methods
         </p>
         <div class="d-grid gap-2 d-md-flex justify-content-md-start">
           <a
             href="{% url 'account_signup' %}"
             class="btn btn-light btn-lg px-4 me-md-2"
-            >Get Started</a
+            >Start Learning <i class="fas fa-arrow-right"></i></
           >
           <a
             href="{% url 'landing:about' %}"
             class="btn btn-outline-light btn-lg px-4"
-            >Learn More</a
+            >View Plans</a
           >
         </div>
       </div>
@@ -42,67 +41,199 @@ Personalized Online Learning Platform{% endblock %} {% block content %}
     <div class="text-center mb-5">
       <h2 class="fw-bold">Why Choose LearnIspire?</h2>
       <p class="text-muted">
-        Our unique approach to personalized online learning
+        Discover the features that make our platform the perfect choice for your educational journey
       </p>
     </div>
 
     <div class="row g-4">
       <div class="col-md-4">
-        <div class="card h-100 border-0 shadow-sm">
-          <div class="card-body text-center p-4">
-            <div
-              class="feature-icon bg-primary bg-gradient text-white rounded-circle mb-3"
-            >
-              <i class="fas fa-chalkboard-teacher fa-2x"></i>
+        <div class="card h-100 border-0 shadow-sm position-relative feature-card security-card">
+          <div class="position-absolute" style="top: -30px; right: 20px;">
+            <div class="feature-icon-circle security-icon">
+              <i class="fas fa-shield-alt"></i>
             </div>
-            <h4 class="card-title">Qualified Teachers</h4>
+          </div>
+          <div class="card-body p-4 pt-5">
+            <h4 class="card-title">Secure Learning Environment</h4>
             <p class="card-text">
-              Learn from experienced, verified teachers who specialize in your
-              subjects.
+              Experience a secure and safe learning environment with end-to-end encryption for all sessions and personal data protection.
             </p>
+            <div class="feature-bars">
+              <div class="feature-bar">
+                <i class="fas fa-shield-alt"></i>
+                <span>End-to-end encryption</span>
+              </div>
+              <div class="feature-bar">
+                <i class="fas fa-user-shield"></i>
+                <span>Data protection</span>
+              </div>
+              <div class="feature-bar">
+                <i class="fas fa-lock"></i>
+                <span>Secure sessions</span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
 
       <div class="col-md-4">
-        <div class="card h-100 border-0 shadow-sm">
-          <div class="card-body text-center p-4">
-            <div
-              class="feature-icon bg-primary bg-gradient text-white rounded-circle mb-3"
-            >
-              <i class="fas fa-calendar-alt fa-2x"></i>
+        <div class="card h-100 border-0 shadow-sm position-relative feature-card learning-card">
+          <div class="position-absolute" style="top: -30px; right: 20px;">
+            <div class="feature-icon-circle learning-icon">
+              <i class="fas fa-graduation-cap"></i>
             </div>
-            <h4 class="card-title">Flexible Scheduling</h4>
+          </div>
+          <div class="card-body p-4 pt-5">
+            <h4 class="card-title">One-on-One Sessions</h4>
             <p class="card-text">
-              Set your availability and we'll create a schedule that works for
-              you.
+              Get personalized attention with our dedicated one-on-one learning sessions tailored to your unique learning style and pace.
             </p>
+            <div class="feature-bars">
+              <div class="feature-bar">
+                <i class="fas fa-user-graduate"></i>
+                <span>Personalized learning</span>
+              </div>
+              <div class="feature-bar">
+                <i class="fas fa-clock"></i>
+                <span>Flexible timing</span>
+              </div>
+              <div class="feature-bar">
+                <i class="fas fa-chart-line"></i>
+                <span>Progress tracking</span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
 
       <div class="col-md-4">
-        <div class="card h-100 border-0 shadow-sm">
-          <div class="card-body text-center p-4">
-            <div
-              class="feature-icon bg-primary bg-gradient text-white rounded-circle mb-3"
-            >
-              <i class="fas fa-video fa-2x"></i>
+        <div class="card h-100 border-0 shadow-sm position-relative feature-card access-card">
+          <div class="position-absolute" style="top: -30px; right: 20px;">
+            <div class="feature-icon-circle access-icon">
+              <i class="fas fa-globe"></i>
             </div>
-            <h4 class="card-title">Interactive Classes</h4>
+          </div>
+          <div class="card-body p-4 pt-5">
+            <h4 class="card-title">Accessible Anywhere</h4>
             <p class="card-text">
-              Engage in real-time interactive sessions through our integrated
-              platform.
+              Access your learning materials and attend sessions from anywhere, anytime, with our multi-platform compatible system.
             </p>
+            <div class="feature-bars">
+              <div class="feature-bar">
+                <i class="fas fa-mobile-alt"></i>
+                <span>Mobile compatible</span>
+              </div>
+              <div class="feature-bar">
+                <i class="fas fa-laptop"></i>
+                <span>Desktop access</span>
+              </div>
+              <div class="feature-bar">
+                <i class="fas fa-globe"></i>
+                <span>24/7 availability</span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
+
+      <div class="col-md-4">
+        <div class="card h-100 border-0 shadow-sm position-relative feature-card learning-card">
+          <div class="position-absolute" style="top: -30px; right: 20px;">
+            <div class="feature-icon-circle learning-icon">
+              <i class="fas fa-graduation-cap"></i>
+            </div>
+          </div>
+          <div class="card-body p-4 pt-5">
+            <h4 class="card-title">One-on-One Sessions</h4>
+            <p class="card-text">
+              Get personalized attention with our dedicated one-on-one learning sessions tailored to your unique learning style and pace.
+            </p>
+            <div class="feature-bars">
+              <div class="feature-bar">
+                <i class="fas fa-user-graduate"></i>
+                <span>Personalized learning</span>
+              </div>
+              <div class="feature-bar">
+                <i class="fas fa-clock"></i>
+                <span>Flexible timing</span>
+              </div>
+              <div class="feature-bar">
+                <i class="fas fa-chart-line"></i>
+                <span>Progress tracking</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="card h-100 border-0 shadow-sm position-relative feature-card learning-card">
+          <div class="position-absolute" style="top: -30px; right: 20px;">
+            <div class="feature-icon-circle learning-icon">
+              <i class="fas fa-graduation-cap"></i>
+            </div>
+          </div>
+          <div class="card-body p-4 pt-5">
+            <h4 class="card-title">One-on-One Sessions</h4>
+            <p class="card-text">
+              Get personalized attention with our dedicated one-on-one learning sessions tailored to your unique learning style and pace.
+            </p>
+            <div class="feature-bars">
+              <div class="feature-bar">
+                <i class="fas fa-user-graduate"></i>
+                <span>Personalized learning</span>
+              </div>
+              <div class="feature-bar">
+                <i class="fas fa-clock"></i>
+                <span>Flexible timing</span>
+              </div>
+              <div class="feature-bar">
+                <i class="fas fa-chart-line"></i>
+                <span>Progress tracking</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="card h-100 border-0 shadow-sm position-relative feature-card learning-card">
+          <div class="position-absolute" style="top: -30px; right: 20px;">
+            <div class="feature-icon-circle learning-icon">
+              <i class="fas fa-graduation-cap"></i>
+            </div>
+          </div>
+          <div class="card-body p-4 pt-5">
+            <h4 class="card-title">One-on-One Sessions</h4>
+            <p class="card-text">
+              Get personalized attention with our dedicated one-on-one learning sessions tailored to your unique learning style and pace.
+            </p>
+            <div class="feature-bars">
+              <div class="feature-bar">
+                <i class="fas fa-user-graduate"></i>
+                <span>Personalized learning</span>
+              </div>
+              <div class="feature-bar">
+                <i class="fas fa-clock"></i>
+                <span>Flexible timing</span>
+              </div>
+              <div class="feature-bar">
+                <i class="fas fa-chart-line"></i>
+                <span>Progress tracking</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+
     </div>
   </div>
 </section>
 
 <!-- How It Works Section -->
-<section class="py-5 bg-light">
+<!-- <section class="py-5 bg-light">
   <div class="container">
     <div class="text-center mb-5">
       <h2 class="fw-bold">How It Works</h2>
@@ -192,7 +323,7 @@ Personalized Online Learning Platform{% endblock %} {% block content %}
       </div>
     </div>
   </div>
-</section>
+</section> -->
 
 <!-- Subjects Section -->
 <section class="py-5">
@@ -457,12 +588,94 @@ Personalized Online Learning Platform{% endblock %} {% block content %}
 </section>
 {% endblock %} {% block extra_css %}
 <style>
-  .feature-icon {
-    display: inline-flex;
+  .feature-card {
+    transition: transform 0.3s ease;
+    overflow: visible;
+    margin-top: 30px;
+  }
+
+  .feature-card:hover {
+    transform: translateY(-5px);
+  }
+
+  .feature-icon-circle {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    display: flex;
     align-items: center;
     justify-content: center;
-    width: 80px;
-    height: 80px;
+    font-size: 1.75rem;
+    color: white;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    z-index: 1;
+  }
+
+  /* Security Card Theme */
+  .security-card {
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9ff 100%);
+    border-left: 4px solid #4e73df;
+  }
+  .security-icon {
+    background: linear-gradient(135deg, #4e73df 0%, #224abe 100%);
+  }
+  .security-card .feature-bar i {
+    color: #4e73df;
+  }
+
+  /* Learning Card Theme */
+  .learning-card {
+    background: linear-gradient(135deg, #ffffff 0%, #fff8f9 100%);
+    border-left: 4px solid #e74a3b;
+  }
+  .learning-icon {
+    background: linear-gradient(135deg, #e74a3b 0%, #be2617 100%);
+  }
+  .learning-card .feature-bar i {
+    color: #e74a3b;
+  }
+
+  /* Access Card Theme */
+  .access-card {
+    background: linear-gradient(135deg, #ffffff 0%, #f9fff8 100%);
+    border-left: 4px solid #1cc88a;
+  }
+  .access-icon {
+    background: linear-gradient(135deg, #1cc88a 0%, #169b6b 100%);
+  }
+  .access-card .feature-bar i {
+    color: #1cc88a;
+  }
+
+  .feature-bars {
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(0,0,0,0.05);
+  }
+
+  .feature-bar {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.75rem;
+    font-size: 0.9rem;
+    color: #666;
+  }
+
+  .feature-bar i {
+    margin-right: 0.75rem;
+    width: 20px;
+    font-size: 1rem;
+  }
+
+  .card-title {
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+    color: #2c3e50;
+  }
+
+  .card-text {
+    color: #666;
+    line-height: 1.6;
   }
 
   .timeline-badge {
