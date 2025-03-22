@@ -61,4 +61,9 @@ urlpatterns = [
         views.ActivateApprovedTeachersView.as_view(),
         name="activate_approved_teachers",
     ),
+    path(
+        "api/teacher-availability/<int:teacher_id>/",
+        views.TeacherAvailabilityAPI.as_view(),
+        name="teacher_availability_api",
+    ),
 ]

@@ -24,6 +24,38 @@ class AdminAccessMixin(LoginRequiredMixin):
             return redirect("landing:home")
         return super().dispatch(request, *args, **kwargs)
 
+from django.http import JsonResponse
+
+
+class TeacherAvailabilityAPI(AdminAccessMixin, View):
+    """API endpoint to get teacher availability"""
+
+    def get(self, request, teacher_id):
+        try:
+            teacher = get_object_or_404(CustomUser, id=teacher_id, role="teacher")
+
+            # Get teacher availability
+            availabilities = Availability.objects.filter(user=teacher).order_by(
+                "day_of_week", "start_time"
+            )
+
+            # Format for JSON response
+            availability_data = []
+            for slot in availabilities:
+                availability_data.append(
+                    {
+                        "day_of_week": slot.day_of_week,
+                        "start_time": slot.start_time.strftime("%I:%M %p"),
+                        "end_time": slot.end_time.strftime("%I:%M %p"),
+                    }
+                )
+
+            # Return JSON response
+            return JsonResponse({"success": True, "availability": availability_data})
+
+        except Exception as e:
+            return JsonResponse({"success": False, "error": str(e)}, status=400)
+
 
 class ActivateApprovedTeachersView(AdminAccessMixin, View):
     """
@@ -431,14 +463,14 @@ class ScheduleDemoView(AdminAccessMixin, View):
             )
 
             # Create Google Meet link
-            GoogleMeetService.create_meeting(demo_class)
+            GoogleMeetService.create_real_meeting(demo_class)
 
             # Update student status
             student_profile.status = "DEMO_SCHEDULED"
             student_profile.save()
 
             # Send notifications
-            WhatsAppService.send_demo_scheduled_notification(demo_class)
+            #WhatsAppService.send_demo_scheduled_notification(demo_class)
 
             messages.success(
                 request,
@@ -555,7 +587,7 @@ class ClassSchedulingView(AdminAccessMixin, View):
                     )
 
                     # Create Google Meet link
-                    GoogleMeetService.create_meeting(class_obj)
+                    GoogleMeetService.create_real_meeting(class_obj)
 
                 except Exception as e:
                     messages.error(request, f"Error scheduling class: {str(e)}")

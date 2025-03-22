@@ -27,4 +27,5 @@ urlpatterns = [
         views.InitiatePaymentView.as_view(),
         name="initiate_payment",
     ),
+    path("join/<int:class_id>/", views.JoinClassView.as_view(), name="join_class"),
 ]

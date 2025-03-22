@@ -104,7 +104,7 @@
                                                 </div>
                                                 <div class="d-grid gap-2">
                                                     {% if class.can_join %}
-                                                        <a href=meetings class="btn btn-success">
+                                                        <a href={% url 'student_dashboard:join_class' class.id %}="btn btn-success">
                                                             <i class="fas fa-video me-1"></i> Join Class
                                                         </a>
                                                     {% else %}

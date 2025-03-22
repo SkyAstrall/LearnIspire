@@ -25,7 +25,13 @@ SECRET_KEY = 'django-insecure-lbtp9=ydf=^(u(o4wo8+n8k)i&1ycpbfdrz)yaaipv-(68^$3t
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["192.168.29.191", "localhost", "127.0.0.1", "172.17.21.14"]
+ALLOWED_HOSTS = [
+    "192.168.29.191",
+    "localhost",
+    "127.0.0.1",
+    "172.17.21.14",
+    "192.168.137.173",
+]
 
 
 # Application definition
@@ -97,7 +103,7 @@ DATABASES = {
 
 # In settings.py
 GOOGLE_SERVICE_ACCOUNT_FILE = "edulance-452011-f1970b2af93f.json"
-GOOGLE_CALENDAR_ID = "primary"  # Or your specific calendar ID
+GOOGLE_CALENDAR_ID = "admin@learnispire.com"  # Or your specific calendar ID
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
 
@@ -161,9 +167,9 @@ LOGOUT_REDIRECT_URL = "/"
 LOGIN_URL = "/accounts/login/"
 
 # Twilio credentials for WhatsApp
-TWILIO_ACCOUNT_SID = os.getenv("TWILIO_ACCOUNT_SID")
-TWILIO_AUTH_TOKEN = os.getenv("TWILIO_AUTH_TOKEN")
-TWILIO_WHATSAPP_FROM = os.getenv("TWILIO_WHATSAPP_FROM")
+TWILIO_ACCOUNT_SID = "ACbddd51b0fd3a72e950ed4c641731aec3"
+TWILIO_AUTH_TOKEN = "45b3292bf21366207bda3e8fd03ca94e"
+TWILIO_WHATSAPP_FROM = "+14155238886"
 ACCOUNT_FORMS = {
     "signup": "accounts.forms.CustomSignupForm",
 }

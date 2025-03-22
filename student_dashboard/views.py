@@ -306,6 +306,7 @@ class DemoRequestView(StudentAccessMixin, View):
             "subjects": subjects,
             "demo_class": demo_class,
             "Availability": availability_count,
+            "meetinglink": Class.meeting_link,
         }
         
 
@@ -361,7 +362,8 @@ class ClassesListView(StudentAccessMixin, View):
         past_classes = Class.objects.filter(
             student=request.user, end_time__lt=timezone.now()
         ).order_by("-start_time")
-
+        class_link = Class.objects.filter(student=request.user)
+        print(Class.meeting_link)
         context = {
             "upcoming_classes": upcoming_classes,
             "past_classes": past_classes,
@@ -391,6 +393,7 @@ class JoinClassView(StudentAccessMixin, View):
 
     def get(self, request, class_id):
         class_obj = get_object_or_404(Class, id=class_id, student=request.user)
+        print(f"Meeting link: {class_obj.meeting_link}")
 
         # Check if class can be joined
         if not class_obj.can_join():
