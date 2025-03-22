@@ -5,93 +5,195 @@
 {% load static custom_tags %}
 
 {% block content %}
-<!-- Header Section -->
-<section class="py-5 bg-primary text-white">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-8 mx-auto text-center">
-                <h1 class="fw-bold mb-4">Transparent Pricing</h1>
-                <p class="lead">Quality education at affordable rates. Pay only for the classes you take.</p>
-            </div>
-        </div>
+<div class="container">
+    <div class="header">
+        <h2>Get Your Custom Quote</h2>
+        <h5>Fill in your details to receive your personalized quote on WhatsApp</h5>
     </div>
-</section>
-
-<!-- Pricing Selector Section -->
-<section class="py-5">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-8 mx-auto">
-                <div class="card border-0 shadow">
-                    <div class="card-body p-4">
-                        <h3 class="card-title text-center mb-4">Check Pricing for Your Grade</h3>
+    
+    <div class="grid-container">
+        <!-- Form Section -->
+        <div class="form-container">
+            <div class="paper">
+                <form id="quoteForm">
+                    <div class="form-grid">
+                        <div class="form-control form-floating">
+                            <input type="text" id="fullName" placeholder=" " class="input-animated" required>
+                            <label for="fullName">Full Name <span class="asterisk">*</span></label>
+                            <div class="input-focus-indicator"></div>
+                            <div class="invalid-feedback">Please enter your full name</div>
+                        </div>
                         
-                        <form method="get" class="mb-4">
-                            <div class="row g-3">
-                                <div class="col-md-5">
-                                    <label for="grade" class="form-label">Grade</label>
-                                    <select class="form-select" id="grade" name="grade" required>
-                                        <option value="" selected disabled>Select Grade</option>
-                                        {% for grade in grades %}
-                                            <option value="{{ grade.id }}" {% if selected_grade == grade.id|stringformat:"i" %}selected{% endif %}>{{ grade.name }}</option>
-                                        {% endfor %}
-                                    </select>
-                                </div>
-                                
-                                <div class="col-md-5">
-                                    <label for="board" class="form-label">Board</label>
-                                    <select class="form-select" id="board" name="board" required>
-                                        <option value="" selected disabled>Select Board</option>
-                                        {% for board in boards %}
-                                            <option value="{{ board.id }}" {% if selected_board == board.id|stringformat:"i" %}selected{% endif %}>{{ board.name }}</option>
-                                        {% endfor %}
-                                    </select>
-                                </div>
-                                
-                                <div class="col-md-2 d-flex align-items-end">
-                                    <button type="submit" class="btn btn-primary w-100">Check</button>
-                                </div>
-                            </div>
-                        </form>
-                        
-                        {% if pricing_rules %}
-                            <!-- Display pricing information -->
-                            <div class="table-responsive">
-                                <table class="table table-hover">
-                                    <thead class="table-light">
-                                        <tr>
-                                            <th>Subject</th>
-                                            <th class="text-end">Price per Session</th>
-                                            <th class="text-end">Monthly (12 sessions)</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {% for rule in pricing_rules %}
-                                            <tr>
-                                                <td>{{ rule.subject.name }}</td>
-                                                <td class="text-end">₹{{ rule.price_per_session }}</td>
-                                                <td class="text-end">₹{{ rule.price_per_session|multiply:12 }}</td>
-                                            </tr>
-                                        {% endfor %}
-                                    </tbody>
-                                </table>
+                        <div class="form-grid-two-col">
+                            <div class="form-control-half form-floating">
+                                <input type="email" id="email" placeholder=" " class="input-animated" required>
+                                <label for="email">Email <span class="asterisk">*</span></label>
+                                <div class="input-focus-indicator"></div>
+                                <div class="invalid-feedback">Please enter a valid email address</div>
                             </div>
                             
-                            <div class="alert alert-info mt-3">
-                                <h5><i class="fas fa-info-circle me-2"></i> How our pricing works</h5>
-                                <p class="mb-0">Prices are per 60-minute session. You'll need to attend a minimum of 3 classes per week for each subject. Monthly billing is based on the actual number of sessions attended.</p>
+                            <div class="form-control-half form-floating">
+                                <input type="tel" id="whatsapp" placeholder=" " class="input-animated" required>
+                                <label for="whatsapp">WhatsApp Number <span class="asterisk">*</span></label>
+                                <div class="input-focus-indicator"></div>
+                                <div class="invalid-feedback">Please enter your WhatsApp number</div>
                             </div>
-                        {% elif selected_grade and selected_board %}
-                            <div class="alert alert-warning">
-                                <p class="mb-0">No pricing information available for the selected grade and board. Please contact us for custom pricing.</p>
+                        </div>
+                        
+                        <div class="form-grid-two-col">
+                            <div class="form-control-half">
+                                <label for="grade">Grade <span class="asterisk">*</span></label>
+                                <div class="select-wrapper">
+                                    <select id="grade" required>
+                                        <option value="" disabled selected></option>
+                                        <option value="grade8">Grade 8</option>
+                                        <option value="grade9">Grade 9</option>
+                                        <option value="grade10">Grade 10</option>
+                                        <option value="grade11">Grade 11</option>
+                                        <option value="grade12">Grade 12</option>
+                                    </select>
+                                </div>
+                                <div class="invalid-feedback">Please select your grade</div>
                             </div>
-                        {% endif %}
+                            
+                            <div class="form-control-half">
+                                <label for="board">Board <span class="asterisk">*</span></label>
+                                <div class="select-wrapper">
+                                    <select id="board" required>
+                                        <option value="" disabled selected></option>
+                                        <option value="cbse">CBSE</option>
+                                        <option value="icse">ICSE</option>
+                                        <option value="igcse">IGCSE</option>
+                                        <option value="ib">IB</option>
+                                        <option value="state">State Board</option>
+                                    </select>
+                                </div>
+                                <div class="invalid-feedback">Please select your board</div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-control">
+                            <label for="subjects">Subject(s) <span class="asterisk">*</span></label>
+                            <div class="checkbox-subjects">
+                                <label>
+                                    <input type="checkbox" name="subjects" value="math">
+                                    <span>Mathematics</span>
+                                </label>
+                                <label>
+                                    <input type="checkbox" name="subjects" value="physics">
+                                    <span>Physics</span>
+                                </label>
+                                <label>
+                                    <input type="checkbox" name="subjects" value="chemistry">
+                                    <span>Chemistry</span>
+                                </label>
+                                <label>
+                                    <input type="checkbox" name="subjects" value="biology">
+                                    <span>Biology</span>
+                                </label>
+                                <label>
+                                    <input type="checkbox" name="subjects" value="english">
+                                    <span>English</span>
+                                </label>
+                                <label>
+                                    <input type="checkbox" name="subjects" value="computer">
+                                    <span>Computer Science</span>
+                                </label>
+                            </div>
+                            <div class="invalid-feedback">Please select at least one subject</div>
+                        </div>
+                        
+                        <div class="form-control">
+                            <button type="submit" class="btn btn-animated">
+                                <span class="btn-text">Get Pricing on WhatsApp</span>
+                                <span class="btn-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                                        <polyline points="12 5 19 12 12 19"></polyline>
+                                    </svg>
+                                </span>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <!-- Features Section -->
+        <div class="features-container">
+            <div class="features-header">
+                <h5>Why Choose Us?</h5>
+                <p>Experience personalized learning with our unique features</p>
+            </div>
+            
+            <div class="card fade-in">
+                <div class="card-content">
+                    <div class="icon-wrapper">
+                        <svg class="icon" viewBox="0 0 24 24">
+                            <path d="M5 13.18v4L12 21l7-3.82v-4L12 17zM12 3 1 9l11 6 9-4.91V17h2V9z"></path>
+                        </svg>
+                    </div>
+                    <div class="card-text">
+                        <h6>Expert Teachers</h6>
+                        <p>Learn from qualified and experienced educators who are passionate about teaching and committed to student success.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card fade-in">
+                <div class="card-content">
+                    <div class="icon-wrapper">
+                        <svg class="icon" viewBox="0 0 24 24">
+                            <path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2M12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8"></path>
+                            <path d="M12.5 7H11v6l5.25 3.15.75-1.23-4.5-2.67z"></path>
+                        </svg>
+                    </div>
+                    <div class="card-text">
+                        <h6>Flexible Schedule</h6>
+                        <p>Choose learning times that work best for you with our convenient scheduling system and booking management.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card fade-in">
+                <div class="card-content">
+                    <div class="icon-wrapper">
+                        <svg class="icon" viewBox="0 0 24 24">
+                            <path d="M3 6h18V4H3c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h4v-2H3zm10 6H9v1.78c-.61.55-1 1.33-1 2.22s.39 1.67 1 2.22V20h4v-1.78c.61-.55 1-1.34 1-2.22s-.39-1.67-1-2.22zm-2 5.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5M22 8h-6c-.5 0-1 .5-1 1v10c0 .5.5 1 1 1h6c.5 0 1-.5 1-1V9c0-.5-.5-1-1-1m-1 10h-4v-8h4z"></path>
+                        </svg>
+                    </div>
+                    <div class="card-text">
+                        <h6>Learn Anywhere</h6>
+                        <p>Access your classes from any device with our mobile-friendly platform. Study from the comfort of your home.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card fade-in">
+                <div class="card-content">
+                    <div class="icon-wrapper">
+                        <svg class="icon" viewBox="0 0 24 24">
+                            <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02zm13.54-7.1-.71-.7L13 9.29V5h-1v6h6v-1h-4.15z"></path>
+                        </svg>
+                    </div>
+                    <div class="card-text">
+                        <h6>24/7 Support</h6>
+                        <p>Get instant support through WhatsApp. Our team is always here to help you with your queries and concerns.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card help-card">
+                <div class="card-content">
+                    <div class="card-text">
+                        <h6>Need Help?</h6>
+                        <p>Contact our support team on WhatsApp anytime for assistance with pricing or course selection.</p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</section>
+</div>
 
 <!-- Pricing Information Section -->
 <section class="py-5 bg-light">
@@ -308,11 +410,700 @@
 </section>
 {% endblock %}
 
+{% block extra_css %}
+<style>
+/* Base Styling */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 24px;
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.header h2 {
+    font-size: 2.5rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 8px;
+}
+
+.header h5 {
+    font-size: 1.2rem;
+    font-weight: 400;
+    color: #666;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 32px;
+}
+
+@media (min-width: 900px) {
+    .grid-container {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+/* Paper and Form Container */
+.paper {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 24px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+}
+
+.paper:before {
+    content: '';
+    position: absolute;
+    top: -20px;
+    right: -20px;
+    width: 100px;
+    height: 100px;
+    background: linear-gradient(135deg, rgba(25, 118, 210, 0.1), transparent);
+    transform: rotate(45deg);
+    z-index: -1;
+}
+
+.form-container {
+    animation: fadeIn 0.5s ease;
+}
+
+/* Form Layout */
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+}
+
+.form-control {
+    position: relative;
+    width: 100%;
+}
+
+.form-control-half {
+    position: relative;
+    width: 100%;
+}
+
+@media (min-width: 600px) {
+    .form-grid-two-col {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+    }
+}
+
+/* Form Elements */
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 0.9rem;
+    color: #555;
+    font-weight: 500;
+    transition: color 0.3s;
+}
+
+input, select {
+    width: 100%;
+    padding: 14px 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1rem;
+    transition: all 0.3s;
+}
+
+input:focus, select:focus {
+    outline: none;
+    border-color: #1976d2;
+    box-shadow: 0 0 0 3px rgba(25, 118, 210, 0.1);
+}
+
+.asterisk {
+    color: #f44336;
+}
+
+/* Animated Input Styling */
+.input-animated, select.input-animated {
+    border: none;
+    border-bottom: 2px solid #e0e0e0;
+    border-radius: 0;
+    padding: 14px 16px 10px 0;
+    background-color: transparent;
+    transition: border-color 0.3s;
+}
+
+.input-animated:focus, select.input-animated:focus {
+    border-bottom-color: #1976d2;
+    box-shadow: none;
+}
+
+/* Floating Label Effect */
+.form-floating {
+    position: relative;
+}
+
+.form-floating input, .form-floating select {
+    height: 56px;
+    padding: 24px 16px 8px 16px;
+}
+
+.form-floating label {
+    position: absolute;
+    top: 0;
+    left: 16px;
+    height: 56px;
+    padding: 16px 0;
+    pointer-events: none;
+    transform-origin: 0 0;
+    transition: transform 0.2s, color 0.2s;
+}
+
+.form-floating input:focus ~ label,
+.form-floating input:not(:placeholder-shown) ~ label,
+.form-floating select:focus ~ label,
+.form-floating select:not([value=""]):not(:focus) ~ label {
+    transform: translateY(-8px) scale(0.85);
+    color: #1976d2;
+}
+
+/* Custom Select Styling */
+.select-wrapper {
+    position: relative;
+    display: block;
+}
+
+.select-wrapper:after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    right: 15px;
+    width: 10px;
+    height: 10px;
+    border-right: 2px solid #666;
+    border-bottom: 2px solid #666;
+    transform: translateY(-50%) rotate(45deg);
+    pointer-events: none;
+    transition: transform 0.3s ease;
+}
+
+.select-wrapper:focus-within:after {
+    transform: translateY(-50%) rotate(-135deg);
+    border-color: #1976d2;
+}
+
+select {
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%23555%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpolyline%20points%3D%226%209%2012%2015%2018%209%22%3E%3C%2Fpolyline%3E%3C%2Fsvg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 16px;
+    padding-right: 40px;
+}
+
+/* Custom Checkbox Grid */
+.checkbox-subjects {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 12px;
+    margin-top: 8px;
+}
+
+.checkbox-subjects label {
+    display: flex;
+    align-items: center;
+    padding: 10px 12px;
+    background-color: #f5f5f5;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.checkbox-subjects label:hover {
+    background-color: #e3f2fd;
+}
+
+.checkbox-subjects label:after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to right, rgba(25, 118, 210, 0.1), transparent);
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+    pointer-events: none;
+}
+
+.checkbox-subjects label:hover:after {
+    transform: translateX(0);
+}
+
+.checkbox-subjects input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    margin-right: 10px;
+    accent-color: #1976d2;
+}
+
+.checkbox-subjects input[type="checkbox"]:checked + span {
+    font-weight: 500;
+    color: #1976d2;
+}
+
+.checkbox-subjects input[type="checkbox"]:checked + span:before {
+    content: '✓';
+    display: inline-block;
+    margin-right: 5px;
+    color: #1976d2;
+    font-weight: bold;
+}
+
+/* Button Styling */
+.btn {
+    width: 100%;
+    padding: 14px;
+    background-color: #1976d2;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.btn:hover {
+    background-color: #1565c0;
+}
+
+.btn-animated {
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s;
+}
+
+.btn-animated .btn-icon {
+    transform: translateX(-5px);
+    opacity: 0;
+    transition: all 0.3s;
+}
+
+.btn-animated:hover .btn-icon {
+    transform: translateX(5px);
+    opacity: 1;
+}
+
+.ripple {
+    position: absolute;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.4);
+    width: 10px;
+    height: 10px;
+    animation: ripple 0.6s linear;
+    transform: scale(0);
+}
+
+@keyframes ripple {
+    to {
+        transform: scale(25);
+        opacity: 0;
+    }
+}
+
+/* Success state animation */
+.btn-success {
+    background-color: #4caf50 !important;
+    transform: scale(1.05);
+    transition: all 0.3s ease;
+}
+
+/* Validation States */
+.is-valid {
+    border-color: #4caf50 !important;
+}
+
+.is-invalid {
+    border-color: #f44336 !important;
+}
+
+.invalid-feedback {
+    display: none;
+    width: 100%;
+    margin-top: 4px;
+    font-size: 0.85rem;
+    color: #f44336;
+}
+
+.is-invalid + .invalid-feedback,
+.is-invalid ~ .invalid-feedback {
+    display: block;
+    animation: fadeIn 0.3s;
+}
+
+/* Focus Animations */
+@keyframes inputFocus {
+    0% { box-shadow: 0 0 0 0 rgba(25, 118, 210, 0.4); }
+    70% { box-shadow: 0 0 0 8px rgba(25, 118, 210, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(25, 118, 210, 0); }
+}
+
+input:focus, select:focus {
+    animation: inputFocus 1s;
+}
+
+.input-focus-indicator {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: #1976d2;
+    transition: width 0.3s ease;
+}
+
+.form-control:focus-within .input-focus-indicator,
+.form-control-half:focus-within .input-focus-indicator {
+    width: 100%;
+}
+
+/* Features Section Styling */
+.features-container {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.features-header {
+    margin-bottom: 8px;
+}
+
+.features-header h5 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 8px;
+}
+
+.features-header p {
+    color: #666;
+    font-size: 0.95rem;
+}
+
+.card {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s;
+    animation: fadeIn 0.5s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.card-content {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+}
+
+.icon-wrapper {
+    background-color: #e3f2fd;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.icon {
+    fill: #1976d2;
+    width: 24px;
+    height: 24px;
+}
+
+.card-text h6 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 8px;
+}
+
+.card-text p {
+    color: #666;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+.help-card {
+    background-color: #f0f7ff;
+    margin-top: 24px;
+}
+
+.help-card h6 {
+    color: #1976d2;
+}
+
+.help-card p {
+    font-size: 0.95rem;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in {
+    animation: fadeIn 0.5s ease;
+    animation-fill-mode: both;
+}
+
+.fade-in:nth-child(1) { animation-delay: 0.1s; }
+.fade-in:nth-child(2) { animation-delay: 0.2s; }
+.fade-in:nth-child(3) { animation-delay: 0.3s; }
+.fade-in:nth-child(4) { animation-delay: 0.4s; }
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+.form-control:focus-within {
+    animation: pulse 1s;
+}
+
+</style>
+{% endblock %}
+
 {% block extra_js %}
 <script>
-    // Simple template filter to multiply values
-    function multiply(a, b) {
-        return (a * b).toFixed(2);
+// Form validation and enhanced selection behavior
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('quoteForm');
+    const subjectCheckboxes = document.querySelectorAll('input[name="subjects"]');
+    
+    // Add visual feedback for form fields
+    const formInputs = document.querySelectorAll('input, select');
+    formInputs.forEach(input => {
+        // Add validation classes on blur
+        input.addEventListener('blur', function() {
+            if (input.value.trim() !== '') {
+                input.classList.add('is-valid');
+                input.classList.remove('is-invalid');
+            } else if (input.hasAttribute('required')) {
+                input.classList.add('is-invalid');
+                input.classList.remove('is-valid');
+            }
+        });
+        
+        // Remove validation classes on focus
+        input.addEventListener('focus', function() {
+            input.classList.remove('is-invalid');
+        });
+    });
+    
+    // Initialize select elements with custom styling
+    const selects = document.querySelectorAll('select');
+    selects.forEach(select => {
+        // Update the selected state visual cue
+        select.addEventListener('change', function() {
+            if (select.value !== '') {
+                select.classList.add('has-value');
+            } else {
+                select.classList.remove('has-value');
+            }
+        });
+    });
+    
+    // Checkbox group validation
+    let isSubjectSelected = false;
+    subjectCheckboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', function() {
+            isSubjectSelected = Array.from(subjectCheckboxes).some(cb => cb.checked);
+            
+            // Update visual feedback for the subject section
+            const subjectSection = document.querySelector('.checkbox-subjects');
+            if (isSubjectSelected) {
+                subjectSection.classList.add('is-valid');
+                subjectSection.classList.remove('is-invalid');
+            } else {
+                subjectSection.classList.add('is-invalid');
+                subjectSection.classList.remove('is-valid');
+            }
+        });
+    });
+    
+    // Form submission validation
+    form.addEventListener('submit', function(event) {
+        event.preventDefault();
+        
+        // Basic form validation
+        let isValid = true;
+        
+        // Check required fields
+        const requiredInputs = form.querySelectorAll('[required]');
+        requiredInputs.forEach(input => {
+            if (input.value.trim() === '') {
+                input.classList.add('is-invalid');
+                isValid = false;
+            }
+        });
+        
+        // Check subject selection
+        if (!isSubjectSelected) {
+            const subjectSection = document.querySelector('.checkbox-subjects');
+            subjectSection.classList.add('is-invalid');
+            isValid = false;
+        }
+        
+        // If form is valid, show success animation and submit
+        if (isValid) {
+            const submitBtn = form.querySelector('button[type="submit"]');
+            submitBtn.classList.add('btn-success');
+            
+            // Gather form data for submission
+            const formData = {
+                fullName: document.getElementById('fullName').value,
+                email: document.getElementById('email').value,
+                whatsapp: document.getElementById('whatsapp').value,
+                grade: document.getElementById('grade').value,
+                board: document.getElementById('board').value,
+                subjects: Array.from(subjectCheckboxes)
+                    .filter(cb => cb.checked)
+                    .map(cb => cb.value)
+            };
+            
+            console.log('Form data to be submitted:', formData);
+            
+            // Here you would normally send the data to your server
+            // For demo purposes, we'll just display a success message
+            setTimeout(() => {
+                // Show success message
+                showNotification('Success! We will send your pricing details on WhatsApp soon.', 'success');
+                
+                // Reset the form
+                form.reset();
+                
+                // Reset validation states
+                document.querySelectorAll('.is-valid, .is-invalid, .has-value').forEach(el => {
+                    el.classList.remove('is-valid', 'is-invalid', 'has-value');
+                });
+                
+                submitBtn.classList.remove('btn-success');
+            }, 800);
+        } else {
+            // Show error message
+            showNotification('Please fill in all required fields.', 'error');
+            
+            // Scroll to the first invalid element
+            const firstInvalid = form.querySelector('.is-invalid');
+            if (firstInvalid) {
+                firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        }
+    });
+    
+    // Add ripple effect to button
+    const btn = document.querySelector('.btn-animated');
+    if (btn) {
+        btn.addEventListener('mousedown', function(e) {
+            const x = e.clientX - btn.getBoundingClientRect().left;
+            const y = e.clientY - btn.getBoundingClientRect().top;
+            
+            const ripple = document.createElement('span');
+            ripple.classList.add('ripple');
+            ripple.style.left = `${x}px`;
+            ripple.style.top = `${y}px`;
+            
+            btn.appendChild(ripple);
+            
+            setTimeout(() => {
+                ripple.remove();
+            }, 600);
+        });
     }
+    
+    // Notification system
+    function showNotification(message, type) {
+        // Create notification container if it doesn't exist
+        let notifContainer = document.querySelector('.notification-container');
+        if (!notifContainer) {
+            notifContainer = document.createElement('div');
+            notifContainer.className = 'notification-container';
+            document.body.appendChild(notifContainer);
+            
+            // Add styles to the notification container
+            Object.assign(notifContainer.style, {
+                position: 'fixed',
+                bottom: '20px',
+                right: '20px',
+                zIndex: '9999'
+            });
+        }
+        
+        // Create notification element
+        const notification = document.createElement('div');
+        notification.className = `notification ${type}`;
+        notification.textContent = message;
+        
+        // Add styles to the notification
+        Object.assign(notification.style, {
+            backgroundColor: type === 'success' ? '#4caf50' : '#f44336',
+            color: 'white',
+            padding: '12px 24px',
+            borderRadius: '4px',
+            marginTop: '10px',
+            boxShadow: '0 3px 6px rgba(0,0,0,0.16)',
+            transition: 'all 0.3s',
+            opacity: '0',
+            transform: 'translateY(20px)'
+        });
+        
+        // Add the notification to the container
+        notifContainer.appendChild(notification);
+        
+        // Trigger entrance animation
+        setTimeout(() => {
+            notification.style.opacity = '1';
+            notification.style.transform = 'translateY(0)';
+        }, 10);
+        
+        // Remove the notification after 5 seconds
+        setTimeout(() => {
+            notification.style.opacity = '0';
+            notification.style.transform = 'translateY(20px)';
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 300);
+        }, 5000);
+    }
+});
+
+// Simple template filter to multiply values
+function multiply(a, b) {
+    return (a * b).toFixed(2);
+}
 </script>
 {% endblock %}
