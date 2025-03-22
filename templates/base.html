@@ -58,6 +58,65 @@
         footer {
             margin-top: auto;
         }
+
+/* Footer Styling */
+.bg-gradient-dark {
+    background: linear-gradient(135deg, #1e2a3a 0%, #0f172a 100%);
+}
+
+.footer-links li {
+    margin-bottom: 12px;
+}
+
+.footer-links a {
+    color: rgba(255, 255, 255, 0.75);
+    text-decoration: none;
+    transition: color 0.3s ease, padding-left 0.3s ease;
+    display: inline-block;
+}
+
+.footer-links a:hover {
+    color: white;
+    padding-left: 5px;
+}
+
+.social-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    color: white;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.social-icon:hover {
+    background-color: #3a86ff;
+    color: white;
+    transform: translateY(-3px);
+}
+
+.icon-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    color: white;
+}
+
+hr {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.payment-methods {
+    height: 30px;
+}
     </style>
     
     {% block extra_css %}{% endblock %}
@@ -144,47 +203,75 @@
     </main>
     
     <!-- Footer -->
-    <footer class="bg-dark text-white py-4 mt-5">
+    <footer class="bg-gradient-dark text-white pt-5 pb-4">
         <div class="container">
-            <div class="row">
-                <div class="col-md-4 mb-3">
-                    <h5>LearnIspire</h5>
-                    <p>Transforming education through personalized online learning experiences.</p>
-                    <div class="social-links">
-                        <a href="#" class="text-white me-2"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#" class="text-white me-2"><i class="fab fa-twitter"></i></a>
-                        <a href="#" class="text-white me-2"><i class="fab fa-instagram"></i></a>
-                        <a href="#" class="text-white"><i class="fab fa-linkedin-in"></i></a>
+            <div class="row gx-5">
+                <!-- Company Information -->
+                <div class="col-lg-4 col-md-6 mb-4 mb-md-0">
+                    <h4 class="mb-4 fw-bold">LearnIspire</h4>
+                    <p class="mb-4 opacity-75">Transforming education through personalized online learning experiences.</p>
+                    <div class="d-flex social-icons gap-3 mb-4">
+                        <a href="#" class="social-icon" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-icon" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-icon" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-icon" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
                     </div>
                 </div>
-                <div class="col-md-4 mb-3">
-                    <h5>Quick Links</h5>
-                    <ul class="list-unstyled">
-                        <li><a href="{% url 'landing:home' %}" class="text-white">Home</a></li>
-                        <li><a href="{% url 'landing:about' %}" class="text-white">About Us</a></li>
-                        <li><a href="{% url 'landing:pricing' %}" class="text-white">Pricing</a></li>
-                        <li><a href="{% url 'landing:contact' %}" class="text-white">Contact</a></li>
-                        <li><a href="{% url 'landing:privacy' %}" class="text-white">Privacy Policy</a></li>
-                        <li><a href="{% url 'landing:terms' %}" class="text-white">Terms & Conditions</a></li>
+                
+                <!-- Quick Links -->
+                <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+                    <h5 class="mb-4 fw-semibold">Quick Links</h5>
+                    <ul class="list-unstyled footer-links">
+                        <li><a href="{% url 'landing:home' %}">Home</a></li>
+                        <li><a href="{% url 'landing:about' %}">About Us</a></li>
+                        <li><a href="{% url 'landing:pricing' %}">Pricing</a></li>
+                        <li><a href="{% url 'landing:contact' %}">Contact</a></li>
+                        <li><a href="{% url 'landing:privacy' %}">Privacy Policy</a></li>
+                        <li><a href="{% url 'landing:terms' %}">Terms & Conditions</a></li>
                     </ul>
                 </div>
-                <div class="col-md-4 mb-3">
-                    <h5>Contact</h5>
-                    <address>
-                        <p><i class="fas fa-map-marker-alt me-2"></i> 123 Education Street, City, State, India</p>
-                        <p><i class="fas fa-phone me-2"></i> +91 1234567890</p>
-                        <p><i class="fas fa-envelope me-2"></i> info@learnispire.com</p>
-                    </address>
+                
+                <!-- Contact Information -->
+                <div class="col-lg-5 col-md-12">
+                    <h5 class="mb-4 fw-semibold">Contact Us</h5>
+                    <div class="contact-info">
+                        <div class="d-flex mb-3 align-items-start">
+                            <div class="icon-box me-3">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <p class="mb-0">123 Education Street<br>City, State, India</p>
+                        </div>
+                        <div class="d-flex mb-3 align-items-center">
+                            <div class="icon-box me-3">
+                                <i class="fas fa-phone"></i>
+                            </div>
+                            <p class="mb-0">+91 1234567890</p>
+                        </div>
+                        <div class="d-flex mb-3 align-items-center">
+                            <div class="icon-box me-3">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <p class="mb-0">info@learnispire.com</p>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="row mt-3">
-                <div class="col-12 text-center">
-                    <hr>
-                    <p class="mb-0">&copy; {% now "Y" %} LearnIspire. All rights reserved.</p>
+            
+            <!-- Divider Line -->
+            <hr class="my-4 opacity-25">
+            
+            <!-- Copyright Information -->
+            <div class="row align-items-center">
+                <div class="col-md-6 text-center text-md-start">
+                    <p class="mb-0 small opacity-75">&copy; {% now "Y" %} LearnIspire. All rights reserved.</p>
+                </div>
+                <div class="col-md-6 text-center text-md-end">
+                    <img src="/api/placeholder/120/30" alt="Payment Methods" class="payment-methods">
                 </div>
             </div>
         </div>
     </footer>
+    
     
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
