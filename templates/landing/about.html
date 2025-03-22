@@ -173,243 +173,204 @@ LearnIspire{% endblock %} {% block content %}
 </section>
 
 <!-- Our Story Section -->
-<section class="py-5 bg-light">
+<section class="bg-light">
   <div class="container">
-    <div class="row align-items-center">
-      <div class="col-lg-6 order-lg-2">
-        <h2 class="fw-bold mb-4">Our Story</h2>
-        <p class="mb-4">
-          LearnIspire was founded in 2022 by a group of educators and
-          technologists who saw the potential for technology to transform how
-          students learn and how teachers teach.
-        </p>
-        <p class="mb-4">
-          After years of working in traditional educational settings, our
-          founders realized that many students were not getting the personalized
-          attention they needed to excel. Meanwhile, talented teachers were
-          often constrained by rigid systems that didn't allow them to fully
-          apply their skills.
-        </p>
-        <p>
-          LearnIspire was born from this realization—a platform that connects
-          students with teachers in a way that maximizes learning outcomes while
-          providing flexibility for both.
-        </p>
+      <div class="story-wrapper">
+          <div class="story-content">
+              <div class="story-image">
+                  <img src="/api/placeholder/600/400" alt="LearnIspire Story" />
+              </div>
+              <div class="story-text">
+                  <h2>Our Story</h2>
+                  <p class="lead">
+                      LearnIspire was founded in 2022 by a group of educators and
+                      technologists who saw the potential for technology to transform how
+                      students learn and how teachers teach.
+                  </p>
+                  <p>
+                      After years of working in traditional educational settings, our
+                      founders realized that many students were not getting the personalized
+                      attention they needed to excel. Meanwhile, talented teachers were
+                      often constrained by rigid systems that didn't allow them to fully
+                      apply their skills.
+                  </p>
+                  <p>
+                      LearnIspire was born from this realization—a platform that connects
+                      students with teachers in a way that maximizes learning outcomes while
+                      providing flexibility for both.
+                  </p>
+              </div>
+          </div>
       </div>
-      <div class="col-lg-6 order-lg-1">
-        <img
-          src="{% static 'images/about/story.jpg' %}"
-          alt="Our Story"
-          class="img-fluid rounded shadow"
-        />
-      </div>
-    </div>
   </div>
 </section>
 
 <!-- Our Team Section -->
-<section class="py-5">
+<section>
   <div class="container">
-    <div class="text-center mb-5">
-      <h2 class="fw-bold">Our Leadership Team</h2>
-      <p class="text-muted">
-        Meet the educators and innovators behind LearnIspire
-      </p>
-    </div>
-
-    <div class="row">
-      <div class="col-md-3 mb-4">
-        <div class="card h-100 border-0 shadow-sm">
-          <img
-            src="{% static 'images/team/founder1.jpg' %}"
-            class="card-img-top"
-            alt="Founder"
-          />
-          <div class="card-body text-center">
-            <h5 class="card-title mb-1">Rajesh Kumar</h5>
-            <p class="text-muted small">Co-Founder & CEO</p>
-            <p class="card-text">
-              Former Principal with 15+ years in education administration and
-              technology integration.
-            </p>
-          </div>
-          <div class="card-footer bg-transparent border-0 text-center">
-            <a href="#" class="text-primary mx-1"
-              ><i class="fab fa-linkedin fa-lg"></i
-            ></a>
-            <a href="#" class="text-primary mx-1"
-              ><i class="fab fa-twitter fa-lg"></i
-            ></a>
-          </div>
-        </div>
+      <div class="section-header text-center">
+          <h2>Our Leadership Team</h2>
+          <p class="text-muted">
+              Meet the educators and innovators behind LearnIspire
+          </p>
       </div>
 
-      <div class="col-md-3 mb-4">
-        <div class="card h-100 border-0 shadow-sm">
-          <img
-            src="{% static 'images/team/founder2.jpg' %}"
-            class="card-img-top"
-            alt="Founder"
-          />
-          <div class="card-body text-center">
-            <h5 class="card-title mb-1">Meera Patel</h5>
-            <p class="text-muted small">Co-Founder & COO</p>
-            <p class="card-text">
-              Former Math Teacher with expertise in curriculum development and
-              ed-tech.
-            </p>
+      <div class="team-grid">
+          <!-- Team Member 1 -->
+          <div class="team-card">
+              <img src="/api/placeholder/400/400" class="team-card-img" alt="Rajesh Kumar" />
+              <div class="team-card-body">
+                  <h5 class="team-card-title">Rajesh Kumar</h5>
+                  <p class="team-card-subtitle">Co-Founder & CEO</p>
+                  <p class="team-card-text">
+                      Former Principal with 15+ years in education administration and
+                      technology integration.
+                  </p>
+              </div>
+              <div class="team-card-footer">
+                  <a href="#" class="social-link">
+                      <i class="fab fa-linkedin-in"></i>
+                  </a>
+                  <a href="#" class="social-link">
+                      <i class="fab fa-twitter"></i>
+                  </a>
+              </div>
           </div>
-          <div class="card-footer bg-transparent border-0 text-center">
-            <a href="#" class="text-primary mx-1"
-              ><i class="fab fa-linkedin fa-lg"></i
-            ></a>
-            <a href="#" class="text-primary mx-1"
-              ><i class="fab fa-twitter fa-lg"></i
-            ></a>
-          </div>
-        </div>
-      </div>
 
-      <div class="col-md-3 mb-4">
-        <div class="card h-100 border-0 shadow-sm">
-          <img
-            src="{% static 'images/team/founder3.jpg' %}"
-            class="card-img-top"
-            alt="Founder"
-          />
-          <div class="card-body text-center">
-            <h5 class="card-title mb-1">Vikram Singh</h5>
-            <p class="text-muted small">CTO</p>
-            <p class="card-text">
-              Tech entrepreneur with experience building scalable platforms for
-              education.
-            </p>
+          <!-- Team Member 2 -->
+          <div class="team-card">
+              <img src="/api/placeholder/400/400" class="team-card-img" alt="Meera Patel" />
+              <div class="team-card-body">
+                  <h5 class="team-card-title">Meera Patel</h5>
+                  <p class="team-card-subtitle">Co-Founder & COO</p>
+                  <p class="team-card-text">
+                      Former Math Teacher with expertise in curriculum development and
+                      ed-tech.
+                  </p>
+              </div>
+              <div class="team-card-footer">
+                  <a href="#" class="social-link">
+                      <i class="fab fa-linkedin-in"></i>
+                  </a>
+                  <a href="#" class="social-link">
+                      <i class="fab fa-twitter"></i>
+                  </a>
+              </div>
           </div>
-          <div class="card-footer bg-transparent border-0 text-center">
-            <a href="#" class="text-primary mx-1"
-              ><i class="fab fa-linkedin fa-lg"></i
-            ></a>
-            <a href="#" class="text-primary mx-1"
-              ><i class="fab fa-github fa-lg"></i
-            ></a>
-          </div>
-        </div>
-      </div>
 
-      <div class="col-md-3 mb-4">
-        <div class="card h-100 border-0 shadow-sm">
-          <img
-            src="{% static 'images/team/founder4.jpg' %}"
-            class="card-img-top"
-            alt="Founder"
-          />
-          <div class="card-body text-center">
-            <h5 class="card-title mb-1">Aisha Sharma</h5>
-            <p class="text-muted small">Head of Teacher Success</p>
-            <p class="card-text">
-              Educational psychologist specializing in teacher training and
-              development.
-            </p>
+          <!-- Team Member 3 -->
+          <div class="team-card">
+              <img src="/api/placeholder/400/400" class="team-card-img" alt="Vikram Singh" />
+              <div class="team-card-body">
+                  <h5 class="team-card-title">Vikram Singh</h5>
+                  <p class="team-card-subtitle">CTO</p>
+                  <p class="team-card-text">
+                      Tech entrepreneur with experience building scalable platforms for
+                      education.
+                  </p>
+              </div>
+              <div class="team-card-footer">
+                  <a href="#" class="social-link">
+                      <i class="fab fa-linkedin-in"></i>
+                  </a>
+                  <a href="#" class="social-link">
+                      <i class="fab fa-github"></i>
+                  </a>
+              </div>
           </div>
-          <div class="card-footer bg-transparent border-0 text-center">
-            <a href="#" class="text-primary mx-1"
-              ><i class="fab fa-linkedin fa-lg"></i
-            ></a>
-            <a href="#" class="text-primary mx-1"
-              ><i class="fab fa-twitter fa-lg"></i
-            ></a>
+
+          <!-- Team Member 4 -->
+          <div class="team-card">
+              <img src="/api/placeholder/400/400" class="team-card-img" alt="Aisha Sharma" />
+              <div class="team-card-body">
+                  <h5 class="team-card-title">Aisha Sharma</h5>
+                  <p class="team-card-subtitle">Head of Teacher Success</p>
+                  <p class="team-card-text">
+                      Educational psychologist specializing in teacher training and
+                      development.
+                  </p>
+              </div>
+              <div class="team-card-footer">
+                  <a href="#" class="social-link">
+                      <i class="fab fa-linkedin-in"></i>
+                  </a>
+                  <a href="#" class="social-link">
+                      <i class="fab fa-twitter"></i>
+                  </a>
+              </div>
           </div>
-        </div>
       </div>
-    </div>
   </div>
 </section>
 
 <!-- Values Section -->
-<section class="py-5 bg-light">
+<section class="bg-light">
   <div class="container">
-    <div class="text-center mb-5">
-      <h2 class="fw-bold">Our Values</h2>
-      <p class="text-muted">The principles that guide everything we do</p>
-    </div>
-
-    <div class="row g-4">
-      <div class="col-md-4">
-        <div class="card h-100 border-0 shadow-sm">
-          <div class="card-body text-center p-4">
-            <div
-              class="feature-icon bg-primary bg-gradient text-white rounded-circle mb-3"
-            >
-              <i class="fas fa-user-graduate fa-2x"></i>
-            </div>
-            <h4 class="card-title">Student-Centered</h4>
-            <p class="card-text">
-              We put students at the center of everything we do, designing every
-              feature and process to maximize their learning experience.
-            </p>
-          </div>
-        </div>
+      <div class="section-header text-center">
+          <h2>Our Values</h2>
+          <p class="text-muted">The principles that guide everything we do</p>
       </div>
 
-      <div class="col-md-4">
-        <div class="card h-100 border-0 shadow-sm">
-          <div class="card-body text-center p-4">
-            <div
-              class="feature-icon bg-primary bg-gradient text-white rounded-circle mb-3"
-            >
-              <i class="fas fa-shield-alt fa-2x"></i>
-            </div>
-            <h4 class="card-title">Quality & Trust</h4>
-            <p class="card-text">
-              We maintain rigorous standards for our teachers and content,
-              ensuring that students receive the highest quality education.
-            </p>
+      <div class="values-grid">
+          <!-- Value 1 -->
+          <div class="value-card">
+              <div class="value-card-body">
+                  <div class="value-icon-wrapper">
+                      <i class="fas fa-user-graduate value-icon"></i>
+                  </div>
+                  <h4 class="value-card-title">Student-Centered</h4>
+                  <p class="value-card-text">
+                      We put students at the center of everything we do, designing every
+                      feature and process to maximize their learning experience.
+                  </p>
+              </div>
           </div>
-        </div>
-      </div>
 
-      <div class="col-md-4">
-        <div class="card h-100 border-0 shadow-sm">
-          <div class="card-body text-center p-4">
-            <div
-              class="feature-icon bg-primary bg-gradient text-white rounded-circle mb-3"
-            >
-              <i class="fas fa-seedling fa-2x"></i>
-            </div>
-            <h4 class="card-title">Continuous Improvement</h4>
-            <p class="card-text">
-              We're committed to constantly improving our platform and
-              methodologies based on feedback and educational research.
-            </p>
+          <!-- Value 2 -->
+          <div class="value-card">
+              <div class="value-card-body">
+                  <div class="value-icon-wrapper">
+                      <i class="fas fa-shield-alt value-icon"></i>
+                  </div>
+                  <h4 class="value-card-title">Quality & Trust</h4>
+                  <p class="value-card-text">
+                      We maintain rigorous standards for our teachers and content,
+                      ensuring that students receive the highest quality education.
+                  </p>
+              </div>
           </div>
-        </div>
+
+          <!-- Value 3 -->
+          <div class="value-card">
+              <div class="value-card-body">
+                  <div class="value-icon-wrapper">
+                      <i class="fas fa-seedling value-icon"></i>
+                  </div>
+                  <h4 class="value-card-title">Continuous Improvement</h4>
+                  <p class="value-card-text">
+                      We're committed to constantly improving our platform and
+                      methodologies based on feedback and educational research.
+                  </p>
+              </div>
+          </div>
       </div>
-    </div>
   </div>
 </section>
 
 <!-- CTA Section -->
-<section class="py-5 bg-primary text-white">
+<section class="bg-primary cta-section">
   <div class="container">
-    <div class="row align-items-center">
-      <div class="col-lg-8 mx-auto text-center">
-        <h2 class="fw-bold mb-4">Join Our Learning Community</h2>
-        <p class="lead mb-4">
-          Experience the LearnIspire difference today. Start with a free demo
-          class.
-        </p>
-        <a
-          href="{% url 'account_signup' %}"
-          class="btn btn-light btn-lg px-4 me-2"
-          >Get Started</a
-        >
-        <a
-          href="{% url 'landing:contact' %}"
-          class="btn btn-outline-light btn-lg px-4"
-          >Contact Us</a
-        >
+      <div class="cta-content">
+          <h2>Join Our Learning Community</h2>
+          <p class="lead">
+              Experience the LearnIspire difference today. Start with a free demo
+              class.
+          </p>
+          <div class="btn-group">
+              <a href="#" class="btn btn-lg btn-light">Get Started</a>
+              <a href="#" class="btn btn-lg btn-outline-light">Contact Us</a>
+          </div>
       </div>
-    </div>
   </div>
 </section>
 {% endblock %} {% block extra_css %}
@@ -747,6 +708,408 @@ LearnIspire{% endblock %} {% block content %}
         @media (min-width: 960px) {
             .grid-item {
                 width: calc(33.333% - 16px);
+            }
+        }
+
+                /* Common section styles */
+                section {
+            padding: 80px 0;
+        }
+
+        section.bg-light {
+            background-color: #f8f9fa;
+        }
+
+        section.bg-primary {
+            background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%);
+            color: #fff;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Typography */
+        h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: #1976d2;
+            line-height: 1.2;
+        }
+
+        h4 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #333;
+        }
+
+        h5 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #1976d2;
+        }
+
+        p {
+            font-size: 1rem;
+            color: #555;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .text-muted {
+            color: #6c757d;
+        }
+
+        .lead {
+            font-size: 1.25rem;
+            font-weight: 300;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-block;
+            font-weight: 500;
+            text-align: center;
+            white-space: nowrap;
+            vertical-align: middle;
+            user-select: none;
+            border: 1px solid transparent;
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+            line-height: 1.5;
+            border-radius: 0.5rem;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            cursor: pointer;
+            margin: 0.25rem;
+        }
+
+        .btn-lg {
+            padding: 0.875rem 2rem;
+            font-size: 1.125rem;
+            border-radius: 0.625rem;
+        }
+
+        .btn-light {
+            background-color: #fff;
+            color: #0d6efd;
+        }
+
+        .btn-light:hover {
+            background-color: #f8f9fa;
+            color: #0a58ca;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-outline-light {
+            background-color: transparent;
+            border-color: #fff;
+            color: #fff;
+        }
+
+        .btn-outline-light:hover {
+            background-color: #fff;
+            color: #0d6efd;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(255, 255, 255, 0.2);
+        }
+
+        /* Our Story Section */
+        .story-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 3rem;
+        }
+
+        .story-content {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .story-image {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .story-image img {
+            width: 100%;
+            height: auto;
+            border-radius: 1rem;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+            transition: transform 0.5s ease;
+        }
+
+        .story-image img:hover {
+            transform: scale(1.02);
+        }
+
+        .story-text {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .story-text h2 {
+            position: relative;
+            padding-bottom: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .story-text h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%);
+            border-radius: 2px;
+        }
+
+        /* Team Section */
+        .section-header {
+            margin-bottom: 3rem;
+        }
+
+        .section-header h2 {
+            color: #1976d2;
+            position: relative;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            display: inline-block;
+        }
+
+        .section-header h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%);
+            border-radius: 2px;
+        }
+
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .team-card {
+            background-color: #fff;
+            border-radius: 1rem;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .team-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .team-card-img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+        }
+
+        .team-card-body {
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .team-card-title {
+            font-weight: 600;
+            color: #1976d2;
+            margin-bottom: 0.25rem;
+        }
+
+        .team-card-subtitle {
+            font-size: 0.875rem;
+            color: #6c757d;
+            margin-bottom: 1rem;
+        }
+
+        .team-card-text {
+            font-size: 0.9rem;
+            color: #555;
+            margin-bottom: 1.5rem;
+        }
+
+        .team-card-footer {
+            padding: 1rem;
+            background-color: rgba(0, 0, 0, 0.02);
+            text-align: center;
+        }
+
+        .social-link {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background-color: rgba(13, 110, 253, 0.1);
+            color: #0d6efd;
+            margin: 0 0.25rem;
+            transition: all 0.3s ease;
+        }
+
+        .social-link:hover {
+            background-color: #0d6efd;
+            color: #fff;
+            transform: translateY(-3px);
+        }
+
+        /* Values Section */
+        .values-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .value-card {
+            background-color: #fff;
+            border-radius: 1rem;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            height: 100%;
+        }
+
+        .value-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .value-card-body {
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .value-icon-wrapper {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto 1.5rem;
+            box-shadow: 0 10px 20px rgba(13, 110, 253, 0.2);
+        }
+
+        .value-icon {
+            color: #fff;
+            font-size: 2rem;
+        }
+
+        .value-card-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #1976d2;
+            margin-bottom: 1rem;
+        }
+
+        .value-card-text {
+            color: #555;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url('https://images.unsplash.com/photo-1523240795612-9a054b0db644?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            opacity: 0.1;
+            z-index: 0;
+        }
+
+        .cta-content {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .cta-content h2 {
+            color: #fff;
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .cta-content p {
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 2rem;
+        }
+
+        .btn-group {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            section {
+                padding: 60px 0;
+            }
+
+            h2 {
+                font-size: 2rem;
+            }
+
+            .story-content {
+                flex-direction: column-reverse;
+            }
+
+            .story-text h2::after {
+                left: 50%;
+                transform: translateX(-50%);
+            }
+
+            .story-text {
+                text-align: center;
+            }
+
+            .team-grid, .values-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .btn-group {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .btn {
+                width: 100%;
+                max-width: 300px;
             }
         }
 </style>
