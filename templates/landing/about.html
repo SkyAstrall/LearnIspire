@@ -507,7 +507,7 @@ LearnIspire{% endblock %} {% block content %}
 <style>
   /* Base Styles */
   .bg-primary {
-    background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%) !important;
+    background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%) !important;
   }
 
   .bg-light {
@@ -544,14 +544,14 @@ LearnIspire{% endblock %} {% block content %}
     font-weight: 700;
     margin-bottom: 1.5rem;
     line-height: 1.2;
-    color: #1976d2;
+    color: #2c3e50;
   }
 
   h3 {
     font-size: 2.25rem;
     font-weight: 700;
     margin-bottom: 16px;
-    color: #1976d2;
+    color: #2c3e50;
     text-align: center;
   }
 
@@ -559,7 +559,7 @@ LearnIspire{% endblock %} {% block content %}
     font-size: 1.5rem;
     font-weight: 600;
     margin-bottom: 1rem;
-    color: #333;
+    color: #2c3e50;
   }
 
   h5 {
@@ -573,7 +573,7 @@ LearnIspire{% endblock %} {% block content %}
     font-size: 1.25rem;
     font-weight: 400;
     margin-bottom: 24px;
-    color: #666;
+    color: #34495e;
     text-align: center;
   }
 
@@ -601,7 +601,7 @@ LearnIspire{% endblock %} {% block content %}
   }
 
   .grid-item-content h5 {
-    color: white;
+    color: rgba(255, 255, 255, 0.9);
   }
 
   .button-primary {
@@ -616,7 +616,7 @@ LearnIspire{% endblock %} {% block content %}
 
   .button-primary:hover {
     background: white;
-    color: #0d6efd;
+    color: #2c3e50;
     transform: translateY(-2px);
   }
 
@@ -643,6 +643,7 @@ LearnIspire{% endblock %} {% block content %}
 
   .stats-item:hover {
     transform: translateY(-5px);
+    background: rgba(255, 255, 255, 0.15);
   }
 
   .stats-content h3 {
@@ -675,11 +676,13 @@ LearnIspire{% endblock %} {% block content %}
     padding: 24px;
     height: 100%;
     transition: transform 0.3s, box-shadow 0.3s;
+    border: 1px solid rgba(0, 0, 0, 0.05);
   }
 
   .card:hover {
     transform: translateY(-5px);
     box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+    border-color: #3498db;
   }
 
   .card-content {
@@ -693,7 +696,7 @@ LearnIspire{% endblock %} {% block content %}
     align-items: center;
     width: 60px;
     height: 60px;
-    background-color: rgba(25, 118, 210, 0.1);
+    background-color: rgba(52, 152, 219, 0.1);
     border-radius: 50%;
     margin: 0 auto 16px;
   }
@@ -701,14 +704,14 @@ LearnIspire{% endblock %} {% block content %}
   .icon {
     width: 32px;
     height: 32px;
-    fill: #1976d2;
+    fill: #3498db;
   }
 
   .card h6 {
     font-size: 1.25rem;
     font-weight: 500;
     margin-bottom: 12px;
-    color: #333;
+    color: #2c3e50;
   }
 
   /* Our Story Section */
@@ -760,7 +763,7 @@ LearnIspire{% endblock %} {% block content %}
     left: 0;
     width: 80px;
     height: 4px;
-    background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%);
+    background: linear-gradient(135deg, #3498db 0%, #2c3e50 100%);
     border-radius: 2px;
   }
 
@@ -784,7 +787,7 @@ LearnIspire{% endblock %} {% block content %}
     transform: translateX(-50%);
     width: 80px;
     height: 4px;
-    background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%);
+    background: linear-gradient(135deg, #3498db 0%, #2c3e50 100%);
     border-radius: 2px;
   }
 
@@ -800,11 +803,13 @@ LearnIspire{% endblock %} {% block content %}
     overflow: hidden;
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
     transition: all 0.3s ease;
+    border: 1px solid rgba(0, 0, 0, 0.05);
   }
 
   .team-card:hover {
     transform: translateY(-10px);
     box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+    border-color: #3498db;
   }
 
   .team-card-img {
@@ -820,14 +825,14 @@ LearnIspire{% endblock %} {% block content %}
 
   .team-card-title {
     font-weight: 600;
-    color: #1976d2;
+    color: #2c3e50;
     margin-bottom: 0.25rem;
     font-size: 1.25rem;
   }
 
   .team-card-subtitle {
     font-size: 0.875rem;
-    color: #6c757d;
+    color: #3498db;
     margin-bottom: 1rem;
   }
 
@@ -839,7 +844,7 @@ LearnIspire{% endblock %} {% block content %}
 
   .team-card-footer {
     padding: 1rem;
-    background-color: rgba(0, 0, 0, 0.02);
+    background-color: rgba(52, 152, 219, 0.05);
     text-align: center;
   }
 
@@ -850,14 +855,14 @@ LearnIspire{% endblock %} {% block content %}
     width: 36px;
     height: 36px;
     border-radius: 50%;
-    background-color: rgba(13, 110, 253, 0.1);
-    color: #0d6efd;
+    background-color: rgba(52, 152, 219, 0.1);
+    color: #3498db;
     margin: 0 0.25rem;
     transition: all 0.3s ease;
   }
 
   .social-link:hover {
-    background-color: #0d6efd;
+    background-color: #3498db;
     color: #fff;
     transform: translateY(-3px);
   }
@@ -876,11 +881,13 @@ LearnIspire{% endblock %} {% block content %}
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
     transition: all 0.3s ease;
     height: 100%;
+    border: 1px solid rgba(0, 0, 0, 0.05);
   }
 
   .value-card:hover {
     transform: translateY(-10px);
     box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+    border-color: #3498db;
   }
 
   .value-card-body {
@@ -891,13 +898,13 @@ LearnIspire{% endblock %} {% block content %}
   .value-icon-wrapper {
     width: 80px;
     height: 80px;
-    background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%);
+    background: linear-gradient(135deg, #3498db 0%, #2c3e50 100%);
     border-radius: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
     margin: 0 auto 1.5rem;
-    box-shadow: 0 10px 20px rgba(13, 110, 253, 0.2);
+    box-shadow: 0 10px 20px rgba(52, 152, 219, 0.2);
   }
 
   .value-icon {
@@ -908,7 +915,7 @@ LearnIspire{% endblock %} {% block content %}
   .value-card-title {
     font-size: 1.5rem;
     font-weight: 600;
-    color: #1976d2;
+    color: #2c3e50;
     margin-bottom: 1rem;
   }
 
@@ -920,6 +927,7 @@ LearnIspire{% endblock %} {% block content %}
   .cta-section {
     position: relative;
     overflow: hidden;
+    background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%) !important;
   }
 
   .cta-section::before {
@@ -989,12 +997,12 @@ LearnIspire{% endblock %} {% block content %}
 
   .btn-light {
     background-color: #fff;
-    color: #0d6efd;
+    color: #2c3e50;
   }
 
   .btn-light:hover {
     background-color: #f8f9fa;
-    color: #0a58ca;
+    color: #2c3e50;
     transform: translateY(-3px);
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
   }
@@ -1007,79 +1015,102 @@ LearnIspire{% endblock %} {% block content %}
 
   .btn-outline-light:hover {
     background-color: #fff;
-    color: #0d6efd;
+    color: #2c3e50;
     transform: translateY(-3px);
     box-shadow: 0 5px 15px rgba(255, 255, 255, 0.2);
   }
 
-  /* Responsive adjustments */
-  @media (max-width: 992px) {
-    .grid-container {
-      grid-template-columns: 1fr;
-      text-align: center;
-    }
-
-    .grid-item-content h2 {
-      font-size: 2rem;
-    }
-
-    .stats-grid {
-      grid-template-columns: repeat(2, 1fr);
-    }
+  /* Mission Section */
+  .mission-wrapper {
+    padding: 4rem 0;
   }
 
-  @media (max-width: 768px) {
-    section {
-      padding: 60px 0;
-    }
+  .mission-content {
+    display: flex;
+    align-items: center;
+    gap: 4rem;
+  }
 
-    h2 {
-      font-size: 2rem;
-    }
+  .mission-text {
+    flex: 1;
+  }
 
-    .stats-grid {
-      grid-template-columns: 1fr;
-    }
+  .mission-text h2 {
+    color: #2c3e50;
+    margin-bottom: 1.5rem;
+    position: relative;
+    padding-bottom: 1rem;
+  }
 
-    .grid-item-content h2 {
-      font-size: 1.75rem;
-    }
+  .mission-text h2::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 80px;
+    height: 4px;
+    background: linear-gradient(135deg, #3498db 0%, #2c3e50 100%);
+    border-radius: 2px;
+  }
 
-    .grid-item-content h5 {
-      font-size: 1rem;
-    }
+  .mission-text .lead {
+    font-size: 1.25rem;
+    color: #555;
+    margin-bottom: 2rem;
+    line-height: 1.8;
+  }
 
-    .stats-content h3 {
-      font-size: 2rem;
-    }
+  .mission-buttons {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
 
-    .story-content {
-      flex-direction: column-reverse;
-    }
+  .mission-buttons .btn {
+    padding: 1rem 2rem;
+    font-size: 1.1rem;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
 
-    .story-text h2::after {
-      left: 50%;
-      transform: translateX(-50%);
-    }
+  .mission-buttons .btn-primary {
+    background: linear-gradient(135deg, #3498db 0%, #2c3e50 100%);
+    border: none;
+    color: white;
+  }
 
-    .story-text {
-      text-align: center;
-    }
+  .mission-buttons .btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(52, 152, 219, 0.2);
+  }
 
-    .team-grid,
-    .values-grid {
-      grid-template-columns: 1fr;
-    }
+  .mission-buttons .btn-outline-primary {
+    border: 2px solid #3498db;
+    color: #3498db;
+  }
 
-    .btn-group {
-      flex-direction: column;
-      align-items: center;
-    }
+  .mission-buttons .btn-outline-primary:hover {
+    background: linear-gradient(135deg, #3498db 0%, #2c3e50 100%);
+    color: white;
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(52, 152, 219, 0.2);
+  }
 
-    .btn {
-      width: 100%;
-      max-width: 300px;
-    }
+  .mission-image {
+    flex: 1;
+  }
+
+  .mission-image img {
+    width: 100%;
+    height: auto;
+    transition: transform 0.5s ease;
+  }
+
+  .mission-image img:hover {
+    transform: scale(1.02);
   }
 
   /* Features Grid */
@@ -1204,139 +1235,6 @@ LearnIspire{% endblock %} {% block content %}
     .icon {
       width: 35px;
       height: 35px;
-    }
-  }
-
-  /* Mission Section */
-  .mission-wrapper {
-    padding: 4rem 0;
-  }
-
-  .mission-content {
-    display: flex;
-    align-items: center;
-    gap: 4rem;
-  }
-
-  .mission-text {
-    flex: 1;
-  }
-
-  .mission-text h2 {
-    color: #1976d2;
-    margin-bottom: 1.5rem;
-    position: relative;
-    padding-bottom: 1rem;
-  }
-
-  .mission-text h2::after {
-    content: "";
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 80px;
-    height: 4px;
-    background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%);
-    border-radius: 2px;
-  }
-
-  .mission-text .lead {
-    font-size: 1.25rem;
-    color: #555;
-    margin-bottom: 2rem;
-    line-height: 1.8;
-  }
-
-  .mission-buttons {
-    display: flex;
-    gap: 1rem;
-    flex-wrap: wrap;
-  }
-
-  .mission-buttons .btn {
-    padding: 1rem 2rem;
-    font-size: 1.1rem;
-    border-radius: 8px;
-    transition: all 0.3s ease;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .mission-buttons .btn-primary {
-    background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%);
-    border: none;
-    color: white;
-  }
-
-  .mission-buttons .btn-primary:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 10px 20px rgba(13, 110, 253, 0.2);
-  }
-
-  .mission-buttons .btn-outline-primary {
-    border: 2px solid #0d6efd;
-    color: #0d6efd;
-  }
-
-  .mission-buttons .btn-outline-primary:hover {
-    background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%);
-    color: white;
-    transform: translateY(-3px);
-    box-shadow: 0 10px 20px rgba(13, 110, 253, 0.2);
-  }
-
-  .mission-image {
-    flex: 1;
-  }
-
-  .mission-image img {
-    width: 100%;
-    height: auto;
-    transition: transform 0.5s ease;
-  }
-
-  .mission-image img:hover {
-    transform: scale(1.02);
-  }
-
-  @media (max-width: 992px) {
-    .mission-content {
-      flex-direction: column;
-      gap: 2rem;
-      text-align: center;
-    }
-
-    .mission-text h2::after {
-      left: 50%;
-      transform: translateX(-50%);
-    }
-
-    .mission-buttons {
-      justify-content: center;
-    }
-
-    .mission-image {
-      max-width: 600px;
-      margin: 0 auto;
-    }
-  }
-
-  @media (max-width: 768px) {
-    .mission-wrapper {
-      padding: 3rem 0;
-    }
-
-    .mission-text .lead {
-      font-size: 1.1rem;
-    }
-
-    .mission-buttons {
-      flex-direction: column;
-    }
-
-    .mission-buttons .btn {
-      width: 100%;
     }
   }
 </style>
