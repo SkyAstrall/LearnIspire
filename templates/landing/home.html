@@ -816,38 +816,52 @@ Personalized Online Learning Platform{% endblock %} {% block content %}
     box-sizing: border-box; /* Ensure padding is included in width */
   }
 
-  /* Hero Section - FIXED positioning for scroll indicator */
-  .hero-section {
-    min-height: 100vh;
-    background-color: #f5f5f5;
-    display: flex;
-    align-items: center;
-    position: relative;
-  }
+/* Hero Section Fixes */
+.hero-section {
+  min-height: 100vh;
+  background: linear-gradient(rgba(25, 118, 210, 0.5), rgba(21, 101, 192, 0.4)), 
+              url('https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=2070&auto=format&fit=crop');
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  position: relative;
+  color: white;
+  text-align: center;
+}
 
-  .hero-content {
-    max-width: 650px;
-  }
+.hero-content {
+  max-width: 750px;
+  margin: 0 auto;
+}
 
-  .hero-title span {
-    color: #1976d2;
-  }
+.hero-title, .hero-content h4 {
+  color: white;
+}
 
-  .hero-buttons {
-    display: flex;
-    gap: 16px;
-    margin-top: 2rem;
-  }
+.scroll-indicator {
+  position: relative;
+  top: 150px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  color: white;
+  animation: bounce 2s infinite;
+}
+
+.scroll-indicator p {
+  color: rgba(255, 255, 255, 0.9);
+}
 
   /* FIXED: Scroll indicator positioning */
-  .scroll-indicator {
+  /* .scroll-indicator {
     position: absolute;
     bottom: 40px;
     left: 0;
     right: 0;
     text-align: center;
     animation: bounce 2s infinite;
-  }
+  } */
 
   @keyframes bounce {
     0%,
