@@ -4,125 +4,861 @@
 {% block title %}{% trans "Sign Up" %} - LearnIspire{% endblock %}
 
 {% block content %}
-<section class="py-5 bg-primary text-white signup-section">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-8 mx-auto text-center">
-                <h1 class="fw-bold mb-4">{% trans "Sign Up" %}</h1>
-                <p class="lead">Join LearnIspire and start your personalized learning journey today!</p>
-            </div>
-        </div>
-    </div>
-</section>
-
-<section class="py-5">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-8 mx-auto">
-                <div class="card border-0 shadow auth-card">
-                    <div class="card-body p-5">
-                        <form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}">
-                            {% csrf_token %}
-                            
-                            {% if form.errors %}
-                                <div class="alert alert-danger">
-                                    <p class="mb-0">Please correct the errors below:</p>
-                                    {% for field in form %}
-                                        {% for error in field.errors %}
-                                            <p class="mb-0">{{ field.label }}: {{ error }}</p>
-                                        {% endfor %}
-                                    {% endfor %}
-                                    {% for error in form.non_field_errors %}
-                                        <p class="mb-0">{{ error }}</p>
-                                    {% endfor %}
-                                </div>
-                            {% endif %}
-                            
-                            <div class="row mb-3">
-                                <div class="col-md-6">
-                                    <label for="id_first_name" class="form-label">{% trans "First Name" %}</label>
-                                    <input type="text" name="first_name" placeholder="{% trans 'First Name' %}" class="form-control" id="id_first_name" required>
-                                </div>
-                                <div class="col-md-6">
-                                    <label for="id_last_name" class="form-label">{% trans "Last Name" %}</label>
-                                    <input type="text" name="last_name" placeholder="{% trans 'Last Name' %}" class="form-control" id="id_last_name" required>
-                                </div>
-                            </div>
-                            
-                            <div class="mb-3">
-                                <label for="id_email" class="form-label">{% trans "Email" %}</label>
-                                <input type="email" name="email" placeholder="{% trans 'Email address' %}" autocomplete="email" class="form-control" id="id_email" required>
-                                <div class="form-text">{% trans "We'll never share your email with anyone else." %}</div>
-                            </div>
-                            
-                            <div class="mb-3">
-                                <label for="id_phone_number" class="form-label">{% trans "Phone Number" %}</label>
-                                <input type="tel" name="phone_number" placeholder="{% trans 'e.g. +911234567890' %}" class="form-control" id="id_phone_number" required>
-                                <div class="form-text">{% trans "Use international format with country code (e.g. +91 for India)" %}</div>
-                            </div>
-                            
-                            <div class="mb-3">
-                                <label class="form-label">{% trans "I am a" %}</label>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="role" id="role_student" value="student" checked>
-                                    <label class="form-check-label" for="role_student">
-                                        {% trans "Student" %}
-                                    </label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="role" id="role_teacher" value="teacher">
-                                    <label class="form-check-label" for="role_teacher">
-                                        {% trans "Teacher" %}
-                                    </label>
-                                </div>
-                            </div>
-                            
-                            <div class="row mb-3">
-                                <div class="col-md-6">
-                                    <label for="id_password1" class="form-label">{% trans "Password" %}</label>
-                                    <input type="password" name="password1" placeholder="{% trans 'Password' %}" autocomplete="new-password" class="form-control" id="id_password1" required>
-                                </div>
-                                <div class="col-md-6">
-                                    <label for="id_password2" class="form-label">{% trans "Confirm Password" %}</label>
-                                    <input type="password" name="password2" placeholder="{% trans 'Confirm Password' %}" autocomplete="new-password" class="form-control" id="id_password2" required>
-                                </div>
-                            </div>
-                            
-                            <div class="mb-3 form-check">
-                                <input type="checkbox" class="form-check-input" id="terms_check" required>
-                                <label class="form-check-label" for="terms_check">
-                                    {% blocktrans %}I agree to the <a href="/terms/" target="_blank">Terms and Conditions</a> and <a href="/privacy/" target="_blank">Privacy Policy</a>{% endblocktrans %}
-                                </label>
-                            </div>
-                            
-                            {% if redirect_field_value %}
-                                <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
-                            {% endif %}
-                            
-                            <div class="d-grid gap-2">
-                                <button class="btn btn-primary" type="submit">{% trans "Sign Up" %}</button>
-                            </div>
-                        </form>
+<div class="signup-container">
+    <!-- Hero Section with Gradient Background -->
+    <section class="auth-hero">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-5 auth-left-panel d-none d-lg-block">
+                    <div class="auth-illustration">
+                        <img src="{% static 'images/signup-illustration.svg' %}" alt="Learning Journey Illustration" class="img-fluid" onerror="this.src='{% static 'images/fallback-illustration.png' %}'">
                     </div>
-                    <div class="card-footer bg-light p-4 text-center">
-                        <p class="mb-0">{% trans "Already have an account?" %} <a href="{{ login_url }}" class="text-decoration-none">{% trans "Sign in" %}</a></p>
+                    <div class="auth-tagline">
+                        <h2>{% trans "Begin Your Learning Journey" %}</h2>
+                        <p>{% trans "Join thousands of students and educators transforming education together." %}</p>
+                    </div>
+                    
+                    <div class="auth-features mt-4">
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="fas fa-graduation-cap"></i>
+                            </div>
+                            <div class="feature-text">
+                                <h6>{% trans "Personalized Learning" %}</h6>
+                                <p>{% trans "Tailored experiences for every learner" %}</p>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <div class="feature-text">
+                                <h6>{% trans "Expert Instructors" %}</h6>
+                                <p>{% trans "Learn from qualified professionals" %}</p>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="fas fa-certificate"></i>
+                            </div>
+                            <div class="feature-text">
+                                <h6>{% trans "Recognized Certifications" %}</h6>
+                                <p>{% trans "Boost your career opportunities" %}</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 
-                <div class="mt-4">
-                    <div class="alert alert-info">
-                        <h5><i class="fas fa-info-circle me-2"></i> {% trans "What happens next?" %}</h5>
-                        <ol class="mb-0">
-                            <li>{% trans "You'll verify your phone number via WhatsApp" %}</li>
-                            <li>{% trans "Complete your profile with educational details" %}</li>
-                            <li>{% trans "Set your weekly availability (minimum 3 slots)" %}</li>
-                            <li>{% trans "Request a free demo class" %}</li>
-                            <li>{% trans "Start your regular classes after the demo" %}</li>
-                        </ol>
+                <div class="col-lg-7 col-md-10 mx-auto">
+                    <div class="auth-card">
+                        <div class="auth-header text-center">
+                            <img src="{% static 'images/logo.png' %}" alt="LearnIspire Logo" class="auth-logo mb-3" height="50">
+                            <h1 class="auth-title">{% trans "Create Your Account" %}</h1>
+                            <p class="auth-subtitle">{% trans "Start your personalized learning journey today" %}</p>
+                        </div>
+                        
+                        <div class="auth-body">
+                            <form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}">
+                                {% csrf_token %}
+                                
+                                {% if form.errors %}
+                                    <div class="alert alert-danger">
+                                        <div class="alert-icon">
+                                            <i class="fas fa-exclamation-circle"></i>
+                                        </div>
+                                        <div class="alert-content">
+                                            <h6 class="alert-heading">{% trans "Please check your information" %}</h6>
+                                            {% for field in form %}
+                                                {% for error in field.errors %}
+                                                    <p class="small mb-1">{{ field.label }}: {{ error }}</p>
+                                                {% endfor %}
+                                            {% endfor %}
+                                            {% for error in form.non_field_errors %}
+                                                <p class="small mb-1">{{ error }}</p>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                {% endif %}
+                                
+                                <!-- Progress Steps -->
+                                <div class="signup-progress mb-4">
+                                    <div class="progress-step active">
+                                        <div class="step-number">1</div>
+                                        <div class="step-label">{% trans "Account" %}</div>
+                                    </div>
+                                    <div class="progress-connector"></div>
+                                    <div class="progress-step">
+                                        <div class="step-number">2</div>
+                                        <div class="step-label">{% trans "Verify" %}</div>
+                                    </div>
+                                    <div class="progress-connector"></div>
+                                    <div class="progress-step">
+                                        <div class="step-number">3</div>
+                                        <div class="step-label">{% trans "Profile" %}</div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Personal Information Section -->
+                                <div class="form-section-heading">
+                                    <h5>{% trans "Personal Information" %}</h5>
+                                </div>
+                                
+                                <div class="row mb-4">
+                                    <div class="col-md-6">
+                                        <div class="form-floating mb-3 mb-md-0">
+                                            <input type="text" name="first_name" placeholder="{% trans 'First Name' %}" class="form-control" id="id_first_name" required>
+                                            <label for="id_first_name">{% trans "First Name" %}</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-floating">
+                                            <input type="text" name="last_name" placeholder="{% trans 'Last Name' %}" class="form-control" id="id_last_name" required>
+                                            <label for="id_last_name">{% trans "Last Name" %}</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-floating mb-4">
+                                    <input type="email" name="email" placeholder="{% trans 'Email address' %}" autocomplete="email" class="form-control" id="id_email" required>
+                                    <label for="id_email">{% trans "Email Address" %}</label>
+                                    <div class="form-text small">{% trans "We'll never share your email with anyone else." %}</div>
+                                </div>
+                                
+                                <div class="form-floating mb-4">
+                                    <input type="tel" name="phone_number" placeholder="{% trans 'e.g. +911234567890' %}" class="form-control" id="id_phone_number" required>
+                                    <label for="id_phone_number">{% trans "Phone Number" %}</label>
+                                    <div class="form-text small">{% trans "Use international format with country code (e.g. +91 for India)" %}</div>
+                                </div>
+                                
+                                <!-- Role Selection with Better UI -->
+                                <div class="form-section-heading">
+                                    <h5>{% trans "I am joining as" %}</h5>
+                                </div>
+                                
+                                <div class="role-selection mb-4">
+                                    <div class="role-option">
+                                        <input class="role-input" type="radio" name="role" id="role_student" value="student" checked>
+                                        <label class="role-label" for="role_student">
+                                            <div class="role-icon">
+                                                <i class="fas fa-user-graduate"></i>
+                                            </div>
+                                            <div class="role-title">{% trans "Student" %}</div>
+                                            <div class="role-description small">{% trans "Looking to learn new skills" %}</div>
+                                        </label>
+                                    </div>
+                                    <div class="role-option">
+                                        <input class="role-input" type="radio" name="role" id="role_teacher" value="teacher">
+                                        <label class="role-label" for="role_teacher">
+                                            <div class="role-icon">
+                                                <i class="fas fa-chalkboard-teacher"></i>
+                                            </div>
+                                            <div class="role-title">{% trans "Teacher" %}</div>
+                                            <div class="role-description small">{% trans "Share your expertise" %}</div>
+                                        </label>
+                                    </div>
+                                </div>
+                                
+                                <!-- Password Section -->
+                                <div class="form-section-heading">
+                                    <h5>{% trans "Create Password" %}</h5>
+                                </div>
+                                
+                                <div class="row mb-4">
+                                    <div class="col-md-6">
+                                        <div class="form-floating mb-3 mb-md-0">
+                                            <input type="password" name="password1" placeholder="{% trans 'Password' %}" autocomplete="new-password" class="form-control" id="id_password1" required>
+                                            <label for="id_password1">{% trans "Password" %}</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-floating">
+                                            <input type="password" name="password2" placeholder="{% trans 'Confirm Password' %}" autocomplete="new-password" class="form-control" id="id_password2" required>
+                                            <label for="id_password2">{% trans "Confirm Password" %}</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="password-strength mb-4">
+                                    <div class="password-meter">
+                                        <div class="meter-section" id="meter-section-1"></div>
+                                        <div class="meter-section" id="meter-section-2"></div>
+                                        <div class="meter-section" id="meter-section-3"></div>
+                                        <div class="meter-section" id="meter-section-4"></div>
+                                    </div>
+                                    <div class="password-feedback small" id="password-feedback">{% trans "Password strength: Enter a password" %}</div>
+                                </div>
+                                
+                                <div class="form-check mb-4">
+                                    <input type="checkbox" class="form-check-input" id="terms_check" required>
+                                    <label class="form-check-label small" for="terms_check">
+                                        {% blocktrans %}I agree to the <a href="/terms/" target="_blank">Terms and Conditions</a> and <a href="/privacy/" target="_blank">Privacy Policy</a>{% endblocktrans %}
+                                    </label>
+                                </div>
+                                
+                                {% if redirect_field_value %}
+                                    <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+                                {% endif %}
+                                
+                                <div class="d-grid gap-2 mb-4">
+                                    <button class="btn btn-primary btn-lg" type="submit">
+                                        <span class="auth-btn-text">{% trans "Create Account" %}</span>
+                                        <i class="fas fa-arrow-right ms-2"></i>
+                                    </button>
+                                </div>
+                                
+                                <div class="separator">
+                                    <span>{% trans "or sign up with" %}</span>
+                                </div>
+                                
+                                <div class="social-login">
+                                    <button type="button" class="btn btn-outline-secondary social-btn">
+                                        <i class="fab fa-google"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-outline-secondary social-btn">
+                                        <i class="fab fa-apple"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-outline-secondary social-btn">
+                                        <i class="fab fa-microsoft"></i>
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                        
+                        <div class="auth-footer text-center">
+                            <p class="mb-0 small">{% trans "Already have an account?" %} 
+                                <a href="{{ login_url }}" class="text-decoration-none fw-bold">{% trans "Sign In" %}</a>
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <!-- What happens next card -->
+                    <div class="next-steps-card mt-4">
+                        <div class="next-steps-header">
+                            <i class="fas fa-info-circle me-2"></i>
+                            <h5 class="mb-0">{% trans "What happens next?" %}</h5>
+                        </div>
+                        <div class="next-steps-body">
+                            <div class="next-step">
+                                <div class="step-number">1</div>
+                                <div class="step-details">
+                                    <h6>{% trans "Verification" %}</h6>
+                                    <p class="small mb-0">{% trans "You'll verify your phone number via WhatsApp" %}</p>
+                                </div>
+                            </div>
+                            <div class="next-step">
+                                <div class="step-number">2</div>
+                                <div class="step-details">
+                                    <h6>{% trans "Complete Profile" %}</h6>
+                                    <p class="small mb-0">{% trans "Add your educational details and preferences" %}</p>
+                                </div>
+                            </div>
+                            <div class="next-step">
+                                <div class="step-number">3</div>
+                                <div class="step-details">
+                                    <h6>{% trans "Set Availability" %}</h6>
+                                    <p class="small mb-0">{% trans "Schedule your weekly availability (minimum 3 slots)" %}</p>
+                                </div>
+                            </div>
+                            <div class="next-step">
+                                <div class="step-number">4</div>
+                                <div class="step-details">
+                                    <h6>{% trans "Demo Class" %}</h6>
+                                    <p class="small mb-0">{% trans "Request and attend a free demo session" %}</p>
+                                </div>
+                            </div>
+                            <div class="next-step">
+                                <div class="step-number">5</div>
+                                <div class="step-details">
+                                    <h6>{% trans "Regular Classes" %}</h6>
+                                    <p class="small mb-0">{% trans "Begin your learning journey after the demo" %}</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Professional Signup Styles */
+    .signup-container {
+        min-height: 100vh;
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    }
+    
+    .auth-hero {
+        padding: 4rem 0;
+    }
+    
+    .auth-left-panel {
+        padding-right: 2rem;
+    }
+    
+    .auth-illustration img {
+        max-height: 200px;
+        margin-bottom: 1.5rem;
+    }
+    
+    .auth-tagline h2 {
+        font-size: 1.75rem;
+        font-weight: 700;
+        color: #2c3e50;
+        margin-bottom: 0.75rem;
+    }
+    
+    .auth-tagline p {
+        font-size: 1rem;
+        color: #6c757d;
+    }
+    
+    .auth-features {
+        margin-top: 2rem;
+    }
+    
+    .feature-item {
+        display: flex;
+        margin-bottom: 1rem;
+        align-items: center;
+    }
+    
+    .feature-icon {
+        width: 36px;
+        height: 36px;
+        background-color: rgba(52, 152, 219, 0.1);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 1rem;
+        color: #3498db;
+    }
+    
+    .feature-text h6 {
+        margin-bottom: 0.25rem;
+        font-weight: 600;
+        color: #2c3e50;
+    }
+    
+    .feature-text p {
+        margin-bottom: 0;
+        font-size: 0.85rem;
+        color: #6c757d;
+    }
+    
+    .auth-card {
+        background: #ffffff;
+        border-radius: 16px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+        padding: 2rem;
+        transition: all 0.3s ease;
+        margin-bottom: 1.5rem;
+    }
+    
+    .auth-title {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #2c3e50;
+        margin-bottom: 0.5rem;
+    }
+    
+    .auth-subtitle {
+        color: #6c757d;
+        margin-bottom: 1.5rem;
+    }
+    
+    .auth-body {
+        padding: 0.5rem 0;
+    }
+    
+    /* Signup Progress Steps */
+    .signup-progress {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+    }
+    
+    .progress-step {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        position: relative;
+        z-index: 1;
+    }
+    
+    .step-number {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background-color: #e9ecef;
+        color: #6c757d;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        transition: all 0.3s ease;
+    }
+    
+    .step-label {
+        font-size: 0.8rem;
+        color: #6c757d;
+        font-weight: 500;
+    }
+    
+    .progress-step.active .step-number {
+        background-color: #3498db;
+        color: white;
+    }
+    
+    .progress-step.active .step-label {
+        color: #3498db;
+        font-weight: 600;
+    }
+    
+    .progress-connector {
+        flex-grow: 1;
+        height: 2px;
+        background-color: #e9ecef;
+        margin: 0 0.5rem;
+        position: relative;
+        top: -16px;
+        z-index: 0;
+    }
+    
+    /* Form Section Headings */
+    .form-section-heading {
+        margin-bottom: 1rem;
+    }
+    
+    .form-section-heading h5 {
+        font-size: 1rem;
+        font-weight: 600;
+        color: #2c3e50;
+        position: relative;
+        padding-bottom: 0.5rem;
+    }
+    
+    .form-section-heading h5:after {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 40px;
+        height: 2px;
+        background-color: #3498db;
+    }
+    
+    /* Role Selection */
+    .role-selection {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .role-option {
+        flex: 1;
+    }
+    
+    .role-input {
+        display: none;
+    }
+    
+    .role-label {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 1.25rem 1rem;
+        border: 1px solid #e9ecef;
+        border-radius: 12px;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    
+    .role-icon {
+        font-size: 1.5rem;
+        color: #6c757d;
+        margin-bottom: 0.75rem;
+        transition: all 0.3s ease;
+    }
+    
+    .role-title {
+        font-weight: 600;
+        margin-bottom: 0.25rem;
+        color: #2c3e50;
+    }
+    
+    .role-description {
+        color: #6c757d;
+    }
+    
+    .role-input:checked + .role-label {
+        border-color: #3498db;
+        background-color: rgba(52, 152, 219, 0.05);
+    }
+    
+    .role-input:checked + .role-label .role-icon {
+        color: #3498db;
+    }
+    
+    /* Password Strength Meter */
+    .password-strength {
+        margin-bottom: 1.5rem;
+    }
+    
+    .password-meter {
+        display: flex;
+        gap: 4px;
+        margin-bottom: 0.5rem;
+    }
+    
+    .meter-section {
+        height: 4px;
+        flex: 1;
+        background-color: #e9ecef;
+        border-radius: 2px;
+        transition: all 0.3s ease;
+    }
+    
+    .meter-section.weak {
+        background-color: #e74c3c;
+    }
+    
+    .meter-section.medium {
+        background-color: #f39c12;
+    }
+    
+    .meter-section.strong {
+        background-color: #2ecc71;
+    }
+    
+    .password-feedback {
+        color: #6c757d;
+    }
+    
+    /* Form Elements */
+    .form-floating > .form-control {
+        padding: 1rem 0.75rem;
+    }
+    
+    .form-floating > label {
+        padding: 1rem 0.75rem;
+    }
+    
+    .form-text {
+        color: #6c757d;
+        font-size: 0.8rem;
+        margin-top: 0.25rem;
+    }
+    
+    /* Button Styles */
+    .btn-primary {
+        background-color: #3498db;
+        border-color: #3498db;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-primary:hover {
+        background-color: #2980b9;
+        border-color: #2980b9;
+        transform: translateY(-2px);
+    }
+    
+    /* Separator & Social Login */
+    .separator {
+        display: flex;
+        align-items: center;
+        text-align: center;
+        margin: 1.5rem 0;
+    }
+    
+    .separator::before,
+    .separator::after {
+        content: '';
+        flex: 1;
+        border-bottom: 1px solid #e9ecef;
+    }
+    
+    .separator span {
+        padding: 0 1rem;
+        color: #6c757d;
+        font-size: 0.9rem;
+    }
+    
+    .social-login {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+        margin-bottom: 1rem;
+    }
+    
+    .social-btn {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+    }
+    
+    .social-btn:hover {
+        background-color: #f8f9fa;
+        transform: translateY(-2px);
+    }
+    
+    /* Next Steps Card */
+    .next-steps-card {
+        background-color: #fff;
+        border-radius: 16px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        overflow: hidden;
+    }
+    
+    .next-steps-header {
+        background-color: rgba(52, 152, 219, 0.1);
+        color: #3498db;
+        padding: 1rem 1.5rem;
+        display: flex;
+        align-items: center;
+    }
+    
+    .next-steps-body {
+        padding: 1.5rem;
+    }
+    
+    .next-step {
+        display: flex;
+        align-items: flex-start;
+        margin-bottom: 1rem;
+    }
+    
+    .next-step:last-child {
+        margin-bottom: 0;
+    }
+    
+    .step-number {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        background-color: rgba(52, 152, 219, 0.1);
+        color: #3498db;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+        margin-right: 1rem;
+        flex-shrink: 0;
+    }
+    
+    .step-details h6 {
+        margin-bottom: 0.25rem;
+        font-weight: 600;
+        color: #2c3e50;
+    }
+    
+    /* Alert Styling */
+    .alert {
+        border: none;
+        border-radius: 12px;
+        display: flex;
+        padding: 1rem;
+    }
+    
+    .alert-danger {
+        background-color: rgba(231, 76, 60, 0.1);
+        color: #e74c3c;
+    }
+    
+    .alert-icon {
+        margin-right: 1rem;
+        font-size: 1.5rem;
+    }
+    
+    .alert-heading {
+        font-size: 1rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+    }
+    
+    @media (max-width: 992px) {
+        .auth-card {
+            padding: 1.5rem;
+        }
+        
+        .auth-hero {
+            padding: 2rem 0;
+        }
+        
+        .role-selection {
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Add Font Awesome if not already included in base template
+    if (!document.querySelector('link[href*="font-awesome"]')) {
+        const fontAwesome = document.createElement('link');
+        fontAwesome.rel = 'stylesheet';
+        fontAwesome.href = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css';
+        document.head.appendChild(fontAwesome);
+    }
+    
+    // Password strength meter
+    document.addEventListener('DOMContentLoaded', function() {
+        const password1 = document.getElementById('id_password1');
+        const password2 = document.getElementById('id_password2');
+        const meterSections = [
+            document.getElementById('meter-section-1'),
+            document.getElementById('meter-section-2'),
+            document.getElementById('meter-section-3'),
+            document.getElementById('meter-section-4')
+        ];
+        const passwordFeedback = document.getElementById('password-feedback');
+        
+        password1.addEventListener('input', function() {
+            const value = this.value;
+            let strength = 0;
+            let feedback = '';
+            
+            // Reset all sections
+            meterSections.forEach(section => {
+                section.className = 'meter-section';
+            });
+            
+            if (value.length === 0) {
+                feedback = '{% trans "Password strength: Enter a password" %}';
+            } else {
+                // Check length
+                if (value.length > 8) {
+                    strength += 1;
+                }
+                
+                // Check for numbers
+                if (/\d/.test(value)) {
+                    strength += 1;
+                }
+                
+                // Check for special characters
+                if (/[!@#$%^&*(),.?":{}|<>]/.test(value)) {
+                    strength += 1;
+                }
+                
+                // Check for uppercase and lowercase
+                if (/[a-z]/.test(value) && /[A-Z]/.test(value)) {
+                    strength += 1;
+                }
+                
+                // Set feedback and style meter sections
+                if (strength === 0) {
+                    feedback = '{% trans "Password strength: Very weak" %}';
+                    meterSections[0].className = 'meter-section weak';
+                } else if (strength === 1) {
+                    feedback = '{% trans "Password strength: Weak" %}';
+                    meterSections[0].className = 'meter-section weak';
+                } else if (strength === 2) {
+                    feedback = '{% trans "Password strength: Medium" %}';
+                    meterSections[0].className = 'meter-section medium';
+                    meterSections[1].className = 'meter-section medium';
+                } else if (strength === 3) {
+                    feedback = '{% trans "Password strength: Strong" %}';
+                    meterSections[0].className = 'meter-section strong';
+                    meterSections[1].className = 'meter-section strong';
+                    meterSections[2].className = 'meter-section strong';
+                } else {
+                    feedback = '{% trans "Password strength: Very strong" %}';
+                    meterSections.forEach(section => {
+                        section.className = 'meter-section strong';
+                    });
+                }
+            }
+            
+            passwordFeedback.textContent = feedback;
+        });
+        
+        // Check if passwords match
+        password2.addEventListener('input', function() {
+            if (password1.value !== this.value) {
+                this.classList.add('is-invalid');
+                this.classList.remove('is-valid');
+            } else {
+                this.classList.remove('is-invalid');
+                this.classList.add('is-valid');
+            }
+        });
+        
+        // Form validation
+        const form = document.getElementById('signup_form');
+        form.addEventListener('submit', function(event) {
+            let isValid = true;
+            const email = document.getElementById('id_email');
+            const phone = document.getElementById('id_phone_number');
+            const firstName = document.getElementById('id_first_name');
+            const lastName = document.getElementById('id_last_name');
+            const termsCheck = document.getElementById('terms_check');
+            
+            // Email validation
+            if (!email.value.includes('@')) {
+                email.classList.add('is-invalid');
+                isValid = false;
+            } else {
+                email.classList.remove('is-invalid');
+                email.classList.add('is-valid');
+            }
+            
+            // Phone validation
+            if (!phone.value.includes('+')) {
+                phone.classList.add('is-invalid');
+                isValid = false;
+            } else {
+                phone.classList.remove('is-invalid');
+                phone.classList.add('is-valid');
+            }
+            
+            // Name validation
+            if (firstName.value.length < 2) {
+                firstName.classList.add('is-invalid');
+                isValid = false;
+            } else {
+                firstName.classList.remove('is-invalid');
+                firstName.classList.add('is-valid');
+            }
+            
+            if (lastName.value.length < 2) {
+                lastName.classList.add('is-invalid');
+                isValid = false;
+            } else {
+                lastName.classList.remove('is-invalid');
+                lastName.classList.add('is-valid');
+            }
+            
+            // Password validation
+            if (password1.value !== password2.value) {
+                password2.classList.add('is-invalid');
+                isValid = false;
+            }
+            
+            // Terms check
+            if (!termsCheck.checked) {
+                termsCheck.classList.add('is-invalid');
+                isValid = false;
+            } else {
+                termsCheck.classList.remove('is-invalid');
+            }
+            
+            if (!isValid) {
+                event.preventDefault();
+            }
+        });
+    });
+</script>
 {% endblock %}
