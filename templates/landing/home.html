@@ -1,388 +1,518 @@
-{% extends 'base.html' %} 
-{% load static %} 
-{% block title %}LearnIspire - Personalized Online Learning Platform{% endblock %} 
-{% block content %}
-   <!-- Hero Section -->
-   <section class="hero-section">
-    <div class="container">
-        <div class="hero-content">
-            <h1 class="hero-title">Welcome to <br>Learn<span>Ispire</span></h1>
-            <h4>Embark on a journey of personalized learning with expert guidance and innovative teaching methods</h4>
-            <div class="hero-buttons">
-                <a href="/signin" class="btn btn-primary btn-large">
-                    Start Learning
-                    <svg class="svg-icon btn-icon" viewBox="0 0 24 24">
-                        <path d="m12 4-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"></path>
-                    </svg>
-                </a>
-                <a href="/pricing" class="btn btn-outline btn-large">View Plans</a>
-            </div>
-        </div>
-        <div class="scroll-indicator">
-            <p class="body-2">Scroll to explore</p>
-        </div>
+{% extends 'base.html' %} {% load static %} {% block title %}LearnIspire -
+Personalized Online Learning Platform{% endblock %} {% block content %}
+<!-- Hero Section -->
+<section class="hero-section">
+  <div class="container">
+    <div class="hero-content">
+      <h1 class="hero-title">Welcome to <br />Learn<span>Ispire</span></h1>
+      <h4>
+        Embark on a journey of personalized learning with expert guidance and
+        innovative teaching methods
+      </h4>
+      <div class="hero-buttons">
+        <a href="/signin" class="btn btn-primary btn-large">
+          Start Learning
+          <svg class="svg-icon btn-icon" viewBox="0 0 24 24">
+            <path
+              d="m12 4-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"
+            ></path>
+          </svg>
+        </a>
+        <a href="/pricing" class="btn btn-outline btn-large">View Plans</a>
+      </div>
     </div>
+    <div class="scroll-indicator">
+      <p class="body-2">Scroll to explore</p>
+    </div>
+  </div>
 </section>
 
 <!-- Offerings Section -->
 <section class="section section-light">
-    <div class="container">
-        <h2 class="text-center">Our Offerings</h2>
-        <h6 class="text-center">Choose from our specialized programs designed to help you achieve your academic goals</h6>
-        
-        <div class="grid">
-            <!-- JEE Preparation Card -->
-            <div class="col-xs-12 col-sm-6 col-md-4">
-                <div class="card">
-                    <div class="card-media-container">
-                        <img class="card-media" src="https://images.unsplash.com/photo-1709722741348-3aecacb3f2c3?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="JEE Preparation">
-                        <div class="card-icon-overlay">
-                            <svg class="svg-icon" viewBox="0 0 24 24">
-                                <path d="M5 13.18v4L12 21l7-3.82v-4L12 17zM12 3 1 9l11 6 9-4.91V17h2V9z"></path>
-                            </svg>
-                        </div>
-                    </div>
-                    <div class="card-content">
-                        <h5>JEE Preparation</h5>
-                        <p>Comprehensive preparation for JEE Main & Advanced with personalized coaching and regular assessments.</p>
-                        <div class="card-features">
-                            <div class="feature-item">
-                                <svg class="svg-icon feature-icon" viewBox="0 0 24 24">
-                                    <path d="M9 1h6v2H9zm10.03 6.39 1.42-1.42c-.43-.51-.9-.99-1.41-1.41l-1.42 1.42C16.07 4.74 14.12 4 12 4c-4.97 0-9 4.03-9 9s4.02 9 9 9 9-4.03 9-9c0-2.12-.74-4.07-1.97-5.61M13 14h-2V8h2z"></path>
-                                </svg>
-                                <p class="body-2">Regular mock tests & assessments</p>
-                            </div>
-                            <div class="feature-item">
-                                <svg class="svg-icon feature-icon" viewBox="0 0 24 24">
-                                    <path d="M5 13.18v4L12 21l7-3.82v-4L12 17zM12 3 1 9l11 6 9-4.91V17h2V9z"></path>
-                                </svg>
-                                <p class="body-2">Expert faculty guidance</p>
-                            </div>
-                            <div class="feature-item">
-                                <svg class="svg-icon feature-icon" viewBox="0 0 24 24">
-                                    <path d="M12 11.55C9.64 9.35 6.48 8 3 8v11c3.48 0 6.64 1.35 9 3.55 2.36-2.19 5.52-3.55 9-3.55V8c-3.48 0-6.64 1.35-9 3.55M12 8c1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3 1.34 3 3 3"></path>
-                                </svg>
-                                <p class="body-2">Comprehensive study material</p>
-                            </div>
-                        </div>
-                        <a href="/jee_details" class="btn btn-primary btn-full">
-                            Learn More
-                            <svg class="svg-icon btn-icon" viewBox="0 0 24 24">
-                                <path d="m12 4-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"></path>
-                            </svg>
-                        </a>
-                    </div>
-                </div>
-            </div>
+  <div class="container">
+    <h2 class="text-center">Our Offerings</h2>
+    <h6 class="text-center">
+      Choose from our specialized programs designed to help you achieve your
+      academic goals
+    </h6>
 
-            <!-- Aptitude Training Card -->
-            <div class="col-xs-12 col-sm-6 col-md-4">
-                <div class="card">
-                    <div class="card-media-container">
-                        <img class="card-media" src="https://images.unsplash.com/photo-1653074281018-c08f358059ab?q=80&w=1933&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Aptitude Training">
-                        <div class="card-icon-overlay">
-                            <svg class="svg-icon" viewBox="0 0 24 24">
-                                <path d="M12 11.55C9.64 9.35 6.48 8 3 8v11c3.48 0 6.64 1.35 9 3.55 2.36-2.19 5.52-3.55 9-3.55V8c-3.48 0-6.64 1.35-9 3.55M12 8c1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3 1.34 3 3 3"></path>
-                            </svg>
-                        </div>
-                    </div>
-                    <div class="card-content">
-                        <h5>Aptitude Training</h5>
-                        <p>Enhance your logical reasoning and problem-solving skills with our specialized aptitude training program.</p>
-                        <div class="card-features">
-                            <div class="feature-item">
-                                <svg class="svg-icon feature-icon" viewBox="0 0 24 24">
-                                    <path d="M9 1h6v2H9zm10.03 6.39 1.42-1.42c-.43-.51-.9-.99-1.41-1.41l-1.42 1.42C16.07 4.74 14.12 4 12 4c-4.97 0-9 4.03-9 9s4.02 9 9 9 9-4.03 9-9c0-2.12-.74-4.07-1.97-5.61M13 14h-2V8h2z"></path>
-                                </svg>
-                                <p class="body-2">Timed practice sessions</p>
-                            </div>
-                            <div class="feature-item">
-                                <svg class="svg-icon feature-icon" viewBox="0 0 24 24">
-                                    <path d="M5 13.18v4L12 21l7-3.82v-4L12 17zM12 3 1 9l11 6 9-4.91V17h2V9z"></path>
-                                </svg>
-                                <p class="body-2">Topic-wise training</p>
-                            </div>
-                            <div class="feature-item">
-                                <svg class="svg-icon feature-icon" viewBox="0 0 24 24">
-                                    <path d="M12 11.55C9.64 9.35 6.48 8 3 8v11c3.48 0 6.64 1.35 9 3.55 2.36-2.19 5.52-3.55 9-3.55V8c-3.48 0-6.64 1.35-9 3.55M12 8c1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3 1.34 3 3 3"></path>
-                                </svg>
-                                <p class="body-2">Interview preparation</p>
-                            </div>
-                        </div>
-                        <a href="/aptitude_details" class="btn btn-primary btn-full">
-                            Learn More
-                            <svg class="svg-icon btn-icon" viewBox="0 0 24 24">
-                                <path d="m12 4-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"></path>
-                            </svg>
-                        </a>
-                    </div>
-                </div>
+    <div class="grid">
+      <!-- JEE Preparation Card -->
+      <div class="col-xs-12 col-sm-6 col-md-4">
+        <div class="card">
+          <div class="card-media-container">
+            <img
+              class="card-media"
+              src="https://images.unsplash.com/photo-1709722741348-3aecacb3f2c3?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+              alt="JEE Preparation"
+            />
+            <div class="card-icon-overlay">
+              <svg class="svg-icon" viewBox="0 0 24 24">
+                <path
+                  d="M5 13.18v4L12 21l7-3.82v-4L12 17zM12 3 1 9l11 6 9-4.91V17h2V9z"
+                ></path>
+              </svg>
             </div>
-
-            <!-- NEET Coaching Card -->
-            <div class="col-xs-12 col-sm-6 col-md-4">
-                <div class="card">
-                    <div class="card-media-container">
-                        <img class="card-media" src="https://images.unsplash.com/photo-1722112977909-2531858a8c37?q=80&w=1964&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="NEET Coaching">
-                        <div class="card-icon-overlay">
-                            <svg class="svg-icon" viewBox="0 0 24 24">
-                                <path d="M9 1h6v2H9zm10.03 6.39 1.42-1.42c-.43-.51-.9-.99-1.41-1.41l-1.42 1.42C16.07 4.74 14.12 4 12 4c-4.97 0-9 4.03-9 9s4.02 9 9 9 9-4.03 9-9c0-2.12-.74-4.07-1.97-5.61M13 14h-2V8h2z"></path>
-                                </svg>
-                        </div>
-                    </div>
-                    <div class="card-content">
-                        <h5>NEET Coaching</h5>
-                        <p>Expert guidance for NEET preparation with focus on NCERT syllabus and previous year questions.</p>
-                        <div class="card-features">
-                            <div class="feature-item">
-                                <svg class="svg-icon feature-icon" viewBox="0 0 24 24">
-                                    <path d="M9 1h6v2H9zm10.03 6.39 1.42-1.42c-.43-.51-.9-.99-1.41-1.41l-1.42 1.42C16.07 4.74 14.12 4 12 4c-4.97 0-9 4.03-9 9s4.02 9 9 9 9-4.03 9-9c0-2.12-.74-4.07-1.97-5.61M13 14h-2V8h2z"></path>
-                                </svg>
-                                <p class="body-2">Daily practice tests</p>
-                            </div>
-                            <div class="feature-item">
-                                <svg class="svg-icon feature-icon" viewBox="0 0 24 24">
-                                    <path d="M5 13.18v4L12 21l7-3.82v-4L12 17zM12 3 1 9l11 6 9-4.91V17h2V9z"></path>
-                                </svg>
-                                <p class="body-2">One-on-one mentoring</p>
-                            </div>
-                            <div class="feature-item">
-                                <svg class="svg-icon feature-icon" viewBox="0 0 24 24">
-                                    <path d="M12 11.55C9.64 9.35 6.48 8 3 8v11c3.48 0 6.64 1.35 9 3.55 2.36-2.19 5.52-3.55 9-3.55V8c-3.48 0-6.64 1.35-9 3.55M12 8c1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3 1.34 3 3 3"></path>
-                                </svg>
-                                <p class="body-2">NCERT-focused approach</p>
-                            </div>
-                        </div>
-                        <a href="/neet_details" class="btn btn-primary btn-full">
-                            Learn More
-                            <svg class="svg-icon btn-icon" viewBox="0 0 24 24">
-                                <path d="m12 4-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"></path>
-                            </svg>
-                        </a>
-                    </div>
-                </div>
+          </div>
+          <div class="card-content">
+            <h5>JEE Preparation</h5>
+            <p>
+              Comprehensive preparation for JEE Main & Advanced with
+              personalized coaching and regular assessments.
+            </p>
+            <div class="card-features">
+              <div class="feature-item">
+                <svg class="svg-icon feature-icon" viewBox="0 0 24 24">
+                  <path
+                    d="M9 1h6v2H9zm10.03 6.39 1.42-1.42c-.43-.51-.9-.99-1.41-1.41l-1.42 1.42C16.07 4.74 14.12 4 12 4c-4.97 0-9 4.03-9 9s4.02 9 9 9 9-4.03 9-9c0-2.12-.74-4.07-1.97-5.61M13 14h-2V8h2z"
+                  ></path>
+                </svg>
+                <p class="body-2">Regular mock tests & assessments</p>
+              </div>
+              <div class="feature-item">
+                <svg class="svg-icon feature-icon" viewBox="0 0 24 24">
+                  <path
+                    d="M5 13.18v4L12 21l7-3.82v-4L12 17zM12 3 1 9l11 6 9-4.91V17h2V9z"
+                  ></path>
+                </svg>
+                <p class="body-2">Expert faculty guidance</p>
+              </div>
+              <div class="feature-item">
+                <svg class="svg-icon feature-icon" viewBox="0 0 24 24">
+                  <path
+                    d="M12 11.55C9.64 9.35 6.48 8 3 8v11c3.48 0 6.64 1.35 9 3.55 2.36-2.19 5.52-3.55 9-3.55V8c-3.48 0-6.64 1.35-9 3.55M12 8c1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3 1.34 3 3 3"
+                  ></path>
+                </svg>
+                <p class="body-2">Comprehensive study material</p>
+              </div>
             </div>
+            <a href="/jee_details" class="btn btn-primary btn-full">
+              Learn More
+              <svg class="svg-icon btn-icon" viewBox="0 0 24 24">
+                <path
+                  d="m12 4-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"
+                ></path>
+              </svg>
+            </a>
+          </div>
         </div>
+      </div>
+
+      <!-- Aptitude Training Card -->
+      <div class="col-xs-12 col-sm-6 col-md-4">
+        <div class="card">
+          <div class="card-media-container">
+            <img
+              class="card-media"
+              src="https://images.unsplash.com/photo-1653074281018-c08f358059ab?q=80&w=1933&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+              alt="Aptitude Training"
+            />
+            <div class="card-icon-overlay">
+              <svg class="svg-icon" viewBox="0 0 24 24">
+                <path
+                  d="M12 11.55C9.64 9.35 6.48 8 3 8v11c3.48 0 6.64 1.35 9 3.55 2.36-2.19 5.52-3.55 9-3.55V8c-3.48 0-6.64 1.35-9 3.55M12 8c1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3 1.34 3 3 3m0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5m8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5"
+                ></path>
+              </svg>
+            </div>
+          </div>
+          <div class="card-content">
+            <h5>Aptitude Training</h5>
+            <p>
+              Enhance your logical reasoning and problem-solving skills with our
+              specialized aptitude training program.
+            </p>
+            <div class="card-features">
+              <div class="feature-item">
+                <svg class="svg-icon feature-icon" viewBox="0 0 24 24">
+                  <path
+                    d="M9 1h6v2H9zm10.03 6.39 1.42-1.42c-.43-.51-.9-.99-1.41-1.41l-1.42 1.42C16.07 4.74 14.12 4 12 4c-4.97 0-9 4.03-9 9s4.02 9 9 9 9-4.03 9-9c0-2.12-.74-4.07-1.97-5.61M13 14h-2V8h2z"
+                  ></path>
+                </svg>
+                <p class="body-2">Timed practice sessions</p>
+              </div>
+              <div class="feature-item">
+                <svg class="svg-icon feature-icon" viewBox="0 0 24 24">
+                  <path
+                    d="M5 13.18v4L12 21l7-3.82v-4L12 17zM12 3 1 9l11 6 9-4.91V17h2V9z"
+                  ></path>
+                </svg>
+                <p class="body-2">Topic-wise training</p>
+              </div>
+              <div class="feature-item">
+                <svg class="svg-icon feature-icon" viewBox="0 0 24 24">
+                  <path
+                    d="M12 11.55C9.64 9.35 6.48 8 3 8v11c3.48 0 6.64 1.35 9 3.55 2.36-2.19 5.52-3.55 9-3.55V8c-3.48 0-6.64 1.35-9 3.55M12 8c1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3 1.34 3 3 3"
+                  ></path>
+                </svg>
+                <p class="body-2">Interview preparation</p>
+              </div>
+            </div>
+            <a href="/aptitude_details" class="btn btn-primary btn-full">
+              Learn More
+              <svg class="svg-icon btn-icon" viewBox="0 0 24 24">
+                <path
+                  d="m12 4-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"
+                ></path>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- NEET Coaching Card -->
+      <div class="col-xs-12 col-sm-6 col-md-4">
+        <div class="card">
+          <div class="card-media-container">
+            <img
+              class="card-media"
+              src="https://images.unsplash.com/photo-1722112977909-2531858a8c37?q=80&w=1964&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+              alt="NEET Coaching"
+            />
+            <div class="card-icon-overlay">
+              <svg class="svg-icon" viewBox="0 0 24 24">
+                <path
+                  d="M9 1h6v2H9zm10.03 6.39 1.42-1.42c-.43-.51-.9-.99-1.41-1.41l-1.42 1.42C16.07 4.74 14.12 4 12 4c-4.97 0-9 4.03-9 9s4.02 9 9 9 9-4.03 9-9c0-2.12-.74-4.07-1.97-5.61M13 14h-2V8h2z"
+                ></path>
+              </svg>
+            </div>
+          </div>
+          <div class="card-content">
+            <h5>NEET Coaching</h5>
+            <p>
+              Expert guidance for NEET preparation with focus on NCERT syllabus
+              and previous year questions.
+            </p>
+            <div class="card-features">
+              <div class="feature-item">
+                <svg class="svg-icon feature-icon" viewBox="0 0 24 24">
+                  <path
+                    d="M9 1h6v2H9zm10.03 6.39 1.42-1.42c-.43-.51-.9-.99-1.41-1.41l-1.42 1.42C16.07 4.74 14.12 4 12 4c-4.97 0-9 4.03-9 9s4.02 9 9 9 9-4.03 9-9c0-2.12-.74-4.07-1.97-5.61M13 14h-2V8h2z"
+                  ></path>
+                </svg>
+                <p class="body-2">Daily practice tests</p>
+              </div>
+              <div class="feature-item">
+                <svg class="svg-icon feature-icon" viewBox="0 0 24 24">
+                  <path
+                    d="M5 13.18v4L12 21l7-3.82v-4L12 17zM12 3 1 9l11 6 9-4.91V17h2V9z"
+                  ></path>
+                </svg>
+                <p class="body-2">One-on-one mentoring</p>
+              </div>
+              <div class="feature-item">
+                <svg class="svg-icon feature-icon" viewBox="0 0 24 24">
+                  <path
+                    d="M12 11.55C9.64 9.35 6.48 8 3 8v11c3.48 0 6.64 1.35 9 3.55 2.36-2.19 5.52-3.55 9-3.55V8c-3.48 0-6.64 1.35-9 3.55M12 8c1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3 1.34 3 3 3"
+                  ></path>
+                </svg>
+                <p class="body-2">NCERT-focused approach</p>
+              </div>
+            </div>
+            <a href="/neet_details" class="btn btn-primary btn-full">
+              Learn More
+              <svg class="svg-icon btn-icon" viewBox="0 0 24 24">
+                <path
+                  d="m12 4-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"
+                ></path>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
 </section>
 
 <!-- Features Section -->
 <section class="section section-dark">
-    <div class="container">
-        <h2 class="text-center">Why Choose LearnIspire</h2>
-        <h6 class="text-center">Discover the features that make our platform the perfect choice for your educational journey</h6>
-        
-        <div class="grid">
-            <!-- Secure Learning Environment -->
-            <div class="col-xs-12 col-sm-6 col-md-4">
-                <div class="feature-card">
-                    <div class="feature-card-icon security-icon">
-                        <svg class="svg-icon" viewBox="0 0 24 24">
-                            <path d="M12 1 3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11z"></path>
-                        </svg>
-                    </div>
-                    <h5>Secure Learning Environment</h5>
-                    <p>Experience a secure and safe learning environment with end-to-end encryption for all sessions and personal data protection.</p>
-                    <div class="feature-chip-container">
-                        <div class="feature-chip">
-                            <svg class="svg-icon chip-icon" viewBox="0 0 24 24">
-                                <path d="M16.59 7.58 10 14.17l-3.59-3.58L5 12l5 5 8-8zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8"></path>
-                            </svg>
-                            End-to-end encryption
-                        </div>
-                        <div class="feature-chip">
-                            <svg class="svg-icon chip-icon" viewBox="0 0 24 24">
-                                <path d="M16.59 7.58 10 14.17l-3.59-3.58L5 12l5 5 8-8zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8"></path>
-                            </svg>
-                            Data protection
-                        </div>
-                        <div class="feature-chip">
-                            <svg class="svg-icon chip-icon" viewBox="0 0 24 24">
-                                <path d="M16.59 7.58 10 14.17l-3.59-3.58L5 12l5 5 8-8zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8"></path>
-                            </svg>
-                            Safe environment
-                        </div>
-                    </div>
-                </div>
-            </div>
+  <div class="container">
+    <h2 class="text-center">Why Choose LearnIspire</h2>
+    <h6 class="text-center">
+      Discover the features that make our platform the perfect choice for your
+      educational journey
+    </h6>
 
-            <!-- One-on-One Sessions -->
-            <div class="col-xs-12 col-sm-6 col-md-4">
-                <div class="feature-card">
-                    <div class="feature-card-icon sessions-icon">
-                        <svg class="svg-icon" viewBox="0 0 24 24">
-                            <path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5s-3 1.34-3 3 1.34 3 3 3m-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5 5 6.34 5 8s1.34 3 3 3m0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5m8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5"></path>
-                        </svg>
-                    </div>
-                    <h5>One-on-One Sessions</h5>
-                    <p>Get personalized attention with our dedicated one-on-one learning sessions tailored to your unique learning style and pace.</p>
-                    <div class="feature-chip-container">
-                        <div class="feature-chip">
-                            <svg class="svg-icon chip-icon" viewBox="0 0 24 24">
-                                <path d="M16.59 7.58 10 14.17l-3.59-3.58L5 12l5 5 8-8zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8"></path>
-                            </svg>
-                            Personal attention
-                        </div>
-                        <div class="feature-chip">
-                            <svg class="svg-icon chip-icon" viewBox="0 0 24 24">
-                                <path d="M16.59 7.58 10 14.17l-3.59-3.58L5 12l5 5 8-8zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8"></path>
-                            </svg>
-                            Custom pace
-                        </div>
-                        <div class="feature-chip">
-                            <svg class="svg-icon chip-icon" viewBox="0 0 24 24">
-                                <path d="M16.59 7.58 10 14.17l-3.59-3.58L5 12l5 5 8-8zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8"></path>
-                            </svg>
-                            Flexible timing
-                        </div>
-                    </div>
-                </div>
+    <div class="grid">
+      <!-- Secure Learning Environment -->
+      <div class="col-xs-12 col-sm-6 col-md-4">
+        <div class="feature-card">
+          <div class="feature-card-icon security-icon">
+            <svg class="svg-icon" viewBox="0 0 24 24">
+              <path
+                d="M12 1 3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11z"
+              ></path>
+            </svg>
+          </div>
+          <h5>Secure Learning Environment</h5>
+          <p>
+            Experience a secure and safe learning environment with end-to-end
+            encryption for all sessions and personal data protection.
+          </p>
+          <div class="feature-chip-container">
+            <div class="feature-chip">
+              <svg class="svg-icon chip-icon" viewBox="0 0 24 24">
+                <path
+                  d="M16.59 7.58 10 14.17l-3.59-3.58L5 12l5 5 8-8zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8"
+                ></path>
+              </svg>
+              End-to-end encryption
             </div>
-
-            <!-- Accessible Anywhere -->
-            <div class="col-xs-12 col-sm-6 col-md-4">
-                <div class="feature-card">
-                    <div class="feature-card-icon access-icon">
-                        <svg class="svg-icon" viewBox="0 0 24 24">
-                            <path d="M4 6h18V4H4c-1.1 0-2 .9-2 2v11H0v3h14v-3H4zm19 2h-6c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h6c.55 0 1-.45 1-1V9c0-.55-.45-1-1-1m-1 9h-4v-7h4z"></path>
-                        </svg>
-                    </div>
-                    <h5>Accessible Anywhere</h5>
-                    <p>Access your learning materials and attend sessions from anywhere, anytime, with our multi-platform compatible system.</p>
-                    <div class="feature-chip-container">
-                        <div class="feature-chip">
-                            <svg class="svg-icon chip-icon" viewBox="0 0 24 24">
-                                <path d="M16.59 7.58 10 14.17l-3.59-3.58L5 12l5 5 8-8zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8"></path>
-                            </svg>
-                            Multi-platform
-                        </div>
-                        <div class="feature-chip">
-                            <svg class="svg-icon chip-icon" viewBox="0 0 24 24">
-                                <path d="M16.59 7.58 10 14.17l-3.59-3.58L5 12l5 5 8-8zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8"></path>
-                            </svg>
-                            Mobile friendly
-                        </div>
-                        <div class="feature-chip">
-                            <svg class="svg-icon chip-icon" viewBox="0 0 24 24">
-                                <path d="M16.59 7.58 10 14.17l-3.59-3.58L5 12l5 5 8-8zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8"></path>
-                            </svg>
-                            24/7 access
-                        </div>
-                    </div>
-                </div>
+            <div class="feature-chip">
+              <svg class="svg-icon chip-icon" viewBox="0 0 24 24">
+                <path
+                  d="M16.59 7.58 10 14.17l-3.59-3.58L5 12l5 5 8-8zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8"
+                ></path>
+              </svg>
+              Data protection
             </div>
-
-            <!-- Expert Mentorship -->
-            <div class="col-xs-12 col-sm-6 col-md-4">
-                <div class="feature-card">
-                    <div class="feature-card-icon mentor-icon">
-                        <svg class="svg-icon" viewBox="0 0 24 24">
-                            <path d="M5 13.18v4L12 21l7-3.82v-4L12 17zM12 3 1 9l11 6 9-4.91V17h2V9z"></path>
-                        </svg>
-                    </div>
-                    <h5>Expert Mentorship</h5>
-                    <p>Learn from experienced educators and industry experts who provide guidance beyond just academic knowledge.</p>
-                    <div class="feature-chip-container">
-                        <div class="feature-chip">
-                            <svg class="svg-icon chip-icon" viewBox="0 0 24 24">
-                                <path d="M16.59 7.58 10 14.17l-3.59-3.58L5 12l5 5 8-8zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8"></path>
-                            </svg>
-                            Experienced faculty
-                        </div>
-                        <div class="feature-chip">
-                            <svg class="svg-icon chip-icon" viewBox="0 0 24 24">
-                                <path d="M16.59 7.58 10 14.17l-3.59-3.58L5 12l5 5 8-8zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8"></path>
-                            </svg>
-                            Industry insights
-                        </div>
-                        <div class="feature-chip">
-                            <svg class="svg-icon chip-icon" viewBox="0 0 24 24">
-                                <path d="M16.59 7.58 10 14.17l-3.59-3.58L5 12l5 5 8-8zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8"></path>
-                            </svg>
-                            Career guidance
-                        </div>
-                    </div>
-                </div>
+            <div class="feature-chip">
+              <svg class="svg-icon chip-icon" viewBox="0 0 24 24">
+                <path
+                  d="M16.59 7.58 10 14.17l-3.59-3.58L5 12l5 5 8-8zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8"
+                ></path>
+              </svg>
+              Safe environment
             </div>
-
-            <!-- Flexible Schedule -->
-            <div class="col-xs-12 col-sm-6 col-md-4">
-                <div class="feature-card">
-                    <div class="feature-card-icon schedule-icon">
-                        <svg class="svg-icon" viewBox="0 0 24 24">
-                            <path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2M12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8"></path>
-                            <path d="M12.5 7H11v6l5.25 3.15.75-1.23-4.5-2.67z"></path>
-                        </svg>
-                    </div>
-                    <h5>Flexible Schedule</h5>
-                    <p>Choose learning times that work best for you with our flexible scheduling system and booking management.</p>
-                    <div class="feature-chip-container">
-                        <div class="feature-chip">
-                            <svg class="svg-icon chip-icon" viewBox="0 0 24 24">
-                                <path d="M16.59 7.58 10 14.17l-3.59-3.58L5 12l5 5 8-8zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8"></path>
-                            </svg>
-                            Custom timings
-                        </div>
-                        <div class="feature-chip">
-                            <svg class="svg-icon chip-icon" viewBox="0 0 24 24">
-                                <path d="M16.59 7.58 10 14.17l-3.59-3.58L5 12l5 5 8-8zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8"></path>
-                            </svg>
-                            Easy rescheduling
-                        </div>
-                        <div class="feature-chip">
-                            <svg class="svg-icon chip-icon" viewBox="0 0 24 24">
-                                <path d="M16.59 7.58 10 14.17l-3.59-3.58L5 12l5 5 8-8zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8"></path>
-                            </svg>
-                            Time zone support
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Progress Tracking -->
-            <div class="col-xs-12 col-sm-6 col-md-4">
-                <div class="feature-card">
-                    <div class="feature-card-icon progress-icon">
-                        <svg class="svg-icon" viewBox="0 0 24 24">
-                            <path d="M19 3h-4.18C14.4 1.84 13.3 1 12 1s-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2m-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1m2 14H7v-2h7zm3-4H7v-2h10zm0-4H7V7h10z"></path>
-                        </svg>
-                    </div>
-                    <h5>Progress Tracking</h5>
-                    <p>Monitor your learning journey with detailed progress tracking, assessments, and performance analytics.</p>
-                    <div class="feature-chip-container">
-                        <div class="feature-chip">
-                            <svg class="svg-icon chip-icon" viewBox="0 0 24 24">
-                                <path d="M16.59 7.58 10 14.17l-3.59-3.58L5 12l5 5 8-8zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8"></path>
-                            </svg>
-                            Detailed analytics
-                        </div>
-                        <div class="feature-chip">
-                            <svg class="svg-icon chip-icon" viewBox="0 0 24 24">
-                                <path d="M16.59 7.58 10 14.17l-3.59-3.58L5 12l5 5 8-8zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8"></path>
-                            </svg>
-                            Regular assessments
-                        </div>
-                        <div class="feature-chip">
-                            <svg class="svg-icon chip-icon" viewBox="0 0 24 24">
-                                <path d="M16.59 7.58 10 14.17l-3.59-3.58L5 12l5 5 8-8zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8"></path>
-                            </svg>
-                            Performance insights
-                        </div>
-                    </div>
-                </div>
-            </div>
+          </div>
         </div>
+      </div>
+
+      <!-- One-on-One Sessions -->
+      <div class="col-xs-12 col-sm-6 col-md-4">
+        <div class="feature-card">
+          <div class="feature-card-icon sessions-icon">
+            <svg class="svg-icon" viewBox="0 0 24 24">
+              <path
+                d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5s-3 1.34-3 3 1.34 3 3 3m-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5 5 6.34 5 8s1.34 3 3 3m0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5m8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5"
+              ></path>
+            </svg>
+          </div>
+          <h5>One-on-One Sessions</h5>
+          <p>
+            Get personalized attention with our dedicated one-on-one learning
+            sessions tailored to your unique learning style and pace.
+          </p>
+          <div class="feature-chip-container">
+            <div class="feature-chip">
+              <svg class="svg-icon chip-icon" viewBox="0 0 24 24">
+                <path
+                  d="M16.59 7.58 10 14.17l-3.59-3.58L5 12l5 5 8-8zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8"
+                ></path>
+              </svg>
+              Personal attention
+            </div>
+            <div class="feature-chip">
+              <svg class="svg-icon chip-icon" viewBox="0 0 24 24">
+                <path
+                  d="M16.59 7.58 10 14.17l-3.59-3.58L5 12l5 5 8-8zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8"
+                ></path>
+              </svg>
+              Custom pace
+            </div>
+            <div class="feature-chip">
+              <svg class="svg-icon chip-icon" viewBox="0 0 24 24">
+                <path
+                  d="M16.59 7.58 10 14.17l-3.59-3.58L5 12l5 5 8-8zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8"
+                ></path>
+              </svg>
+              Flexible timing
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Accessible Anywhere -->
+      <div class="col-xs-12 col-sm-6 col-md-4">
+        <div class="feature-card">
+          <div class="feature-card-icon access-icon">
+            <svg class="svg-icon" viewBox="0 0 24 24">
+              <path
+                d="M4 6h18V4H4c-1.1 0-2 .9-2 2v11H0v3h14v-3H4zm19 2h-6c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h6c.55 0 1-.45 1-1V9c0-.55-.45-1-1-1m-1 9h-4v-7h4z"
+              ></path>
+            </svg>
+          </div>
+          <h5>Accessible Anywhere</h5>
+          <p>
+            Access your learning materials and attend sessions from anywhere,
+            anytime, with our multi-platform compatible system.
+          </p>
+          <div class="feature-chip-container">
+            <div class="feature-chip">
+              <svg class="svg-icon chip-icon" viewBox="0 0 24 24">
+                <path
+                  d="M16.59 7.58 10 14.17l-3.59-3.58L5 12l5 5 8-8zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8"
+                ></path>
+              </svg>
+              Multi-platform
+            </div>
+            <div class="feature-chip">
+              <svg class="svg-icon chip-icon" viewBox="0 0 24 24">
+                <path
+                  d="M16.59 7.58 10 14.17l-3.59-3.58L5 12l5 5 8-8zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8"
+                ></path>
+              </svg>
+              Mobile friendly
+            </div>
+            <div class="feature-chip">
+              <svg class="svg-icon chip-icon" viewBox="0 0 24 24">
+                <path
+                  d="M16.59 7.58 10 14.17l-3.59-3.58L5 12l5 5 8-8zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8"
+                ></path>
+              </svg>
+              24/7 access
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Expert Mentorship -->
+      <div class="col-xs-12 col-sm-6 col-md-4">
+        <div class="feature-card">
+          <div class="feature-card-icon mentor-icon">
+            <svg class="svg-icon" viewBox="0 0 24 24">
+              <path
+                d="M5 13.18v4L12 21l7-3.82v-4L12 17zM12 3 1 9l11 6 9-4.91V17h2V9z"
+              ></path>
+            </svg>
+          </div>
+          <h5>Expert Mentorship</h5>
+          <p>
+            Learn from experienced educators and industry experts who provide
+            guidance beyond just academic knowledge.
+          </p>
+          <div class="feature-chip-container">
+            <div class="feature-chip">
+              <svg class="svg-icon chip-icon" viewBox="0 0 24 24">
+                <path
+                  d="M16.59 7.58 10 14.17l-3.59-3.58L5 12l5 5 8-8zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8"
+                ></path>
+              </svg>
+              Experienced faculty
+            </div>
+            <div class="feature-chip">
+              <svg class="svg-icon chip-icon" viewBox="0 0 24 24">
+                <path
+                  d="M16.59 7.58 10 14.17l-3.59-3.58L5 12l5 5 8-8zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8"
+                ></path>
+              </svg>
+              Industry insights
+            </div>
+            <div class="feature-chip">
+              <svg class="svg-icon chip-icon" viewBox="0 0 24 24">
+                <path
+                  d="M16.59 7.58 10 14.17l-3.59-3.58L5 12l5 5 8-8zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8"
+                ></path>
+              </svg>
+              Career guidance
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Flexible Schedule -->
+      <div class="col-xs-12 col-sm-6 col-md-4">
+        <div class="feature-card">
+          <div class="feature-card-icon schedule-icon">
+            <svg class="svg-icon" viewBox="0 0 24 24">
+              <path
+                d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2M12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8"
+              ></path>
+              <path d="M12.5 7H11v6l5.25 3.15.75-1.23-4.5-2.67z"></path>
+            </svg>
+          </div>
+          <h5>Flexible Schedule</h5>
+          <p>
+            Choose learning times that work best for you with our flexible
+            scheduling system and booking management.
+          </p>
+          <div class="feature-chip-container">
+            <div class="feature-chip">
+              <svg class="svg-icon chip-icon" viewBox="0 0 24 24">
+                <path
+                  d="M16.59 7.58 10 14.17l-3.59-3.58L5 12l5 5 8-8zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8"
+                ></path>
+              </svg>
+              Custom timings
+            </div>
+            <div class="feature-chip">
+              <svg class="svg-icon chip-icon" viewBox="0 0 24 24">
+                <path
+                  d="M16.59 7.58 10 14.17l-3.59-3.58L5 12l5 5 8-8zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8"
+                ></path>
+              </svg>
+              Easy rescheduling
+            </div>
+            <div class="feature-chip">
+              <svg class="svg-icon chip-icon" viewBox="0 0 24 24">
+                <path
+                  d="M16.59 7.58 10 14.17l-3.59-3.58L5 12l5 5 8-8zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8"
+                ></path>
+              </svg>
+              Time zone support
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Progress Tracking -->
+      <div class="col-xs-12 col-sm-6 col-md-4">
+        <div class="feature-card">
+          <div class="feature-card-icon progress-icon">
+            <svg class="svg-icon" viewBox="0 0 24 24">
+              <path
+                d="M19 3h-4.18C14.4 1.84 13.3 1 12 1s-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2m-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1m2 14H7v-2h7zm3-4H7v-2h10zm0-4H7V7h10z"
+              ></path>
+            </svg>
+          </div>
+          <h5>Progress Tracking</h5>
+          <p>
+            Monitor your learning journey with detailed progress tracking,
+            assessments, and performance analytics.
+          </p>
+          <div class="feature-chip-container">
+            <div class="feature-chip">
+              <svg class="svg-icon chip-icon" viewBox="0 0 24 24">
+                <path
+                  d="M16.59 7.58 10 14.17l-3.59-3.58L5 12l5 5 8-8zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8"
+                ></path>
+              </svg>
+              Detailed analytics
+            </div>
+            <div class="feature-chip">
+              <svg class="svg-icon chip-icon" viewBox="0 0 24 24">
+                <path
+                  d="M16.59 7.58 10 14.17l-3.59-3.58L5 12l5 5 8-8zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8"
+                ></path>
+              </svg>
+              Regular assessments
+            </div>
+            <div class="feature-chip">
+              <svg class="svg-icon chip-icon" viewBox="0 0 24 24">
+                <path
+                  d="M16.59 7.58 10 14.17l-3.59-3.58L5 12l5 5 8-8zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8"
+                ></path>
+              </svg>
+              Performance insights
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
 </section>
 
 <!-- Testimonials Section -->
 <section class="testimonials-section py-5">
   <div class="container">
     <div class="text-center mb-5">
-      <span class="badge rounded-pill text-bg-primary px-3 py-2 mb-3">STUDENT TESTIMONIALS</span>
+      <span class="badge rounded-pill text-bg-primary px-3 py-2 mb-3"
+        >STUDENT TESTIMONIALS</span
+      >
       <h2 class="section-title fw-bold">What Our Students Say</h2>
       <div class="section-divider mx-auto"></div>
-      <p class="section-subtitle text-muted">Success stories from our platform</p>
+      <p class="section-subtitle text-muted">
+        Success stories from our platform
+      </p>
     </div>
 
     <div class="row testimonials-row">
@@ -429,7 +559,8 @@
             <p class="testimonial-text">
               "The flexible scheduling allowed me to balance my studies with
               other activities. My physics and chemistry scores improved
-              significantly. The mentors were always available for doubt sessions."
+              significantly. The mentors were always available for doubt
+              sessions."
             </p>
             <div class="testimonial-rating">
               <i class="fas fa-star"></i>
@@ -491,349 +622,507 @@
   </div>
 </section>
 
-{% endblock %} 
+<!-- Footer Section -->
+<!-- <footer class="footer-section">
+  <div class="footer-top">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-4 col-md-6 mb-5">
+          <div class="footer-widget">
+            <div class="footer-logo">
+              <h2 class="footer-title">
+                Learn<span class="text-primary">Ispire</span>
+              </h2>
+            </div>
+            <p class="footer-desc">
+              Empowering students with personalized learning experiences and
+              expert guidance to achieve their academic and career goals.
+            </p>
+            <div class="footer-social">
+              <a href="#" class="social-icon">
+                <i class="fab fa-facebook-f"></i>
+              </a>
+              <a href="#" class="social-icon">
+                <i class="fab fa-twitter"></i>
+              </a>
+              <a href="#" class="social-icon">
+                <i class="fab fa-instagram"></i>
+              </a>
+              <a href="#" class="social-icon">
+                <i class="fab fa-linkedin-in"></i>
+              </a>
+              <a href="#" class="social-icon">
+                <i class="fab fa-youtube"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-2 col-md-6 mb-5">
+          <div class="footer-widget">
+            <h4 class="footer-widget-title">Quick Links</h4>
+            <ul class="footer-links">
+              <li><a href="/">Home</a></li>
+              <li><a href="/about">About Us</a></li>
+              <li><a href="/courses">Courses</a></li>
+              <li><a href="/pricing">Pricing</a></li>
+              <li><a href="/contact">Contact</a></li>
+              <li><a href="/blog">Blog</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-lg-2 col-md-6 mb-5">
+          <div class="footer-widget">
+            <h4 class="footer-widget-title">Programs</h4>
+            <ul class="footer-links">
+              <li><a href="/jee_details">JEE Preparation</a></li>
+              <li><a href="/neet_details">NEET Coaching</a></li>
+              <li><a href="/aptitude_details">Aptitude Training</a></li>
+              <li><a href="/boards">Board Exams</a></li>
+              <li><a href="/olympiads">Olympiads</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-lg-4 col-md-6 mb-5">
+          <div class="footer-widget">
+            <h4 class="footer-widget-title">Contact Info</h4>
+            <div class="contact-info">
+              <div class="contact-item">
+                <svg class="svg-icon contact-icon" viewBox="0 0 24 24">
+                  <path
+                    d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"
+                  />
+                </svg>
+                <p>
+                  123 Education Lane, Learning District, Knowledge City, India -
+                  400001
+                </p>
+              </div>
+              <div class="contact-item">
+                <svg class="svg-icon contact-icon" viewBox="0 0 24 24">
+                  <path
+                    d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"
+                  />
+                </svg>
+                <p>info@learnispire.com</p>
+              </div>
+              <div class="contact-item">
+                <svg class="svg-icon contact-icon" viewBox="0 0 24 24">
+                  <path
+                    d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"
+                  />
+                </svg>
+                <p>+91 9876543210</p>
+              </div>
+              <div class="contact-item">
+                <svg class="svg-icon contact-icon" viewBox="0 0 24 24">
+                  <path
+                    d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"
+                  />
+                  <path d="M12.5 7H11v6l5.25 3.15.75-1.23-4.5-2.67z" />
+                </svg>
+                <p>Mon-Sat: 9:00 AM - 6:00 PM</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="container">
+      <div class="copyright-row">
+        <div class="copyright-text">
+          <p>&copy; {% now "Y" %} LearnIspire. All Rights Reserved.</p>
+        </div>
+        <div class="footer-bottom-links">
+          <a href="/privacy-policy">Privacy Policy</a>
+          <a href="/terms-of-service">Terms of Service</a>
+          <a href="/sitemap">Sitemap</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer> -->
 
-{% block extra_css %}
+{% endblock %} {% block extra_css %}
 <style>
-  /* Original CSS */
+  /* Base Styles */
   * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+      Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   }
 
   body {
-      line-height: 1.5;
-      color: rgba(0, 0, 0, 0.87);
+    line-height: 1.5;
+    color: rgba(0, 0, 0, 0.87);
   }
-        
+
   /* Typography */
   h1 {
-      font-size: 3.5rem;
-      font-weight: 800;
-      margin-bottom: 1rem;
-      line-height: 1.2;
+    font-size: 3.5rem;
+    font-weight: 800;
+    margin-bottom: 1rem;
+    line-height: 1.2;
   }
 
   h2 {
-      font-size: 2.5rem;
-      font-weight: 700;
-      margin-bottom: 1rem;
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
   }
 
   h4 {
-      font-size: 1.5rem;
-      font-weight: 500;
-      margin-bottom: 2rem;
-      color: rgba(0, 0, 0, 0.6);
+    font-size: 1.5rem;
+    font-weight: 500;
+    margin-bottom: 2rem;
+    color: rgba(0, 0, 0, 0.6);
   }
 
   h5 {
-      font-size: 1.25rem;
-      font-weight: 600;
-      margin-bottom: 0.75rem;
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
   }
 
   h6 {
-      font-size: 1.1rem;
-      font-weight: 400;
-      margin-bottom: 2rem;
-      color: rgba(0, 0, 0, 0.6);
+    font-size: 1.1rem;
+    font-weight: 400;
+    margin-bottom: 2rem;
+    color: rgba(0, 0, 0, 0.6);
   }
 
   p {
-      margin-bottom: 1rem;
+    margin-bottom: 1rem;
   }
 
   .text-center {
-      text-align: center;
+    text-align: center;
   }
 
   .body-2 {
-      font-size: 0.875rem;
-      color: rgba(0, 0, 0, 0.6);
+    font-size: 0.875rem;
+    color: rgba(0, 0, 0, 0.6);
   }
 
   /* Layout Components */
   .container {
-      width: 100%;
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 0 24px;
-      box-sizing: border-box; /* Ensure padding is included in width */
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+    box-sizing: border-box; /* Ensure padding is included in width */
   }
 
-  /* Hero Section */
+  /* Hero Section - FIXED positioning for scroll indicator */
   .hero-section {
-      min-height: 100vh;
-      background-color: #f5f5f5;
-      display: flex;
-      align-items: center;
-      position: relative;
+    min-height: 100vh;
+    background-color: #f5f5f5;
+    display: flex;
+    align-items: center;
+    position: relative;
   }
 
   .hero-content {
-      max-width: 650px;
+    max-width: 650px;
   }
 
   .hero-title span {
-      color: #1976d2;
+    color: #1976d2;
   }
 
   .hero-buttons {
-      display: flex;
-      gap: 16px;
-      margin-top: 2rem;
+    display: flex;
+    gap: 16px;
+    margin-top: 2rem;
   }
 
+  /* FIXED: Scroll indicator positioning */
   .scroll-indicator {
-      position: absolute;
-      bottom: 40px;
-      left: 50%;
-      transform: translateX(-50%);
-      text-align: center;
-      animation: bounce 2s infinite;
+    position: absolute;
+    bottom: 40px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    animation: bounce 2s infinite;
   }
 
   @keyframes bounce {
-      0%, 20%, 50%, 80%, 100% {
-          transform: translateY(0);
-      }
-      40% {
-          transform: translateY(-10px);
-      }
-      60% {
-          transform: translateY(-5px);
-      }
+    0%,
+    20%,
+    50%,
+    80%,
+    100% {
+      transform: translateY(0);
+    }
+    40% {
+      transform: translateY(-10px);
+    }
+    60% {
+      transform: translateY(-5px);
+    }
   }
 
-  /* Buttons */
+  /* Buttons - FIXED colors */
   .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      padding: 12px 24px;
-      border-radius: 4px;
-      font-weight: 500;
-      font-size: 1rem;
-      cursor: pointer;
-      text-decoration: none;
-      transition: all 0.2s ease-in-out;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 24px;
+    border-radius: 4px;
+    font-weight: 500;
+    font-size: 1rem;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.2s ease-in-out;
   }
 
   .btn-primary {
-      background-color: #1976d2;
-      color: white;
-      border: none;
+    background-color: #1976d2;
+    color: white;
+    border: none;
   }
 
   .btn-primary:hover {
-      background-color: #1565c0;
+    background-color: #1565c0;
   }
 
   .btn-outline {
-      background-color: transparent;
-      color: #1976d2;
-      border: 1px solid #1976d2;
+    background-color: transparent;
+    color: #1976d2;
+    border: 1px solid #1976d2;
   }
 
   .btn-outline:hover {
-      background-color: rgba(25, 118, 210, 0.04);
+    background-color: rgba(25, 118, 210, 0.04);
   }
 
   .btn-large {
-      padding: 16px 32px;
-      font-size: 1.1rem;
+    padding: 16px 32px;
+    font-size: 1.1rem;
   }
 
   .btn-full {
-      width: 100%;
+    width: 100%;
   }
 
   .btn-icon {
-      margin-left: 8px;
+    margin-left: 8px;
   }
 
   /* Section Styling */
   .section {
-      padding: 80px 0;
-      width: 100%;
-      box-sizing: border-box;
+    padding: 80px 0;
+    width: 100%;
+    box-sizing: border-box;
   }
 
   .section-light {
-      background-color: white;
+    background-color: white;
   }
 
   .section-dark {
-      background-color: #f5f5f5;
+    background-color: #f5f5f5;
   }
 
-  /* UPDATED: Grid System with improved sizing */
+  /* Grid System - FIXED alignment and spacing */
   .grid {
-      display: grid;
-      grid-template-columns: repeat(12, 1fr);
-      gap: 24px; /* Reduced from 32px for better spacing */
-      margin-top: 40px;
-      width: 100%;
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 24px; /* Reduced from 32px for better spacing */
+    margin-top: 40px;
+    width: 100%;
   }
 
   /* Fixing column widths */
   .col-xs-12 {
-      grid-column: span 12;
-      width: 100%;
+    grid-column: span 12;
+    width: 100%;
   }
 
   @media (min-width: 600px) {
-      .col-sm-6 {
-          grid-column: span 6;
-          width: 100%;
-      }
+    .col-sm-6 {
+      grid-column: span 6;
+      width: 100%;
+    }
   }
 
   @media (min-width: 960px) {
-      .col-md-4 {
-          grid-column: span 4;
-          width: 100%;
-      }
+    .col-md-4 {
+      grid-column: span 4;
+      width: 100%;
+    }
   }
 
-  /* UPDATED: Card Styling with better width handling */
+  /* Card Styling - FIXED width and hover effects */
   .card {
-      background-color: white;
-      border-radius: 8px;
-      box-shadow: 0px 2px 1px -1px rgba(0,0,0,0.2),
-                  0px 1px 1px 0px rgba(0,0,0,0.14),
-                  0px 1px 3px 0px rgba(0,0,0,0.12);
-      overflow: hidden;
-      transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      width: 100%; /* Ensure full width */
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2),
+      0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
+    overflow: hidden;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    width: 100%; /* Ensure full width */
   }
 
   .card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0px 8px 10px -5px rgba(0,0,0,0.2),
-                  0px 16px 24px 2px rgba(0,0,0,0.14),
-                  0px 6px 30px 5px rgba(0,0,0,0.12);
+    transform: translateY(-4px);
+    box-shadow: 0px 8px 10px -5px rgba(0, 0, 0, 0.2),
+      0px 16px 24px 2px rgba(0, 0, 0, 0.14),
+      0px 6px 30px 5px rgba(0, 0, 0, 0.12);
   }
 
   .card-media-container {
-      position: relative;
-      width: 100%;
+    position: relative;
+    width: 100%;
   }
 
   .card-media {
-      width: 100%;
-      height: 200px;
-      object-fit: cover;
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
   }
 
   .card-icon-overlay {
-      position: absolute;
-      bottom: -20px;
-      right: 20px;
-      background-color: #1976d2;
-      color: white;
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+    position: absolute;
+    bottom: -20px;
+    right: 20px;
+    background-color: #1976d2;
+    color: white;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
   }
 
   .card-content {
-      padding: 24px;
-      flex-grow: 1;
-      display: flex;
-      flex-direction: column;
+    padding: 24px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
   }
 
   .card-features {
-      margin: 16px 0;
-      flex-grow: 1;
+    margin: 16px 0;
+    flex-grow: 1;
   }
 
   .feature-item {
-      display: flex;
-      align-items: center;
-      margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
   }
 
   .feature-icon {
-      margin-right: 12px;
-      color: rgba(0, 0, 0, 0.54);
+    margin-right: 12px;
+    color: rgba(0, 0, 0, 0.54);
   }
 
-  /* UPDATED: Feature Card with fixed width */
+  /* Feature Card - FIXED positioning and colors */
   .feature-card {
-      background-color: white;
-      border-radius: 8px;
-      box-shadow: 0px 2px 1px -1px rgba(0,0,0,0.2),
-                  0px 1px 1px 0px rgba(0,0,0,0.14),
-                  0px 1px 3px 0px rgba(0,0,0,0.12);
-      padding: 32px 24px 24px;
-      height: 100%;
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      width: 100%; /* Ensure full width */
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2),
+      0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
+    padding: 32px 24px 24px;
+    height: 100%;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    margin-top: 20px;
+    z-index: 1;
+  }
+
+  .feature-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
   }
 
   .feature-card-icon {
-      position: absolute;
-      top: -20px;
-      left: 24px;
-      width: 56px;
-      height: 56px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
+    position: absolute;
+    top: -25px;
+    left: 24px;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 10;
+    transform: translateY(0);
+    transition: transform 0.3s ease;
   }
 
-  .security-icon { background-color: #2e7d32; }
-  .sessions-icon { background-color: #1976d2; }
-  .access-icon { background-color: #7b1fa2; }
-  .mentor-icon { background-color: #c62828; }
-  .schedule-icon { background-color: #f57c00; }
-  .progress-icon { background-color: #0097a7; }
+  .feature-card:hover .feature-card-icon {
+    transform: translateY(-5px);
+  }
 
-  /* UPDATED: Feature chip with better wrapping */
+  .feature-card-icon .svg-icon {
+    width: 32px;
+    height: 32px;
+  }
+
+  /* FIXED: Updated feature card color scheme with gradients */
+  .security-icon {
+    background: linear-gradient(135deg, #2e7d32, #1b5e20);
+  }
+  .sessions-icon {
+    background: linear-gradient(135deg, #1976d2, #1565c0);
+  }
+  .access-icon {
+    background: linear-gradient(135deg, #7b1fa2, #6a1b9a);
+  }
+  .mentor-icon {
+    background: linear-gradient(135deg, #c62828, #b71c1c);
+  }
+  .schedule-icon {
+    background: linear-gradient(135deg, #f57c00, #ef6c00);
+  }
+  .progress-icon {
+    background: linear-gradient(135deg, #0097a7, #00838f);
+  }
+
   .feature-chip-container {
-      margin-top: 16px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      width: 100%;
+    margin-top: 16px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    width: 100%;
   }
 
   .feature-chip {
-      display: flex;
-      align-items: center;
-      padding: 4px 12px;
-      border-radius: 16px;
-      font-size: 0.75rem;
-      background-color: #e0e0e0;
+    display: flex;
+    align-items: center;
+    padding: 4px 12px;
+    border-radius: 16px;
+    font-size: 0.75rem;
+    background-color: #e0e0e0;
   }
 
   .chip-icon {
-      margin-right: 6px;
+    margin-right: 6px;
   }
 
   /* SVG Icons */
   .svg-icon {
-      width: 24px;
-      height: 24px;
-      fill: currentColor;
+    width: 24px;
+    height: 24px;
+    fill: currentColor;
   }
 
-  /* UPDATED: Testimonials Section with improved sizing */
+  /* Testimonials Section */
   .testimonials-section {
     background-color: #f8f9fa;
     position: relative;
@@ -897,13 +1186,13 @@
     font-size: 0.75rem;
   }
 
-  /* UPDATED: Testimonial Cards with improved layout */
+  /* Testimonial Cards */
   .testimonials-row {
     position: relative;
     z-index: 1;
   }
 
-  /* ADDED: Fixed Bootstrap row structure */
+  /* Bootstrap row structure */
   .row {
     display: flex;
     flex-wrap: wrap;
@@ -912,8 +1201,9 @@
     width: 100%;
   }
 
-  /* ADDED: Fixed Bootstrap column structure */
-  .col-lg-4, .col-md-6 {
+  /* Bootstrap column structure */
+  .col-lg-4,
+  .col-md-6 {
     position: relative;
     width: 100%;
     padding-right: 15px;
@@ -934,7 +1224,6 @@
     }
   }
 
-  /* UPDATED: Improved testimonial card */
   .testimonial-card {
     background-color: #fff;
     border-radius: 16px;
@@ -1029,20 +1318,171 @@
     margin: 0;
   }
 
-  /* Button Styling */
-  .btn-outline-primary {
-    border-width: 2px;
-    font-weight: 500;
+  /* ADDED: Footer Styling */
+  .footer-section {
+    background-color: #212529;
+    color: #fff;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .footer-top {
+    padding: 70px 0 40px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .footer-title {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    font-weight: 700;
+  }
+
+  .text-primary {
+    color: #1976d2 !important;
+  }
+
+  .footer-desc {
+    color: rgba(255, 255, 255, 0.7);
+    margin-bottom: 25px;
+    font-size: 0.95rem;
+    line-height: 1.7;
+  }
+
+  .footer-social {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+  }
+
+  .social-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #fff;
     transition: all 0.3s ease;
   }
 
-  .btn-outline-primary:hover {
-    background-color: #0d6efd;
+  .social-icon:hover {
+    background-color: #1976d2;
     transform: translateY(-3px);
-    box-shadow: 0 5px 15px rgba(13, 110, 253, 0.3);
   }
 
-  /* ADDED: Helper classes for Bootstrap spacing */
+  .footer-widget-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 25px;
+    position: relative;
+    padding-bottom: 10px;
+    color: #fff;
+  }
+
+  .footer-widget-title::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 40px;
+    height: 2px;
+    background-color: #1976d2;
+  }
+
+  .footer-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .footer-links li {
+    margin-bottom: 12px;
+  }
+
+  .footer-links li a {
+    color: rgba(255, 255, 255, 0.7);
+    text-decoration: none;
+    transition: all 0.3s ease;
+    position: relative;
+    padding-left: 15px;
+  }
+
+  .footer-links li a:before {
+    content: "›";
+    position: absolute;
+    left: 0;
+    top: 0;
+    color: #1976d2;
+    font-size: 18px;
+    line-height: 1;
+  }
+
+  .footer-links li a:hover {
+    color: #fff;
+    padding-left: 20px;
+  }
+
+  .contact-info {
+    margin-top: 20px;
+  }
+
+  .contact-item {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 15px;
+  }
+
+  .contact-icon {
+    margin-right: 15px;
+    min-width: 24px;
+    color: #1976d2;
+  }
+
+  .contact-item p {
+    color: rgba(255, 255, 255, 0.7);
+    margin: 0;
+    font-size: 0.95rem;
+  }
+
+  .footer-bottom {
+    padding: 20px 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    position: relative;
+    z-index: 1;
+  }
+
+  .copyright-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .copyright-text p {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.9rem;
+  }
+
+  .footer-bottom-links {
+    display: flex;
+    gap: 20px;
+  }
+
+  .footer-bottom-links a {
+    color: rgba(255, 255, 255, 0.6);
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+  }
+
+  .footer-bottom-links a:hover {
+    color: #fff;
+  }
+
+  /* Helper classes for Bootstrap spacing */
   .py-5 {
     padding-top: 3rem;
     padding-bottom: 3rem;
@@ -1071,21 +1511,51 @@
     margin-right: auto;
   }
 
-  /* ADDED: Responsive improvements for small screens */
+  /* Responsive improvements for small screens */
+  @media (max-width: 991px) {
+    .footer-widget {
+      margin-bottom: 30px;
+    }
+
+    .copyright-row {
+      flex-direction: column;
+      gap: 15px;
+      text-align: center;
+    }
+
+    .footer-bottom-links {
+      justify-content: center;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .feature-card-icon {
+      top: -15px;
+      left: 20px;
+      width: 45px;
+      height: 45px;
+    }
+
+    .card-icon-overlay {
+      width: 35px;
+      height: 35px;
+    }
+  }
+
   @media (max-width: 599px) {
     .grid {
       gap: 16px;
     }
-    
+
     h1 {
       font-size: 2.5rem;
     }
-    
+
     h2 {
       font-size: 2rem;
     }
-    
-    .card-content, 
+
+    .card-content,
     .testimonial-content {
       padding: 16px;
     }
@@ -1094,18 +1564,45 @@
       flex-direction: column;
     }
 
-    .feature-card-icon {
-      width: 48px;
-      height: 48px;
+    .footer-social {
+      justify-content: center;
+    }
+
+    .footer-widget-title::after {
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .footer-widget {
+      text-align: center;
+    }
+
+    .footer-links li a {
+      padding-left: 0;
+    }
+
+    .footer-links li a:before {
+      display: none;
+    }
+
+    .contact-item {
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .contact-icon {
+      margin-right: 0;
+      margin-bottom: 10px;
     }
   }
 
-  /* ADDED: Fix for rounded-pill badge */
+  /* Fix for rounded-pill badge */
   .rounded-pill {
     border-radius: 50rem;
   }
 
-  /* ADDED: Text colors for Bootstrap compatibility */
+  /* Text colors for Bootstrap compatibility */
   .text-muted {
     color: #6c757d;
   }
@@ -1114,4 +1611,11 @@
     font-weight: 700;
   }
 </style>
-{% endblock %}
+
+{% comment %}
+<!-- Fontawesome icons (optional but recommended for testimonials section) -->
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+/>
+{% endcomment %} {% endblock %}
