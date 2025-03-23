@@ -1,8 +1,7 @@
 {% extends 'base.html' %}
-{% load static %}
+{% load static custom_tags %}
 
 {% block title %}Pricing - LearnIspire{% endblock %}
-{% load static custom_tags %}
 
 {% block content %}
 <div class="pricing-container">
@@ -15,10 +14,10 @@
         <!-- Form Section -->
         <div class="form-container">
             <div class="paper">
-                <form id="quoteForm">
+                <form id="quoteForm" novalidate>
                     <div class="form-grid">
                         <div class="form-control form-floating">
-                            <input type="text" id="fullName" placeholder=" " class="input-animated" required>
+                            <input type="text" id="fullName" name="fullName" placeholder=" " class="input-animated" required>
                             <label for="fullName">Full Name <span class="asterisk">*</span></label>
                             <div class="input-focus-indicator"></div>
                             <div class="invalid-feedback">Please enter your full name</div>
@@ -26,14 +25,14 @@
                         
                         <div class="form-grid-two-col">
                             <div class="form-control-half form-floating">
-                                <input type="email" id="email" placeholder=" " class="input-animated" required>
+                                <input type="email" id="email" name="email" placeholder=" " class="input-animated" required>
                                 <label for="email">Email <span class="asterisk">*</span></label>
                                 <div class="input-focus-indicator"></div>
                                 <div class="invalid-feedback">Please enter a valid email address</div>
                             </div>
                             
                             <div class="form-control-half form-floating">
-                                <input type="tel" id="whatsapp" placeholder=" " class="input-animated" required>
+                                <input type="tel" id="whatsapp" name="whatsapp" placeholder=" " class="input-animated" required>
                                 <label for="whatsapp">WhatsApp Number <span class="asterisk">*</span></label>
                                 <div class="input-focus-indicator"></div>
                                 <div class="invalid-feedback">Please enter your WhatsApp number</div>
@@ -44,7 +43,7 @@
                             <div class="form-control-half">
                                 <label for="grade">Grade <span class="asterisk">*</span></label>
                                 <div class="select-wrapper">
-                                    <select id="grade" required>
+                                    <select id="grade" name="grade" required>
                                         <option value="" disabled selected></option>
                                         <option value="grade8">Grade 8</option>
                                         <option value="grade9">Grade 9</option>
@@ -59,7 +58,7 @@
                             <div class="form-control-half">
                                 <label for="board">Board <span class="asterisk">*</span></label>
                                 <div class="select-wrapper">
-                                    <select id="board" required>
+                                    <select id="board" name="board" required>
                                         <option value="" disabled selected></option>
                                         <option value="cbse">CBSE</option>
                                         <option value="icse">ICSE</option>
@@ -73,34 +72,36 @@
                         </div>
                         
                         <div class="form-control">
-                            <label for="subjects">Subject(s) <span class="asterisk">*</span></label>
-                            <div class="checkbox-subjects">
-                                <label>
-                                    <input type="checkbox" name="subjects" value="math">
-                                    <span>Mathematics</span>
-                                </label>
-                                <label>
-                                    <input type="checkbox" name="subjects" value="physics">
-                                    <span>Physics</span>
-                                </label>
-                                <label>
-                                    <input type="checkbox" name="subjects" value="chemistry">
-                                    <span>Chemistry</span>
-                                </label>
-                                <label>
-                                    <input type="checkbox" name="subjects" value="biology">
-                                    <span>Biology</span>
-                                </label>
-                                <label>
-                                    <input type="checkbox" name="subjects" value="english">
-                                    <span>English</span>
-                                </label>
-                                <label>
-                                    <input type="checkbox" name="subjects" value="computer">
-                                    <span>Computer Science</span>
-                                </label>
-                            </div>
-                            <div class="invalid-feedback">Please select at least one subject</div>
+                            <fieldset>
+                                <legend>Subject(s) <span class="asterisk">*</span></legend>
+                                <div class="checkbox-subjects" id="subjectsGroup">
+                                    <label class="subject-label">
+                                        <input type="checkbox" name="subjects" value="math">
+                                        <span>Mathematics</span>
+                                    </label>
+                                    <label class="subject-label">
+                                        <input type="checkbox" name="subjects" value="physics">
+                                        <span>Physics</span>
+                                    </label>
+                                    <label class="subject-label">
+                                        <input type="checkbox" name="subjects" value="chemistry">
+                                        <span>Chemistry</span>
+                                    </label>
+                                    <label class="subject-label">
+                                        <input type="checkbox" name="subjects" value="biology">
+                                        <span>Biology</span>
+                                    </label>
+                                    <label class="subject-label">
+                                        <input type="checkbox" name="subjects" value="english">
+                                        <span>English</span>
+                                    </label>
+                                    <label class="subject-label">
+                                        <input type="checkbox" name="subjects" value="computer">
+                                        <span>Computer Science</span>
+                                    </label>
+                                </div>
+                                <div class="invalid-feedback" id="subjectsError">Please select at least one subject</div>
+                            </fieldset>
                         </div>
                         
                         <div class="form-control">
@@ -112,6 +113,7 @@
                                         <polyline points="12 5 19 12 12 19"></polyline>
                                     </svg>
                                 </span>
+                                <span class="loading-spinner" aria-hidden="true"></span>
                             </button>
                         </div>
                     </div>
@@ -126,7 +128,7 @@
                 <p>Experience personalized learning with our unique features</p>
             </div>
             
-            <div class="card fade-in">
+            <div class="card">
                 <div class="card-content">
                     <div class="icon-wrapper">
                         <svg class="icon" viewBox="0 0 24 24">
@@ -140,7 +142,7 @@
                 </div>
             </div>
             
-            <div class="card fade-in">
+            <div class="card">
                 <div class="card-content">
                     <div class="icon-wrapper">
                         <svg class="icon" viewBox="0 0 24 24">
@@ -155,7 +157,7 @@
                 </div>
             </div>
             
-            <div class="card fade-in">
+            <div class="card">
                 <div class="card-content">
                     <div class="icon-wrapper">
                         <svg class="icon" viewBox="0 0 24 24">
@@ -169,7 +171,7 @@
                 </div>
             </div>
             
-            <div class="card fade-in">
+            <div class="card">
                 <div class="card-content">
                     <div class="icon-wrapper">
                         <svg class="icon" viewBox="0 0 24 24">
@@ -196,7 +198,7 @@
 </div>
 
 <!-- Pricing Information Section -->
-<section class="py-5 bg-light">
+<section class="py-5 bg-light pricing-info-section">
     <div class="container">
         <div class="row text-center mb-5">
             <div class="col-lg-8 mx-auto">
@@ -207,7 +209,7 @@
         
         <div class="row g-4">
             <div class="col-lg-4">
-                <div class="card h-100 border-0 shadow-sm">
+                <div class="card h-100 border-0 shadow-sm price-card">
                     <div class="card-body p-4">
                         <div class="feature-icon bg-primary bg-gradient text-white rounded-circle mb-3">
                             <i class="fas fa-calendar-check fa-2x"></i>
@@ -224,7 +226,7 @@
             </div>
             
             <div class="col-lg-4">
-                <div class="card h-100 border-0 shadow-sm">
+                <div class="card h-100 border-0 shadow-sm price-card">
                     <div class="card-body p-4">
                         <div class="feature-icon bg-primary bg-gradient text-white rounded-circle mb-3">
                             <i class="fas fa-users fa-2x"></i>
@@ -241,7 +243,7 @@
             </div>
             
             <div class="col-lg-4">
-                <div class="card h-100 border-0 shadow-sm">
+                <div class="card h-100 border-0 shadow-sm price-card">
                     <div class="card-body p-4">
                         <div class="feature-icon bg-primary bg-gradient text-white rounded-circle mb-3">
                             <i class="fas fa-award fa-2x"></i>
@@ -261,7 +263,7 @@
 </section>
 
 <!-- Payment Methods Section -->
-<section class="py-5">
+<section class="py-5 payment-methods-section">
     <div class="container">
         <div class="row text-center mb-5">
             <div class="col-lg-8 mx-auto">
@@ -274,26 +276,26 @@
             <div class="col-lg-8 mx-auto">
                 <div class="card border-0 shadow">
                     <div class="card-body p-4">
-                        <div class="row g-4 text-center">
-                            <div class="col-md-3">
+                        <div class="row g-4 text-center payment-options">
+                            <div class="col-md-3 col-6">
                                 <img src="{% static 'images/payment/visa.png' %}" alt="Visa" class="img-fluid mb-3" style="height: 40px;">
                                 <h5>Credit Cards</h5>
                                 <p class="text-muted small">Visa, Mastercard, Amex</p>
                             </div>
                             
-                            <div class="col-md-3">
+                            <div class="col-md-3 col-6">
                                 <img src="{% static 'images/payment/upi.png' %}" alt="UPI" class="img-fluid mb-3" style="height: 40px;">
                                 <h5>UPI</h5>
                                 <p class="text-muted small">Google Pay, PhonePe, Paytm</p>
                             </div>
                             
-                            <div class="col-md-3">
+                            <div class="col-md-3 col-6">
                                 <img src="{% static 'images/payment/netbanking.png' %}" alt="Net Banking" class="img-fluid mb-3" style="height: 40px;">
                                 <h5>Net Banking</h5>
                                 <p class="text-muted small">All major banks</p>
                             </div>
                             
-                            <div class="col-md-3">
+                            <div class="col-md-3 col-6">
                                 <img src="{% static 'images/payment/wallet.png' %}" alt="Wallet" class="img-fluid mb-3" style="height: 40px;">
                                 <h5>Wallets</h5>
                                 <p class="text-muted small">Paytm, PhonePe, Mobikwik</p>
@@ -313,7 +315,7 @@
 </section>
 
 <!-- FAQ Section -->
-<section class="py-5 bg-light">
+<section class="py-5 bg-light faq-section">
     <div class="container">
         <div class="row text-center mb-5">
             <div class="col-lg-8 mx-auto">
@@ -396,7 +398,7 @@
 </section>
 
 <!-- CTA Section -->
-<section class="py-5 bg-primary text-white">
+<section class="py-5 bg-primary text-white cta-section">
     <div class="container">
         <div class="row align-items-center">
             <div class="col-lg-8 mx-auto text-center">
@@ -413,34 +415,48 @@
 {% block extra_css %}
 <style>
 /* Base Styling */
+:root {
+    --primary-color: #1976d2;
+    --primary-light: #e3f2fd;
+    --primary-dark: #1565c0;
+    --success-color: #4caf50;
+    --error-color: #f44336;
+    --text-dark: #333;
+    --text-medium: #555;
+    --text-light: #666;
+    --border-radius: 8px;
+    --box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    --transition-standard: all 0.3s ease;
+}
+
 .pricing-container {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 40px 24px;
+    padding: 3rem 1.5rem;
 }
 
 .header {
     text-align: center;
-    margin-bottom: 40px;
+    margin-bottom: 3rem;
 }
 
 .header h2 {
     font-size: 2.5rem;
     font-weight: 600;
-    color: #333;
-    margin-bottom: 8px;
+    color: var(--text-dark);
+    margin-bottom: 0.5rem;
 }
 
 .header h5 {
     font-size: 1.2rem;
     font-weight: 400;
-    color: #666;
+    color: var(--text-light);
 }
 
 .grid-container {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 32px;
+    gap: 2rem;
 }
 
 @media (min-width: 900px) {
@@ -449,15 +465,22 @@
     }
 }
 
+/* Accessibility */
+*:focus {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
+}
+
 /* Paper and Form Container */
 .paper {
     background-color: #fff;
-    border-radius: 8px;
-    padding: 24px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    border-radius: var(--border-radius);
+    padding: 2rem;
+    box-shadow: var(--box-shadow);
     position: relative;
     z-index: 1;
     overflow: hidden;
+    transition: var(--transition-standard);
 }
 
 .paper:before {
@@ -472,6 +495,10 @@
     z-index: -1;
 }
 
+.paper:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
 .form-container {
     animation: fadeIn 0.5s ease;
 }
@@ -480,12 +507,13 @@
 .form-grid {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 16px;
+    gap: 1.25rem;
 }
 
 .form-control {
     position: relative;
     width: 100%;
+    margin-bottom: 0.5rem;
 }
 
 .form-control-half {
@@ -493,41 +521,55 @@
     width: 100%;
 }
 
+.form-grid-two-col {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+}
+
 @media (min-width: 600px) {
     .form-grid-two-col {
-        display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: 16px;
     }
 }
 
 /* Form Elements */
-label {
+label, legend {
     display: block;
-    margin-bottom: 8px;
+    margin-bottom: 0.5rem;
     font-size: 0.9rem;
-    color: #555;
+    color: var(--text-medium);
     font-weight: 500;
     transition: color 0.3s;
 }
 
+fieldset {
+    border: none;
+    padding: 0;
+    margin: 0;
+}
+
+legend {
+    margin-bottom: 0.75rem;
+}
+
 input, select {
     width: 100%;
-    padding: 14px 16px;
+    padding: 0.875rem 1rem;
     border: 1px solid #ccc;
     border-radius: 4px;
     font-size: 1rem;
-    transition: all 0.3s;
+    transition: var(--transition-standard);
 }
 
 input:focus, select:focus {
     outline: none;
-    border-color: #1976d2;
+    border-color: var(--primary-color);
     box-shadow: 0 0 0 3px rgba(25, 118, 210, 0.1);
 }
 
 .asterisk {
-    color: #f44336;
+    color: var(--error-color);
 }
 
 /* Animated Input Styling */
@@ -535,13 +577,13 @@ input:focus, select:focus {
     border: none;
     border-bottom: 2px solid #e0e0e0;
     border-radius: 0;
-    padding: 14px 16px 10px 0;
+    padding: 0.875rem 1rem 0.625rem 0;
     background-color: transparent;
     transition: border-color 0.3s;
 }
 
 .input-animated:focus, select.input-animated:focus {
-    border-bottom-color: #1976d2;
+    border-bottom-color: var(--primary-color);
     box-shadow: none;
 }
 
@@ -551,16 +593,16 @@ input:focus, select:focus {
 }
 
 .form-floating input, .form-floating select {
-    height: 56px;
-    padding: 24px 16px 8px 16px;
+    height: 3.5rem;
+    padding: 1.5rem 1rem 0.5rem 1rem;
 }
 
 .form-floating label {
     position: absolute;
     top: 0;
-    left: 16px;
-    height: 56px;
-    padding: 16px 0;
+    left: 1rem;
+    height: 3.5rem;
+    padding: 1rem 0;
     pointer-events: none;
     transform-origin: 0 0;
     transition: transform 0.2s, color 0.2s;
@@ -570,8 +612,8 @@ input:focus, select:focus {
 .form-floating input:not(:placeholder-shown) ~ label,
 .form-floating select:focus ~ label,
 .form-floating select:not([value=""]):not(:focus) ~ label {
-    transform: translateY(-8px) scale(0.85);
-    color: #1976d2;
+    transform: translateY(-0.5rem) scale(0.85);
+    color: var(--primary-color);
 }
 
 /* Custom Select Styling */
@@ -584,9 +626,9 @@ input:focus, select:focus {
     content: '';
     position: absolute;
     top: 50%;
-    right: 15px;
-    width: 10px;
-    height: 10px;
+    right: 1rem;
+    width: 0.625rem;
+    height: 0.625rem;
     border-right: 2px solid #666;
     border-bottom: 2px solid #666;
     transform: translateY(-50%) rotate(45deg);
@@ -596,30 +638,27 @@ input:focus, select:focus {
 
 .select-wrapper:focus-within:after {
     transform: translateY(-50%) rotate(-135deg);
-    border-color: #1976d2;
+    border-color: var(--primary-color);
 }
 
 select {
     appearance: none;
-    background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%23555%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpolyline%20points%3D%226%209%2012%2015%2018%209%22%3E%3C%2Fpolyline%3E%3C%2Fsvg%3E");
-    background-repeat: no-repeat;
-    background-position: right 10px center;
-    background-size: 16px;
-    padding-right: 40px;
+    padding-right: 2.5rem;
+    cursor: pointer;
 }
 
 /* Custom Checkbox Grid */
 .checkbox-subjects {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-    gap: 12px;
-    margin-top: 8px;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 0.75rem;
+    margin-top: 0.5rem;
 }
 
-.checkbox-subjects label {
+.subject-label {
     display: flex;
     align-items: center;
-    padding: 10px 12px;
+    padding: 0.75rem 1rem;
     background-color: #f5f5f5;
     border-radius: 4px;
     cursor: pointer;
@@ -629,11 +668,11 @@ select {
     box-shadow: 0 1px 3px rgba(0,0,0,0.05);
 }
 
-.checkbox-subjects label:hover {
-    background-color: #e3f2fd;
+.subject-label:hover {
+    background-color: var(--primary-light);
 }
 
-.checkbox-subjects label:after {
+.subject-label:after {
     content: '';
     position: absolute;
     top: 0;
@@ -646,7 +685,7 @@ select {
     pointer-events: none;
 }
 
-.checkbox-subjects label:hover:after {
+.subject-label:hover:after {
     transform: translateX(0);
 }
 
@@ -654,48 +693,45 @@ select {
     width: 18px;
     height: 18px;
     margin-right: 10px;
-    accent-color: #1976d2;
+    accent-color: var(--primary-color);
 }
 
 .checkbox-subjects input[type="checkbox"]:checked + span {
     font-weight: 500;
-    color: #1976d2;
-}
-
-.checkbox-subjects input[type="checkbox"]:checked + span:before {
-    content: '✓';
-    display: inline-block;
-    margin-right: 5px;
-    color: #1976d2;
-    font-weight: bold;
+    color: var(--primary-color);
 }
 
 /* Button Styling */
 .btn {
     width: 100%;
-    padding: 14px;
-    background-color: #1976d2;
+    padding: 0.875rem;
+    background-color: var(--primary-color);
     color: white;
     border: none;
     border-radius: 4px;
     font-size: 1rem;
     font-weight: 500;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: background-color 0.3s, transform 0.2s;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 8px;
+    gap: 0.5rem;
+    position: relative;
 }
 
 .btn:hover {
-    background-color: #1565c0;
+    background-color: var(--primary-dark);
+    transform: translateY(-2px);
+}
+
+.btn:active {
+    transform: translateY(0);
 }
 
 .btn-animated {
     position: relative;
     overflow: hidden;
-    transition: all 0.3s;
 }
 
 .btn-animated .btn-icon {
@@ -709,14 +745,40 @@ select {
     opacity: 1;
 }
 
+.btn-animated .loading-spinner {
+    position: absolute;
+    width: 1.25rem;
+    height: 1.25rem;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    display: none;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.btn.loading .btn-text {
+    opacity: 0.6;
+}
+
+.btn.loading .btn-icon {
+    display: none;
+}
+
+.btn.loading .loading-spinner {
+    display: block;
+}
+
+/* Ripple effect */
 .ripple {
     position: absolute;
     border-radius: 50%;
     background-color: rgba(255, 255, 255, 0.4);
-    width: 10px;
-    height: 10px;
-    animation: ripple 0.6s linear;
     transform: scale(0);
+    animation: ripple 0.6s linear;
 }
 
 @keyframes ripple {
@@ -728,26 +790,26 @@ select {
 
 /* Success state animation */
 .btn-success {
-    background-color: #4caf50 !important;
-    transform: scale(1.05);
+    background-color: var(--success-color) !important;
+    transform: scale(1.02);
     transition: all 0.3s ease;
 }
 
 /* Validation States */
 .is-valid {
-    border-color: #4caf50 !important;
+    border-color: var(--success-color) !important;
 }
 
 .is-invalid {
-    border-color: #f44336 !important;
+    border-color: var(--error-color) !important;
 }
 
 .invalid-feedback {
     display: none;
     width: 100%;
-    margin-top: 4px;
+    margin-top: 0.25rem;
     font-size: 0.85rem;
-    color: #f44336;
+    color: var(--error-color);
 }
 
 .is-invalid + .invalid-feedback,
@@ -756,115 +818,155 @@ select {
     animation: fadeIn 0.3s;
 }
 
-/* Focus Animations */
-@keyframes inputFocus {
-    0% { box-shadow: 0 0 0 0 rgba(25, 118, 210, 0.4); }
-    70% { box-shadow: 0 0 0 8px rgba(25, 118, 210, 0); }
-    100% { box-shadow: 0 0 0 0 rgba(25, 118, 210, 0); }
-}
-
-input:focus, select:focus {
-    animation: inputFocus 1s;
-}
-
-.input-focus-indicator {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 0;
-    height: 2px;
-    background-color: #1976d2;
-    transition: width 0.3s ease;
-}
-
-.form-control:focus-within .input-focus-indicator,
-.form-control-half:focus-within .input-focus-indicator {
-    width: 100%;
-}
-
 /* Features Section Styling */
 .features-container {
     display: flex;
     flex-direction: column;
-    gap: 24px;
+    gap: 1.5rem;
 }
 
 .features-header {
-    margin-bottom: 8px;
+    margin-bottom: 0.5rem;
 }
 
 .features-header h5 {
     font-size: 1.2rem;
     font-weight: 600;
-    color: #333;
-    margin-bottom: 8px;
+    color: var(--text-dark);
+    margin-bottom: 0.5rem;
 }
 
 .features-header p {
-    color: #666;
+    color: var(--text-light);
     font-size: 0.95rem;
 }
 
 .card {
     background-color: #fff;
-    border-radius: 8px;
-    padding: 20px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-    transition: transform 0.3s;
+    border-radius: var(--border-radius);
+    padding: 1.25rem;
+    box-shadow: var(--box-shadow);
+    transition: transform 0.3s, box-shadow 0.3s;
     animation: fadeIn 0.5s ease;
 }
 
 .card:hover {
     transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.price-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
 }
 
 .card-content {
     display: flex;
     align-items: flex-start;
-    gap: 16px;
+    gap: 1rem;
 }
 
 .icon-wrapper {
-    background-color: #e3f2fd;
-    width: 48px;
-    height: 48px;
+    background-color: var(--primary-light);
+    width: 3rem;
+    height: 3rem;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
+    transition: background-color 0.3s;
+}
+
+.card:hover .icon-wrapper {
+    background-color: var(--primary-color);
+}
+
+.card:hover .icon {
+    fill: white;
 }
 
 .icon {
-    fill: #1976d2;
-    width: 24px;
-    height: 24px;
+    fill: var(--primary-color);
+    width: 1.5rem;
+    height: 1.5rem;
+    transition: fill 0.3s;
 }
 
 .card-text h6 {
     font-size: 1.1rem;
     font-weight: 600;
-    color: #333;
-    margin-bottom: 8px;
+    color: var(--text-dark);
+    margin-bottom: 0.5rem;
 }
 
 .card-text p {
-    color: #666;
+    color: var(--text-light);
     font-size: 0.9rem;
     line-height: 1.5;
 }
 
 .help-card {
     background-color: #f0f7ff;
-    margin-top: 24px;
+    margin-top: 1.5rem;
+    border-left: 4px solid var(--primary-color);
 }
 
 .help-card h6 {
-    color: #1976d2;
+    color: var(--primary-color);
 }
 
 .help-card p {
     font-size: 0.95rem;
+}
+
+/* Enhanced Sections */
+.pricing-info-section, .payment-methods-section, .faq-section, .cta-section {
+    position: relative;
+    overflow: hidden;
+}
+
+.pricing-info-section::before {
+    content: '';
+    position: absolute;
+    top: -50px;
+    right: -50px;
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(circle, rgba(25, 118, 210, 0.05) 0%, transparent 70%);
+    border-radius: 50%;
+    z-index: 0;
+}
+
+.payment-options {
+    transition: transform 0.3s;
+}
+
+.payment-options > div:hover {
+    transform: translateY(-5px);
+}
+
+.accordion-item {
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.accordion-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+}
+
+.accordion-button:not(.collapsed) {
+    background-color: var(--primary-light);
+    color: var(--primary-color);
+    font-weight: 500;
+}
+
+.accordion-button:focus {
+    box-shadow: 0 0 0 0.25rem rgba(25, 118, 210, 0.25);
+}
+
+.cta-section {
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
 }
 
 /* Animations */
@@ -873,174 +975,439 @@ input:focus, select:focus {
     to { opacity: 1; transform: translateY(0); }
 }
 
-.fade-in {
-    animation: fadeIn 0.5s ease;
-    animation-fill-mode: both;
+.staggered-fade-in > * {
+    opacity: 0;
+    animation: fadeIn 0.5s ease forwards;
 }
 
-.fade-in:nth-child(1) { animation-delay: 0.1s; }
-.fade-in:nth-child(2) { animation-delay: 0.2s; }
-.fade-in:nth-child(3) { animation-delay: 0.3s; }
-.fade-in:nth-child(4) { animation-delay: 0.4s; }
+.staggered-fade-in > *:nth-child(1) { animation-delay: 0.1s; }
+.staggered-fade-in > *:nth-child(2) { animation-delay: 0.2s; }
+.staggered-fade-in > *:nth-child(3) { animation-delay: 0.3s; }
+.staggered-fade-in > *:nth-child(4) { animation-delay: 0.4s; }
 
-@keyframes pulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.05); }
-    100% { transform: scale(1); }
+/* Notification System */
+.notification-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
 
-.form-control:focus-within {
-    animation: pulse 1s;
+.notification {
+    padding: 12px 24px;
+    border-radius: 4px;
+    color: white;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16);
+    display: flex;
+    align-items: center;
+    min-width: 300px;
+    max-width: 400px;
+    transition: all 0.3s;
+    animation: slideIn 0.3s forwards;
 }
 
+.notification.success {
+    background-color: var(--success-color);
+}
+
+.notification.error {
+    background-color: var(--error-color);
+}
+
+.notification.warning {
+    background-color: #ff9800;
+}
+
+.notification.info {
+    background-color: var(--primary-color);
+}
+
+@keyframes slideIn {
+    from { opacity: 0; transform: translateX(100%); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+/* Responsive tweaks */
+@media (max-width: 768px) {
+    .pricing-container {
+        padding: 2rem 1rem;
+    }
+    
+    .header h2 {
+        font-size: 2rem;
+    }
+    
+    .checkbox-subjects {
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    }
+    
+    .btn {
+        padding: 0.75rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .checkbox-subjects {
+        grid-template-columns: 1fr 1fr;
+    }
+    
+    .form-floating label {
+        font-size: 0.85rem;
+    }
+}
 </style>
 {% endblock %}
 
 {% block extra_js %}
 <script>
-// Form validation and enhanced selection behavior
 document.addEventListener('DOMContentLoaded', function() {
+    // Initialize the form and its components
     const form = document.getElementById('quoteForm');
+    const fullNameInput = document.getElementById('fullName');
+    const emailInput = document.getElementById('email');
+    const whatsappInput = document.getElementById('whatsapp');
+    const gradeSelect = document.getElementById('grade');
+    const boardSelect = document.getElementById('board');
     const subjectCheckboxes = document.querySelectorAll('input[name="subjects"]');
+    const subjectsGroup = document.getElementById('subjectsGroup');
+    const subjectsError = document.getElementById('subjectsError');
+    const submitBtn = form.querySelector('button[type="submit"]');
     
-    // Add visual feedback for form fields
-    const formInputs = document.querySelectorAll('input, select');
-    formInputs.forEach(input => {
-        // Add validation classes on blur
-        input.addEventListener('blur', function() {
-            if (input.value.trim() !== '') {
-                input.classList.add('is-valid');
-                input.classList.remove('is-invalid');
-            } else if (input.hasAttribute('required')) {
-                input.classList.add('is-invalid');
-                input.classList.remove('is-valid');
+    // Add form elements to an array for easier handling
+    const formElements = [
+        { element: fullNameInput, validator: validateFullName },
+        { element: emailInput, validator: validateEmail },
+        { element: whatsappInput, validator: validateWhatsapp },
+        { element: gradeSelect, validator: validateSelect },
+        { element: boardSelect, validator: validateSelect }
+    ];
+    
+    // Initialize form elements with event listeners
+    initFormElements();
+    
+    // Form validation and submission
+    form.addEventListener('submit', handleFormSubmit);
+    
+    // Add ripple effect to button
+    submitBtn.addEventListener('mousedown', createRippleEffect);
+    
+    // Card animations on scroll
+    initScrollAnimations();
+    
+    // Helper functions
+    function initFormElements() {
+        // Set up input validation events
+        formElements.forEach(item => {
+            const element = item.element;
+            const validator = item.validator;
+            
+            element.addEventListener('blur', function() {
+                validateField(element, validator);
+            });
+            
+            element.addEventListener('focus', function() {
+                element.classList.remove('is-invalid');
+                const feedback = element.nextElementSibling?.nextElementSibling;
+                if (feedback && feedback.classList.contains('invalid-feedback')) {
+                    feedback.style.display = 'none';
+                }
+            });
+            
+            // Special handling for select elements
+            if (element.tagName === 'SELECT') {
+                element.addEventListener('change', function() {
+                    validateField(element, validator);
+                });
             }
         });
         
-        // Remove validation classes on focus
-        input.addEventListener('focus', function() {
-            input.classList.remove('is-invalid');
+        // Set up subject checkbox validation
+        subjectCheckboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                validateSubjects();
+            });
         });
-    });
+    }
     
-    // Initialize select elements with custom styling
-    const selects = document.querySelectorAll('select');
-    selects.forEach(select => {
-        // Update the selected state visual cue
-        select.addEventListener('change', function() {
-            if (select.value !== '') {
-                select.classList.add('has-value');
-            } else {
-                select.classList.remove('has-value');
-            }
-        });
-    });
+    function validateField(element, validatorFn) {
+        const isValid = validatorFn(element);
+        
+        if (isValid) {
+            element.classList.add('is-valid');
+            element.classList.remove('is-invalid');
+            return true;
+        } else {
+            element.classList.add('is-invalid');
+            element.classList.remove('is-valid');
+            return false;
+        }
+    }
     
-    // Checkbox group validation
-    let isSubjectSelected = false;
-    subjectCheckboxes.forEach(checkbox => {
-        checkbox.addEventListener('change', function() {
-            isSubjectSelected = Array.from(subjectCheckboxes).some(cb => cb.checked);
-            
-            // Update visual feedback for the subject section
-            const subjectSection = document.querySelector('.checkbox-subjects');
-            if (isSubjectSelected) {
-                subjectSection.classList.add('is-valid');
-                subjectSection.classList.remove('is-invalid');
-            } else {
-                subjectSection.classList.add('is-invalid');
-                subjectSection.classList.remove('is-valid');
-            }
-        });
-    });
+    function validateFullName(element) {
+        const value = element.value.trim();
+        return value.length >= 3 && /^[a-zA-Z\s]+$/.test(value);
+    }
     
-    // Form submission validation
-    form.addEventListener('submit', function(event) {
+    function validateEmail(element) {
+        const value = element.value.trim();
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+    }
+    
+    function validateWhatsapp(element) {
+        const value = element.value.trim();
+        return /^[0-9]{10,15}$/.test(value.replace(/[\s()+\-]|ext/gi, ''));
+    }
+    
+    function validateSelect(element) {
+        return element.value !== '';
+    }
+    
+    function validateSubjects() {
+        const isValid = Array.from(subjectCheckboxes).some(cb => cb.checked);
+        
+        if (isValid) {
+            subjectsGroup.classList.remove('is-invalid');
+            subjectsError.style.display = 'none';
+            return true;
+        } else {
+            subjectsGroup.classList.add('is-invalid');
+            subjectsError.style.display = 'block';
+            return false;
+        }
+    }
+    
+    function handleFormSubmit(event) {
         event.preventDefault();
         
-        // Basic form validation
+        // Validate all fields
         let isValid = true;
         
-        // Check required fields
-        const requiredInputs = form.querySelectorAll('[required]');
-        requiredInputs.forEach(input => {
-            if (input.value.trim() === '') {
-                input.classList.add('is-invalid');
+        // Individual field validation
+        formElements.forEach(item => {
+            if (!validateField(item.element, item.validator)) {
                 isValid = false;
             }
         });
         
-        // Check subject selection
-        if (!isSubjectSelected) {
-            const subjectSection = document.querySelector('.checkbox-subjects');
-            subjectSection.classList.add('is-invalid');
+        // Subject validation
+        if (!validateSubjects()) {
             isValid = false;
         }
         
-        // If form is valid, show success animation and submit
+        // If the form is valid, process submission
         if (isValid) {
-            const submitBtn = form.querySelector('button[type="submit"]');
-            submitBtn.classList.add('btn-success');
+            showSubmittingState();
             
-            // Gather form data for submission
+            // Gather form data
             const formData = {
-                fullName: document.getElementById('fullName').value,
-                email: document.getElementById('email').value,
-                whatsapp: document.getElementById('whatsapp').value,
-                grade: document.getElementById('grade').value,
-                board: document.getElementById('board').value,
+                fullName: fullNameInput.value.trim(),
+                email: emailInput.value.trim(),
+                whatsapp: whatsappInput.value.trim(),
+                grade: gradeSelect.value,
+                board: boardSelect.value,
                 subjects: Array.from(subjectCheckboxes)
                     .filter(cb => cb.checked)
                     .map(cb => cb.value)
             };
             
+            // Log form data (replace with actual submission in production)
             console.log('Form data to be submitted:', formData);
             
-            // Here you would normally send the data to your server
-            // For demo purposes, we'll just display a success message
-            setTimeout(() => {
+            // Send form data to backend via fetch
+            fetch('/api/get-quote', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken') // Function to get CSRF token
+                },
+                body: JSON.stringify(formData)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
                 // Show success message
                 showNotification('Success! We will send your pricing details on WhatsApp soon.', 'success');
                 
-                // Reset the form
-                form.reset();
-                
-                // Reset validation states
-                document.querySelectorAll('.is-valid, .is-invalid, .has-value').forEach(el => {
-                    el.classList.remove('is-valid', 'is-invalid', 'has-value');
-                });
-                
-                submitBtn.classList.remove('btn-success');
-            }, 800);
+                // Reset the form and state
+                resetForm();
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showNotification('There was a problem submitting your request. Please try again.', 'error');
+                resetSubmitButton();
+            });
         } else {
             // Show error message
-            showNotification('Please fill in all required fields.', 'error');
+            showNotification('Please fill in all required fields correctly.', 'error');
             
-            // Scroll to the first invalid element
+            // Focus the first invalid element
             const firstInvalid = form.querySelector('.is-invalid');
             if (firstInvalid) {
-                firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                scrollToElement(firstInvalid);
+                
+                // If it's an input, focus it
+                if (firstInvalid.tagName === 'INPUT' || firstInvalid.tagName === 'SELECT') {
+                    firstInvalid.focus();
+                }
             }
         }
-    });
+    }
     
-    // Add ripple effect to button
-    const btn = document.querySelector('.btn-animated');
-    if (btn) {
-        btn.addEventListener('mousedown', function(e) {
-            const x = e.clientX - btn.getBoundingClientRect().left;
-            const y = e.clientY - btn.getBoundingClientRect().top;
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    
+    function showSubmittingState() {
+        // Add loading state to button
+        submitBtn.classList.add('loading');
+        submitBtn.disabled = true;
+        
+        // Disable all form inputs
+        formElements.forEach(item => {
+            item.element.disabled = true;
+        });
+        
+        subjectCheckboxes.forEach(cb => {
+            cb.disabled = true;
+        });
+    }
+    
+    function resetSubmitButton() {
+        submitBtn.classList.remove('loading');
+        submitBtn.disabled = false;
+        
+        // Re-enable form elements
+        formElements.forEach(item => {
+            item.element.disabled = false;
+        });
+        
+        subjectCheckboxes.forEach(cb => {
+            cb.disabled = false;
+        });
+    }
+    
+    function resetForm() {
+        // Reset the form
+        form.reset();
+        
+        // Remove validation states
+        document.querySelectorAll('.is-valid, .is-invalid').forEach(el => {
+            el.classList.remove('is-valid', 'is-invalid');
+        });
+        
+        // Reset button state
+        submitBtn.classList.remove('loading');
+        submitBtn.classList.remove('btn-success');
+        submitBtn.disabled = false;
+        
+        // Re-enable form elements
+        formElements.forEach(item => {
+            item.element.disabled = false;
+        });
+        
+        subjectCheckboxes.forEach(cb => {
+            cb.disabled = false;
+        });
+        
+        // Add success animation to button
+        submitBtn.classList.add('btn-success');
+        
+        // Remove success class after animation
+        setTimeout(() => {
+            submitBtn.classList.remove('btn-success');
+        }, 2000);
+    }
+    
+    function createRippleEffect(e) {
+        const btn = e.currentTarget;
+        
+        // Remove existing ripples
+        const existingRipples = btn.querySelectorAll('.ripple');
+        existingRipples.forEach(ripple => ripple.remove());
+        
+        const rect = btn.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        
+        const ripple = document.createElement('span');
+        ripple.classList.add('ripple');
+        ripple.style.left = `${x}px`;
+        ripple.style.top = `${y}px`;
+        
+        btn.appendChild(ripple);
+        
+        setTimeout(() => {
+            ripple.remove();
+        }, 600);
+    }
+    
+    function initScrollAnimations() {
+        // Add staggered animation class to feature cards
+        const featureCards = document.querySelectorAll('.features-container .card');
+        const featureContainer = document.querySelector('.features-container');
+        featureContainer.classList.add('staggered-fade-in');
+        
+        // Check if IntersectionObserver is supported
+        if ('IntersectionObserver' in window) {
+            // Create intersection observer
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.2 });
             
-            const ripple = document.createElement('span');
-            ripple.classList.add('ripple');
-            ripple.style.left = `${x}px`;
-            ripple.style.top = `${y}px`;
+            // Observe pricing cards and other animatable elements
+            document.querySelectorAll('.price-card, .payment-options > div, .accordion-item').forEach(el => {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(20px)';
+                el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                observer.observe(el);
+            });
             
-            btn.appendChild(ripple);
-            
-            setTimeout(() => {
-                ripple.remove();
-            }, 600);
+            // Add animation when elements become visible
+            document.addEventListener('scroll', () => {
+                document.querySelectorAll('.visible').forEach(el => {
+                    el.style.opacity = '1';
+                    el.style.transform = 'translateY(0)';
+                });
+            }, { passive: true });
+        } else {
+            // Fallback for browsers that don't support IntersectionObserver
+            document.querySelectorAll('.price-card, .payment-options > div, .accordion-item').forEach(el => {
+                el.style.opacity = '1';
+                el.style.transform = 'translateY(0)';
+            });
+        }
+    }
+    
+    function scrollToElement(element) {
+        const rect = element.getBoundingClientRect();
+        const offsetTop = window.pageYOffset + rect.top - 120; // Add some space above
+        
+        window.scrollTo({
+            top: offsetTop,
+            behavior: 'smooth'
         });
     }
     
@@ -1052,58 +1419,80 @@ document.addEventListener('DOMContentLoaded', function() {
             notifContainer = document.createElement('div');
             notifContainer.className = 'notification-container';
             document.body.appendChild(notifContainer);
-            
-            // Add styles to the notification container
-            Object.assign(notifContainer.style, {
-                position: 'fixed',
-                bottom: '20px',
-                right: '20px',
-                zIndex: '9999'
-            });
         }
         
         // Create notification element
         const notification = document.createElement('div');
         notification.className = `notification ${type}`;
-        notification.textContent = message;
+        notification.setAttribute('role', 'alert');
+        notification.setAttribute('aria-live', 'assertive');
         
-        // Add styles to the notification
-        Object.assign(notification.style, {
-            backgroundColor: type === 'success' ? '#4caf50' : '#f44336',
-            color: 'white',
-            padding: '12px 24px',
-            borderRadius: '4px',
-            marginTop: '10px',
-            boxShadow: '0 3px 6px rgba(0,0,0,0.16)',
-            transition: 'all 0.3s',
-            opacity: '0',
-            transform: 'translateY(20px)'
-        });
+        // Create notification content
+        const icon = document.createElement('span');
+        icon.className = 'notification-icon';
+        icon.innerHTML = type === 'success' 
+            ? '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>'
+            : '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>';
+        
+        const messageEl = document.createElement('span');
+        messageEl.className = 'notification-message';
+        messageEl.textContent = message;
+        
+        const closeBtn = document.createElement('button');
+        closeBtn.className = 'notification-close';
+        closeBtn.innerHTML = '&times;';
+        closeBtn.setAttribute('aria-label', 'Close notification');
+        
+        // Add elements to notification
+        notification.appendChild(icon);
+        notification.appendChild(messageEl);
+        notification.appendChild(closeBtn);
         
         // Add the notification to the container
         notifContainer.appendChild(notification);
         
-        // Trigger entrance animation
-        setTimeout(() => {
-            notification.style.opacity = '1';
-            notification.style.transform = 'translateY(0)';
-        }, 10);
+        // Add close button functionality
+        closeBtn.addEventListener('click', () => {
+            removeNotification(notification);
+        });
         
-        // Remove the notification after 5 seconds
-        setTimeout(() => {
-            notification.style.opacity = '0';
-            notification.style.transform = 'translateY(20px)';
-            
-            setTimeout(() => {
-                notification.remove();
-            }, 300);
+        // Auto-remove after 5 seconds
+        const timeoutId = setTimeout(() => {
+            removeNotification(notification);
         }, 5000);
+        
+        // Store the timeout ID so we can cancel it if needed
+        notification.dataset.timeoutId = timeoutId;
+        
+        // Add hover pause functionality
+        notification.addEventListener('mouseenter', () => {
+            clearTimeout(notification.dataset.timeoutId);
+        });
+        
+        notification.addEventListener('mouseleave', () => {
+            notification.dataset.timeoutId = setTimeout(() => {
+                removeNotification(notification);
+            }, 2000);
+        });
+    }
+    
+    function removeNotification(notification) {
+        notification.classList.add('removing');
+        notification.style.opacity = '0';
+        notification.style.transform = 'translateX(100%)';
+        
+        setTimeout(() => {
+            if (notification.parentNode) {
+                notification.parentNode.removeChild(notification);
+            }
+            
+            // Remove container if empty
+            const container = document.querySelector('.notification-container');
+            if (container && container.children.length === 0) {
+                container.remove();
+            }
+        }, 300);
     }
 });
-
-// Simple template filter to multiply values
-function multiply(a, b) {
-    return (a * b).toFixed(2);
-}
 </script>
 {% endblock %}
