@@ -11,7 +11,7 @@
             <div class="row align-items-center">
                 <div class="col-lg-5 auth-left-panel d-none d-lg-block">
                     <div class="auth-illustration">
-                        <img src="{% static 'images/signup-illustration.svg' %}" alt="Learning Journey Illustration" class="img-fluid" onerror="this.src='{% static 'images/fallback-illustration.png' %}'">
+                        <img src="{% static 'images/signup-illustration.svg' %}" alt="Learning Journey Illustration" class="img-fluid" onerror="this.src='{% static 'images/fallback-illustration.png' %}'" loading="lazy">
                     </div>
                     <div class="auth-tagline">
                         <h2>{% trans "Begin Your Learning Journey" %}</h2>
@@ -52,19 +52,19 @@
                 <div class="col-lg-7 col-md-10 mx-auto">
                     <div class="auth-card">
                         <div class="auth-header text-center">
-                            <img src="{% static 'images/logo.png' %}" alt="LearnIspire Logo" class="auth-logo mb-3" height="50">
+                            <img src="{% static 'images/logo.png' %}" alt="LearnIspire Logo" class="auth-logo mb-3" height="50" loading="lazy">
                             <h1 class="auth-title">{% trans "Create Your Account" %}</h1>
                             <p class="auth-subtitle">{% trans "Start your personalized learning journey today" %}</p>
                         </div>
                         
                         <div class="auth-body">
-                            <form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}">
+                            <form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}" novalidate>
                                 {% csrf_token %}
                                 
                                 {% if form.errors %}
-                                    <div class="alert alert-danger">
+                                    <div class="alert alert-danger" role="alert">
                                         <div class="alert-icon">
-                                            <i class="fas fa-exclamation-circle"></i>
+                                            <i class="fas fa-exclamation-circle" aria-hidden="true"></i>
                                         </div>
                                         <div class="alert-content">
                                             <h6 class="alert-heading">{% trans "Please check your information" %}</h6>
@@ -81,19 +81,19 @@
                                 {% endif %}
                                 
                                 <!-- Progress Steps -->
-                                <div class="signup-progress mb-4">
+                                <div class="signup-progress mb-4" aria-label="{% trans 'Signup progress' %}">
                                     <div class="progress-step active">
-                                        <div class="step-number">1</div>
+                                        <div class="progress-step-number">1</div>
                                         <div class="step-label">{% trans "Account" %}</div>
                                     </div>
                                     <div class="progress-connector"></div>
                                     <div class="progress-step">
-                                        <div class="step-number">2</div>
+                                        <div class="progress-step-number">2</div>
                                         <div class="step-label">{% trans "Verify" %}</div>
                                     </div>
                                     <div class="progress-connector"></div>
                                     <div class="progress-step">
-                                        <div class="step-number">3</div>
+                                        <div class="progress-step-number">3</div>
                                         <div class="step-label">{% trans "Profile" %}</div>
                                     </div>
                                 </div>
@@ -106,27 +106,39 @@
                                 <div class="row mb-4">
                                     <div class="col-md-6">
                                         <div class="form-floating mb-3 mb-md-0">
-                                            <input type="text" name="first_name" placeholder="{% trans 'First Name' %}" class="form-control" id="id_first_name" required>
+                                            <input type="text" name="first_name" placeholder="{% trans 'First Name' %}" class="form-control" id="id_first_name" required aria-describedby="first_name_feedback">
                                             <label for="id_first_name">{% trans "First Name" %}</label>
+                                            <div id="first_name_feedback" class="invalid-feedback">
+                                                {% trans "Please enter your first name (at least 2 characters)" %}
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-floating">
-                                            <input type="text" name="last_name" placeholder="{% trans 'Last Name' %}" class="form-control" id="id_last_name" required>
+                                            <input type="text" name="last_name" placeholder="{% trans 'Last Name' %}" class="form-control" id="id_last_name" required aria-describedby="last_name_feedback">
                                             <label for="id_last_name">{% trans "Last Name" %}</label>
+                                            <div id="last_name_feedback" class="invalid-feedback">
+                                                {% trans "Please enter your last name (at least 2 characters)" %}
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                                 
                                 <div class="form-floating mb-4">
-                                    <input type="email" name="email" placeholder="{% trans 'Email address' %}" autocomplete="email" class="form-control" id="id_email" required>
+                                    <input type="email" name="email" placeholder="{% trans 'Email address' %}" autocomplete="email" class="form-control" id="id_email" required aria-describedby="email_feedback">
                                     <label for="id_email">{% trans "Email Address" %}</label>
+                                    <div id="email_feedback" class="invalid-feedback">
+                                        {% trans "Please enter a valid email address" %}
+                                    </div>
                                     <div class="form-text small">{% trans "We'll never share your email with anyone else." %}</div>
                                 </div>
                                 
                                 <div class="form-floating mb-4">
-                                    <input type="tel" name="phone_number" placeholder="{% trans 'e.g. +911234567890' %}" class="form-control" id="id_phone_number" required>
+                                    <input type="tel" name="phone_number" placeholder="{% trans 'e.g. +911234567890' %}" class="form-control" id="id_phone_number" required pattern="^\+[0-9]{1,3}[0-9]{6,14}$" aria-describedby="phone_feedback">
                                     <label for="id_phone_number">{% trans "Phone Number" %}</label>
+                                    <div id="phone_feedback" class="invalid-feedback">
+                                        {% trans "Please enter a valid phone number with country code (e.g. +911234567890)" %}
+                                    </div>
                                     <div class="form-text small">{% trans "Use international format with country code (e.g. +91 for India)" %}</div>
                                 </div>
                                 
@@ -135,12 +147,12 @@
                                     <h5>{% trans "I am joining as" %}</h5>
                                 </div>
                                 
-                                <div class="role-selection mb-4">
+                                <div class="role-selection mb-4" role="radiogroup" aria-label="{% trans 'Select your role' %}">
                                     <div class="role-option">
                                         <input class="role-input" type="radio" name="role" id="role_student" value="student" checked>
                                         <label class="role-label" for="role_student">
                                             <div class="role-icon">
-                                                <i class="fas fa-user-graduate"></i>
+                                                <i class="fas fa-user-graduate" aria-hidden="true"></i>
                                             </div>
                                             <div class="role-title">{% trans "Student" %}</div>
                                             <div class="role-description small">{% trans "Looking to learn new skills" %}</div>
@@ -150,7 +162,7 @@
                                         <input class="role-input" type="radio" name="role" id="role_teacher" value="teacher">
                                         <label class="role-label" for="role_teacher">
                                             <div class="role-icon">
-                                                <i class="fas fa-chalkboard-teacher"></i>
+                                                <i class="fas fa-chalkboard-teacher" aria-hidden="true"></i>
                                             </div>
                                             <div class="role-title">{% trans "Teacher" %}</div>
                                             <div class="role-description small">{% trans "Share your expertise" %}</div>
@@ -166,33 +178,59 @@
                                 <div class="row mb-4">
                                     <div class="col-md-6">
                                         <div class="form-floating mb-3 mb-md-0">
-                                            <input type="password" name="password1" placeholder="{% trans 'Password' %}" autocomplete="new-password" class="form-control" id="id_password1" required>
+                                            <input type="password" name="password1" placeholder="{% trans 'Password' %}" autocomplete="new-password" class="form-control" id="id_password1" required aria-describedby="password1_feedback">
                                             <label for="id_password1">{% trans "Password" %}</label>
+                                            <div id="password1_feedback" class="invalid-feedback">
+                                                {% trans "Please enter a strong password" %}
+                                            </div>
+                                            <div class="password-toggle" onclick="togglePasswordVisibility('id_password1', 'password1-toggle-icon')">
+                                                <i id="password1-toggle-icon" class="fas fa-eye-slash" aria-hidden="true"></i>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-floating">
-                                            <input type="password" name="password2" placeholder="{% trans 'Confirm Password' %}" autocomplete="new-password" class="form-control" id="id_password2" required>
+                                            <input type="password" name="password2" placeholder="{% trans 'Confirm Password' %}" autocomplete="new-password" class="form-control" id="id_password2" required aria-describedby="password2_feedback">
                                             <label for="id_password2">{% trans "Confirm Password" %}</label>
+                                            <div id="password2_feedback" class="invalid-feedback">
+                                                {% trans "Passwords do not match" %}
+                                            </div>
+                                            <div class="password-toggle" onclick="togglePasswordVisibility('id_password2', 'password2-toggle-icon')">
+                                                <i id="password2-toggle-icon" class="fas fa-eye-slash" aria-hidden="true"></i>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                                 
                                 <div class="password-strength mb-4">
-                                    <div class="password-meter">
+                                    <div class="password-meter" aria-label="{% trans 'Password strength meter' %}">
                                         <div class="meter-section" id="meter-section-1"></div>
                                         <div class="meter-section" id="meter-section-2"></div>
                                         <div class="meter-section" id="meter-section-3"></div>
                                         <div class="meter-section" id="meter-section-4"></div>
                                     </div>
-                                    <div class="password-feedback small" id="password-feedback">{% trans "Password strength: Enter a password" %}</div>
+                                    <div class="password-feedback small" id="password-feedback" aria-live="polite">
+                                        {% trans "Password strength: Enter a password" %}
+                                    </div>
+                                    <div id="password-requirements" class="password-requirements small mt-2">
+                                        <p class="mb-1">{% trans "Your password should have:" %}</p>
+                                        <ul class="ps-3 mb-0">
+                                            <li id="req-length" class="req-item">{% trans "At least 8 characters" %}</li>
+                                            <li id="req-number" class="req-item">{% trans "At least one number" %}</li>
+                                            <li id="req-special" class="req-item">{% trans "At least one special character" %}</li>
+                                            <li id="req-case" class="req-item">{% trans "Both uppercase and lowercase letters" %}</li>
+                                        </ul>
+                                    </div>
                                 </div>
                                 
                                 <div class="form-check mb-4">
-                                    <input type="checkbox" class="form-check-input" id="terms_check" required>
+                                    <input type="checkbox" class="form-check-input" id="terms_check" required aria-describedby="terms_feedback">
                                     <label class="form-check-label small" for="terms_check">
                                         {% blocktrans %}I agree to the <a href="/terms/" target="_blank">Terms and Conditions</a> and <a href="/privacy/" target="_blank">Privacy Policy</a>{% endblocktrans %}
                                     </label>
+                                    <div id="terms_feedback" class="invalid-feedback">
+                                        {% trans "You must agree to the terms to continue" %}
+                                    </div>
                                 </div>
                                 
                                 {% if redirect_field_value %}
@@ -200,9 +238,10 @@
                                 {% endif %}
                                 
                                 <div class="d-grid gap-2 mb-4">
-                                    <button class="btn btn-primary btn-lg" type="submit">
+                                    <button class="btn btn-primary btn-lg signup-btn" type="submit">
                                         <span class="auth-btn-text">{% trans "Create Account" %}</span>
-                                        <i class="fas fa-arrow-right ms-2"></i>
+                                        <i class="fas fa-arrow-right ms-2" aria-hidden="true"></i>
+                                        <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
                                     </button>
                                 </div>
                                 
@@ -211,14 +250,14 @@
                                 </div>
                                 
                                 <div class="social-login">
-                                    <button type="button" class="btn btn-outline-secondary social-btn">
-                                        <i class="fab fa-google"></i>
+                                    <button type="button" class="btn btn-outline-secondary social-btn" aria-label="{% trans 'Sign up with Google' %}">
+                                        <i class="fab fa-google" aria-hidden="true"></i>
                                     </button>
-                                    <button type="button" class="btn btn-outline-secondary social-btn">
-                                        <i class="fab fa-apple"></i>
+                                    <button type="button" class="btn btn-outline-secondary social-btn" aria-label="{% trans 'Sign up with Apple' %}">
+                                        <i class="fab fa-apple" aria-hidden="true"></i>
                                     </button>
-                                    <button type="button" class="btn btn-outline-secondary social-btn">
-                                        <i class="fab fa-microsoft"></i>
+                                    <button type="button" class="btn btn-outline-secondary social-btn" aria-label="{% trans 'Sign up with Microsoft' %}">
+                                        <i class="fab fa-microsoft" aria-hidden="true"></i>
                                     </button>
                                 </div>
                             </form>
@@ -234,40 +273,40 @@
                     <!-- What happens next card -->
                     <div class="next-steps-card mt-4">
                         <div class="next-steps-header">
-                            <i class="fas fa-info-circle me-2"></i>
+                            <i class="fas fa-info-circle me-2" aria-hidden="true"></i>
                             <h5 class="mb-0">{% trans "What happens next?" %}</h5>
                         </div>
                         <div class="next-steps-body">
                             <div class="next-step">
-                                <div class="step-number">1</div>
+                                <div class="next-step-number">1</div>
                                 <div class="step-details">
                                     <h6>{% trans "Verification" %}</h6>
                                     <p class="small mb-0">{% trans "You'll verify your phone number via WhatsApp" %}</p>
                                 </div>
                             </div>
                             <div class="next-step">
-                                <div class="step-number">2</div>
+                                <div class="next-step-number">2</div>
                                 <div class="step-details">
                                     <h6>{% trans "Complete Profile" %}</h6>
                                     <p class="small mb-0">{% trans "Add your educational details and preferences" %}</p>
                                 </div>
                             </div>
                             <div class="next-step">
-                                <div class="step-number">3</div>
+                                <div class="next-step-number">3</div>
                                 <div class="step-details">
                                     <h6>{% trans "Set Availability" %}</h6>
                                     <p class="small mb-0">{% trans "Schedule your weekly availability (minimum 3 slots)" %}</p>
                                 </div>
                             </div>
                             <div class="next-step">
-                                <div class="step-number">4</div>
+                                <div class="next-step-number">4</div>
                                 <div class="step-details">
                                     <h6>{% trans "Demo Class" %}</h6>
                                     <p class="small mb-0">{% trans "Request and attend a free demo session" %}</p>
                                 </div>
                             </div>
                             <div class="next-step">
-                                <div class="step-number">5</div>
+                                <div class="next-step-number">5</div>
                                 <div class="step-details">
                                     <h6>{% trans "Regular Classes" %}</h6>
                                     <p class="small mb-0">{% trans "Begin your learning journey after the demo" %}</p>
@@ -301,6 +340,11 @@
     .auth-illustration img {
         max-height: 200px;
         margin-bottom: 1.5rem;
+        transition: transform 0.5s ease;
+    }
+    
+    .auth-illustration img:hover {
+        transform: scale(1.05);
     }
     
     .auth-tagline h2 {
@@ -323,11 +367,16 @@
         display: flex;
         margin-bottom: 1rem;
         align-items: center;
+        transition: transform 0.3s ease;
+    }
+    
+    .feature-item:hover {
+        transform: translateX(5px);
     }
     
     .feature-icon {
-        width: 36px;
-        height: 36px;
+        width: 40px;
+        height: 40px;
         background-color: rgba(52, 152, 219, 0.1);
         border-radius: 50%;
         display: flex;
@@ -335,6 +384,12 @@
         justify-content: center;
         margin-right: 1rem;
         color: #3498db;
+        transition: all 0.3s ease;
+    }
+    
+    .feature-item:hover .feature-icon {
+        background-color: rgba(52, 152, 219, 0.2);
+        color: #2980b9;
     }
     
     .feature-text h6 {
@@ -390,7 +445,7 @@
         z-index: 1;
     }
     
-    .step-number {
+    .progress-step-number {
         width: 32px;
         height: 32px;
         border-radius: 50%;
@@ -410,9 +465,10 @@
         font-weight: 500;
     }
     
-    .progress-step.active .step-number {
+    .progress-step.active .progress-step-number {
         background-color: #3498db;
         color: white;
+        box-shadow: 0 0 0 4px rgba(52, 152, 219, 0.2);
     }
     
     .progress-step.active .step-label {
@@ -480,6 +536,11 @@
         transition: all 0.3s ease;
     }
     
+    .role-label:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    }
+    
     .role-icon {
         font-size: 1.5rem;
         color: #6c757d;
@@ -500,6 +561,8 @@
     .role-input:checked + .role-label {
         border-color: #3498db;
         background-color: rgba(52, 152, 219, 0.05);
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(52, 152, 219, 0.1);
     }
     
     .role-input:checked + .role-label .role-icon {
@@ -518,7 +581,7 @@
     }
     
     .meter-section {
-        height: 4px;
+        height: 5px;
         flex: 1;
         background-color: #e9ecef;
         border-radius: 2px;
@@ -541,7 +604,44 @@
         color: #6c757d;
     }
     
+    .password-requirements {
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        padding: 1rem;
+        border-left: 3px solid #e9ecef;
+        transition: all 0.3s ease;
+    }
+
+    .password-requirements .req-item {
+        color: #6c757d;
+        transition: all 0.3s ease;
+        position: relative;
+        padding-left: 5px;
+    }
+    
+    .password-requirements .req-item.valid {
+        color: #2ecc71;
+    }
+    
+    .password-requirements .req-item.valid:before {
+        content: '✓ ';
+        color: #2ecc71;
+    }
+
+    .password-requirements .req-item.invalid {
+        color: #e74c3c;
+    }
+    
+    .password-requirements .req-item.invalid:before {
+        content: '✗ ';
+        color: #e74c3c;
+    }
+    
     /* Form Elements */
+    .form-floating {
+        position: relative;
+    }
+    
     .form-floating > .form-control {
         padding: 1rem 0.75rem;
     }
@@ -550,10 +650,29 @@
         padding: 1rem 0.75rem;
     }
     
+    .form-control:focus {
+        box-shadow: 0 0 0 0.25rem rgba(52, 152, 219, 0.25);
+        border-color: #3498db;
+    }
+    
     .form-text {
         color: #6c757d;
         font-size: 0.8rem;
         margin-top: 0.25rem;
+    }
+    
+    .password-toggle {
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        cursor: pointer;
+        color: #6c757d;
+        z-index: 10;
+    }
+    
+    .password-toggle:hover {
+        color: #3498db;
     }
     
     /* Button Styles */
@@ -561,12 +680,38 @@
         background-color: #3498db;
         border-color: #3498db;
         transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
     }
     
     .btn-primary:hover {
         background-color: #2980b9;
         border-color: #2980b9;
         transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+    }
+    
+    .btn-primary:active {
+        transform: translateY(0);
+    }
+    
+    .btn-primary:before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.2) 50%, rgba(255,255,255,0) 100%);
+        transition: all 0.6s ease;
+    }
+    
+    .btn-primary:hover:before {
+        left: 100%;
+    }
+    
+    .signup-btn .spinner-border {
+        margin-left: 8px;
     }
     
     /* Separator & Social Login */
@@ -610,6 +755,7 @@
     .social-btn:hover {
         background-color: #f8f9fa;
         transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
     }
     
     /* Next Steps Card */
@@ -618,6 +764,11 @@
         border-radius: 16px;
         box-shadow: 0 4px 15px rgba(0,0,0,0.05);
         overflow: hidden;
+        transition: all 0.3s ease;
+    }
+    
+    .next-steps-card:hover {
+        box-shadow: 0 10px 25px rgba(0,0,0,0.1);
     }
     
     .next-steps-header {
@@ -636,13 +787,18 @@
         display: flex;
         align-items: flex-start;
         margin-bottom: 1rem;
+        transition: transform 0.3s ease;
+    }
+    
+    .next-step:hover {
+        transform: translateX(5px);
     }
     
     .next-step:last-child {
         margin-bottom: 0;
     }
     
-    .step-number {
+    .next-step-number {
         width: 28px;
         height: 28px;
         border-radius: 50%;
@@ -668,6 +824,8 @@
         border-radius: 12px;
         display: flex;
         padding: 1rem;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        animation: fadeInDown 0.5s;
     }
     
     .alert-danger {
@@ -686,6 +844,60 @@
         margin-bottom: 0.5rem;
     }
     
+    /* Form validation styles */
+    .form-control.is-invalid {
+        border-color: #e74c3c;
+        box-shadow: none;
+    }
+    
+    .form-control.is-invalid:focus {
+        box-shadow: 0 0 0 0.25rem rgba(231, 76, 60, 0.25);
+    }
+    
+    .form-control.is-valid {
+        border-color: #2ecc71;
+        box-shadow: none;
+    }
+    
+    .form-control.is-valid:focus {
+        box-shadow: 0 0 0 0.25rem rgba(46, 204, 113, 0.25);
+    }
+    
+    .invalid-feedback {
+        color: #e74c3c;
+        font-size: 0.8rem;
+        margin-top: 0.25rem;
+    }
+    
+    /* Animations */
+    @keyframes fadeInDown {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    @keyframes pulse {
+        0% {
+            transform: scale(1);
+        }
+        50% {
+            transform: scale(1.05);
+        }
+        100% {
+            transform: scale(1);
+        }
+    }
+    
+    .animate-pulse {
+        animation: pulse 2s infinite;
+    }
+    
+    /* Responsive styles */
     @media (max-width: 992px) {
         .auth-card {
             padding: 1.5rem;
@@ -694,10 +906,63 @@
         .auth-hero {
             padding: 2rem 0;
         }
-        
+    }
+    
+    @media (max-width: 768px) {
         .role-selection {
             flex-direction: column;
-            gap: 0.5rem;
+            gap: 0.75rem;
+        }
+        
+        .next-steps-card {
+            margin-bottom: 2rem;
+        }
+        
+        .auth-title {
+            font-size: 1.25rem;
+        }
+        
+        .form-section-heading h5 {
+            font-size: 0.95rem;
+        }
+        
+        .next-step-number {
+            width: 24px;
+            height: 24px;
+            font-size: 0.8rem;
+        }
+        
+        .step-details h6 {
+            font-size: 0.9rem;
+        }
+        
+        .signup-progress {
+            margin-bottom: 1.5rem;
+        }
+        
+        .progress-step-number {
+            width: 28px;
+            height: 28px;
+            font-size: 0.8rem;
+        }
+        
+        .step-label {
+            font-size: 0.7rem;
+        }
+    }
+    
+    @media (max-width: 576px) {
+        .auth-card {
+            padding: 1.25rem;
+            border-radius: 12px;
+        }
+        
+        .auth-hero {
+            padding: 1rem 0;
+        }
+        
+        .auth-subtitle {
+            font-size: 0.9rem;
         }
     }
 </style>
@@ -713,7 +978,22 @@
         document.head.appendChild(fontAwesome);
     }
     
-    // Password strength meter
+    // Password visibility toggle
+    function togglePasswordVisibility(inputId, iconId) {
+        const passwordInput = document.getElementById(inputId);
+        const icon = document.getElementById(iconId);
+        
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            icon.classList.remove('fa-eye-slash');
+            icon.classList.add('fa-eye');
+        } else {
+            passwordInput.type = 'password';
+            icon.classList.remove('fa-eye');
+            icon.classList.add('fa-eye-slash');
+        }
+    }
+    
     document.addEventListener('DOMContentLoaded', function() {
         const password1 = document.getElementById('id_password1');
         const password2 = document.getElementById('id_password2');
@@ -724,38 +1004,121 @@
             document.getElementById('meter-section-4')
         ];
         const passwordFeedback = document.getElementById('password-feedback');
+        const form = document.getElementById('signup_form');
+        const submitButton = document.querySelector('.signup-btn');
+        const spinner = document.querySelector('.spinner-border');
         
+        // Password requirement elements
+        const reqLength = document.getElementById('req-length');
+        const reqNumber = document.getElementById('req-number');
+        const reqSpecial = document.getElementById('req-special');
+        const reqCase = document.getElementById('req-case');
+        
+        // Enable inline validation for all inputs
+        const formInputs = document.querySelectorAll('.form-control');
+        formInputs.forEach(input => {
+            input.addEventListener('blur', function() {
+                validateInput(this);
+            });
+            
+            input.addEventListener('input', function() {
+                if (input.classList.contains('is-invalid')) {
+                    validateInput(this);
+                }
+            });
+        });
+        
+        // Input validation function
+        function validateInput(input) {
+            let isValid = true;
+            const id = input.id;
+            
+            // Reset validation state
+            input.classList.remove('is-invalid', 'is-valid');
+            
+            // Validate based on input type
+            if (id === 'id_first_name' || id === 'id_last_name') {
+                if (input.value.length < 2) {
+                    input.classList.add('is-invalid');
+                    isValid = false;
+                } else {
+                    input.classList.add('is-valid');
+                }
+            } else if (id === 'id_email') {
+                if (!input.value.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
+                    input.classList.add('is-invalid');
+                    isValid = false;
+                } else {
+                    input.classList.add('is-valid');
+                }
+            } else if (id === 'id_phone_number') {
+                if (!input.value.match(/^\+[0-9]{1,3}[0-9]{6,14}$/)) {
+                    input.classList.add('is-invalid');
+                    isValid = false;
+                } else {
+                    input.classList.add('is-valid');
+                }
+            } else if (id === 'id_password2') {
+                if (input.value !== password1.value) {
+                    input.classList.add('is-invalid');
+                    isValid = false;
+                } else {
+                    input.classList.add('is-valid');
+                }
+            }
+            
+            return isValid;
+        }
+        
+        // Enhanced password strength meter & requirements
         password1.addEventListener('input', function() {
             const value = this.value;
             let strength = 0;
             let feedback = '';
             
-            // Reset all sections
+            // Reset all sections and requirements
             meterSections.forEach(section => {
                 section.className = 'meter-section';
             });
+            
+            reqLength.className = 'req-item';
+            reqNumber.className = 'req-item';
+            reqSpecial.className = 'req-item';
+            reqCase.className = 'req-item';
             
             if (value.length === 0) {
                 feedback = '{% trans "Password strength: Enter a password" %}';
             } else {
                 // Check length
-                if (value.length > 8) {
+                if (value.length >= 8) {
                     strength += 1;
+                    reqLength.className = 'req-item valid';
+                } else {
+                    reqLength.className = 'req-item invalid';
                 }
                 
                 // Check for numbers
                 if (/\d/.test(value)) {
                     strength += 1;
+                    reqNumber.className = 'req-item valid';
+                } else {
+                    reqNumber.className = 'req-item invalid';
                 }
                 
                 // Check for special characters
                 if (/[!@#$%^&*(),.?":{}|<>]/.test(value)) {
                     strength += 1;
+                    reqSpecial.className = 'req-item valid';
+                } else {
+                    reqSpecial.className = 'req-item invalid';
                 }
                 
                 // Check for uppercase and lowercase
                 if (/[a-z]/.test(value) && /[A-Z]/.test(value)) {
                     strength += 1;
+                    reqCase.className = 'req-item valid';
+                } else {
+                    reqCase.className = 'req-item invalid';
                 }
                 
                 // Set feedback and style meter sections
@@ -780,85 +1143,111 @@
                         section.className = 'meter-section strong';
                     });
                 }
+                
+                // Validate password field
+                if (strength >= 2) {
+                    this.classList.remove('is-invalid');
+                    this.classList.add('is-valid');
+                } else {
+                    this.classList.remove('is-valid');
+                    this.classList.add('is-invalid');
+                }
             }
             
             passwordFeedback.textContent = feedback;
+            
+            // Check if passwords match when typing in password1
+            if (password2.value.length > 0) {
+                if (password1.value !== password2.value) {
+                    password2.classList.remove('is-valid');
+                    password2.classList.add('is-invalid');
+                } else {
+                    password2.classList.remove('is-invalid');
+                    password2.classList.add('is-valid');
+                }
+            }
         });
         
         // Check if passwords match
         password2.addEventListener('input', function() {
             if (password1.value !== this.value) {
-                this.classList.add('is-invalid');
                 this.classList.remove('is-valid');
+                this.classList.add('is-invalid');
             } else {
                 this.classList.remove('is-invalid');
                 this.classList.add('is-valid');
             }
         });
         
-        // Form validation
-        const form = document.getElementById('signup_form');
-        form.addEventListener('submit', function(event) {
-            let isValid = true;
-            const email = document.getElementById('id_email');
-            const phone = document.getElementById('id_phone_number');
-            const firstName = document.getElementById('id_first_name');
-            const lastName = document.getElementById('id_last_name');
-            const termsCheck = document.getElementById('terms_check');
-            
-            // Email validation
-            if (!email.value.includes('@')) {
-                email.classList.add('is-invalid');
-                isValid = false;
+        // Terms checkbox validation
+        const termsCheck = document.getElementById('terms_check');
+        termsCheck.addEventListener('change', function() {
+            if (!this.checked) {
+                this.classList.add('is-invalid');
             } else {
-                email.classList.remove('is-invalid');
-                email.classList.add('is-valid');
-            }
-            
-            // Phone validation
-            if (!phone.value.includes('+')) {
-                phone.classList.add('is-invalid');
-                isValid = false;
-            } else {
-                phone.classList.remove('is-invalid');
-                phone.classList.add('is-valid');
-            }
-            
-            // Name validation
-            if (firstName.value.length < 2) {
-                firstName.classList.add('is-invalid');
-                isValid = false;
-            } else {
-                firstName.classList.remove('is-invalid');
-                firstName.classList.add('is-valid');
-            }
-            
-            if (lastName.value.length < 2) {
-                lastName.classList.add('is-invalid');
-                isValid = false;
-            } else {
-                lastName.classList.remove('is-invalid');
-                lastName.classList.add('is-valid');
-            }
-            
-            // Password validation
-            if (password1.value !== password2.value) {
-                password2.classList.add('is-invalid');
-                isValid = false;
-            }
-            
-            // Terms check
-            if (!termsCheck.checked) {
-                termsCheck.classList.add('is-invalid');
-                isValid = false;
-            } else {
-                termsCheck.classList.remove('is-invalid');
-            }
-            
-            if (!isValid) {
-                event.preventDefault();
+                this.classList.remove('is-invalid');
             }
         });
+        
+        // Role selection highlight
+        const roleInputs = document.querySelectorAll('.role-input');
+        roleInputs.forEach(input => {
+            input.addEventListener('change', function() {
+                const roleOptions = document.querySelectorAll('.role-option');
+                roleOptions.forEach(option => {
+                    const roleInput = option.querySelector('.role-input');
+                    const roleLabel = option.querySelector('.role-label');
+                    
+                    if (roleInput.checked) {
+                        roleLabel.classList.add('animate-pulse');
+                        setTimeout(() => {
+                            roleLabel.classList.remove('animate-pulse');
+                        }, 1000);
+                    }
+                });
+            });
+        });
+        
+        // Form submission
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
+            let isFormValid = true;
+            
+            // Validate all inputs
+            formInputs.forEach(input => {
+                if (!validateInput(input)) {
+                    isFormValid = false;
+                }
+            });
+            
+            // Check terms
+            if (!termsCheck.checked) {
+                termsCheck.classList.add('is-invalid');
+                isFormValid = false;
+            }
+            
+            if (isFormValid) {
+                // Show loading state
+                submitButton.setAttribute('disabled', true);
+                submitButton.querySelector('.auth-btn-text').textContent = '{% trans "Creating Account..." %}';
+                spinner.classList.remove('d-none');
+                
+                // Submit the form after a slight delay
+                setTimeout(() => {
+                    this.submit();
+                }, 1000);
+            } else {
+                // Scroll to first invalid input
+                const firstInvalid = document.querySelector('.is-invalid');
+                if (firstInvalid) {
+                    firstInvalid.focus();
+                    firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            }
+        });
+        
+        // Init form fields
+        password1.dispatchEvent(new Event('input'));
     });
 </script>
 {% endblock %}
