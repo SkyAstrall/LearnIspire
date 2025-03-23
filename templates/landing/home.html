@@ -30,8 +30,8 @@ Personalized Online Learning Platform{% endblock %} {% block content %}
 <!-- Offerings Section -->
 <section class="section section-light">
   <div class="container">
-    <h2 class="text-center">Our Offerings</h2>
-    <h6 class="text-center">
+    <h2 class="section-heading text-center">Our Offerings</h2>
+    <h6 class="section-subheading text-center">
       Choose from our specialized programs designed to help you achieve your
       academic goals
     </h6>
@@ -39,7 +39,7 @@ Personalized Online Learning Platform{% endblock %} {% block content %}
     <div class="grid">
       <!-- JEE Preparation Card -->
       <div class="col-xs-12 col-sm-6 col-md-4">
-        <div class="card">
+        <div class="course-card">
           <div class="card-media-container">
             <img
               class="card-media"
@@ -100,7 +100,7 @@ Personalized Online Learning Platform{% endblock %} {% block content %}
 
       <!-- Aptitude Training Card -->
       <div class="col-xs-12 col-sm-6 col-md-4">
-        <div class="card">
+        <div class="course-card">
           <div class="card-media-container">
             <img
               class="card-media"
@@ -161,7 +161,7 @@ Personalized Online Learning Platform{% endblock %} {% block content %}
 
       <!-- NEET Coaching Card -->
       <div class="col-xs-12 col-sm-6 col-md-4">
-        <div class="card">
+        <div class="course-card">
           <div class="card-media-container">
             <img
               class="card-media"
@@ -226,8 +226,8 @@ Personalized Online Learning Platform{% endblock %} {% block content %}
 <!-- Features Section -->
 <section class="section section-dark">
   <div class="container">
-    <h2 class="text-center">Why Choose LearnIspire</h2>
-    <h6 class="text-center">
+    <h2 class="section-heading text-center">Why Choose LearnIspire</h2>
+    <h6 class="section-subheading text-center">
       Discover the features that make our platform the perfect choice for your
       educational journey
     </h6>
@@ -624,7 +624,9 @@ Personalized Online Learning Platform{% endblock %} {% block content %}
 
 {% endblock %} {% block extra_css %}
 <style>
-  /* Base Styles */
+  /* ======================================================
+     1. BASE STYLES
+  ====================================================== */
   * {
     margin: 0;
     padding: 0;
@@ -638,7 +640,9 @@ Personalized Online Learning Platform{% endblock %} {% block content %}
     color: rgba(0, 0, 0, 0.87);
   }
 
-  /* Typography */
+  /* ======================================================
+     2. TYPOGRAPHY
+  ====================================================== */
   h1 {
     font-size: 3.5rem;
     font-weight: 800;
@@ -685,7 +689,9 @@ Personalized Online Learning Platform{% endblock %} {% block content %}
     color: rgba(0, 0, 0, 0.6);
   }
 
-  /* Layout Components */
+  /* ======================================================
+     3. LAYOUT COMPONENTS
+  ====================================================== */
   .container {
     width: 100%;
     max-width: 1200px;
@@ -694,7 +700,63 @@ Personalized Online Learning Platform{% endblock %} {% block content %}
     box-sizing: border-box;
   }
 
-  /* Hero Section */
+  .section {
+    padding: 80px 0;
+    width: 100%;
+  }
+
+  .section-light {
+    background-color: white;
+  }
+
+  .section-dark {
+    background-color: #f5f5f5;
+  }
+
+  .section-heading {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+  }
+
+  .section-subheading {
+    font-size: 1.1rem;
+    font-weight: 400;
+    margin-bottom: 2rem;
+    color: rgba(0, 0, 0, 0.6);
+  }
+
+  /* ======================================================
+     4. GRID SYSTEM
+  ====================================================== */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 24px;
+    margin-top: 40px;
+    width: 100%;
+  }
+
+  .col-xs-12 {
+    grid-column: span 12;
+    width: 100%;
+  }
+
+  @media (min-width: 600px) {
+    .col-sm-6 {
+      grid-column: span 6;
+    }
+  }
+
+  @media (min-width: 960px) {
+    .col-md-4 {
+      grid-column: span 4;
+    }
+  }
+
+  /* ======================================================
+     5. HERO SECTION
+  ====================================================== */
   .hero-section {
     min-height: 100vh;
     background: linear-gradient(rgba(44, 44, 44, 0.5), rgba(21, 22, 22, 0.4)), 
@@ -713,9 +775,8 @@ Personalized Online Learning Platform{% endblock %} {% block content %}
     margin: 0 auto;
   }
 
-  h1.hero-title{
-    margin: 0px 0px 16px;
-    font-family: Roboto, Helvetica, Arial, sans-serif;
+  h1.hero-title {
+    margin: 0 0 16px;
     font-size: 6rem;
     line-height: 1.167;
     font-weight: 800;
@@ -754,7 +815,9 @@ Personalized Online Learning Platform{% endblock %} {% block content %}
     }
   }
 
-  /* Buttons */
+  /* ======================================================
+     6. BUTTONS
+  ====================================================== */
   .btn {
     display: inline-flex;
     align-items: center;
@@ -801,80 +864,42 @@ Personalized Online Learning Platform{% endblock %} {% block content %}
     margin-left: 8px;
   }
 
-  /* Section Styling */
-  .section {
-    padding: 80px 0;
-    width: 100%;
-    box-sizing: border-box;
-  }
-
-  .section-light {
-    background-color: white;
-  }
-
-  .section-dark {
-    background-color: #f5f5f5;
-  }
-
-  /* Grid System */
-  .grid {
-    display: grid;
-    grid-template-columns: repeat(12, 1fr);
-    gap: 24px;
-    margin-top: 40px;
-    width: 100%;
-  }
-
-  /* Column widths */
-  .col-xs-12 {
-    grid-column: span 12;
-    width: 100%;
-  }
-
-  @media (min-width: 600px) {
-    .col-sm-6 {
-      grid-column: span 6;
-      width: 100%;
-    }
-  }
-
-  @media (min-width: 960px) {
-    .col-md-4 {
-      grid-column: span 4;
-      width: 100%;
-    }
-  }
-
-  /* Card Styling */
-  .card {
+  /* ======================================================
+     7. COURSE CARDS (Offerings Section)
+  ====================================================== */
+  .course-card {
     background-color: white;
     border-radius: 8px;
-    box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2),
-      0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     overflow: hidden;
-    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
     height: 100%;
     display: flex;
     flex-direction: column;
     width: 100%;
   }
 
-  .card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0px 8px 10px -5px rgba(0, 0, 0, 0.2),
-      0px 16px 24px 2px rgba(0, 0, 0, 0.14),
-      0px 6px 30px 5px rgba(0, 0, 0, 0.12);
+  .course-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 20px rgba(0, 0, 0, 0.15);
   }
 
   .card-media-container {
     position: relative;
     width: 100%;
+    height: 200px;
+    overflow: hidden;
   }
 
   .card-media {
     width: 100%;
-    height: 200px;
+    height: 100%;
     object-fit: cover;
+    transition: transform 0.5s ease;
+  }
+
+  .course-card:hover .card-media {
+    transform: scale(1.05);
   }
 
   .card-icon-overlay {
@@ -883,13 +908,19 @@ Personalized Online Learning Platform{% endblock %} {% block content %}
     right: 20px;
     background-color: #1976d2;
     color: white;
-    width: 40px;
-    height: 40px;
+    width: 48px;
+    height: 48px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     z-index: 1;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease;
+  }
+
+  .course-card:hover .card-icon-overlay {
+    transform: scale(1.1);
   }
 
   .card-content {
@@ -906,100 +937,107 @@ Personalized Online Learning Platform{% endblock %} {% block content %}
 
   .feature-item {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     margin-bottom: 12px;
   }
 
   .feature-icon {
+    flex-shrink: 0;
     margin-right: 12px;
+    margin-top: 3px;
     color: rgba(0, 0, 0, 0.54);
   }
 
-  /* Feature Card */
+  /* ======================================================
+     8. FEATURE CARDS
+  ====================================================== */
   .feature-card {
     background-color: white;
-    border-radius: 8px;
-    box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.08);
-    padding: 50px 24px 24px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+    padding: 56px 24px 30px;
     height: 100%;
     position: relative;
     display: flex;
     flex-direction: column;
     width: 100%;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-    margin-top: 30px;
+    margin-top: 40px;
     z-index: 1;
+    overflow: visible;
   }
 
   .feature-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.12);
+    transform: translateY(-8px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.12);
   }
 
+  /* Feature Card Icons - IMPROVED */
   .feature-card-icon {
     position: absolute;
-    top: -30px;
+    top: -35px;
     left: 50%;
     transform: translateX(-50%);
-    width: 70px;
-    height: 70px;
+    width: 76px;
+    height: 76px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     color: white;
-    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
     z-index: 10;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
   }
 
   .feature-card:hover .feature-card-icon {
-    transform: translateX(-50%) translateY(-5px);
-    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.25);
+    transform: translateX(-50%) translateY(-8px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.25);
   }
 
   .feature-card-icon .svg-icon {
-    width: 35px;
-    height: 35px;
+    width: 38px;
+    height: 38px;
     fill: white;
   }
 
-  /* Feature card icon gradients */
+  /* Feature card icon colors with enhanced gradients */
   .security-icon {
-    background: linear-gradient(135deg, #43a047, #1b5e20);
+    background: linear-gradient(145deg, #43a047, #1b5e20);
   }
   
   .sessions-icon {
-    background: linear-gradient(135deg, #2196f3, #0d47a1);
+    background: linear-gradient(145deg, #2196f3, #0d47a1);
   }
   
   .access-icon {
-    background: linear-gradient(135deg, #9c27b0, #4a148c);
+    background: linear-gradient(145deg, #9c27b0, #4a148c);
   }
   
   .mentor-icon {
-    background: linear-gradient(135deg, #f44336, #b71c1c);
+    background: linear-gradient(145deg, #f44336, #b71c1c);
   }
   
   .schedule-icon {
-    background: linear-gradient(135deg, #ff9800, #e65100);
+    background: linear-gradient(145deg, #ff9800, #e65100);
   }
   
   .progress-icon {
-    background: linear-gradient(135deg, #00bcd4, #006064);
+    background: linear-gradient(145deg, #00bcd4, #006064);
   }
 
-  /* Feature card content alignment */
+  /* Feature card content styling */
   .feature-card h5 {
     text-align: center;
     margin-bottom: 16px;
-    margin-top: 10px;
+    font-weight: 700;
+    font-size: 1.3rem;
   }
 
   .feature-card p {
     text-align: center;
     color: rgba(0, 0, 0, 0.65);
-    margin-bottom: 20px;
+    margin-bottom: 24px;
   }
 
   /* Feature chips */
@@ -1016,10 +1054,15 @@ Personalized Online Learning Platform{% endblock %} {% block content %}
     display: flex;
     align-items: center;
     padding: 6px 12px;
-    border-radius: 16px;
+    border-radius: 50px;
     font-size: 0.75rem;
-    background-color: #f0f0f0;
-    color: #555;
+    background-color: rgba(25, 118, 210, 0.08);
+    color: #1976d2;
+    transition: background-color 0.2s ease;
+  }
+
+  .feature-chip:hover {
+    background-color: rgba(25, 118, 210, 0.15);
   }
 
   .chip-icon {
@@ -1029,21 +1072,15 @@ Personalized Online Learning Platform{% endblock %} {% block content %}
     fill: #1976d2;
   }
 
-  /* SVG Icons */
-  .svg-icon {
-    width: 24px;
-    height: 24px;
-    fill: currentColor;
-  }
-
-  /* Testimonials Section */
+  /* ======================================================
+     9. TESTIMONIALS SECTION
+  ====================================================== */
   .testimonials-section {
     background-color: #f8f9fa;
     position: relative;
     overflow: hidden;
     padding: 80px 0;
     width: 100%;
-    box-sizing: border-box;
   }
 
   .testimonials-section::before {
@@ -1070,7 +1107,6 @@ Personalized Online Learning Platform{% endblock %} {% block content %}
     z-index: 0;
   }
 
-  /* Section Headings */
   .section-title {
     font-size: 2.25rem;
     margin-bottom: 15px;
@@ -1106,7 +1142,6 @@ Personalized Online Learning Platform{% endblock %} {% block content %}
     z-index: 1;
   }
 
-  /* Bootstrap row structure */
   .row {
     display: flex;
     flex-wrap: wrap;
@@ -1115,7 +1150,6 @@ Personalized Online Learning Platform{% endblock %} {% block content %}
     width: 100%;
   }
 
-  /* Bootstrap column structure */
   .col-lg-4,
   .col-md-6 {
     position: relative;
@@ -1190,7 +1224,6 @@ Personalized Online Learning Platform{% endblock %} {% block content %}
     font-size: 14px;
   }
 
-  /* Author Styling */
   .testimonial-author {
     display: flex;
     align-items: center;
@@ -1232,7 +1265,15 @@ Personalized Online Learning Platform{% endblock %} {% block content %}
     margin: 0;
   }
 
-  /* Helper classes for Bootstrap spacing */
+  /* ======================================================
+     10. HELPER CLASSES
+  ====================================================== */
+  .svg-icon {
+    width: 24px;
+    height: 24px;
+    fill: currentColor;
+  }
+
   .py-5 {
     padding-top: 3rem;
     padding-bottom: 3rem;
@@ -1261,60 +1302,10 @@ Personalized Online Learning Platform{% endblock %} {% block content %}
     margin-right: auto;
   }
 
-  /* Responsive adjustments */
-  @media (max-width: 767px) {
-    .feature-card-icon {
-      width: 60px;
-      height: 60px;
-    }
-    
-    .feature-card-icon .svg-icon {
-      width: 30px;
-      height: 30px;
-    }
-  }
-
-  @media (max-width: 480px) {
-    .feature-card {
-      padding: 45px 16px 16px;
-    }
-    
-    .feature-card-icon {
-      width: 55px;
-      height: 55px;
-      top: -25px;
-    }
-  }
-
-  @media (max-width: 599px) {
-    .grid {
-      gap: 16px;
-    }
-
-    h1 {
-      font-size: 2.5rem;
-    }
-
-    h2 {
-      font-size: 2rem;
-    }
-
-    .card-content,
-    .testimonial-content {
-      padding: 16px;
-    }
-
-    .hero-buttons {
-      flex-direction: column;
-    }
-  }
-
-  /* Fix for rounded-pill badge */
   .rounded-pill {
     border-radius: 50rem;
   }
 
-  /* Text colors for Bootstrap compatibility */
   .text-muted {
     color: #6c757d;
   }
@@ -1323,9 +1314,82 @@ Personalized Online Learning Platform{% endblock %} {% block content %}
     font-weight: 700;
   }
 
-  /* Text primary color */
   .text-primary {
     color: #1976d2 !important;
+  }
+
+  /* ======================================================
+     11. RESPONSIVE ADJUSTMENTS
+  ====================================================== */
+  @media (max-width: 991px) {
+    .feature-card-icon {
+      width: 70px;
+      height: 70px;
+    }
+    
+    .feature-card-icon .svg-icon {
+      width: 34px;
+      height: 34px;
+    }
+    
+    .feature-card {
+      padding-top: 50px;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .feature-card-icon {
+      width: 65px;
+      height: 65px;
+    }
+    
+    .feature-card-icon .svg-icon {
+      width: 32px;
+      height: 32px;
+    }
+  }
+
+  @media (max-width: 599px) {
+    .grid {
+      gap: 20px;
+    }
+
+    h1.hero-title {
+      font-size: 3.5rem;
+    }
+
+    h2, .section-heading {
+      font-size: 2rem;
+    }
+
+    .card-content {
+      padding: 20px 16px;
+    }
+    
+    .testimonial-content {
+      padding: 25px 16px 16px;
+    }
+
+    .hero-buttons {
+      flex-direction: column;
+      gap: 16px;
+    }
+    
+    .feature-card {
+      margin-top: 35px; 
+      padding: 45px 16px 20px;
+    }
+    
+    .feature-card-icon {
+      width: 60px;
+      height: 60px;
+      top: -30px;
+    }
+    
+    .feature-card-icon .svg-icon {
+      width: 30px;
+      height: 30px;
+    }
   }
 </style>
 {% endblock %}
