@@ -21,12 +21,29 @@
         border: none;
         box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         background-color: var(--light-color);
+        transition: transform 0.2s ease;
+    }
+    
+    .card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     }
     
     .card-header {
         background-color: var(--dark-color) !important;
         color: var(--light-color) !important;
         border-bottom: none;
+        position: relative;
+    }
+    
+    .card-header::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 3px;
+        background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
     }
     
     .list-group-item {
@@ -45,18 +62,31 @@
         background-color: var(--primary-color);
         color: var(--dark-color);
         border: none;
+        position: relative;
+    }
+    
+    .list-group-item.active::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        height: 100%;
+        width: 3px;
+        background-color: var(--secondary-color);
     }
     
     .btn-primary {
         background-color: var(--primary-color);
         border-color: var(--primary-color);
         color: var(--dark-color);
+        transition: all 0.3s ease;
     }
     
     .btn-primary:hover {
         background-color: var(--secondary-color);
         border-color: var(--secondary-color);
         color: var(--dark-color);
+        transform: translateY(-1px);
     }
     
     .progress {
@@ -65,7 +95,7 @@
     }
     
     .progress-bar {
-        background-color: var(--primary-color);
+        background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
         color: var(--dark-color);
     }
     
@@ -83,7 +113,7 @@
     
     .nav-tabs .nav-link.active {
         color: var(--dark-color);
-        border-bottom: 2px solid var(--primary-color);
+        border-bottom: 2px solid var(--secondary-color);
         background-color: transparent;
     }
     
@@ -91,11 +121,12 @@
         border: 1px solid var(--dark-color);
         background-color: var(--light-color);
         color: var(--dark-color);
+        transition: all 0.3s ease;
     }
     
     .form-control:focus {
-        border-color: var(--primary-color);
-        box-shadow: 0 0 0 0.2rem rgba(147, 247, 242, 0.25);
+        border-color: var(--secondary-color);
+        box-shadow: 0 0 0 0.2rem rgba(248, 203, 12, 0.25);
     }
     
     .profile-picture {
@@ -104,16 +135,63 @@
         border-radius: 50%;
         object-fit: cover;
         border: 3px solid var(--primary-color);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        transition: all 0.3s ease;
+    }
+    
+    .profile-picture:hover {
+        border-color: var(--secondary-color);
+        transform: scale(1.05);
     }
     
     .badge {
         background-color: var(--primary-color);
         color: var(--dark-color);
+        transition: all 0.3s ease;
+    }
+    
+    .badge:hover {
+        transform: translateY(-1px);
     }
     
     .text-muted {
         color: var(--dark-color) !important;
         opacity: 0.7;
+    }
+    
+    .next-step-card {
+        transition: all 0.3s ease;
+    }
+    
+    .next-step-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+    }
+    
+    .next-step-card.border-primary {
+        border-color: var(--secondary-color) !important;
+    }
+    
+    .next-step-card.border-success {
+        border-color: var(--primary-color) !important;
+    }
+    
+    .next-step-card .badge {
+        background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+    }
+    
+    .profile-header {
+        position: relative;
+    }
+    
+    .profile-header::after {
+        content: '';
+        position: absolute;
+        bottom: -10px;
+        left: 0;
+        width: 100px;
+        height: 3px;
+        background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
     }
 </style>
 
@@ -314,7 +392,7 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-4 mb-3">
-                            <div class="card h-100 {% if profile.status == 'NEW' %}border-primary{% else %}border-success{% endif %}">
+                            <div class="card h-100 next-step-card {% if profile.status == 'NEW' %}border-primary{% else %}border-success{% endif %}">
                                 <div class="card-body text-center">
                                     <h5 class="card-title">
                                         <span class="badge rounded-circle mb-2">1</span><br>
