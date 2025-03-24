@@ -26,7 +26,11 @@ LearnIspire{% endblock %} {% block content %}
   }
 
   .card-header {
-    background-color: var(--dark-color) !important;
+    background: linear-gradient(
+      45deg,
+      var(--dark-color),
+      var(--primary-color)
+    ) !important;
     color: var(--light-color) !important;
     border-bottom: none;
     position: relative;
@@ -194,6 +198,88 @@ LearnIspire{% endblock %} {% block content %}
   .alert-info {
     border-color: var(--primary-color);
     border-left: 4px solid var(--secondary-color);
+  }
+
+  .class-card {
+    transition: all 0.3s ease;
+  }
+
+  .class-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  .class-card .card-header {
+    background: linear-gradient(
+      45deg,
+      var(--dark-color),
+      var(--primary-color)
+    ) !important;
+  }
+
+  .class-info-icon {
+    color: var(--primary-color);
+    transition: all 0.3s ease;
+  }
+
+  .class-info-icon:hover {
+    color: var(--secondary-color);
+    transform: scale(1.1);
+  }
+
+  .student-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--primary-color);
+    transition: all 0.3s ease;
+  }
+
+  .student-avatar:hover {
+    border-color: var(--secondary-color);
+    transform: scale(1.1);
+  }
+
+  .progress {
+    height: 8px;
+    background-color: var(--light-color);
+    border-radius: 4px;
+  }
+
+  .progress-bar {
+    background: linear-gradient(
+      45deg,
+      var(--primary-color),
+      var(--secondary-color)
+    );
+    border-radius: 4px;
+  }
+
+  .class-stats-card {
+    background: linear-gradient(
+      45deg,
+      var(--light-color),
+      var(--primary-color)
+    );
+    border: none;
+    transition: all 0.3s ease;
+  }
+
+  .class-stats-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  .class-stats-number {
+    font-size: 2rem;
+    font-weight: bold;
+    color: var(--dark-color);
+  }
+
+  .class-stats-label {
+    color: var(--dark-color);
+    opacity: 0.8;
   }
 </style>
 
