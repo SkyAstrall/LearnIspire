@@ -1,207 +1,575 @@
-{% extends 'base.html' %}
-{% load static %}
-
-{% block title %}Teacher Profile - LearnIspire{% endblock %}
-
-{% block content %}
-<div class="container py-4">
-    <div class="row">
-        <!-- Sidebar -->
-        <div class="col-md-3">
-            <div class="card mb-4">
-                <div class="card-header bg-primary text-white">
-                    <h5 class="mb-0">Teacher Dashboard</h5>
-                </div>
-                <div class="list-group list-group-flush">
-                    <a href="{% url 'teacher_dashboard:home' %}" class="list-group-item list-group-item-action">
-                        <i class="fa fa-dashboard me-2"></i> Dashboard
-                    </a>
-                    <a href="{% url 'teacher_dashboard:profile' %}" class="list-group-item list-group-item-action active">
-                        <i class="fa fa-user me-2"></i> My Profile
-                    </a>
-                    <a href="{% url 'teacher_dashboard:availability' %}" class="list-group-item list-group-item-action">
-                        <i class="fa fa-clock-o me-2"></i> Availability
-                    </a>
-                    <a href="{% url 'teacher_dashboard:classes' %}" class="list-group-item list-group-item-action">
-                        <i class="fa fa-calendar me-2"></i> My Classes
-                    </a>
-                    <a href="{% url 'teacher_dashboard:leave_request' %}" class="list-group-item list-group-item-action">
-                        <i class="fa fa-calendar-minus-o me-2"></i> Leave Requests
-                    </a>
-                    <a href="{% url 'teacher_dashboard:earnings' %}" class="list-group-item list-group-item-action">
-                        <i class="fa fa-money me-2"></i> Earnings
-                    </a>
-                    <a href="{% url 'teacher_dashboard:bank_details' %}" class="list-group-item list-group-item-action">
-                        <i class="fa fa-university me-2"></i> Bank Details
-                    </a>
-                </div>
-            </div>
-            
-            <!-- Teacher Status -->
-            <div class="card mb-4">
-                <div class="card-header bg-info text-white">
-                    <h5 class="mb-0">My Status</h5>
-                </div>
-                <div class="card-body">
-                    <div class="d-flex align-items-center mb-3">
-                        <div class="me-3">
-                            <span class="badge bg-{% if profile.status == 'ACTIVE' %}success{% elif profile.status == 'APPROVED' %}info{% elif profile.status == 'PENDING' %}warning{% else %}danger{% endif %} p-2">
-                                {{ profile.get_status_display }}
-                            </span>
-                        </div>
-                        <div>
-                            <small class="text-muted">Last updated: {{ profile.updated_at|date:'M d, Y' }}</small>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Main Content -->
-        <div class="col-md-9">
-            <div class="card mb-4">
-                <div class="card-header bg-primary text-white">
-                    <h5 class="mb-0">My Profile</h5>
-                </div>
-                <div class="card-body">
-                    <form method="post" enctype="multipart/form-data">
-                        {% csrf_token %}
-                        
-                        <!-- Basic Information -->
-                        <h4 class="mb-3">Basic Information</h4>
-                        <div class="row mb-4">
-                            <div class="col-md-4 text-center mb-3">
-                                <div class="profile-image-container mb-2">
-                                    {% if profile.profile_picture %}
-                                        <img src="{{ profile.profile_picture.url }}" class="rounded-circle profile-image" alt="Profile Picture">
-                                    {% else %}
-                                        <img src="{% static 'images/default-profile.png' %}" class="rounded-circle profile-image" alt="Default Profile Picture">
-                                    {% endif %}
-                                </div>
-                                <div class="mb-3">
-                                    <label for="profile_picture" class="form-label">Profile Picture</label>
-                                    <input type="file" class="form-control form-control-sm" id="profile_picture" name="profile_picture" accept="image/*">
-                                </div>
-                            </div>
-                            
-                            <div class="col-md-8">
-                                <div class="row g-3">
-                                    <div class="col-md-6">
-                                        <label for="first_name" class="form-label">First Name</label>
-                                        <input type="text" class="form-control" id="first_name" name="first_name" value="{{ request.user.first_name }}" required>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label for="last_name" class="form-label">Last Name</label>
-                                        <input type="text" class="form-control" id="last_name" name="last_name" value="{{ request.user.last_name }}" required>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label for="email" class="form-label">Email</label>
-                                        <input type="email" class="form-control" id="email" value="{{ request.user.email }}" readonly>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label for="phone" class="form-label">Phone Number</label>
-                                        <input type="tel" class="form-control" id="phone" name="phone" value="{{ profile.phone }}" required>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- Education & Qualifications -->
-                        <h4 class="mb-3">Education & Qualifications</h4>
-                        <div class="row g-3 mb-4">
-                            <div class="col-md-6">
-                                <label for="highest_qualification" class="form-label">Highest Qualification</label>
-                                <input type="text" class="form-control" id="highest_qualification" name="highest_qualification" value="{{ profile.highest_qualification }}" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="university" class="form-label">University/Institution</label>
-                                <input type="text" class="form-control" id="university" name="university" value="{{ profile.university }}" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="graduation_year" class="form-label">Graduation Year</label>
-                                <input type="number" class="form-control" id="graduation_year" name="graduation_year" value="{{ profile.graduation_year }}" min="1900" max="2030" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="specialization" class="form-label">Specialization/Major</label>
-                                <input type="text" class="form-control" id="specialization" name="specialization" value="{{ profile.specialization }}" required>
-                            </div>
-                        </div>
-                        
-                        <!-- Subjects & Skills -->
-                        <h4 class="mb-3">Subjects & Skills</h4>
-                        <div class="row g-3 mb-4">
-                            <div class="col-md-12">
-                                <label class="form-label">Subjects You Can Teach</label>
-                                <div class="row">
-                                    {% for subject in subjects %}
-                                        <div class="col-md-4 mb-2">
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" name="subjects" value="{{ subject.id }}" id="subject_{{ subject.id }}" 
-                                                    {% if subject in profile.subjects.all %}checked{% endif %}>
-                                                <label class="form-check-label" for="subject_{{ subject.id }}">
-                                                    {{ subject.name }}
-                                                </label>
-                                            </div>
-                                        </div>
-                                    {% endfor %}
-                                </div>
-                            </div>
-                            <div class="col-md-12">
-                                <label for="skills" class="form-label">Skills & Expertise</label>
-                                <textarea class="form-control" id="skills" name="skills" rows="3">{{ profile.skills }}</textarea>
-                                <small class="text-muted">Separate each skill with a comma</small>
-                            </div>
-                        </div>
-                        
-                        <!-- Experience -->
-                        <h4 class="mb-3">Experience</h4>
-                        <div class="row g-3 mb-4">
-                            <div class="col-md-6">
-                                <label for="years_of_experience" class="form-label">Years of Teaching Experience</label>
-                                <input type="number" class="form-control" id="years_of_experience" name="years_of_experience" value="{{ profile.years_of_experience }}" min="0" max="50" required>
-                            </div>
-                            <div class="col-md-12">
-                                <label for="experience" class="form-label">Experience Details</label>
-                                <textarea class="form-control" id="experience" name="experience" rows="4">{{ profile.experience }}</textarea>
-                            </div>
-                        </div>
-                        
-                        <!-- About & Bio -->
-                        <h4 class="mb-3">About Me</h4>
-                        <div class="row g-3 mb-4">
-                            <div class="col-md-12">
-                                <label for="bio" class="form-label">Bio</label>
-                                <textarea class="form-control" id="bio" name="bio" rows="5">{{ profile.bio }}</textarea>
-                                <small class="text-muted">Tell students about yourself, your teaching style, and what makes you a great teacher.</small>
-                            </div>
-                        </div>
-                        
-                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                            <button type="submit" class="btn btn-primary">Save Profile</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-{% endblock %}
-
-{% block extra_css %}
+{% extends 'base.html' %} {% load static %} {% block title %}Teacher Profile -
+LearnIspire{% endblock %} {% block content %}
 <style>
-    .profile-image-container {
-        width: 150px;
-        height: 150px;
-        margin: 0 auto;
-        overflow: hidden;
-        border-radius: 50%;
-        border: 3px solid #007bff;
-    }
-    
-    .profile-image {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
+  :root {
+    --primary-color: #93f7f2;
+    --secondary-color: #f8cb0c;
+    --dark-color: #1e2732;
+    --light-color: #fbf9f8;
+  }
+
+  body {
+    background-color: var(--light-color);
+    color: var(--dark-color);
+  }
+
+  .card {
+    border: none;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background-color: var(--light-color);
+    transition: transform 0.2s ease;
+  }
+
+  .card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .card-header {
+    background: linear-gradient(
+      45deg,
+      var(--dark-color),
+      var(--primary-color)
+    ) !important;
+    color: var(--light-color) !important;
+    border-bottom: none;
+    position: relative;
+  }
+
+  .card-header::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(
+      to right,
+      var(--primary-color),
+      var(--secondary-color)
+    );
+  }
+
+  .list-group-item {
+    border: none;
+    background-color: var(--light-color);
+    color: var(--dark-color);
+    transition: all 0.3s ease;
+  }
+
+  .list-group-item:hover {
+    background-color: var(--primary-color);
+    color: var(--dark-color);
+  }
+
+  .list-group-item.active {
+    background-color: var(--primary-color);
+    color: var(--dark-color);
+    border: none;
+    position: relative;
+  }
+
+  .list-group-item.active::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 3px;
+    background-color: var(--secondary-color);
+  }
+
+  .btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    color: var(--dark-color);
+    transition: all 0.3s ease;
+  }
+
+  .btn-primary:hover {
+    background-color: var(--secondary-color);
+    border-color: var(--secondary-color);
+    color: var(--dark-color);
+    transform: translateY(-1px);
+  }
+
+  .badge {
+    background-color: var(--primary-color);
+    color: var(--dark-color);
+    transition: all 0.3s ease;
+  }
+
+  .badge:hover {
+    transform: translateY(-1px);
+  }
+
+  .badge.bg-info {
+    background-color: var(--secondary-color) !important;
+  }
+
+  .badge.bg-success {
+    background: linear-gradient(
+      45deg,
+      var(--primary-color),
+      var(--secondary-color)
+    ) !important;
+  }
+
+  .badge.bg-warning {
+    background-color: var(--secondary-color) !important;
+  }
+
+  .badge.bg-danger {
+    background-color: #ff6b6b !important;
+  }
+
+  .text-muted {
+    color: var(--dark-color) !important;
+    opacity: 0.7;
+  }
+
+  .form-control {
+    border: 1px solid var(--dark-color);
+    background-color: var(--light-color);
+    color: var(--dark-color);
+    transition: all 0.3s ease;
+  }
+
+  .form-control:focus {
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 0 0.2rem rgba(248, 203, 12, 0.25);
+  }
+
+  .form-control:read-only {
+    background-color: rgba(30, 39, 50, 0.05);
+  }
+
+  .profile-image-container {
+    width: 150px;
+    height: 150px;
+    margin: 0 auto;
+    overflow: hidden;
+    border-radius: 50%;
+    border: 3px solid var(--primary-color);
+    transition: all 0.3s ease;
+  }
+
+  .profile-image-container:hover {
+    border-color: var(--secondary-color);
+    transform: scale(1.05);
+  }
+
+  .profile-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: all 0.3s ease;
+  }
+
+  .form-check-input:checked {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+  }
+
+  .form-check-input:focus {
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 0 0.2rem rgba(248, 203, 12, 0.25);
+  }
+
+  .section-title {
+    color: var(--dark-color);
+    position: relative;
+    padding-bottom: 0.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .section-title::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 50px;
+    height: 3px;
+    background: linear-gradient(
+      to right,
+      var(--primary-color),
+      var(--secondary-color)
+    );
+    border-radius: 3px;
+  }
+
+  .status-card {
+    background: linear-gradient(
+      45deg,
+      var(--light-color),
+      var(--primary-color)
+    );
+    border: none;
+    transition: all 0.3s ease;
+  }
+
+  .status-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  .progress {
+    height: 8px;
+    background-color: var(--light-color);
+    border-radius: 4px;
+  }
+
+  .progress-bar {
+    background: linear-gradient(
+      45deg,
+      var(--primary-color),
+      var(--secondary-color)
+    );
+    border-radius: 4px;
+  }
 </style>
+
+<div class="container py-4">
+  <div class="row">
+    <!-- Sidebar -->
+    <div class="col-md-3">
+      <div class="card mb-4">
+        <div class="card-header bg-primary text-white">
+          <h5 class="mb-0">Teacher Dashboard</h5>
+        </div>
+        <div class="list-group list-group-flush">
+          <a
+            href="{% url 'teacher_dashboard:home' %}"
+            class="list-group-item list-group-item-action"
+          >
+            <i class="fa fa-dashboard me-2"></i> Dashboard
+          </a>
+          <a
+            href="{% url 'teacher_dashboard:profile' %}"
+            class="list-group-item list-group-item-action active"
+          >
+            <i class="fa fa-user me-2"></i> My Profile
+          </a>
+          <a
+            href="{% url 'teacher_dashboard:availability' %}"
+            class="list-group-item list-group-item-action"
+          >
+            <i class="fa fa-clock-o me-2"></i> Availability
+          </a>
+          <a
+            href="{% url 'teacher_dashboard:classes' %}"
+            class="list-group-item list-group-item-action"
+          >
+            <i class="fa fa-calendar me-2"></i> My Classes
+          </a>
+          <a
+            href="{% url 'teacher_dashboard:leave_request' %}"
+            class="list-group-item list-group-item-action"
+          >
+            <i class="fa fa-calendar-minus-o me-2"></i> Leave Requests
+          </a>
+          <a
+            href="{% url 'teacher_dashboard:earnings' %}"
+            class="list-group-item list-group-item-action"
+          >
+            <i class="fa fa-money me-2"></i> Earnings
+          </a>
+          <a
+            href="{% url 'teacher_dashboard:bank_details' %}"
+            class="list-group-item list-group-item-action"
+          >
+            <i class="fa fa-university me-2"></i> Bank Details
+          </a>
+        </div>
+      </div>
+
+      <!-- Teacher Status -->
+      <div class="card mb-4 status-card">
+        <div class="card-header bg-info text-white">
+          <h5 class="mb-0">My Status</h5>
+        </div>
+        <div class="card-body">
+          <div class="d-flex align-items-center mb-3">
+            <div class="me-3">
+              <span
+                class="badge bg-{% if profile.status == 'ACTIVE' %}success{% elif profile.status == 'APPROVED' %}info{% elif profile.status == 'PENDING' %}warning{% else %}danger{% endif %} p-2"
+              >
+                {{ profile.get_status_display }}
+              </span>
+            </div>
+            <div>
+              <small class="text-muted"
+                >Last updated: {{ profile.updated_at|date:'M d, Y' }}</small
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="col-md-9">
+      <div class="card mb-4">
+        <div class="card-header bg-primary text-white">
+          <h5 class="mb-0">My Profile</h5>
+        </div>
+        <div class="card-body">
+          <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <!-- Basic Information -->
+            <h4 class="section-title">Basic Information</h4>
+            <div class="row mb-4">
+              <div class="col-md-4 text-center mb-3">
+                <div class="profile-image-container mb-2">
+                  {% if profile.profile_picture %}
+                  <img
+                    src="{{ profile.profile_picture.url }}"
+                    class="rounded-circle profile-image"
+                    alt="Profile Picture"
+                  />
+                  {% else %}
+                  <img
+                    src="{% static 'images/default-profile.png' %}"
+                    class="rounded-circle profile-image"
+                    alt="Default Profile Picture"
+                  />
+                  {% endif %}
+                </div>
+                <div class="mb-3">
+                  <label for="profile_picture" class="form-label"
+                    >Profile Picture</label
+                  >
+                  <input
+                    type="file"
+                    class="form-control form-control-sm"
+                    id="profile_picture"
+                    name="profile_picture"
+                    accept="image/*"
+                  />
+                </div>
+              </div>
+
+              <div class="col-md-8">
+                <div class="row g-3">
+                  <div class="col-md-6">
+                    <label for="first_name" class="form-label"
+                      >First Name</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="first_name"
+                      name="first_name"
+                      value="{{ request.user.first_name }}"
+                      required
+                    />
+                  </div>
+                  <div class="col-md-6">
+                    <label for="last_name" class="form-label">Last Name</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="last_name"
+                      name="last_name"
+                      value="{{ request.user.last_name }}"
+                      required
+                    />
+                  </div>
+                  <div class="col-md-6">
+                    <label for="email" class="form-label">Email</label>
+                    <input
+                      type="email"
+                      class="form-control"
+                      id="email"
+                      value="{{ request.user.email }}"
+                      readonly
+                    />
+                  </div>
+                  <div class="col-md-6">
+                    <label for="phone" class="form-label">Phone Number</label>
+                    <input
+                      type="tel"
+                      class="form-control"
+                      id="phone"
+                      name="phone"
+                      value="{{ profile.phone }}"
+                      required
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Education & Qualifications -->
+            <h4 class="section-title">Education & Qualifications</h4>
+            <div class="row g-3 mb-4">
+              <div class="col-md-6">
+                <label for="highest_qualification" class="form-label"
+                  >Highest Qualification</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="highest_qualification"
+                  name="highest_qualification"
+                  value="{{ profile.highest_qualification }}"
+                  required
+                />
+              </div>
+              <div class="col-md-6">
+                <label for="university" class="form-label"
+                  >University/Institution</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="university"
+                  name="university"
+                  value="{{ profile.university }}"
+                  required
+                />
+              </div>
+              <div class="col-md-6">
+                <label for="graduation_year" class="form-label"
+                  >Graduation Year</label
+                >
+                <input
+                  type="number"
+                  class="form-control"
+                  id="graduation_year"
+                  name="graduation_year"
+                  value="{{ profile.graduation_year }}"
+                  min="1900"
+                  max="2030"
+                  required
+                />
+              </div>
+              <div class="col-md-6">
+                <label for="specialization" class="form-label"
+                  >Specialization/Major</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="specialization"
+                  name="specialization"
+                  value="{{ profile.specialization }}"
+                  required
+                />
+              </div>
+            </div>
+
+            <!-- Subjects & Skills -->
+            <h4 class="section-title">Subjects & Skills</h4>
+            <div class="row g-3 mb-4">
+              <div class="col-md-12">
+                <label class="form-label">Subjects You Can Teach</label>
+                <div class="row">
+                  {% for subject in subjects %}
+                  <div class="col-md-4 mb-2">
+                    <div class="form-check">
+                      <input
+                        class="form-check-input"
+                        type="checkbox"
+                        name="subjects"
+                        value="{{ subject.id }}"
+                        id="subject_{{ subject.id }}"
+                        {%
+                        if
+                        subject
+                        in
+                        profile.subjects.all
+                        %}checked{%
+                        endif
+                        %}
+                      />
+                      <label
+                        class="form-check-label"
+                        for="subject_{{ subject.id }}"
+                      >
+                        {{ subject.name }}
+                      </label>
+                    </div>
+                  </div>
+                  {% endfor %}
+                </div>
+              </div>
+              <div class="col-md-12">
+                <label for="skills" class="form-label"
+                  >Skills & Expertise</label
+                >
+                <textarea
+                  class="form-control"
+                  id="skills"
+                  name="skills"
+                  rows="3"
+                >
+{{ profile.skills }}</textarea
+                >
+                <small class="text-muted"
+                  >Separate each skill with a comma</small
+                >
+              </div>
+            </div>
+
+            <!-- Experience -->
+            <h4 class="section-title">Experience</h4>
+            <div class="row g-3 mb-4">
+              <div class="col-md-6">
+                <label for="years_of_experience" class="form-label"
+                  >Years of Teaching Experience</label
+                >
+                <input
+                  type="number"
+                  class="form-control"
+                  id="years_of_experience"
+                  name="years_of_experience"
+                  value="{{ profile.years_of_experience }}"
+                  min="0"
+                  max="50"
+                  required
+                />
+              </div>
+              <div class="col-md-12">
+                <label for="experience" class="form-label"
+                  >Experience Details</label
+                >
+                <textarea
+                  class="form-control"
+                  id="experience"
+                  name="experience"
+                  rows="4"
+                >
+{{ profile.experience }}</textarea
+                >
+              </div>
+            </div>
+
+            <!-- About & Bio -->
+            <h4 class="section-title">About Me</h4>
+            <div class="row g-3 mb-4">
+              <div class="col-md-12">
+                <label for="bio" class="form-label">Bio</label>
+                <textarea class="form-control" id="bio" name="bio" rows="5">
+{{ profile.bio }}</textarea
+                >
+                <small class="text-muted"
+                  >Tell students about yourself, your teaching style, and what
+                  makes you a great teacher.</small
+                >
+              </div>
+            </div>
+
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+              <button type="submit" class="btn btn-primary">
+                Save Profile
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock %}
