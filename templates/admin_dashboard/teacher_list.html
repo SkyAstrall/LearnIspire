@@ -4,63 +4,201 @@
 {% block title %}Teachers - LearnIspire Admin{% endblock %}
 
 {% block content %}
+<style>
+    :root {
+        --turquoise: #93f7f2;
+        --yellow: #f8cb0c;
+        --dark: #1e2732;
+        --light: #fbf9f8;
+    }
+    
+    body {
+        background-color: var(--light);
+        color: var(--dark);
+    }
+    
+    .bg-primary-custom {
+        background-color: var(--turquoise);
+        color: var(--dark);
+    }
+    
+    .bg-secondary-custom {
+        background-color: var(--yellow);
+        color: var(--dark);
+    }
+    
+    .bg-dark-custom {
+        background-color: var(--dark);
+        color: var(--light);
+    }
+    
+    .bg-light-custom {
+        background-color: var(--light);
+        color: var(--dark);
+    }
+    
+    .sidebar-link {
+        color: var(--dark);
+        border-left: 4px solid transparent;
+        transition: all 0.2s;
+    }
+    
+    .sidebar-link:hover {
+        background-color: rgba(147, 247, 242, 0.2);
+        color: var(--dark);
+    }
+    
+    .sidebar-link.active {
+        background-color: var(--turquoise);
+        color: var(--dark);
+        border-left: 4px solid var(--yellow);
+        font-weight: bold;
+    }
+    
+    .card {
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        overflow: hidden;
+        border: none;
+        margin-bottom: 20px;
+    }
+    
+    .card-header {
+        border-bottom: none;
+        padding: 15px 20px;
+    }
+    
+    .btn-primary-custom {
+        background-color: var(--turquoise);
+        color: var(--dark);
+        border: none;
+    }
+    
+    .btn-primary-custom:hover {
+        background-color: #7de5e0;
+        color: var(--dark);
+    }
+    
+    .btn-secondary-custom {
+        background-color: var(--yellow);
+        color: var(--dark);
+        border: none;
+    }
+    
+    .btn-secondary-custom:hover {
+        background-color: #e0b60a;
+        color: var(--dark);
+    }
+    
+    .btn-dark-custom {
+        background-color: var(--dark);
+        color: var(--light);
+        border: none;
+    }
+    
+    .btn-dark-custom:hover {
+        background-color: #2a3a4a;
+        color: var(--light);
+    }
+    
+    .badge-active {
+        background-color: #28a745;
+        color: white;
+    }
+    
+    .badge-pending {
+        background-color: var(--yellow);
+        color: var(--dark);
+    }
+    
+    .badge-rejected {
+        background-color: #dc3545;
+        color: white;
+    }
+    
+    .badge-subject {
+        background-color: var(--turquoise);
+        color: var(--dark);
+    }
+    
+    .table thead th {
+        background-color: var(--dark);
+        color: var(--light);
+        border: none;
+        padding: 12px 15px;
+    }
+    
+    .table-hover tbody tr:hover {
+        background-color: rgba(147, 247, 242, 0.1);
+    }
+    
+    .form-control:focus, .form-select:focus {
+        border-color: var(--turquoise);
+        box-shadow: 0 0 0 0.25rem rgba(147, 247, 242, 0.25);
+    }
+    
+    .form-label {
+        font-weight: 500;
+        color: var(--dark);
+    }
+</style>
+
 <div class="container-fluid py-4">
     <div class="row">
         <!-- Sidebar -->
         <div class="col-md-2">
-            <div class="card mb-4">
-                <div class="card-header bg-dark text-white">
+            <div class="card">
+                <div class="card-header bg-dark-custom">
                     <h5 class="mb-0">Admin Portal</h5>
                 </div>
                 <div class="list-group list-group-flush">
-                    <a href="{% url 'admin_dashboard:home' %}" class="list-group-item list-group-item-action">
+                    <a href="{% url 'admin_dashboard:home' %}" class="list-group-item sidebar-link">
                         <i class="fa fa-dashboard me-2"></i> Dashboard
                     </a>
-                    <a href="{% url 'admin_dashboard:students' %}" class="list-group-item list-group-item-action">
+                    <a href="{% url 'admin_dashboard:students' %}" class="list-group-item sidebar-link">
                         <i class="fa fa-users me-2"></i> Students
                     </a>
-                    <a href="{% url 'admin_dashboard:teachers' %}" class="list-group-item list-group-item-action active">
+                    <a href="{% url 'admin_dashboard:teachers' %}" class="list-group-item sidebar-link active">
                         <i class="fa fa-chalkboard-teacher me-2"></i> Teachers
                     </a>
-                    <a href="{% url 'admin_dashboard:pending_demos' %}" class="list-group-item list-group-item-action">
+                    <a href="{% url 'admin_dashboard:pending_demos' %}" class="list-group-item sidebar-link">
                         <i class="fa fa-clock-o me-2"></i> Pending Demos
-                        {% if pending_demo_count %}<span class="badge bg-warning ms-2">{{ pending_demo_count }}</span>{% endif %}
+                        {% if pending_demo_count %}<span class="badge bg-secondary-custom ms-2">{{ pending_demo_count }}</span>{% endif %}
                     </a>
-                    <a href="{% url 'admin_dashboard:leave_requests' %}" class="list-group-item list-group-item-action">
+                    <a href="{% url 'admin_dashboard:leave_requests' %}" class="list-group-item sidebar-link">
                         <i class="fa fa-calendar-minus-o me-2"></i> Leave Requests
-                        {% if pending_leave_count %}<span class="badge bg-warning ms-2">{{ pending_leave_count }}</span>{% endif %}
+                        {% if pending_leave_count %}<span class="badge bg-secondary-custom ms-2">{{ pending_leave_count }}</span>{% endif %}
                     </a>
-                    <a href="{% url 'admin_dashboard:payments' %}" class="list-group-item list-group-item-action">
+                    <a href="{% url 'admin_dashboard:payments' %}" class="list-group-item sidebar-link">
                         <i class="fa fa-credit-card me-2"></i> Payments
                     </a>
-                    <a href="{% url 'admin_dashboard:teacher_earnings' %}" class="list-group-item list-group-item-action">
+                    <a href="{% url 'admin_dashboard:teacher_earnings' %}" class="list-group-item sidebar-link">
                         <i class="fa fa-money me-2"></i> Teacher Payments
                     </a>
-                    
                 </div>
             </div>
         </div>
         
         <!-- Main Content -->
         <div class="col-md-10">
-            <div class="card mb-4">
-                <div class="card-header bg-success text-white d-flex justify-content-between align-items-center">
+            <div class="card">
+                <div class="card-header bg-primary-custom d-flex justify-content-between align-items-center">
                     <h5 class="mb-0">Teachers</h5>
                     <div>
                         {% if pending_approvals_count %}
-                            <a href="{% url 'admin_dashboard:teachers' %}?status=PENDING" class="btn btn-sm btn-light me-2">
+                            <a href="{% url 'admin_dashboard:teachers' %}?status=PENDING" class="btn btn-sm btn-secondary-custom me-2">
                                 <i class="fas fa-user-check me-1"></i> Pending Approvals
-                                <span class="badge bg-warning ms-1">{{ pending_approvals_count }}</span>
+                                <span class="badge bg-dark-custom ms-1">{{ pending_approvals_count }}</span>
                             </a>
                         {% endif %}
-                        <a href="{% url 'admin_dashboard:activate_approved_teachers' %}" class="btn btn-sm btn-warning">
+                        <a href="{% url 'admin_dashboard:activate_approved_teachers' %}" class="btn btn-sm btn-dark-custom">
                             <i class="fas fa-user-shield me-1"></i> Activate Approved Teachers
                         </a>
                     </div>
                 </div>
-                <div class="card-body">
+                <div class="card-body bg-light-custom">
                     <!-- Filters -->
-                    <form method="get" class="mb-4">
+                    <form method="get" class="mb-4 p-3 rounded" style="background-color: rgba(147, 247, 242, 0.1);">
                         <div class="row g-3">
                             <div class="col-md-4">
                                 <label for="status" class="form-label">Status</label>
@@ -84,7 +222,7 @@
                                 <label for="search" class="form-label">Search</label>
                                 <div class="input-group">
                                     <input type="text" name="search" id="search" class="form-control" placeholder="Name or Email" value="{{ search }}">
-                                    <button type="submit" class="btn btn-success">
+                                    <button type="submit" class="btn btn-primary-custom">
                                         <i class="fas fa-search"></i>
                                     </button>
                                 </div>
@@ -95,7 +233,7 @@
                     <!-- Teachers List -->
                     <div class="table-responsive">
                         <table class="table table-bordered table-hover">
-                            <thead class="table-light">
+                            <thead>
                                 <tr>
                                     <th>ID</th>
                                     <th>Name</th>
@@ -121,10 +259,10 @@
                                             {% with subj_count=teacher.subjects.count %}
                                                 {% for subject in teacher.subjects.all %}
                                                     {% if forloop.counter <= 3 %}
-                                                        <span class="badge bg-info me-1">{{ subject.name }}</span>
+                                                        <span class="badge badge-subject me-1">{{ subject.name }}</span>
                                                     {% endif %}
                                                     {% if forloop.counter == 3 and subj_count > 3 %}
-                                                        <span class="badge bg-secondary">+{{ subj_count|add:"-3" }}</span>
+                                                        <span class="badge bg-dark-custom">+{{ subj_count|add:"-3" }}</span>
                                                     {% endif %}
                                                 {% empty %}
                                                     -
@@ -132,19 +270,19 @@
                                             {% endwith %}
                                         </td>
                                         <td>
-                                            <span class="badge bg-{% if teacher.status == 'ACTIVE' %}success{% elif teacher.status == 'PENDING' %}warning{% elif teacher.status == 'REJECTED' %}danger{% else %}info{% endif %}">
+                                            <span class="badge {% if teacher.status == 'ACTIVE' %}badge-active{% elif teacher.status == 'PENDING' %}badge-pending{% elif teacher.status == 'REJECTED' %}badge-rejected{% else %}bg-info{% endif %}">
                                                 {{ teacher.get_status_display }}
                                             </span>
                                         </td>
                                         <td>
-                                            <a href="{% url 'admin_dashboard:teacher_detail' teacher_id=teacher.id %}" class="btn btn-sm btn-info">
+                                            <a href="{% url 'admin_dashboard:teacher_detail' teacher_id=teacher.id %}" class="btn btn-sm btn-primary-custom me-1">
                                                 <i class="fas fa-eye"></i>
                                             </a>
                                             {% if teacher.status == 'PENDING' %}
-                                                <form method="post" action="{% url 'admin_dashboard:teacher_approval' teacher_id=teacher.id %}" class="d-inline">
+                                                <form method="post" action="{% url 'admin_dashboard:teacher_approval' teacher_id=teacher.id %}" class="d-inline me-1">
                                                     {% csrf_token %}
                                                     <input type="hidden" name="action" value="approve">
-                                                    <button type="submit" class="btn btn-sm btn-success">
+                                                    <button type="submit" class="btn btn-sm badge-active">
                                                         <i class="fas fa-check"></i>
                                                     </button>
                                                 </form>
@@ -160,7 +298,7 @@
                                     </tr>
                                 {% empty %}
                                     <tr>
-                                        <td colspan="9" class="text-center">No teachers found matching the criteria.</td>
+                                        <td colspan="9" class="text-center py-4">No teachers found matching the criteria.</td>
                                     </tr>
                                 {% endfor %}
                             </tbody>
