@@ -14,8 +14,8 @@
     }
 
     body {
-        background-color: #f5f5f5;
-        color: #333;
+        background-color: #fbf9f8;
+        color: #1e2732;
         line-height: 1.6;
     }
 
@@ -30,25 +30,26 @@
         font-size: 2.5rem;
         font-weight: 700;
         margin-bottom: 8px;
-        color: #1976d2;
+        color: #1e2732;
     }
 
     h5 {
         font-size: 1.5rem;
         font-weight: 600;
         margin-bottom: 16px;
-        color: #333;
+        color: #1e2732;
     }
 
     h6 {
         font-size: 1.1rem;
         font-weight: 600;
         margin-bottom: 8px;
+        color: #1e2732;
     }
 
     p {
         margin-bottom: 16px;
-        color: #666;
+        color: rgba(30, 39, 50, 0.8);
     }
 
     /* Header section */
@@ -60,7 +61,7 @@
 
     .header h6 {
         font-weight: 400;
-        color: #666;
+        color: rgba(30, 39, 50, 0.7);
     }
 
     /* Grid layout */
@@ -87,18 +88,20 @@
         display: flex;
         align-items: center;
         padding: 16px;
-        background-color: white;
+        background-color: #fbf9f8;
         border-radius: 8px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        box-shadow: 0 2px 4px rgba(30, 39, 50, 0.05);
         transition: transform 0.3s, box-shadow 0.3s;
         text-decoration: none;
         color: inherit;
         animation: fadeIn 0.5s ease-in-out;
+        border: 1px solid rgba(147, 247, 242, 0.2);
     }
 
     .contact-card:hover {
         transform: translateY(-5px);
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 4px 8px rgba(30, 39, 50, 0.1);
+        border-color: #93f7f2;
     }
 
     .icon-wrapper {
@@ -109,72 +112,76 @@
         height: 48px;
         border-radius: 50%;
         margin-right: 16px;
+        background-color: rgba(147, 247, 242, 0.1);
+        border: 1px solid rgba(147, 247, 242, 0.2);
     }
 
     .icon-phone {
-        background-color: #e3f2fd;
+        background-color: rgba(147, 247, 242, 0.1);
     }
 
     .icon-whatsapp {
-        background-color: #e8f5e9;
+        background-color: rgba(147, 247, 242, 0.1);
     }
 
     .icon-email {
-        background-color: #fff3e0;
+        background-color: rgba(147, 247, 242, 0.1);
     }
 
     .icon-location {
-        background-color: #fce4ec;
+        background-color: rgba(147, 247, 242, 0.1);
     }
 
     .contact-info svg {
         width: 24px;
         height: 24px;
-        fill: currentColor;
+        fill: #93f7f2;
     }
 
     .icon-phone svg {
-        fill: #2196f3;
+        fill: #93f7f2;
     }
 
     .icon-whatsapp svg {
-        fill: #4caf50;
+        fill: #93f7f2;
     }
 
     .icon-email svg {
-        fill: #ff9800;
+        fill: #93f7f2;
     }
 
     .icon-location svg {
-        fill: #e91e63;
+        fill: #93f7f2;
     }
 
     .contact-card p {
         font-size: 0.875rem;
-        color: #999;
+        color: rgba(30, 39, 50, 0.6);
         margin-bottom: 4px;
     }
 
     .contact-card h6 {
         margin-bottom: 0;
-        color: #333;
+        color: #1e2732;
     }
 
     .hours-card {
         margin-top: 16px;
         padding: 24px;
-        background-color: white;
+        background-color: #fbf9f8;
         border-radius: 8px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        box-shadow: 0 2px 4px rgba(30, 39, 50, 0.05);
+        border: 1px solid rgba(147, 247, 242, 0.2);
     }
 
     /* Form section */
     .form-container {
-        background-color: white;
+        background-color: #fbf9f8;
         border-radius: 8px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        box-shadow: 0 2px 4px rgba(30, 39, 50, 0.05);
         padding: 32px;
         animation: fadeIn 0.5s ease-in-out;
+        border: 1px solid rgba(147, 247, 242, 0.2);
     }
 
     .form-container p {
@@ -199,25 +206,28 @@
         padding: 18px 12px;
         pointer-events: none;
         transition: 0.2s ease all;
-        color: #666;
+        color: rgba(30, 39, 50, 0.6);
     }
 
     .form-field input,
     .form-field textarea {
         width: 100%;
         padding: 16px 12px;
-        border: 1px solid #ddd;
+        border: 1px solid rgba(147, 247, 242, 0.3);
         border-radius: 4px;
         font-size: 1rem;
         outline: none;
-        transition: border 0.2s;
+        transition: all 0.3s ease;
+        background-color: #fbf9f8;
+        color: #1e2732;
     }
 
     .form-field input:focus,
     .form-field textarea:focus,
     .form-field input:not(:placeholder-shown),
     .form-field textarea:not(:placeholder-shown) {
-        border: 2px solid #1976d2;
+        border: 2px solid #93f7f2;
+        box-shadow: 0 0 0 0.25rem rgba(147, 247, 242, 0.15);
     }
 
     .form-field input:focus + label,
@@ -226,8 +236,8 @@
     .form-field textarea:not(:placeholder-shown) + label {
         transform: translateY(-24px);
         font-size: 0.75rem;
-        color: #1976d2;
-        background-color: white;
+        color: #93f7f2;
+        background-color: #fbf9f8;
         padding: 0 4px;
     }
 
@@ -237,8 +247,8 @@
     }
 
     .submit-btn {
-        background-color: #1976d2;
-        color: white;
+        background-color: #f8cb0c;
+        color: #1e2732;
         border: none;
         border-radius: 4px;
         padding: 12px 24px;
@@ -248,17 +258,20 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        transition: background-color 0.3s;
+        transition: all 0.3s ease;
     }
 
     .submit-btn:hover {
-        background-color: #1565c0;
+        background-color: #e0b70a;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(248, 203, 12, 0.3);
     }
 
     .submit-btn svg {
         margin-left: 8px;
         width: 20px;
         height: 20px;
+        fill: #1e2732;
     }
 
     /* Animation */
@@ -276,12 +289,12 @@
     /* Required asterisk */
     .required:after {
         content: " *";
-        color: #d32f2f;
+        color: #f8cb0c;
     }
 
     /* Django error messages */
     .errorlist {
-        color: #d32f2f;
+        color: #f8cb0c;
         font-size: 0.85rem;
         list-style: none;
         margin-top: 4px;
@@ -294,19 +307,21 @@
     }
 
     .messages .success {
-        background-color: #e8f5e9;
-        color: #2e7d32;
+        background-color: rgba(147, 247, 242, 0.1);
+        color: #1e2732;
         padding: 12px;
         border-radius: 4px;
         margin-bottom: 16px;
+        border-left: 4px solid #93f7f2;
     }
 
     .messages .error {
-        background-color: #ffebee;
-        color: #c62828;
+        background-color: rgba(248, 203, 12, 0.1);
+        color: #1e2732;
         padding: 12px;
         border-radius: 4px;
         margin-bottom: 16px;
+        border-left: 4px solid #f8cb0c;
     }
 </style>
 {% endblock %}
