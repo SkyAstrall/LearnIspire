@@ -1,162 +1,327 @@
-{% extends 'base.html' %}
-{% load static %}
-
-{% block title %}Become a Teacher - LearnIspire{% endblock %}
-
-{% block content %}
+{% extends 'base.html' %} {% load static %} {% block title %}Become a Teacher -
+LearnIspire{% endblock %} {% block content %}
 <div class="container py-5">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card shadow-lg">
-                <div class="card-body p-5">
-                    <h2 class="text-center mb-4">Become a Teacher</h2>
-                    <p class="text-center text-muted mb-4">
-                        Share your knowledge and inspire the next generation of learners
-                    </p>
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card shadow-lg">
+        <div class="card-body p-5">
+          <h2 class="text-center mb-4">Become a Teacher</h2>
+          <p class="text-center text-muted mb-4">
+            Share your knowledge and inspire the next generation of learners
+          </p>
 
-                    <form method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
-                        {% csrf_token %}
-                        
-                        {% if form.errors %}
-                        <div class="alert alert-danger">
-                            Please correct the errors below.
-                        </div>
-                        {% endif %}
-
-                        <div class="mb-4">
-                            <label for="{{ form.bio.id_for_label }}" class="form-label">Bio</label>
-                            {{ form.bio }}
-                            {% if form.bio.errors %}
-                            <div class="invalid-feedback d-block">
-                                {{ form.bio.errors }}
-                            </div>
-                            {% endif %}
-                        </div>
-
-                        <div class="mb-4">
-                            <label for="{{ form.subjects.id_for_label }}" class="form-label">Subjects</label>
-                            {{ form.subjects }}
-                            {% if form.subjects.errors %}
-                            <div class="invalid-feedback d-block">
-                                {{ form.subjects.errors }}
-                            </div>
-                            {% endif %}
-                        </div>
-
-                        <div class="mb-4">
-                            <label for="{{ form.education.id_for_label }}" class="form-label">Education</label>
-                            {{ form.education }}
-                            {% if form.education.errors %}
-                            <div class="invalid-feedback d-block">
-                                {{ form.education.errors }}
-                            </div>
-                            {% endif %}
-                        </div>
-
-                        <div class="mb-4">
-                            <label for="{{ form.experience.id_for_label }}" class="form-label">Experience</label>
-                            {{ form.experience }}
-                            {% if form.experience.errors %}
-                            <div class="invalid-feedback d-block">
-                                {{ form.experience.errors }}
-                            </div>
-                            {% endif %}
-                        </div>
-
-                        <div class="mb-4">
-                            <label for="{{ form.profile_picture.id_for_label }}" class="form-label">Profile Picture</label>
-                            {{ form.profile_picture }}
-                            {% if form.profile_picture.errors %}
-                            <div class="invalid-feedback d-block">
-                                {{ form.profile_picture.errors }}
-                            </div>
-                            {% endif %}
-                        </div>
-
-                        <div class="mb-4">
-                            <label for="{{ form.hourly_rate.id_for_label }}" class="form-label">Hourly Rate ($)</label>
-                            {{ form.hourly_rate }}
-                            {% if form.hourly_rate.errors %}
-                            <div class="invalid-feedback d-block">
-                                {{ form.hourly_rate.errors }}
-                            </div>
-                            {% endif %}
-                        </div>
-
-                        <div class="mb-4">
-                            <label for="{{ form.availability.id_for_label }}" class="form-label">Availability</label>
-                            {{ form.availability }}
-                            {% if form.availability.errors %}
-                            <div class="invalid-feedback d-block">
-                                {{ form.availability.errors }}
-                            </div>
-                            {% endif %}
-                        </div>
-
-                        <div class="mb-4">
-                            <label for="{{ form.teaching_style.id_for_label }}" class="form-label">Teaching Style</label>
-                            {{ form.teaching_style }}
-                            {% if form.teaching_style.errors %}
-                            <div class="invalid-feedback d-block">
-                                {{ form.teaching_style.errors }}
-                            </div>
-                            {% endif %}
-                        </div>
-
-                        <div class="d-grid gap-2">
-                            <button type="submit" class="btn btn-primary btn-lg">
-                                <i class="fas fa-user-graduate me-2"></i>Submit Application
-                            </button>
-                        </div>
-                    </form>
-                </div>
+          <form
+            method="post"
+            enctype="multipart/form-data"
+            class="needs-validation"
+            novalidate
+          >
+            {% csrf_token %} {% if form.errors %}
+            <div class="alert alert-danger">
+              Please correct the errors below.
             </div>
+            {% endif %}
+
+            <div class="mb-4">
+              <label for="{{ form.bio.id_for_label }}" class="form-label"
+                >Bio</label
+              >
+              {{ form.bio }} {% if form.bio.errors %}
+              <div class="invalid-feedback d-block">{{ form.bio.errors }}</div>
+              {% endif %}
+            </div>
+
+            <div class="mb-4">
+              <label for="{{ form.subjects.id_for_label }}" class="form-label"
+                >Subjects</label
+              >
+              {{ form.subjects }} {% if form.subjects.errors %}
+              <div class="invalid-feedback d-block">
+                {{ form.subjects.errors }}
+              </div>
+              {% endif %}
+            </div>
+
+            <div class="mb-4">
+              <label for="{{ form.education.id_for_label }}" class="form-label"
+                >Education</label
+              >
+              {{ form.education }} {% if form.education.errors %}
+              <div class="invalid-feedback d-block">
+                {{ form.education.errors }}
+              </div>
+              {% endif %}
+            </div>
+
+            <div class="mb-4">
+              <label for="{{ form.experience.id_for_label }}" class="form-label"
+                >Experience</label
+              >
+              {{ form.experience }} {% if form.experience.errors %}
+              <div class="invalid-feedback d-block">
+                {{ form.experience.errors }}
+              </div>
+              {% endif %}
+            </div>
+
+            <div class="mb-4">
+              <label
+                for="{{ form.profile_picture.id_for_label }}"
+                class="form-label"
+                >Profile Picture</label
+              >
+              {{ form.profile_picture }} {% if form.profile_picture.errors %}
+              <div class="invalid-feedback d-block">
+                {{ form.profile_picture.errors }}
+              </div>
+              {% endif %}
+            </div>
+
+            <div class="mb-4">
+              <label
+                for="{{ form.hourly_rate.id_for_label }}"
+                class="form-label"
+                >Hourly Rate ($)</label
+              >
+              {{ form.hourly_rate }} {% if form.hourly_rate.errors %}
+              <div class="invalid-feedback d-block">
+                {{ form.hourly_rate.errors }}
+              </div>
+              {% endif %}
+            </div>
+
+            <div class="mb-4">
+              <label
+                for="{{ form.availability.id_for_label }}"
+                class="form-label"
+                >Availability</label
+              >
+              {{ form.availability }} {% if form.availability.errors %}
+              <div class="invalid-feedback d-block">
+                {{ form.availability.errors }}
+              </div>
+              {% endif %}
+            </div>
+
+            <div class="mb-4">
+              <label
+                for="{{ form.teaching_style.id_for_label }}"
+                class="form-label"
+                >Teaching Style</label
+              >
+              {{ form.teaching_style }} {% if form.teaching_style.errors %}
+              <div class="invalid-feedback d-block">
+                {{ form.teaching_style.errors }}
+              </div>
+              {% endif %}
+            </div>
+
+            <div class="d-grid gap-2">
+              <button type="submit" class="btn btn-primary btn-lg">
+                <i class="fas fa-user-graduate me-2"></i>Submit Application
+              </button>
+            </div>
+          </form>
         </div>
+      </div>
     </div>
+  </div>
 </div>
 
 <style>
-.card {
-    border: none;
+  .card {
+    border: 1px solid rgba(147, 247, 242, 0.2);
     border-radius: 15px;
-}
+    background-color: #fbf9f8;
+    box-shadow: 0 4px 6px rgba(30, 39, 50, 0.05);
+    transition: all 0.3s ease;
+  }
 
-.form-label {
+  .card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 15px rgba(30, 39, 50, 0.1);
+    border-color: #93f7f2;
+  }
+
+  .form-label {
     font-weight: 500;
-    color: #333;
-}
+    color: #1e2732;
+  }
 
-.form-control, .form-select {
+  .form-control,
+  .form-select {
     border-radius: 8px;
     padding: 0.75rem 1rem;
-    border: 1px solid #dee2e6;
-}
+    border: 1px solid rgba(147, 247, 242, 0.3);
+    background-color: #fbf9f8;
+    color: #1e2732;
+    transition: all 0.3s ease;
+  }
 
-.form-control:focus, .form-select:focus {
-    border-color: #0d6efd;
-    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.15);
-}
+  .form-control:focus,
+  .form-select:focus {
+    border-color: #93f7f2;
+    box-shadow: 0 0 0 0.25rem rgba(147, 247, 242, 0.15);
+    background-color: #fbf9f8;
+  }
 
-.btn-primary {
+  .form-control::placeholder {
+    color: rgba(30, 39, 50, 0.5);
+  }
+
+  .btn-primary {
     padding: 0.75rem 2rem;
     border-radius: 8px;
-    background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%);
+    background: #f8cb0c;
     border: none;
+    color: #1e2732;
+    font-weight: 500;
     transition: all 0.3s ease;
-}
+  }
 
-.btn-primary:hover {
+  .btn-primary:hover {
+    background: #e0b70a;
     transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(13, 110, 253, 0.2);
-}
+    box-shadow: 0 5px 15px rgba(248, 203, 12, 0.3);
+  }
 
-.alert {
+  .alert {
     border-radius: 8px;
-}
+    border: none;
+    background-color: rgba(147, 247, 242, 0.1);
+    color: #1e2732;
+    border-left: 4px solid #93f7f2;
+  }
 
-.invalid-feedback {
+  .alert-success {
+    background-color: rgba(147, 247, 242, 0.1);
+    border-left-color: #93f7f2;
+  }
+
+  .alert-danger {
+    background-color: rgba(248, 203, 12, 0.1);
+    border-left-color: #f8cb0c;
+  }
+
+  .invalid-feedback {
     font-size: 0.875rem;
     margin-top: 0.25rem;
-}
+    color: #f8cb0c;
+  }
+
+  .form-control.is-invalid {
+    border-color: #f8cb0c;
+  }
+
+  .form-control.is-invalid:focus {
+    box-shadow: 0 0 0 0.25rem rgba(248, 203, 12, 0.15);
+  }
+
+  /* Additional styles for better visual hierarchy */
+  .form-group {
+    margin-bottom: 1.5rem;
+  }
+
+  .form-text {
+    color: rgba(30, 39, 50, 0.6);
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+  }
+
+  /* Custom select styling */
+  .form-select {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%231e2732' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    background-size: 16px 12px;
+  }
+
+  /* Custom checkbox styling */
+  .form-check-input {
+    border-color: rgba(147, 247, 242, 0.3);
+  }
+
+  .form-check-input:checked {
+    background-color: #93f7f2;
+    border-color: #93f7f2;
+  }
+
+  .form-check-input:focus {
+    box-shadow: 0 0 0 0.25rem rgba(147, 247, 242, 0.15);
+  }
+
+  /* Custom radio button styling */
+  .form-check-input[type="radio"] {
+    border-color: rgba(147, 247, 242, 0.3);
+  }
+
+  .form-check-input[type="radio"]:checked {
+    background-color: #93f7f2;
+    border-color: #93f7f2;
+  }
+
+  /* File input styling */
+  .form-control[type="file"] {
+    padding: 0.375rem 0.75rem;
+  }
+
+  .form-control[type="file"]::-webkit-file-upload-button {
+    background-color: #93f7f2;
+    color: #1e2732;
+    border: none;
+    border-radius: 4px;
+    padding: 0.375rem 0.75rem;
+    margin-right: 0.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .form-control[type="file"]::-webkit-file-upload-button:hover {
+    background-color: #7de9e3;
+  }
+
+  /* Section headers */
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    color: #1e2732;
+    margin-bottom: 1rem;
+  }
+
+  /* Required field indicator */
+  .required::after {
+    content: "*";
+    color: #f8cb0c;
+    margin-left: 0.25rem;
+  }
+
+  /* Help text styling */
+  .help-text {
+    color: rgba(30, 39, 50, 0.6);
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+  }
+
+  /* Success message styling */
+  .success-message {
+    background-color: rgba(147, 247, 242, 0.1);
+    border-left: 4px solid #93f7f2;
+    color: #1e2732;
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+  }
+
+  /* Error message styling */
+  .error-message {
+    background-color: rgba(248, 203, 12, 0.1);
+    border-left: 4px solid #f8cb0c;
+    color: #1e2732;
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+  }
 </style>
 {% endblock %}
