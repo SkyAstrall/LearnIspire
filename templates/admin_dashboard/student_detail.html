@@ -4,20 +4,154 @@
 {% block title %}Student Details - LearnIspire Admin{% endblock %}
 
 {% block content %}
+<style>
+    :root {
+        --turquoise: #93f7f2;
+        --yellow: #f8cb0c;
+        --dark: #1e2732;
+        --light: #fbf9f8;
+    }
+    
+    body {
+        background-color: var(--light);
+        color: var(--dark);
+    }
+    
+    .bg-primary-custom {
+        background-color: var(--turquoise);
+        color: var(--dark);
+    }
+    
+    .bg-secondary-custom {
+        background-color: var(--yellow);
+        color: var(--dark);
+    }
+    
+    .bg-dark-custom {
+        background-color: var(--dark);
+        color: var(--light);
+    }
+    
+    .bg-light-custom {
+        background-color: var(--light);
+        color: var(--dark);
+    }
+    
+    .sidebar-link {
+        color: var(--dark);
+        border-left: 4px solid transparent;
+        transition: all 0.2s;
+    }
+    
+    .sidebar-link:hover {
+        background-color: rgba(147, 247, 242, 0.2);
+        color: var(--dark);
+    }
+    
+    .sidebar-link.active {
+        background-color: var(--turquoise);
+        color: var(--dark);
+        border-left: 4px solid var(--yellow);
+        font-weight: bold;
+    }
+    
+    .card {
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        overflow: hidden;
+        border: none;
+    }
+    
+    .card-header {
+        border-bottom: none;
+        padding: 15px 20px;
+    }
+    
+    .btn-primary-custom {
+        background-color: var(--turquoise);
+        color: var(--dark);
+        border: none;
+    }
+    
+    .btn-primary-custom:hover {
+        background-color: #7de5e0;
+        color: var(--dark);
+    }
+    
+    .btn-secondary-custom {
+        background-color: var(--yellow);
+        color: var(--dark);
+        border: none;
+    }
+    
+    .btn-secondary-custom:hover {
+        background-color: #e0b60a;
+        color: var(--dark);
+    }
+    
+    .badge-active {
+        background-color: #28a745;
+        color: white;
+    }
+    
+    .badge-pending {
+        background-color: var(--yellow);
+        color: var(--dark);
+    }
+    
+    .badge-completed {
+        background-color: var(--turquoise);
+        color: var(--dark);
+    }
+    
+    .badge-warning {
+        background-color: #ffc107;
+        color: var(--dark);
+    }
+    
+    .badge-danger {
+        background-color: #dc3545;
+        color: white;
+    }
+    
+    .table thead th {
+        background-color: var(--dark);
+        color: var(--light);
+        border: none;
+    }
+    
+    .table-hover tbody tr:hover {
+        background-color: rgba(147, 247, 242, 0.1);
+    }
+    
+    .profile-info-label {
+        font-weight: bold;
+        color: var(--dark);
+    }
+    
+    .section-card {
+        margin-bottom: 20px;
+        transition: transform 0.2s;
+    }
+    
+    .section-card:hover {
+        transform: translateY(-3px);
+    }
+</style>
+
 <div class="container-fluid py-4">
     <div class="row">
-        <!-- Sidebar - Keep your existing sidebar code here -->
+        <!-- Sidebar -->
         <div class="col-md-2">
-            <!-- Sidebar code from home.html -->
             <div class="card mb-4">
-                <div class="card-header bg-dark text-white">
+                <div class="card-header bg-dark-custom">
                     <h5 class="mb-0">Admin Portal</h5>
                 </div>
                 <div class="list-group list-group-flush">
-                    <a href="{% url 'admin_dashboard:home' %}" class="list-group-item list-group-item-action">
+                    <a href="{% url 'admin_dashboard:home' %}" class="list-group-item sidebar-link">
                         <i class="fa fa-dashboard me-2"></i> Dashboard
                     </a>
-                    <a href="{% url 'admin_dashboard:students' %}" class="list-group-item list-group-item-action active">
+                    <a href="{% url 'admin_dashboard:students' %}" class="list-group-item sidebar-link active">
                         <i class="fa fa-users me-2"></i> Students
                     </a>
                     <!-- Other sidebar items -->
@@ -28,9 +162,9 @@
         <!-- Main Content -->
         <div class="col-md-10">
             <div class="card mb-4">
-                <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                <div class="card-header bg-primary-custom d-flex justify-content-between align-items-center">
                     <h5 class="mb-0">Student Profile: {{ student.get_full_name }}</h5>
-                    <a href="{% url 'admin_dashboard:students' %}" class="btn btn-sm btn-light">
+                    <a href="{% url 'admin_dashboard:students' %}" class="btn btn-dark-custom btn-sm">
                         <i class="fa fa-arrow-left me-1"></i> Back to Students
                     </a>
                 </div>
@@ -38,33 +172,33 @@
                     <div class="row">
                         <!-- Personal Information -->
                         <div class="col-md-6">
-                            <div class="card mb-3">
-                                <div class="card-header bg-light">
+                            <div class="card section-card">
+                                <div class="card-header bg-dark-custom">
                                     <h6 class="mb-0">Personal Information</h6>
                                 </div>
-                                <div class="card-body">
+                                <div class="card-body bg-light-custom">
                                     <div class="row mb-2">
-                                        <div class="col-md-4 fw-bold">Full Name:</div>
+                                        <div class="col-md-4 profile-info-label">Full Name:</div>
                                         <div class="col-md-8">{{ student.get_full_name }}</div>
                                     </div>
                                     <div class="row mb-2">
-                                        <div class="col-md-4 fw-bold">Email:</div>
+                                        <div class="col-md-4 profile-info-label">Email:</div>
                                         <div class="col-md-8">{{ student.email }}</div>
                                     </div>
                                     <div class="row mb-2">
-                                        <div class="col-md-4 fw-bold">Phone:</div>
+                                        <div class="col-md-4 profile-info-label">Phone:</div>
                                         <div class="col-md-8">{{ profile.phone|default:"Not provided" }}</div>
                                     </div>
                                     <div class="row mb-2">
-                                        <div class="col-md-4 fw-bold">Status:</div>
+                                        <div class="col-md-4 profile-info-label">Status:</div>
                                         <div class="col-md-8">
-                                            <span class="badge bg-{% if profile.status == 'ACTIVE' %}success{% elif profile.status == 'DEMO_PENDING' %}warning{% else %}info{% endif %}">
+                                            <span class="badge {% if profile.status == 'ACTIVE' %}badge-active{% elif profile.status == 'DEMO_PENDING' %}badge-pending{% else %}badge-completed{% endif %}">
                                                 {{ profile.get_status_display }}
                                             </span>
                                         </div>
                                     </div>
                                     <div class="row mb-2">
-                                        <div class="col-md-4 fw-bold">Joined:</div>
+                                        <div class="col-md-4 profile-info-label">Joined:</div>
                                         <div class="col-md-8">{{ profile.created_at|date:"d M Y" }}</div>
                                     </div>
                                 </div>
@@ -73,24 +207,24 @@
                         
                         <!-- Academic Information -->
                         <div class="col-md-6">
-                            <div class="card mb-3">
-                                <div class="card-header bg-light">
+                            <div class="card section-card">
+                                <div class="card-header bg-dark-custom">
                                     <h6 class="mb-0">Academic Information</h6>
                                 </div>
-                                <div class="card-body">
+                                <div class="card-body bg-light-custom">
                                     <div class="row mb-2">
-                                        <div class="col-md-4 fw-bold">Grade:</div>
+                                        <div class="col-md-4 profile-info-label">Grade:</div>
                                         <div class="col-md-8">{{ profile.grade.name|default:"Not set" }}</div>
                                     </div>
                                     <div class="row mb-2">
-                                        <div class="col-md-4 fw-bold">Board:</div>
+                                        <div class="col-md-4 profile-info-label">Board:</div>
                                         <div class="col-md-8">{{ profile.board.name|default:"Not set" }}</div>
                                     </div>
                                     <div class="row mb-2">
-                                        <div class="col-md-4 fw-bold">Subjects:</div>
+                                        <div class="col-md-4 profile-info-label">Subjects:</div>
                                         <div class="col-md-8">
                                             {% for subject in profile.selected_subjects.all %}
-                                                <span class="badge bg-info me-1">{{ subject.name }}</span>
+                                                <span class="badge badge-completed me-1">{{ subject.name }}</span>
                                             {% empty %}
                                                 No subjects selected
                                             {% endfor %}
@@ -102,17 +236,17 @@
                     </div>
                     
                     <!-- Availability Section -->
-                    <div class="row mt-3">
+                    <div class="row mt-4">
                         <div class="col-12">
-                            <div class="card mb-3">
-                                <div class="card-header bg-light">
+                            <div class="card section-card">
+                                <div class="card-header bg-secondary-custom">
                                     <h6 class="mb-0">Availability</h6>
                                 </div>
-                                <div class="card-body">
+                                <div class="card-body bg-light-custom">
                                     {% if availabilities %}
                                         <div class="table-responsive">
                                             <table class="table table-bordered table-hover">
-                                                <thead class="table-light">
+                                                <thead>
                                                     <tr>
                                                         <th>Day</th>
                                                         <th>Start Time</th>
@@ -139,17 +273,17 @@
                     </div>
                     
                     <!-- Upcoming Classes Section -->
-                    <div class="row mt-3">
+                    <div class="row mt-4">
                         <div class="col-12">
-                            <div class="card mb-3">
-                                <div class="card-header bg-light">
+                            <div class="card section-card">
+                                <div class="card-header bg-secondary-custom">
                                     <h6 class="mb-0">Upcoming Classes</h6>
                                 </div>
-                                <div class="card-body">
+                                <div class="card-body bg-light-custom">
                                     {% if upcoming_classes %}
                                         <div class="table-responsive">
                                             <table class="table table-bordered table-hover">
-                                                <thead class="table-light">
+                                                <thead>
                                                     <tr>
                                                         <th>Subject</th>
                                                         <th>Teacher</th>
@@ -166,7 +300,7 @@
                                                             <td>{{ class.start_time|date:"d M Y" }}</td>
                                                             <td>{{ class.start_time|time:"g:i A" }} - {{ class.end_time|time:"g:i A" }}</td>
                                                             <td>
-                                                                <span class="badge bg-{% if class.status == 'SCHEDULED' %}info{% elif class.status == 'IN_PROGRESS' %}primary{% else %}success{% endif %}">
+                                                                <span class="badge {% if class.status == 'SCHEDULED' %}badge-completed{% elif class.status == 'IN_PROGRESS' %}badge-pending{% else %}badge-active{% endif %}">
                                                                     {{ class.get_status_display }}
                                                                 </span>
                                                             </td>
@@ -184,17 +318,17 @@
                     </div>
                     
                     <!-- Past Classes Section -->
-                    <div class="row mt-3">
+                    <div class="row mt-4">
                         <div class="col-12">
-                            <div class="card mb-3">
-                                <div class="card-header bg-light">
+                            <div class="card section-card">
+                                <div class="card-header bg-secondary-custom">
                                     <h6 class="mb-0">Past Classes</h6>
                                 </div>
-                                <div class="card-body">
+                                <div class="card-body bg-light-custom">
                                     {% if past_classes %}
                                         <div class="table-responsive">
                                             <table class="table table-bordered table-hover">
-                                                <thead class="table-light">
+                                                <thead>
                                                     <tr>
                                                         <th>Subject</th>
                                                         <th>Teacher</th>
@@ -211,7 +345,7 @@
                                                             <td>{{ class.start_time|date:"d M Y" }}</td>
                                                             <td>{{ class.start_time|time:"g:i A" }} - {{ class.end_time|time:"g:i A" }}</td>
                                                             <td>
-                                                                <span class="badge bg-{% if class.status == 'COMPLETED' %}success{% elif class.status == 'MISSED' %}danger{% else %}warning{% endif %}">
+                                                                <span class="badge {% if class.status == 'COMPLETED' %}badge-active{% elif class.status == 'MISSED' %}badge-danger{% else %}badge-warning{% endif %}">
                                                                     {{ class.get_status_display }}
                                                                 </span>
                                                             </td>
@@ -229,17 +363,17 @@
                     </div>
                     
                     <!-- Payment History Section -->
-                    <div class="row mt-3">
+                    <div class="row mt-4">
                         <div class="col-12">
-                            <div class="card">
-                                <div class="card-header bg-light">
+                            <div class="card section-card">
+                                <div class="card-header bg-secondary-custom">
                                     <h6 class="mb-0">Payment History</h6>
                                 </div>
-                                <div class="card-body">
+                                <div class="card-body bg-light-custom">
                                     {% if payments %}
                                         <div class="table-responsive">
                                             <table class="table table-bordered table-hover">
-                                                <thead class="table-light">
+                                                <thead>
                                                     <tr>
                                                         <th>Amount</th>
                                                         <th>Month</th>
@@ -253,7 +387,7 @@
                                                             <td>₹{{ payment.amount }}</td>
                                                             <td>{{ payment.month_year|date:"F Y" }}</td>
                                                             <td>
-                                                                <span class="badge bg-{% if payment.status == 'COMPLETED' %}success{% elif payment.status == 'PENDING' %}warning{% else %}info{% endif %}">
+                                                                <span class="badge {% if payment.status == 'COMPLETED' %}badge-active{% elif payment.status == 'PENDING' %}badge-pending{% else %}badge-completed{% endif %}">
                                                                     {{ payment.get_status_display }}
                                                                 </span>
                                                             </td>
@@ -271,13 +405,13 @@
                         </div>
                     </div>
                 </div>
-                <div class="card-footer">
+                <div class="card-footer bg-light-custom">
                     {% if profile.status == 'DEMO_PENDING' %}
-                        <a href="{% url 'admin_dashboard:schedule_demo' student_id=profile.id %}" class="btn btn-primary">
+                        <a href="{% url 'admin_dashboard:schedule_demo' student_id=profile.id %}" class="btn btn-secondary-custom">
                             <i class="fas fa-calendar-plus me-1"></i> Schedule Demo Class
                         </a>
                     {% elif profile.status == 'DEMO_SCHEDULED' or profile.status == 'DEMO_ACCEPTED' or profile.status == 'ACTIVE' %}
-                        <a href="{% url 'admin_dashboard:schedule_classes' student_id=profile.id %}" class="btn btn-success">
+                        <a href="{% url 'admin_dashboard:schedule_classes' student_id=profile.id %}" class="btn btn-primary-custom">
                             <i class="fas fa-calendar-alt me-1"></i> Schedule Regular Classes
                         </a>
                     {% endif %}
