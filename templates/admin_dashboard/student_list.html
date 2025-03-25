@@ -4,6 +4,188 @@
 {% block title %}Students - LearnIspire Admin{% endblock %}
 
 {% block content %}
+<style>
+    body {
+        background-color: #fbf9f8;
+    }
+    .card {
+        border: none;
+        box-shadow: 0 2px 4px rgba(30, 39, 50, 0.1);
+        transition: transform 0.2s ease-in-out;
+    }
+    .card:hover {
+        transform: translateY(-2px);
+    }
+    .card-header {
+        background-color: #1e2732 !important;
+        color: #fbf9f8 !important;
+        border-bottom: none;
+        padding: 1rem;
+    }
+    .list-group-item {
+        border-left: none;
+        border-right: none;
+        transition: all 0.2s ease-in-out;
+    }
+    .list-group-item.active {
+        background-color: #f8cb0c;
+        border-color: #f8cb0c;
+        color: #1e2732;
+        font-weight: 500;
+    }
+    .list-group-item:hover {
+        background-color: #93f7f2;
+        color: #1e2732;
+        transform: translateX(5px);
+    }
+    .badge {
+        background-color: #f8cb0c;
+        color: #1e2732;
+        padding: 0.5em 0.8em;
+        font-weight: 500;
+    }
+    .badge.bg-info {
+        background-color: #93f7f2 !important;
+        color: #1e2732;
+    }
+    .badge.bg-warning {
+        background-color: #f8cb0c !important;
+        color: #1e2732;
+    }
+    .badge.bg-success {
+        background-color: #93f7f2 !important;
+        color: #1e2732;
+    }
+    .badge.bg-primary {
+        background-color: #1e2732 !important;
+        color: #fbf9f8;
+    }
+    .badge.bg-secondary {
+        background-color: #1e2732 !important;
+        color: #fbf9f8;
+    }
+    .btn-primary {
+        background-color: #1e2732;
+        border-color: #1e2732;
+        color: #fbf9f8;
+        transition: all 0.2s ease-in-out;
+    }
+    .btn-primary:hover {
+        background-color: #2a3744;
+        border-color: #2a3744;
+        color: #fbf9f8;
+        transform: translateY(-1px);
+    }
+    .btn-info {
+        background-color: #93f7f2;
+        border-color: #93f7f2;
+        color: #1e2732;
+        transition: all 0.2s ease-in-out;
+    }
+    .btn-info:hover {
+        background-color: #7ee6e0;
+        border-color: #7ee6e0;
+        color: #1e2732;
+        transform: translateY(-1px);
+    }
+    .btn-warning {
+        background-color: #f8cb0c;
+        border-color: #f8cb0c;
+        color: #1e2732;
+        transition: all 0.2s ease-in-out;
+    }
+    .btn-warning:hover {
+        background-color: #e6b90b;
+        border-color: #e6b90b;
+        color: #1e2732;
+        transform: translateY(-1px);
+    }
+    .btn-success {
+        background-color: #93f7f2;
+        border-color: #93f7f2;
+        color: #1e2732;
+        transition: all 0.2s ease-in-out;
+    }
+    .btn-success:hover {
+        background-color: #7ee6e0;
+        border-color: #7ee6e0;
+        color: #1e2732;
+        transform: translateY(-1px);
+    }
+    .btn-light {
+        background-color: #fbf9f8;
+        border-color: #1e2732;
+        color: #1e2732;
+        transition: all 0.2s ease-in-out;
+    }
+    .btn-light:hover {
+        background-color: #1e2732;
+        border-color: #1e2732;
+        color: #fbf9f8;
+        transform: translateY(-1px);
+    }
+    .table-light {
+        background-color: #fbf9f8;
+    }
+    .table-light th {
+        background-color: #1e2732;
+        color: #fbf9f8;
+        font-weight: 500;
+    }
+    .table-hover tbody tr:hover {
+        background-color: #93f7f2;
+        color: #1e2732;
+        transition: all 0.2s ease-in-out;
+    }
+    h2, h5 {
+        color: #1e2732;
+        font-weight: 600;
+    }
+    .text-success {
+        color: #93f7f2 !important;
+    }
+    .text-muted {
+        color: #1e2732 !important;
+        opacity: 0.7;
+    }
+    .form-control:focus {
+        border-color: #93f7f2;
+        box-shadow: 0 0 0 0.2rem rgba(147, 247, 242, 0.25);
+    }
+    .form-select:focus {
+        border-color: #93f7f2;
+        box-shadow: 0 0 0 0.2rem rgba(147, 247, 242, 0.25);
+    }
+    .form-label {
+        color: #1e2732;
+        font-weight: 500;
+    }
+    .table-bordered {
+        border-color: #93f7f2;
+        border-radius: 8px;
+        overflow: hidden;
+    }
+    .table-bordered th {
+        background-color: #1e2732;
+        color: #fbf9f8;
+        border-color: #1e2732;
+        font-weight: 500;
+    }
+    .table-bordered td {
+        border-color: #93f7f2;
+    }
+    .input-group .btn {
+        border-color: #1e2732;
+    }
+    .input-group .form-control {
+        border-color: #93f7f2;
+    }
+    .input-group .form-control:focus {
+        border-color: #1e2732;
+        box-shadow: none;
+    }
+</style>
+
 <div class="container-fluid py-4">
     <div class="row">
         <!-- Sidebar -->
@@ -45,7 +227,7 @@
         <div class="col-md-10">
             <div class="card mb-4">
                 <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
-                    <h5 class="mb-0">Students</h5>
+                    <h5 class="mb-0 text-white">Students</h5>
                     <div>
                         <a href="{% url 'admin_dashboard:pending_demos' %}" class="btn btn-sm btn-light me-2">
                             <i class="fas fa-video me-1"></i> Pending Demos
