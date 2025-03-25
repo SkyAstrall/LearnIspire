@@ -8,7 +8,7 @@ from common.models import Subject, Grade, Board, PricingRule
 
 
 class HomeView(View):
-    template_name = r"landing\home.html"
+    template_name = "landing/home.html"
 
     def get(self, request):
         # Get active subjects for display

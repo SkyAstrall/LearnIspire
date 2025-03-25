@@ -4,130 +4,464 @@
 {% block title %}Complete Class - LearnIspire{% endblock %}
 
 {% block content %}
+<style>
+  :root {
+    --primary-color: #93f7f2;
+    --secondary-color: #f8cb0c;
+    --dark-color: #1e2732;
+    --light-color: #fbf9f8;
+  }
+
+  body {
+    background-color: var(--light-color);
+    color: var(--dark-color);
+  }
+
+  .card {
+    border: none;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background-color: var(--light-color);
+    transition: transform 0.2s ease;
+    margin-bottom: 1.5rem;
+  }
+
+  .card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .card-header {
+    background: linear-gradient(
+      45deg,
+      var(--dark-color),
+      var(--primary-color)
+    ) !important;
+    color: var(--light-color) !important;
+    border-bottom: none;
+    position: relative;
+    padding: 1rem 1.25rem;
+  }
+
+  .card-header::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(
+      to right,
+      var(--primary-color),
+      var(--secondary-color)
+    );
+  }
+
+  .card-header.success-header {
+    background: linear-gradient(
+      45deg,
+      var(--dark-color),
+      #28a745
+    ) !important;
+  }
+
+  .card-header.success-header::after {
+    background: linear-gradient(
+      to right,
+      #28a745,
+      var(--secondary-color)
+    );
+  }
+
+  .list-group-item {
+    border: none;
+    background-color: var(--light-color);
+    color: var(--dark-color);
+    transition: all 0.3s ease;
+  }
+
+  .list-group-item:hover {
+    background-color: var(--primary-color);
+    color: var(--dark-color);
+  }
+
+  .list-group-item.active {
+    background-color: var(--primary-color);
+    color: var(--dark-color);
+    border: none;
+    position: relative;
+  }
+
+  .list-group-item.active::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 3px;
+    background-color: var(--secondary-color);
+  }
+
+  .section-title {
+    color: var(--dark-color);
+    position: relative;
+    padding-bottom: 0.5rem;
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+  }
+
+  .section-title::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 50px;
+    height: 3px;
+    background: linear-gradient(
+      to right,
+      var(--primary-color),
+      var(--secondary-color)
+    );
+    border-radius: 3px;
+  }
+
+  .alert-custom {
+    background: linear-gradient(
+      to right,
+      rgba(147, 247, 242, 0.15),
+      rgba(248, 203, 12, 0.15)
+    );
+    border: none;
+    border-left: 4px solid var(--primary-color);
+    color: var(--dark-color);
+    border-radius: 8px;
+    padding: 1rem;
+  }
+
+  .class-info-card {
+    background: linear-gradient(
+      to right,
+      rgba(147, 247, 242, 0.05),
+      rgba(248, 203, 12, 0.05)
+    );
+    border-radius: 10px;
+    padding: 1.5rem;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(147, 247, 242, 0.2);
+  }
+
+  .class-info-card:hover {
+    background: linear-gradient(
+      to right,
+      rgba(147, 247, 242, 0.1),
+      rgba(248, 203, 12, 0.1)
+    );
+    border: 1px solid var(--primary-color);
+  }
+
+  .info-label {
+    color: var(--dark-color);
+    opacity: 0.7;
+    font-size: 0.9rem;
+    margin-bottom: 0.3rem;
+  }
+
+  .info-value {
+    color: var(--dark-color);
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+  }
+
+  .form-control, .form-select {
+    border: 1px solid rgba(30, 39, 50, 0.1);
+    background-color: var(--light-color);
+    color: var(--dark-color);
+    border-radius: 8px;
+    padding: 0.6rem 1rem;
+    transition: all 0.3s ease;
+  }
+
+  .form-control:focus, .form-select:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.2rem rgba(147, 247, 242, 0.25);
+  }
+
+  .form-text {
+    color: var(--dark-color);
+    opacity: 0.7;
+    font-size: 0.85rem;
+    margin-top: 0.3rem;
+  }
+
+  .upload-section {
+    background: linear-gradient(
+      to right,
+      rgba(147, 247, 242, 0.1),
+      rgba(255, 255, 255, 0.8)
+    );
+    border-radius: 10px;
+    padding: 1rem;
+    border: 1px dashed rgba(147, 247, 242, 0.5);
+    transition: all 0.3s ease;
+  }
+
+  .upload-section:hover {
+    border: 1px dashed var(--primary-color);
+    background: linear-gradient(
+      to right,
+      rgba(147, 247, 242, 0.15),
+      rgba(255, 255, 255, 0.9)
+    );
+  }
+
+  .btn-custom-primary {
+    background: linear-gradient(
+      45deg,
+      var(--primary-color),
+      var(--secondary-color)
+    );
+    border: none;
+    color: var(--dark-color);
+    font-weight: 500;
+    border-radius: 8px;
+    padding: 0.6rem 1.5rem;
+    transition: all 0.3s ease;
+  }
+
+  .btn-custom-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background: linear-gradient(
+      45deg,
+      var(--secondary-color),
+      var(--primary-color)
+    );
+  }
+
+  .btn-custom-success {
+    background: linear-gradient(
+      45deg,
+      #28a745,
+      var(--secondary-color)
+    );
+    border: none;
+    color: var(--dark-color);
+    font-weight: 500;
+    border-radius: 8px;
+    padding: 0.6rem 1.5rem;
+    transition: all 0.3s ease;
+  }
+
+  .btn-custom-success:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background: linear-gradient(
+      45deg,
+      var(--secondary-color),
+      #28a745
+    );
+  }
+
+  .btn-custom-secondary {
+    background-color: transparent;
+    border: 1px solid var(--dark-color);
+    color: var(--dark-color);
+    font-weight: 500;
+    border-radius: 8px;
+    padding: 0.6rem 1.5rem;
+    transition: all 0.3s ease;
+  }
+
+  .btn-custom-secondary:hover {
+    background-color: var(--dark-color);
+    color: var(--light-color);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+</style>
+
 <div class="container py-4">
-    <div class="row">
-        <!-- Sidebar -->
-        <div class="col-md-3">
-            <div class="card mb-4">
-                <div class="card-header bg-primary text-white">
-                    <h5 class="mb-0">Teacher Dashboard</h5>
-                </div>
-                <div class="list-group list-group-flush">
-                    <a href="{% url 'teacher_dashboard:home' %}" class="list-group-item list-group-item-action">
-                        <i class="fa fa-dashboard me-2"></i> Dashboard
-                    </a>
-                    <a href="{% url 'teacher_dashboard:profile' %}" class="list-group-item list-group-item-action">
-                        <i class="fa fa-user me-2"></i> My Profile
-                    </a>
-                    <a href="{% url 'teacher_dashboard:availability' %}" class="list-group-item list-group-item-action">
-                        <i class="fa fa-clock-o me-2"></i> Availability
-                    </a>
-                    <a href="{% url 'teacher_dashboard:classes' %}" class="list-group-item list-group-item-action active">
-                        <i class="fa fa-calendar me-2"></i> My Classes
-                    </a>
-                    <a href="{% url 'teacher_dashboard:leave_request' %}" class="list-group-item list-group-item-action">
-                        <i class="fa fa-calendar-minus-o me-2"></i> Leave Requests
-                    </a>
-                    <a href="{% url 'teacher_dashboard:earnings' %}" class="list-group-item list-group-item-action">
-                        <i class="fa fa-money me-2"></i> Earnings
-                    </a>
-                    <a href="{% url 'teacher_dashboard:bank_details' %}" class="list-group-item list-group-item-action">
-                        <i class="fa fa-university me-2"></i> Bank Details
-                    </a>
-                </div>
-            </div>
+  <div class="row">
+    <!-- Sidebar -->
+    <div class="col-md-3">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="section-title mb-0">Teacher Dashboard</h5>
         </div>
-        
-        <!-- Main Content -->
-        <div class="col-md-9">
-            <div class="card">
-                <div class="card-header bg-success text-white">
-                    <h5 class="mb-0">Complete Class: {{ class.subject.name }}</h5>
-                </div>
-                <div class="card-body">
-                    <div class="alert alert-info mb-4">
-                        <i class="fa fa-info-circle me-2"></i> You are about to mark this class as completed. Please provide class notes and any final materials before proceeding.
-                    </div>
-                    
-                    <!-- Class Info -->
-                    <div class="card mb-4">
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="mb-3">
-                                        <strong>Date:</strong> {{ class.start_time|date:"D, M d, Y" }}
-                                    </div>
-                                    <div class="mb-3">
-                                        <strong>Time:</strong> {{ class.start_time|time:"h:i A" }} - {{ class.end_time|time:"h:i A" }}
-                                    </div>
-                                    <div class="mb-3">
-                                        <strong>Duration:</strong> {{ class.duration }} minutes
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="mb-3">
-                                        <strong>Student:</strong> {{ class.student.get_full_name }}
-                                    </div>
-                                    <div class="mb-3">
-                                        <strong>Subject:</strong> {{ class.subject.name }}
-                                    </div>
-                                    {% if class.topic %}
-                                    <div class="mb-3">
-                                        <strong>Topic:</strong> {{ class.topic }}
-                                    </div>
-                                    {% endif %}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Complete Class Form -->
-                    <form method="post" enctype="multipart/form-data">
-                        {% csrf_token %}
-                        
-                        <!-- Class Notes -->
-                        <div class="mb-4">
-                            <label for="notes" class="form-label">Class Notes</label>
-                            <textarea class="form-control" id="notes" name="notes" rows="6" placeholder="Enter detailed notes about what was covered in class, student progress, areas for improvement, etc.">{{ class.notes }}</textarea>
-                            <div class="form-text">These notes will be available to you for future reference and will help track student progress.</div>
-                        </div>
-                        
-                        <!-- Upload Material -->
-                        <div class="card mb-4">
-                            <div class="card-header bg-light">
-                                <h6 class="mb-0">Upload Class Material</h6>
-                            </div>
-                            <div class="card-body">
-                                <div class="row g-3">
-                                    <div class="col-md-6">
-                                        <label for="material_title" class="form-label">Material Title</label>
-                                        <input type="text" class="form-control" id="material_title" name="material_title" placeholder="e.g., Session Notes, Assignment, Reading Material">
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label for="material_file" class="form-label">Material File</label>
-                                        <input type="file" class="form-control" id="material_file" name="material_file">
-                                    </div>
-                                    <div class="col-md-12">
-                                        <label for="material_description" class="form-label">Material Description</label>
-                                        <textarea class="form-control" id="material_description" name="material_description" rows="3" placeholder="Brief description about this material..."></textarea>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- Submit Buttons -->
-                        <div class="d-flex justify-content-between">
-                            <a href="{% url 'teacher_dashboard:class_detail' class.id %}" class="btn btn-outline-secondary">
-                                <i class="fa fa-arrow-left me-1"></i> Back to Class Details
-                            </a>
-                            <button type="submit" class="btn btn-success">
-                                <i class="fa fa-check-circle me-1"></i> Complete Class
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            </div>
+        <div class="list-group list-group-flush">
+          <a
+            href="{% url 'teacher_dashboard:home' %}"
+            class="list-group-item list-group-item-action"
+          >
+            <i class="fa fa-dashboard me-2"></i> Dashboard
+          </a>
+          <a
+            href="{% url 'teacher_dashboard:profile' %}"
+            class="list-group-item list-group-item-action"
+          >
+            <i class="fa fa-user me-2"></i> My Profile
+          </a>
+          <a
+            href="{% url 'teacher_dashboard:availability' %}"
+            class="list-group-item list-group-item-action"
+          >
+            <i class="fa fa-clock-o me-2"></i> Availability
+          </a>
+          <a
+            href="{% url 'teacher_dashboard:classes' %}"
+            class="list-group-item list-group-item-action active"
+          >
+            <i class="fa fa-calendar me-2"></i> My Classes
+          </a>
+          <a
+            href="{% url 'teacher_dashboard:leave_request' %}"
+            class="list-group-item list-group-item-action"
+          >
+            <i class="fa fa-calendar-minus-o me-2"></i> Leave Requests
+          </a>
+          <a
+            href="{% url 'teacher_dashboard:earnings' %}"
+            class="list-group-item list-group-item-action"
+          >
+            <i class="fa fa-money me-2"></i> Earnings
+          </a>
+          <a
+            href="{% url 'teacher_dashboard:bank_details' %}"
+            class="list-group-item list-group-item-action"
+          >
+            <i class="fa fa-university me-2"></i> Bank Details
+          </a>
         </div>
+      </div>
     </div>
+
+    <!-- Main Content -->
+    <div class="col-md-9">
+      <div class="card">
+        <div class="card-header success-header">
+          <h5 class="section-title mb-0">
+            <i class="fa fa-check-circle me-2"></i> Complete Class: {{ class.subject.name }}
+          </h5>
+        </div>
+        <div class="card-body">
+          <div class="alert alert-custom mb-4">
+            <i class="fa fa-info-circle me-2"></i> You are about to mark this class as completed. Please provide class notes and any final materials before proceeding.
+          </div>
+
+          <!-- Class Info -->
+          <div class="class-info-card mb-4">
+            <h5 class="mb-3">
+              <i class="fa fa-calendar-check-o me-2"></i>Class Information
+            </h5>
+            <div class="row">
+              <div class="col-md-6">
+                <div>
+                  <div class="info-label">Date</div>
+                  <div class="info-value">{{ class.start_time|date:"D, M d, Y" }}</div>
+                </div>
+                <div>
+                  <div class="info-label">Time</div>
+                  <div class="info-value">{{ class.start_time|time:"h:i A" }} - {{ class.end_time|time:"h:i A" }}</div>
+                </div>
+                <div>
+                  <div class="info-label">Duration</div>
+                  <div class="info-value">{{ class.duration }} minutes</div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div>
+                  <div class="info-label">Student</div>
+                  <div class="info-value">{{ class.student.get_full_name }}</div>
+                </div>
+                <div>
+                  <div class="info-label">Subject</div>
+                  <div class="info-value">{{ class.subject.name }}</div>
+                </div>
+                {% if class.topic %}
+                <div>
+                  <div class="info-label">Topic</div>
+                  <div class="info-value">{{ class.topic }}</div>
+                </div>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+
+          <!-- Complete Class Form -->
+          <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <!-- Class Notes -->
+            <div class="mb-4">
+              <label for="notes" class="form-label fw-bold">
+                <i class="fa fa-file-text-o me-2"></i>Class Notes
+              </label>
+              <textarea
+                class="form-control"
+                id="notes"
+                name="notes"
+                rows="6"
+                placeholder="Enter detailed notes about what was covered in class, student progress, areas for improvement, etc."
+              >{{ class.notes }}</textarea>
+              <div class="form-text">
+                These notes will be available to you for future reference and will help track student progress.
+              </div>
+            </div>
+
+            <!-- Upload Material -->
+            <div class="upload-section mb-4">
+              <h5 class="mb-3">
+                <i class="fa fa-upload me-2"></i>Upload Class Material
+              </h5>
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label for="material_title" class="form-label">Material Title</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="material_title"
+                    name="material_title"
+                    placeholder="e.g., Session Notes, Assignment, Reading Material"
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label for="material_file" class="form-label">Material File</label>
+                  <input
+                    type="file"
+                    class="form-control"
+                    id="material_file"
+                    name="material_file"
+                  />
+                </div>
+                <div class="col-md-12">
+                  <label for="material_description" class="form-label">Material Description</label>
+                  <textarea
+                    class="form-control"
+                    id="material_description"
+                    name="material_description"
+                    rows="3"
+                    placeholder="Brief description about this material..."
+                  ></textarea>
+                </div>
+              </div>
+            </div>
+
+            <!-- Submit Buttons -->
+            <div class="d-flex justify-content-between">
+              <a
+                href="{% url 'teacher_dashboard:class_detail' class.id %}"
+                class="btn btn-custom-secondary"
+              >
+                <i class="fa fa-arrow-left me-1"></i> Back to Class Details
+              </a>
+              <button type="submit" class="btn btn-custom-success">
+                <i class="fa fa-check-circle me-1"></i> Complete Class
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 {% endblock %}

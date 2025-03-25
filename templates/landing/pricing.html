@@ -1,318 +1,2236 @@
-{% extends 'base.html' %}
-{% load static %}
+{% extends 'base.html' %} {% load static custom_tags %} {% block title %}Pricing
+- LearnIspire{% endblock %} {% block content %}
+<div class="pricing-container">
+  <div class="header">
+    <h2>Get Your Custom Quote</h2>
+    <h5>Fill in your details to receive your personalized quote on WhatsApp</h5>
+  </div>
 
-{% block title %}Pricing - LearnIspire{% endblock %}
-{% load static custom_tags %}
-
-{% block content %}
-<!-- Header Section -->
-<section class="py-5 bg-primary text-white">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-8 mx-auto text-center">
-                <h1 class="fw-bold mb-4">Transparent Pricing</h1>
-                <p class="lead">Quality education at affordable rates. Pay only for the classes you take.</p>
+  <div class="grid-container">
+    <!-- Form Section -->
+    <div class="form-container">
+      <div class="paper">
+        <form id="quoteForm" novalidate>
+          <div class="form-grid">
+            <div class="form-control form-floating">
+              <input
+                type="text"
+                id="fullName"
+                name="fullName"
+                placeholder=" "
+                class="input-animated"
+                required
+              />
+              <label for="fullName"
+                >Full Name <span class="asterisk">*</span></label
+              >
+              <div class="input-focus-indicator"></div>
+              <div class="invalid-feedback">Please enter your full name</div>
             </div>
-        </div>
-    </div>
-</section>
 
-<!-- Pricing Selector Section -->
-<section class="py-5">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-8 mx-auto">
-                <div class="card border-0 shadow">
-                    <div class="card-body p-4">
-                        <h3 class="card-title text-center mb-4">Check Pricing for Your Grade</h3>
-                        
-                        <form method="get" class="mb-4">
-                            <div class="row g-3">
-                                <div class="col-md-5">
-                                    <label for="grade" class="form-label">Grade</label>
-                                    <select class="form-select" id="grade" name="grade" required>
-                                        <option value="" selected disabled>Select Grade</option>
-                                        {% for grade in grades %}
-                                            <option value="{{ grade.id }}" {% if selected_grade == grade.id|stringformat:"i" %}selected{% endif %}>{{ grade.name }}</option>
-                                        {% endfor %}
-                                    </select>
-                                </div>
-                                
-                                <div class="col-md-5">
-                                    <label for="board" class="form-label">Board</label>
-                                    <select class="form-select" id="board" name="board" required>
-                                        <option value="" selected disabled>Select Board</option>
-                                        {% for board in boards %}
-                                            <option value="{{ board.id }}" {% if selected_board == board.id|stringformat:"i" %}selected{% endif %}>{{ board.name }}</option>
-                                        {% endfor %}
-                                    </select>
-                                </div>
-                                
-                                <div class="col-md-2 d-flex align-items-end">
-                                    <button type="submit" class="btn btn-primary w-100">Check</button>
-                                </div>
-                            </div>
-                        </form>
-                        
-                        {% if pricing_rules %}
-                            <!-- Display pricing information -->
-                            <div class="table-responsive">
-                                <table class="table table-hover">
-                                    <thead class="table-light">
-                                        <tr>
-                                            <th>Subject</th>
-                                            <th class="text-end">Price per Session</th>
-                                            <th class="text-end">Monthly (12 sessions)</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {% for rule in pricing_rules %}
-                                            <tr>
-                                                <td>{{ rule.subject.name }}</td>
-                                                <td class="text-end">₹{{ rule.price_per_session }}</td>
-                                                <td class="text-end">₹{{ rule.price_per_session|multiply:12 }}</td>
-                                            </tr>
-                                        {% endfor %}
-                                    </tbody>
-                                </table>
-                            </div>
-                            
-                            <div class="alert alert-info mt-3">
-                                <h5><i class="fas fa-info-circle me-2"></i> How our pricing works</h5>
-                                <p class="mb-0">Prices are per 60-minute session. You'll need to attend a minimum of 3 classes per week for each subject. Monthly billing is based on the actual number of sessions attended.</p>
-                            </div>
-                        {% elif selected_grade and selected_board %}
-                            <div class="alert alert-warning">
-                                <p class="mb-0">No pricing information available for the selected grade and board. Please contact us for custom pricing.</p>
-                            </div>
-                        {% endif %}
-                    </div>
+            <div class="form-grid-two-col">
+              <div class="form-control-half form-floating">
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  placeholder=" "
+                  class="input-animated"
+                  required
+                />
+                <label for="email">Email <span class="asterisk">*</span></label>
+                <div class="input-focus-indicator"></div>
+                <div class="invalid-feedback">
+                  Please enter a valid email address
                 </div>
+              </div>
+
+              <div class="form-control-half form-floating">
+                <input
+                  type="tel"
+                  id="whatsapp"
+                  name="whatsapp"
+                  placeholder=" "
+                  class="input-animated"
+                  required
+                />
+                <label for="whatsapp"
+                  >WhatsApp Number <span class="asterisk">*</span></label
+                >
+                <div class="input-focus-indicator"></div>
+                <div class="invalid-feedback">
+                  Please enter your WhatsApp number
+                </div>
+              </div>
             </div>
-        </div>
+
+            <div class="form-grid-two-col">
+              <div class="form-control-half">
+                <label for="grade">Grade <span class="asterisk">*</span></label>
+                <div class="select-wrapper">
+                  <select id="grade" name="grade" required>
+                    <option value="" disabled selected></option>
+                    <option value="grade8">Grade 8</option>
+                    <option value="grade9">Grade 9</option>
+                    <option value="grade10">Grade 10</option>
+                    <option value="grade11">Grade 11</option>
+                    <option value="grade12">Grade 12</option>
+                  </select>
+                </div>
+                <div class="invalid-feedback">Please select your grade</div>
+              </div>
+
+              <div class="form-control-half">
+                <label for="board">Board <span class="asterisk">*</span></label>
+                <div class="select-wrapper">
+                  <select id="board" name="board" required>
+                    <option value="" disabled selected></option>
+                    <option value="cbse">CBSE</option>
+                    <option value="icse">ICSE</option>
+                    <option value="igcse">IGCSE</option>
+                    <option value="ib">IB</option>
+                    <option value="state">State Board</option>
+                  </select>
+                </div>
+                <div class="invalid-feedback">Please select your board</div>
+              </div>
+            </div>
+
+            <div class="form-control">
+              <fieldset>
+                <legend>Subject(s) <span class="asterisk">*</span></legend>
+                <div class="checkbox-subjects" id="subjectsGroup">
+                  <label class="subject-label">
+                    <input type="checkbox" name="subjects" value="math" />
+                    <span>Mathematics</span>
+                  </label>
+                  <label class="subject-label">
+                    <input type="checkbox" name="subjects" value="physics" />
+                    <span>Physics</span>
+                  </label>
+                  <label class="subject-label">
+                    <input type="checkbox" name="subjects" value="chemistry" />
+                    <span>Chemistry</span>
+                  </label>
+                  <label class="subject-label">
+                    <input type="checkbox" name="subjects" value="biology" />
+                    <span>Biology</span>
+                  </label>
+                  <label class="subject-label">
+                    <input type="checkbox" name="subjects" value="english" />
+                    <span>English</span>
+                  </label>
+                  <label class="subject-label">
+                    <input type="checkbox" name="subjects" value="computer" />
+                    <span>Computer Science</span>
+                  </label>
+                </div>
+                <div class="invalid-feedback" id="subjectsError">
+                  Please select at least one subject
+                </div>
+              </fieldset>
+            </div>
+
+            <div class="form-control">
+              <button type="submit" class="btn btn-animated">
+                <span class="btn-text">Get Pricing on WhatsApp</span>
+                <span class="btn-icon">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                    <polyline points="12 5 19 12 12 19"></polyline>
+                  </svg>
+                </span>
+                <span class="loading-spinner" aria-hidden="true"></span>
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
     </div>
-</section>
+
+    <!-- Features Section -->
+    <div class="features-container">
+      <div class="features-header">
+        <h5>Why Choose Us?</h5>
+        <p>Experience personalized learning with our unique features</p>
+      </div>
+
+      <div class="card">
+        <div class="card-content">
+          <div class="icon-wrapper">
+            <svg class="icon" viewBox="0 0 24 24">
+              <path
+                d="M5 13.18v4L12 21l7-3.82v-4L12 17zM12 3 1 9l11 6 9-4.91V17h2V9z"
+              ></path>
+            </svg>
+          </div>
+          <div class="card-text">
+            <h6>Expert Teachers</h6>
+            <p>
+              Learn from qualified and experienced educators who are passionate
+              about teaching and committed to student success.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-content">
+          <div class="icon-wrapper">
+            <svg class="icon" viewBox="0 0 24 24">
+              <path
+                d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2M12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8"
+              ></path>
+              <path d="M12.5 7H11v6l5.25 3.15.75-1.23-4.5-2.67z"></path>
+            </svg>
+          </div>
+          <div class="card-text">
+            <h6>Flexible Schedule</h6>
+            <p>
+              Choose learning times that work best for you with our convenient
+              scheduling system and booking management.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-content">
+          <div class="icon-wrapper">
+            <svg class="icon" viewBox="0 0 24 24">
+              <path
+                d="M3 6h18V4H3c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h4v-2H3zm10 6H9v1.78c-.61.55-1 1.33-1 2.22s.39 1.67 1 2.22V20h4v-1.78c.61-.55 1-1.34 1-2.22s-.39-1.67-1-2.22zm-2 5.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5M22 8h-6c-.5 0-1 .5-1 1v10c0 .5.5 1 1 1h6c.5 0 1-.5 1-1V9c0-.5-.5-1-1-1m-1 10h-4v-8h4z"
+              ></path>
+            </svg>
+          </div>
+          <div class="card-text">
+            <h6>Learn Anywhere</h6>
+            <p>
+              Access your classes from any device with our mobile-friendly
+              platform. Study from the comfort of your home.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-content">
+          <div class="icon-wrapper">
+            <svg class="icon" viewBox="0 0 24 24">
+              <path
+                d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02zm13.54-7.1-.71-.7L13 9.29V5h-1v6h6v-1h-4.15z"
+              ></path>
+            </svg>
+          </div>
+          <div class="card-text">
+            <h6>24/7 Support</h6>
+            <p>
+              Get instant support through WhatsApp. Our team is always here to
+              help you with your queries and concerns.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="card help-card">
+        <div class="card-content">
+          <div class="card-text">
+            <h6>Need Help?</h6>
+            <p>
+              Contact our support team on WhatsApp anytime for assistance with
+              pricing or course selection.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- Pricing Information Section -->
-<section class="py-5 bg-light">
-    <div class="container">
-        <div class="row text-center mb-5">
-            <div class="col-lg-8 mx-auto">
-                <h2 class="fw-bold">Flexible Pricing to Fit Your Needs</h2>
-                <p class="text-muted">Our pricing is designed to be fair, transparent, and affordable</p>
-            </div>
-        </div>
-        
-        <div class="row g-4">
-            <div class="col-lg-4">
-                <div class="card h-100 border-0 shadow-sm">
-                    <div class="card-body p-4">
-                        <div class="feature-icon bg-primary bg-gradient text-white rounded-circle mb-3">
-                            <i class="fas fa-calendar-check fa-2x"></i>
-                        </div>
-                        <h4 class="card-title">Pay As You Learn</h4>
-                        <p class="card-text">Pay only for the classes you actually attend. You'll be billed at the end of each month based on completed sessions.</p>
-                        <ul class="list-unstyled mt-3">
-                            <li><i class="fas fa-check text-success me-2"></i> No long-term contracts</li>
-                            <li><i class="fas fa-check text-success me-2"></i> Monthly billing</li>
-                            <li><i class="fas fa-check text-success me-2"></i> Transparent pricing</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="col-lg-4">
-                <div class="card h-100 border-0 shadow-sm">
-                    <div class="card-body p-4">
-                        <div class="feature-icon bg-primary bg-gradient text-white rounded-circle mb-3">
-                            <i class="fas fa-users fa-2x"></i>
-                        </div>
-                        <h4 class="card-title">Family Discounts</h4>
-                        <p class="card-text">Enroll multiple children and receive discounts on their combined learning packages. The more you learn, the more you save.</p>
-                        <ul class="list-unstyled mt-3">
-                            <li><i class="fas fa-check text-success me-2"></i> 5% off for 2 students</li>
-                            <li><i class="fas fa-check text-success me-2"></i> 10% off for 3+ students</li>
-                            <li><i class="fas fa-check text-success me-2"></i> Applied automatically</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="col-lg-4">
-                <div class="card h-100 border-0 shadow-sm">
-                    <div class="card-body p-4">
-                        <div class="feature-icon bg-primary bg-gradient text-white rounded-circle mb-3">
-                            <i class="fas fa-award fa-2x"></i>
-                        </div>
-                        <h4 class="card-title">Loyalty Rewards</h4>
-                        <p class="card-text">Stay with us longer and earn rewards. Long-term students receive benefits like free classes and special workshops.</p>
-                        <ul class="list-unstyled mt-3">
-                            <li><i class="fas fa-check text-success me-2"></i> Free class after 3 months</li>
-                            <li><i class="fas fa-check text-success me-2"></i> Special workshops access</li>
-                            <li><i class="fas fa-check text-success me-2"></i> Referral bonuses</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
+<section class="py-5 bg-light pricing-info-section">
+  <div class="container">
+    <div class="row text-center mb-5">
+      <div class="col-lg-8 mx-auto">
+        <h2 class="fw-bold">Flexible Pricing to Fit Your Needs</h2>
+        <p class="text-muted">
+          Our pricing is designed to be fair, transparent, and affordable
+        </p>
+      </div>
     </div>
+
+    <div class="row g-4">
+      <div class="col-lg-4">
+        <div class="card h-100 border-0 shadow-sm">
+          <div class="card-body p-4">
+            <div
+              class="feature-icon bg-primary bg-gradient text-white rounded-circle mb-3"
+            >
+              <i class="fas fa-calendar-check fa-2x"></i>
+            </div>
+            <h4 class="card-title">Pay As You Learn</h4>
+            <p class="card-text">
+              Pay only for the classes you actually attend. You'll be billed at
+              the end of each month based on completed sessions.
+            </p>
+            <ul class="list-unstyled mt-3">
+              <li>
+                <i class="fas fa-check text-success me-2"></i> No long-term
+                contracts
+              </li>
+              <li>
+                <i class="fas fa-check text-success me-2"></i> Monthly billing
+              </li>
+              <li>
+                <i class="fas fa-check text-success me-2"></i> Transparent
+                pricing
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-4">
+        <div class="card h-100 border-0 shadow-sm">
+          <div class="card-body p-4">
+            <div
+              class="feature-icon bg-primary bg-gradient text-white rounded-circle mb-3"
+            >
+              <i class="fas fa-users fa-2x"></i>
+            </div>
+            <h4 class="card-title">Family Discounts</h4>
+            <p class="card-text">
+              Enroll multiple children and receive discounts on their combined
+              learning packages. The more you learn, the more you save.
+            </p>
+            <ul class="list-unstyled mt-3">
+              <li>
+                <i class="fas fa-check text-success me-2"></i> 5% off for 2
+                students
+              </li>
+              <li>
+                <i class="fas fa-check text-success me-2"></i> 10% off for 3+
+                students
+              </li>
+              <li>
+                <i class="fas fa-check text-success me-2"></i> Applied
+                automatically
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-4">
+        <div class="card h-100 border-0 shadow-sm">
+          <div class="card-body p-4">
+            <div
+              class="feature-icon bg-primary bg-gradient text-white rounded-circle mb-3"
+            >
+              <i class="fas fa-award fa-2x"></i>
+            </div>
+            <h4 class="card-title">Loyalty Rewards</h4>
+            <p class="card-text">
+              Stay with us longer and earn rewards. Long-term students receive
+              benefits like free classes and special workshops.
+            </p>
+            <ul class="list-unstyled mt-3">
+              <li>
+                <i class="fas fa-check text-success me-2"></i> Free class after
+                3 months
+              </li>
+              <li>
+                <i class="fas fa-check text-success me-2"></i> Special workshops
+                access
+              </li>
+              <li>
+                <i class="fas fa-check text-success me-2"></i> Referral bonuses
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </section>
 
 <!-- Payment Methods Section -->
-<section class="py-5">
-    <div class="container">
-        <div class="row text-center mb-5">
-            <div class="col-lg-8 mx-auto">
-                <h2 class="fw-bold">Easy and Secure Payments</h2>
-                <p class="text-muted">Multiple payment options for your convenience</p>
-            </div>
-        </div>
-        
-        <div class="row">
-            <div class="col-lg-8 mx-auto">
-                <div class="card border-0 shadow">
-                    <div class="card-body p-4">
-                        <div class="row g-4 text-center">
-                            <div class="col-md-3">
-                                <img src="{% static 'images/payment/visa.png' %}" alt="Visa" class="img-fluid mb-3" style="height: 40px;">
-                                <h5>Credit Cards</h5>
-                                <p class="text-muted small">Visa, Mastercard, Amex</p>
-                            </div>
-                            
-                            <div class="col-md-3">
-                                <img src="{% static 'images/payment/upi.png' %}" alt="UPI" class="img-fluid mb-3" style="height: 40px;">
-                                <h5>UPI</h5>
-                                <p class="text-muted small">Google Pay, PhonePe, Paytm</p>
-                            </div>
-                            
-                            <div class="col-md-3">
-                                <img src="{% static 'images/payment/netbanking.png' %}" alt="Net Banking" class="img-fluid mb-3" style="height: 40px;">
-                                <h5>Net Banking</h5>
-                                <p class="text-muted small">All major banks</p>
-                            </div>
-                            
-                            <div class="col-md-3">
-                                <img src="{% static 'images/payment/wallet.png' %}" alt="Wallet" class="img-fluid mb-3" style="height: 40px;">
-                                <h5>Wallets</h5>
-                                <p class="text-muted small">Paytm, PhonePe, Mobikwik</p>
-                            </div>
-                        </div>
-                        
-                        <hr class="my-4">
-                        
-                        <div class="text-center">
-                            <p class="mb-0"><i class="fas fa-lock me-2"></i> All payments are processed securely through PayU, India's leading payment gateway.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+<section class="py-5 payment-methods-section">
+  <div class="container">
+    <div class="row text-center mb-5">
+      <div class="col-lg-8 mx-auto">
+        <h2 class="fw-bold">Easy and Secure Payments</h2>
+        <p class="text-muted">Multiple payment options for your convenience</p>
+      </div>
     </div>
+
+    <div class="row">
+      <div class="col-lg-8 mx-auto">
+        <div class="card border-0 shadow">
+          <div class="card-body p-4">
+            <div class="row g-4 text-center">
+              <div class="col-md-3 col-6">
+                <img
+                  src="{% static 'images/payment/visa.png' %}"
+                  alt="Visa"
+                  class="img-fluid mb-3"
+                  style="height: 40px"
+                />
+                <h5>Credit Cards</h5>
+                <p class="text-muted small">Visa, Mastercard, Amex</p>
+              </div>
+
+              <div class="col-md-3 col-6">
+                <img
+                  src="{% static 'images/payment/upi.png' %}"
+                  alt="UPI"
+                  class="img-fluid mb-3"
+                  style="height: 40px"
+                />
+                <h5>UPI</h5>
+                <p class="text-muted small">Google Pay, PhonePe, Paytm</p>
+              </div>
+
+              <div class="col-md-3 col-6">
+                <img
+                  src="{% static 'images/payment/netbanking.png' %}"
+                  alt="Net Banking"
+                  class="img-fluid mb-3"
+                  style="height: 40px"
+                />
+                <h5>Net Banking</h5>
+                <p class="text-muted small">All major banks</p>
+              </div>
+
+              <div class="col-md-3 col-6">
+                <img
+                  src="{% static 'images/payment/wallet.png' %}"
+                  alt="Wallet"
+                  class="img-fluid mb-3"
+                  style="height: 40px"
+                />
+                <h5>Wallets</h5>
+                <p class="text-muted small">Paytm, PhonePe, Mobikwik</p>
+              </div>
+            </div>
+
+            <hr class="my-4" />
+
+            <div class="text-center">
+              <p class="mb-0">
+                <i class="fas fa-lock me-2"></i> All payments are processed
+                securely through PayU, India's leading payment gateway.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </section>
 
 <!-- FAQ Section -->
-<section class="py-5 bg-light">
-    <div class="container">
-        <div class="row text-center mb-5">
-            <div class="col-lg-8 mx-auto">
-                <h2 class="fw-bold">Pricing FAQs</h2>
-                <p class="text-muted">Common questions about our pricing</p>
+<section class="py-5 bg-light faq-section">
+  <div class="container">
+    <div class="row text-center mb-5">
+      <div class="col-lg-8 mx-auto">
+        <h2 class="fw-bold">Pricing FAQs</h2>
+        <p class="text-muted">Common questions about our pricing</p>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-lg-8 mx-auto">
+        <div class="accordion" id="pricingFaqAccordion">
+          <div class="accordion-item border-0 mb-3 shadow-sm">
+            <h2 class="accordion-header" id="headingOne">
+              <button
+                class="accordion-button"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#collapseOne"
+                aria-expanded="true"
+                aria-controls="collapseOne"
+              >
+                Are there any hidden fees?
+              </button>
+            </h2>
+            <div
+              id="collapseOne"
+              class="accordion-collapse collapse show"
+              aria-labelledby="headingOne"
+              data-bs-parent="#pricingFaqAccordion"
+            >
+              <div class="accordion-body">
+                No, there are no hidden fees. The price you see for each session
+                is what you pay. You'll receive a detailed breakdown of charges
+                before making any payment, showing exactly how many sessions
+                you've had and the corresponding amount.
+              </div>
             </div>
+          </div>
+
+          <div class="accordion-item border-0 mb-3 shadow-sm">
+            <h2 class="accordion-header" id="headingTwo">
+              <button
+                class="accordion-button collapsed"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#collapseTwo"
+                aria-expanded="false"
+                aria-controls="collapseTwo"
+              >
+                What happens if I miss a scheduled class?
+              </button>
+            </h2>
+            <div
+              id="collapseTwo"
+              class="accordion-collapse collapse"
+              aria-labelledby="headingTwo"
+              data-bs-parent="#pricingFaqAccordion"
+            >
+              <div class="accordion-body">
+                If you notify us at least 24 hours in advance, we can reschedule
+                the class without any charge. For last-minute cancellations
+                (less than 24 hours notice) or no-shows, the session will still
+                be counted and charged as part of your monthly billing.
+              </div>
+            </div>
+          </div>
+
+          <div class="accordion-item border-0 mb-3 shadow-sm">
+            <h2 class="accordion-header" id="headingThree">
+              <button
+                class="accordion-button collapsed"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#collapseThree"
+                aria-expanded="false"
+                aria-controls="collapseThree"
+              >
+                Can I change subjects mid-month?
+              </button>
+            </h2>
+            <div
+              id="collapseThree"
+              class="accordion-collapse collapse"
+              aria-labelledby="headingThree"
+              data-bs-parent="#pricingFaqAccordion"
+            >
+              <div class="accordion-body">
+                Yes, you can add new subjects at any time. However, we recommend
+                completing the current month's schedule for subjects you're
+                already enrolled in before making major changes. This ensures
+                continuity in your learning and helps maintain a consistent
+                schedule.
+              </div>
+            </div>
+          </div>
+
+          <div class="accordion-item border-0 mb-3 shadow-sm">
+            <h2 class="accordion-header" id="headingFour">
+              <button
+                class="accordion-button collapsed"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#collapseFour"
+                aria-expanded="false"
+                aria-controls="collapseFour"
+              >
+                Do you offer any scholarships or financial aid?
+              </button>
+            </h2>
+            <div
+              id="collapseFour"
+              class="accordion-collapse collapse"
+              aria-labelledby="headingFour"
+              data-bs-parent="#pricingFaqAccordion"
+            >
+              <div class="accordion-body">
+                Yes, we offer limited scholarships to students with exceptional
+                academic records or those who demonstrate financial need. Please
+                contact our support team for more information about the
+                application process and eligibility criteria.
+              </div>
+            </div>
+          </div>
+
+          <div class="accordion-item border-0 mb-3 shadow-sm">
+            <h2 class="accordion-header" id="headingFive">
+              <button
+                class="accordion-button collapsed"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#collapseFive"
+                aria-expanded="false"
+                aria-controls="collapseFive"
+              >
+                Is the demo class really free?
+              </button>
+            </h2>
+            <div
+              id="collapseFive"
+              class="accordion-collapse collapse"
+              aria-labelledby="headingFive"
+              data-bs-parent="#pricingFaqAccordion"
+            >
+              <div class="accordion-body">
+                Yes, your first demo class is completely free with no obligation
+                to continue. This allows you to experience our teaching
+                methodology and platform before committing to regular sessions.
+              </div>
+            </div>
+          </div>
         </div>
-        
-        <div class="row">
-            <div class="col-lg-8 mx-auto">
-                <div class="accordion" id="pricingFaqAccordion">
-                    <div class="accordion-item border-0 mb-3 shadow-sm">
-                        <h2 class="accordion-header" id="headingOne">
-                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                Are there any hidden fees?
-                            </button>
-                        </h2>
-                        <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#pricingFaqAccordion">
-                            <div class="accordion-body">
-                                No, there are no hidden fees. The price you see for each session is what you pay. You'll receive a detailed breakdown of charges before making any payment, showing exactly how many sessions you've had and the corresponding amount.
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="accordion-item border-0 mb-3 shadow-sm">
-                        <h2 class="accordion-header" id="headingTwo">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                What happens if I miss a scheduled class?
-                            </button>
-                        </h2>
-                        <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#pricingFaqAccordion">
-                            <div class="accordion-body">
-                                If you notify us at least 24 hours in advance, we can reschedule the class without any charge. For last-minute cancellations (less than 24 hours notice) or no-shows, the session will still be counted and charged as part of your monthly billing.
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="accordion-item border-0 mb-3 shadow-sm">
-                        <h2 class="accordion-header" id="headingThree">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                                Can I change subjects mid-month?
-                            </button>
-                        </h2>
-                        <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#pricingFaqAccordion">
-                            <div class="accordion-body">
-                                Yes, you can add new subjects at any time. However, we recommend completing the current month's schedule for subjects you're already enrolled in before making major changes. This ensures continuity in your learning and helps maintain a consistent schedule.
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="accordion-item border-0 mb-3 shadow-sm">
-                        <h2 class="accordion-header" id="headingFour">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
-                                Do you offer any scholarships or financial aid?
-                            </button>
-                        </h2>
-                        <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#pricingFaqAccordion">
-                            <div class="accordion-body">
-                                Yes, we offer limited scholarships to students with exceptional academic records or those who demonstrate financial need. Please contact our support team for more information about the application process and eligibility criteria.
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="accordion-item border-0 mb-3 shadow-sm">
-                        <h2 class="accordion-header" id="headingFive">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
-                                Is the demo class really free?
-                            </button>
-                        </h2>
-                        <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive" data-bs-parent="#pricingFaqAccordion">
-                            <div class="accordion-body">
-                                Yes, your first demo class is completely free with no obligation to continue. This allows you to experience our teaching methodology and platform before committing to regular sessions.
-                            </div>
-                        </div>
-                    </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Enhanced CTA Section -->
+<section class="py-5 cta-section">
+  <div class="cta-background"></div>
+  <div class="container position-relative">
+    <div class="row">
+      <div class="col-lg-10 mx-auto">
+        <div class="cta-card">
+          <div class="row align-items-center">
+            <div class="col-lg-7 cta-content">
+              <h2 class="cta-title">Start Your Learning Journey Today</h2>
+              <p class="cta-text">
+                Book your free demo class now and get a personalized learning
+                plan tailored to your needs. Join 5,000+ students who improved
+                their grades by 25% on average.
+              </p>
+
+              <div class="cta-features">
+                <div class="cta-feature">
+                  <div class="cta-feature-icon">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      width="24"
+                      height="24"
+                    >
+                      <path
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M5 12l5 5L20 7"
+                      ></path>
+                    </svg>
+                  </div>
+                  <div class="cta-feature-text">Expert teachers</div>
                 </div>
-            </div>
-        </div>
-    </div>
-</section>
+                <div class="cta-feature">
+                  <div class="cta-feature-icon">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      width="24"
+                      height="24"
+                    >
+                      <path
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M5 12l5 5L20 7"
+                      ></path>
+                    </svg>
+                  </div>
+                  <div class="cta-feature-text">Personalized approach</div>
+                </div>
+                <div class="cta-feature">
+                  <div class="cta-feature-icon">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      width="24"
+                      height="24"
+                    >
+                      <path
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M5 12l5 5L20 7"
+                      ></path>
+                    </svg>
+                  </div>
+                  <div class="cta-feature-text">No commitment required</div>
+                </div>
+              </div>
 
-<!-- CTA Section -->
-<section class="py-5 bg-primary text-white">
-    <div class="container">
-        <div class="row align-items-center">
-            <div class="col-lg-8 mx-auto text-center">
-                <h2 class="fw-bold mb-4">Ready to Start Learning?</h2>
-                <p class="lead mb-4">Begin with a free demo class and experience our personalized approach to education.</p>
-                <a href="{% url 'account_signup' %}" class="btn btn-light btn-lg px-4 me-2">Get Started</a>
-                <a href="{% url 'landing:contact' %}" class="btn btn-outline-light btn-lg px-4">Contact Us</a>
+              <div class="cta-buttons">
+                <a
+                  href="{% url 'account_signup' %}"
+                  class="btn btn-primary btn-lg"
+                >
+                  <span>Get Started Free</span>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    width="24"
+                    height="24"
+                  >
+                    <path
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M5 12h14M12 5l7 7-7 7"
+                    ></path>
+                  </svg>
+                </a>
+                <a
+                  href="{% url 'landing:contact' %}"
+                  class="btn btn-outline-primary btn-lg"
+                  >Talk to an Advisor</a
+                >
+              </div>
             </div>
+            <div class="col-lg-5">
+              <div class="cta-image-wrapper">
+                <div class="cta-image-bg"></div>
+                <div class="cta-testimonial">
+                  <div class="cta-stars">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      width="16"
+                      height="16"
+                    >
+                      <path
+                        fill="currentColor"
+                        d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"
+                      ></path>
+                    </svg>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      width="16"
+                      height="16"
+                    >
+                      <path
+                        fill="currentColor"
+                        d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"
+                      ></path>
+                    </svg>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      width="16"
+                      height="16"
+                    >
+                      <path
+                        fill="currentColor"
+                        d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"
+                      ></path>
+                    </svg>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      width="16"
+                      height="16"
+                    >
+                      <path
+                        fill="currentColor"
+                        d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"
+                      ></path>
+                    </svg>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      width="16"
+                      height="16"
+                    >
+                      <path
+                        fill="currentColor"
+                        d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"
+                      ></path>
+                    </svg>
+                  </div>
+                  <p class="cta-quote">
+                    "My daughter's grades improved dramatically after just 2
+                    months with LearnIspire. The teachers are amazing!"
+                  </p>
+                  <div class="cta-quote-author">
+                    <div class="author-avatar">RS</div>
+                    <div class="author-details">
+                      <div class="author-name">Ritu Sharma</div>
+                      <div class="author-title">
+                        Parent of a Grade 10 Student
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
+      </div>
     </div>
+  </div>
 </section>
-{% endblock %}
+{% endblock %} {% block extra_css %}
+<style>
+  /* Base Styling */
+  :root {
+    --primary-color: #1976d2;
+    --primary-light: #e3f2fd;
+    --primary-dark: #1565c0;
+    --success-color: #4caf50;
+    --error-color: #f44336;
+    --text-dark: #333;
+    --text-medium: #555;
+    --text-light: #666;
+    --border-radius: 8px;
+    --box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    --transition-standard: all 0.3s ease;
+  }
 
-{% block extra_js %}
-<script>
-    // Simple template filter to multiply values
-    function multiply(a, b) {
-        return (a * b).toFixed(2);
+  .pricing-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 3rem 1.5rem;
+  }
+
+  .header {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+
+  .header h2 {
+    font-size: 2.5rem;
+    font-weight: 600;
+    color: var(--text-dark);
+    margin-bottom: 0.5rem;
+  }
+
+  .header h5 {
+    font-size: 1.2rem;
+    font-weight: 400;
+    color: var(--text-light);
+  }
+
+  .grid-container {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  @media (min-width: 900px) {
+    .grid-container {
+      grid-template-columns: 1fr 1fr;
     }
+  }
+
+  /* Accessibility */
+  *:focus {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
+  }
+
+  /* Paper and Form Container */
+  .paper {
+    background-color: #fff;
+    border-radius: var(--border-radius);
+    padding: 2rem;
+    box-shadow: var(--box-shadow);
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+    transition: var(--transition-standard);
+  }
+
+  .paper:before {
+    content: "";
+    position: absolute;
+    top: -20px;
+    right: -20px;
+    width: 100px;
+    height: 100px;
+    background: linear-gradient(135deg, rgba(25, 118, 210, 0.1), transparent);
+    transform: rotate(45deg);
+    z-index: -1;
+  }
+
+  .paper:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  .form-container {
+    animation: fadeIn 0.5s ease;
+  }
+
+  /* Form Layout */
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+
+  .form-control {
+    position: relative;
+    width: 100%;
+    margin-bottom: 0.5rem;
+  }
+
+  .form-control-half {
+    position: relative;
+    width: 100%;
+  }
+
+  .form-grid-two-col {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+
+  @media (min-width: 600px) {
+    .form-grid-two-col {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  /* Form Elements */
+  label,
+  legend {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+    color: var(--text-medium);
+    font-weight: 500;
+    transition: color 0.3s;
+  }
+
+  fieldset {
+    border: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  legend {
+    margin-bottom: 0.75rem;
+  }
+
+  input,
+  select {
+    width: 100%;
+    padding: 0.875rem 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1rem;
+    transition: var(--transition-standard);
+  }
+
+  input:focus,
+  select:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(25, 118, 210, 0.1);
+  }
+
+  .asterisk {
+    color: var(--error-color);
+  }
+
+  /* Animated Input Styling */
+  .input-animated,
+  select.input-animated {
+    border: none;
+    border-bottom: 2px solid #e0e0e0;
+    border-radius: 0;
+    padding: 0.875rem 1rem 0.625rem 0;
+    background-color: transparent;
+    transition: border-color 0.3s;
+  }
+
+  .input-animated:focus,
+  select.input-animated:focus {
+    border-bottom-color: var(--primary-color);
+    box-shadow: none;
+  }
+
+  /* Floating Label Effect */
+  .form-floating {
+    position: relative;
+  }
+
+  .form-floating input,
+  .form-floating select {
+    height: 3.5rem;
+    padding: 1.5rem 1rem 0.5rem 1rem;
+  }
+
+  .form-floating label {
+    position: absolute;
+    top: 0;
+    left: 1rem;
+    height: 3.5rem;
+    padding: 1rem 0;
+    pointer-events: none;
+    transform-origin: 0 0;
+    transition: transform 0.2s, color 0.2s;
+  }
+
+  .form-floating input:focus ~ label,
+  .form-floating input:not(:placeholder-shown) ~ label,
+  .form-floating select:focus ~ label,
+  .form-floating select:not([value=""]):not(:focus) ~ label {
+    transform: translateY(-0.5rem) scale(0.85);
+    color: var(--primary-color);
+  }
+
+  /* Custom Select Styling */
+  .select-wrapper {
+    position: relative;
+    display: block;
+  }
+
+  .select-wrapper:after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: 1rem;
+    width: 0.625rem;
+    height: 0.625rem;
+    border-right: 2px solid #666;
+    border-bottom: 2px solid #666;
+    transform: translateY(-50%) rotate(45deg);
+    pointer-events: none;
+    transition: transform 0.3s ease;
+  }
+
+  .select-wrapper:focus-within:after {
+    transform: translateY(-50%) rotate(-135deg);
+    border-color: var(--primary-color);
+  }
+
+  select {
+    appearance: none;
+    padding-right: 2.5rem;
+    cursor: pointer;
+  }
+
+  /* Custom Checkbox Grid */
+  .checkbox-subjects {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 0.75rem;
+    margin-top: 0.5rem;
+  }
+
+  .subject-label {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    background-color: #f5f5f5;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  }
+
+  .subject-label:hover {
+    background-color: var(--primary-light);
+  }
+
+  .subject-label:after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to right, rgba(25, 118, 210, 0.1), transparent);
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+    pointer-events: none;
+  }
+
+  .subject-label:hover:after {
+    transform: translateX(0);
+  }
+
+  .checkbox-subjects input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    margin-right: 10px;
+    accent-color: var(--primary-color);
+  }
+
+  .checkbox-subjects input[type="checkbox"]:checked + span {
+    font-weight: 500;
+    color: var(--primary-color);
+  }
+
+  /* Button Styling */
+  .btn {
+    width: 100%;
+    padding: 0.875rem;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    position: relative;
+  }
+
+  .btn:hover {
+    background-color: var(--primary-dark);
+    transform: translateY(-2px);
+  }
+
+  .btn:active {
+    transform: translateY(0);
+  }
+
+  .btn-animated {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .btn-animated .btn-icon {
+    transform: translateX(-5px);
+    opacity: 0;
+    transition: all 0.3s;
+  }
+
+  .btn-animated:hover .btn-icon {
+    transform: translateX(5px);
+    opacity: 1;
+  }
+
+  .btn-animated .loading-spinner {
+    position: absolute;
+    width: 1.25rem;
+    height: 1.25rem;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    display: none;
+  }
+
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  .btn.loading .btn-text {
+    opacity: 0.6;
+  }
+
+  .btn.loading .btn-icon {
+    display: none;
+  }
+
+  .btn.loading .loading-spinner {
+    display: block;
+  }
+
+  /* Ripple effect */
+  .ripple {
+    position: absolute;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.4);
+    transform: scale(0);
+    animation: ripple 0.6s linear;
+  }
+
+  @keyframes ripple {
+    to {
+      transform: scale(25);
+      opacity: 0;
+    }
+  }
+
+  /* Success state animation */
+  .btn-success {
+    background-color: var(--success-color) !important;
+    transform: scale(1.02);
+    transition: all 0.3s ease;
+  }
+
+  /* Validation States */
+  .is-valid {
+    border-color: var(--success-color) !important;
+  }
+
+  .is-invalid {
+    border-color: var(--error-color) !important;
+  }
+
+  .invalid-feedback {
+    display: none;
+    width: 100%;
+    margin-top: 0.25rem;
+    font-size: 0.85rem;
+    color: var(--error-color);
+  }
+
+  .is-invalid + .invalid-feedback,
+  .is-invalid ~ .invalid-feedback {
+    display: block;
+    animation: fadeIn 0.3s;
+  }
+
+  /* Features Section Styling */
+  .features-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .features-header {
+    margin-bottom: 0.5rem;
+  }
+
+  .features-header h5 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text-dark);
+    margin-bottom: 0.5rem;
+  }
+
+  .features-header p {
+    color: var(--text-light);
+    font-size: 0.95rem;
+  }
+
+  .card {
+    background-color: #fff;
+    border-radius: var(--border-radius);
+    padding: 1.25rem;
+    box-shadow: var(--box-shadow);
+    transition: transform 0.3s, box-shadow 0.3s;
+    animation: fadeIn 0.5s ease;
+  }
+
+  .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  }
+
+  .price-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+  }
+
+  .card-content {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .icon-wrapper {
+    background-color: var(--primary-light);
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: background-color 0.3s;
+  }
+
+  .card:hover .icon-wrapper {
+    background-color: var(--primary-color);
+  }
+
+  .card:hover .icon {
+    fill: white;
+  }
+
+  .icon {
+    fill: var(--primary-color);
+    width: 1.5rem;
+    height: 1.5rem;
+    transition: fill 0.3s;
+  }
+
+  .card-text h6 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-dark);
+    margin-bottom: 0.5rem;
+  }
+
+  .card-text p {
+    color: var(--text-light);
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+
+  .help-card {
+    background-color: #f0f7ff;
+    margin-top: 1.5rem;
+    border-left: 4px solid var(--primary-color);
+  }
+
+  .help-card h6 {
+    color: var(--primary-color);
+  }
+
+  .help-card p {
+    font-size: 0.95rem;
+  }
+
+  /* Enhanced Sections */
+  .pricing-info-section,
+  .payment-methods-section,
+  .faq-section,
+  .cta-section {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .pricing-info-section::before {
+    content: "";
+    position: absolute;
+    top: -50px;
+    right: -50px;
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(
+      circle,
+      rgba(25, 118, 210, 0.05) 0%,
+      transparent 70%
+    );
+    border-radius: 50%;
+    z-index: 0;
+  }
+
+  .payment-options {
+    transition: transform 0.3s;
+  }
+
+  .payment-options > div:hover {
+    transform: translateY(-5px);
+  }
+
+  .accordion-item {
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+
+  .accordion-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+  }
+
+  .accordion-button:not(.collapsed) {
+    background-color: var(--primary-light);
+    color: var(--primary-color);
+    font-weight: 500;
+  }
+
+  .accordion-button:focus {
+    box-shadow: 0 0 0 0.25rem rgba(25, 118, 210, 0.25);
+  }
+
+  /* Enhanced CTA Section Styling */
+  .cta-section {
+    position: relative;
+    padding: 5rem 0;
+    overflow: hidden;
+    z-index: 1;
+  }
+
+  .cta-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      135deg,
+      var(--primary-color),
+      var(--primary-dark)
+    );
+    opacity: 0.1;
+    z-index: -1;
+  }
+
+  .cta-card {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: all 0.3s ease;
+    position: relative;
+  }
+
+  .cta-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+  }
+
+  .cta-content {
+    padding: 3rem;
+  }
+
+  .cta-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin-bottom: 1rem;
+    line-height: 1.2;
+  }
+
+  .cta-text {
+    font-size: 1.1rem;
+    color: var(--text-medium);
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+  }
+
+  .cta-features {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 1.5rem;
+    gap: 1rem;
+  }
+
+  .cta-feature {
+    display: flex;
+    align-items: center;
+    margin-right: 1.5rem;
+  }
+
+  .cta-feature-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    background-color: rgba(25, 118, 210, 0.1);
+    border-radius: 50%;
+    margin-right: 8px;
+    color: var(--primary-color);
+  }
+
+  .cta-feature-text {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--text-medium);
+  }
+
+  .cta-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .cta-btn-primary {
+    background: linear-gradient(
+      to right,
+      var(--primary-color),
+      var(--primary-dark)
+    );
+    border: none;
+    padding: 0.75rem 1.5rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(25, 118, 210, 0.2);
+  }
+
+  .cta-btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(25, 118, 210, 0.3);
+  }
+
+  .cta-btn-primary svg {
+    transition: transform 0.3s ease;
+  }
+
+  .cta-btn-primary:hover svg {
+    transform: translateX(5px);
+  }
+
+  .cta-btn-secondary {
+    border: 2px solid var(--primary-color);
+    color: var(--primary-color);
+    padding: 0.75rem 1.5rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+  }
+
+  .cta-btn-secondary:hover {
+    background-color: rgba(25, 118, 210, 0.1);
+  }
+
+  .cta-image-col {
+    padding: 0;
+  }
+
+  .cta-image-wrapper {
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .cta-image-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #1976d2, #64b5f6);
+    z-index: 0;
+  }
+
+  .cta-testimonial {
+    position: relative;
+    z-index: 1;
+    background-color: white;
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin: 2rem;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    max-width: 350px;
+  }
+
+  .cta-stars {
+    display: flex;
+    margin-bottom: 1rem;
+    color: #ffd700;
+  }
+
+  .cta-quote {
+    font-style: italic;
+    font-size: 1rem;
+    color: var(--text-dark);
+    margin-bottom: 1rem;
+    line-height: 1.5;
+  }
+
+  .cta-quote-author {
+    display: flex;
+    align-items: center;
+  }
+
+  .author-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: var(--primary-light);
+    color: var(--primary-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    margin-right: 0.75rem;
+  }
+
+  .author-name {
+    font-weight: 600;
+    color: var(--text-dark);
+    font-size: 0.9rem;
+  }
+
+  .author-title {
+    font-size: 0.8rem;
+    color: var(--text-light);
+  }
+
+  .cta-trustbadges {
+    text-align: center;
+    margin-top: 2rem;
+  }
+
+  .trust-label {
+    font-size: 0.9rem;
+    color: var(--text-light);
+    margin-bottom: 1rem;
+  }
+
+  .trust-logos {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+
+  .trust-logo {
+    opacity: 0.7;
+    transition: opacity 0.3s ease;
+  }
+
+  .trust-logo:hover {
+    opacity: 1;
+  }
+
+  .trust-img {
+    height: 40px;
+    width: auto;
+  }
+
+  @media (max-width: 992px) {
+    .cta-content {
+      padding: 2rem;
+    }
+
+    .cta-title {
+      font-size: 2rem;
+    }
+
+    .cta-image-wrapper {
+      min-height: 300px;
+    }
+
+    .cta-testimonial {
+      margin: 1.5rem;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .cta-buttons {
+      flex-direction: column;
+    }
+
+    .cta-btn-primary,
+    .cta-btn-secondary {
+      width: 100%;
+    }
+
+    .cta-image-wrapper {
+      min-height: 250px;
+    }
+
+    .cta-testimonial {
+      max-width: 90%;
+    }
+
+    .cta-feature {
+      margin-right: 1rem;
+    }
+  }
+
+  /* Animations */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .staggered-fade-in > * {
+    opacity: 0;
+    animation: fadeIn 0.5s ease forwards;
+  }
+
+  .staggered-fade-in > *:nth-child(1) {
+    animation-delay: 0.1s;
+  }
+  .staggered-fade-in > *:nth-child(2) {
+    animation-delay: 0.2s;
+  }
+  .staggered-fade-in > *:nth-child(3) {
+    animation-delay: 0.3s;
+  }
+  .staggered-fade-in > *:nth-child(4) {
+    animation-delay: 0.4s;
+  }
+
+  /* Notification System */
+  .notification-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .notification {
+    padding: 12px 24px;
+    border-radius: 4px;
+    color: white;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16);
+    display: flex;
+    align-items: center;
+    min-width: 300px;
+    max-width: 400px;
+    transition: all 0.3s;
+    animation: slideIn 0.3s forwards;
+  }
+
+  .notification.success {
+    background-color: var(--success-color);
+  }
+
+  .notification.error {
+    background-color: var(--error-color);
+  }
+
+  .notification.warning {
+    background-color: #ff9800;
+  }
+
+  .notification.info {
+    background-color: var(--primary-color);
+  }
+
+  @keyframes slideIn {
+    from {
+      opacity: 0;
+      transform: translateX(100%);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  /* Responsive tweaks */
+  @media (max-width: 768px) {
+    .pricing-container {
+      padding: 2rem 1rem;
+    }
+
+    .header h2 {
+      font-size: 2rem;
+    }
+
+    .checkbox-subjects {
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    }
+
+    .btn {
+      padding: 0.75rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .checkbox-subjects {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .form-floating label {
+      font-size: 0.85rem;
+    }
+  }
+</style>
+{% endblock %} {% block extra_js %}
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    // Initialize the form and its components
+    const form = document.getElementById("quoteForm");
+    const fullNameInput = document.getElementById("fullName");
+    const emailInput = document.getElementById("email");
+    const whatsappInput = document.getElementById("whatsapp");
+    const gradeSelect = document.getElementById("grade");
+    const boardSelect = document.getElementById("board");
+    const subjectCheckboxes = document.querySelectorAll(
+      'input[name="subjects"]'
+    );
+    const subjectsGroup = document.getElementById("subjectsGroup");
+    const subjectsError = document.getElementById("subjectsError");
+    const submitBtn = form.querySelector('button[type="submit"]');
+
+    // Add form elements to an array for easier handling
+    const formElements = [
+      { element: fullNameInput, validator: validateFullName },
+      { element: emailInput, validator: validateEmail },
+      { element: whatsappInput, validator: validateWhatsapp },
+      { element: gradeSelect, validator: validateSelect },
+      { element: boardSelect, validator: validateSelect },
+    ];
+
+    // Initialize form elements with event listeners
+    initFormElements();
+
+    // Form validation and submission
+    form.addEventListener("submit", handleFormSubmit);
+
+    // Add ripple effect to button
+    submitBtn.addEventListener("mousedown", createRippleEffect);
+
+    // Card animations on scroll
+    initScrollAnimations();
+
+    // Helper functions
+    function initFormElements() {
+      // Set up input validation events
+      formElements.forEach((item) => {
+        const element = item.element;
+        const validator = item.validator;
+
+        element.addEventListener("blur", function () {
+          validateField(element, validator);
+        });
+
+        element.addEventListener("focus", function () {
+          element.classList.remove("is-invalid");
+          const feedback = element.nextElementSibling?.nextElementSibling;
+          if (feedback && feedback.classList.contains("invalid-feedback")) {
+            feedback.style.display = "none";
+          }
+        });
+
+        // Special handling for select elements
+        if (element.tagName === "SELECT") {
+          element.addEventListener("change", function () {
+            validateField(element, validator);
+          });
+        }
+      });
+
+      // Set up subject checkbox validation
+      subjectCheckboxes.forEach((checkbox) => {
+        checkbox.addEventListener("change", function () {
+          validateSubjects();
+        });
+      });
+    }
+
+    function validateField(element, validatorFn) {
+      const isValid = validatorFn(element);
+
+      if (isValid) {
+        element.classList.add("is-valid");
+        element.classList.remove("is-invalid");
+        return true;
+      } else {
+        element.classList.add("is-invalid");
+        element.classList.remove("is-valid");
+        return false;
+      }
+    }
+
+    function validateFullName(element) {
+      const value = element.value.trim();
+      return value.length >= 3 && /^[a-zA-Z\s]+$/.test(value);
+    }
+
+    function validateEmail(element) {
+      const value = element.value.trim();
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+    }
+
+    function validateWhatsapp(element) {
+      const value = element.value.trim();
+      return /^[0-9]{10,15}$/.test(value.replace(/[\s()+\-]|ext/gi, ""));
+    }
+
+    function validateSelect(element) {
+      return element.value !== "";
+    }
+
+    function validateSubjects() {
+      const isValid = Array.from(subjectCheckboxes).some((cb) => cb.checked);
+
+      if (isValid) {
+        subjectsGroup.classList.remove("is-invalid");
+        subjectsError.style.display = "none";
+        return true;
+      } else {
+        subjectsGroup.classList.add("is-invalid");
+        subjectsError.style.display = "block";
+        return false;
+      }
+    }
+
+    function handleFormSubmit(event) {
+      event.preventDefault();
+
+      // Validate all fields
+      let isValid = true;
+
+      // Individual field validation
+      formElements.forEach((item) => {
+        if (!validateField(item.element, item.validator)) {
+          isValid = false;
+        }
+      });
+
+      // Subject validation
+      if (!validateSubjects()) {
+        isValid = false;
+      }
+
+      // If the form is valid, process submission
+      if (isValid) {
+        showSubmittingState();
+
+        // Gather form data
+        const formData = {
+          fullName: fullNameInput.value.trim(),
+          email: emailInput.value.trim(),
+          whatsapp: whatsappInput.value.trim(),
+          grade: gradeSelect.value,
+          board: boardSelect.value,
+          subjects: Array.from(subjectCheckboxes)
+            .filter((cb) => cb.checked)
+            .map((cb) => cb.value),
+        };
+
+        // Log form data (replace with actual submission in production)
+        console.log("Form data to be submitted:", formData);
+
+        // Send form data to backend via fetch
+        fetch("/api/get-quote", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "X-CSRFToken": getCookie("csrftoken"), // Function to get CSRF token
+          },
+          body: JSON.stringify(formData),
+        })
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error("Network response was not ok");
+            }
+            return response.json();
+          })
+          .then((data) => {
+            // Show success message
+            showNotification(
+              "Success! We will send your pricing details on WhatsApp soon.",
+              "success"
+            );
+
+            // Reset the form and state
+            resetForm();
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+            showNotification(
+              "There was a problem submitting your request. Please try again.",
+              "error"
+            );
+            resetSubmitButton();
+          });
+      } else {
+        // Show error message
+        showNotification(
+          "Please fill in all required fields correctly.",
+          "error"
+        );
+
+        // Focus the first invalid element
+        const firstInvalid = form.querySelector(".is-invalid");
+        if (firstInvalid) {
+          scrollToElement(firstInvalid);
+
+          // If it's an input, focus it
+          if (
+            firstInvalid.tagName === "INPUT" ||
+            firstInvalid.tagName === "SELECT"
+          ) {
+            firstInvalid.focus();
+          }
+        }
+      }
+    }
+
+    function getCookie(name) {
+      let cookieValue = null;
+      if (document.cookie && document.cookie !== "") {
+        const cookies = document.cookie.split(";");
+        for (let i = 0; i < cookies.length; i++) {
+          const cookie = cookies[i].trim();
+          if (cookie.substring(0, name.length + 1) === name + "=") {
+            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+            break;
+          }
+        }
+      }
+      return cookieValue;
+    }
+
+    function showSubmittingState() {
+      // Add loading state to button
+      submitBtn.classList.add("loading");
+      submitBtn.disabled = true;
+
+      // Disable all form inputs
+      formElements.forEach((item) => {
+        item.element.disabled = true;
+      });
+
+      subjectCheckboxes.forEach((cb) => {
+        cb.disabled = true;
+      });
+    }
+
+    function resetSubmitButton() {
+      submitBtn.classList.remove("loading");
+      submitBtn.disabled = false;
+
+      // Re-enable form elements
+      formElements.forEach((item) => {
+        item.element.disabled = false;
+      });
+
+      subjectCheckboxes.forEach((cb) => {
+        cb.disabled = false;
+      });
+    }
+
+    function resetForm() {
+      // Reset the form
+      form.reset();
+
+      // Remove validation states
+      document.querySelectorAll(".is-valid, .is-invalid").forEach((el) => {
+        el.classList.remove("is-valid", "is-invalid");
+      });
+
+      // Reset button state
+      submitBtn.classList.remove("loading");
+      submitBtn.classList.remove("btn-success");
+      submitBtn.disabled = false;
+
+      // Re-enable form elements
+      formElements.forEach((item) => {
+        item.element.disabled = false;
+      });
+
+      subjectCheckboxes.forEach((cb) => {
+        cb.disabled = false;
+      });
+
+      // Add success animation to button
+      submitBtn.classList.add("btn-success");
+
+      // Remove success class after animation
+      setTimeout(() => {
+        submitBtn.classList.remove("btn-success");
+      }, 2000);
+    }
+
+    function createRippleEffect(e) {
+      const btn = e.currentTarget;
+
+      // Remove existing ripples
+      const existingRipples = btn.querySelectorAll(".ripple");
+      existingRipples.forEach((ripple) => ripple.remove());
+
+      const rect = btn.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+
+      const ripple = document.createElement("span");
+      ripple.classList.add("ripple");
+      ripple.style.left = `${x}px`;
+      ripple.style.top = `${y}px`;
+
+      btn.appendChild(ripple);
+
+      setTimeout(() => {
+        ripple.remove();
+      }, 600);
+    }
+
+    function initScrollAnimations() {
+      // Add staggered animation class to feature cards
+      const featureCards = document.querySelectorAll(
+        ".features-container .card"
+      );
+      const featureContainer = document.querySelector(".features-container");
+      featureContainer.classList.add("staggered-fade-in");
+
+      // Check if IntersectionObserver is supported
+      if ("IntersectionObserver" in window) {
+        // Create intersection observer
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add("visible");
+                observer.unobserve(entry.target);
+              }
+            });
+          },
+          { threshold: 0.2 }
+        );
+
+        // Observe pricing cards and other animatable elements
+        document
+          .querySelectorAll(
+            ".price-card, .payment-options > div, .accordion-item"
+          )
+          .forEach((el) => {
+            el.style.opacity = "0";
+            el.style.transform = "translateY(20px)";
+            el.style.transition = "opacity 0.5s ease, transform 0.5s ease";
+            observer.observe(el);
+          });
+
+        // Add animation when elements become visible
+        document.addEventListener(
+          "scroll",
+          () => {
+            document.querySelectorAll(".visible").forEach((el) => {
+              el.style.opacity = "1";
+              el.style.transform = "translateY(0)";
+            });
+          },
+          { passive: true }
+        );
+      } else {
+        // Fallback for browsers that don't support IntersectionObserver
+        document
+          .querySelectorAll(
+            ".price-card, .payment-options > div, .accordion-item"
+          )
+          .forEach((el) => {
+            el.style.opacity = "1";
+            el.style.transform = "translateY(0)";
+          });
+      }
+    }
+
+    function scrollToElement(element) {
+      const rect = element.getBoundingClientRect();
+      const offsetTop = window.pageYOffset + rect.top - 120; // Add some space above
+
+      window.scrollTo({
+        top: offsetTop,
+        behavior: "smooth",
+      });
+    }
+
+    // Notification system
+    function showNotification(message, type) {
+      // Create notification container if it doesn't exist
+      let notifContainer = document.querySelector(".notification-container");
+      if (!notifContainer) {
+        notifContainer = document.createElement("div");
+        notifContainer.className = "notification-container";
+        document.body.appendChild(notifContainer);
+      }
+
+      // Create notification element
+      const notification = document.createElement("div");
+      notification.className = `notification ${type}`;
+      notification.setAttribute("role", "alert");
+      notification.setAttribute("aria-live", "assertive");
+
+      // Create notification content
+      const icon = document.createElement("span");
+      icon.className = "notification-icon";
+      icon.innerHTML =
+        type === "success"
+          ? '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>'
+          : '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>';
+
+      const messageEl = document.createElement("span");
+      messageEl.className = "notification-message";
+      messageEl.textContent = message;
+
+      const closeBtn = document.createElement("button");
+      closeBtn.className = "notification-close";
+      closeBtn.innerHTML = "&times;";
+      closeBtn.setAttribute("aria-label", "Close notification");
+
+      // Add elements to notification
+      notification.appendChild(icon);
+      notification.appendChild(messageEl);
+      notification.appendChild(closeBtn);
+
+      // Add the notification to the container
+      notifContainer.appendChild(notification);
+
+      // Add close button functionality
+      closeBtn.addEventListener("click", () => {
+        removeNotification(notification);
+      });
+
+      // Auto-remove after 5 seconds
+      const timeoutId = setTimeout(() => {
+        removeNotification(notification);
+      }, 5000);
+
+      // Store the timeout ID so we can cancel it if needed
+      notification.dataset.timeoutId = timeoutId;
+
+      // Add hover pause functionality
+      notification.addEventListener("mouseenter", () => {
+        clearTimeout(notification.dataset.timeoutId);
+      });
+
+      notification.addEventListener("mouseleave", () => {
+        notification.dataset.timeoutId = setTimeout(() => {
+          removeNotification(notification);
+        }, 2000);
+      });
+    }
+
+    function removeNotification(notification) {
+      notification.classList.add("removing");
+      notification.style.opacity = "0";
+      notification.style.transform = "translateX(100%)";
+
+      setTimeout(() => {
+        if (notification.parentNode) {
+          notification.parentNode.removeChild(notification);
+        }
+
+        // Remove container if empty
+        const container = document.querySelector(".notification-container");
+        if (container && container.children.length === 0) {
+          container.remove();
+        }
+      }, 300);
+    }
+
+    // Add animation to the testimonial in CTA section
+    const testimonial = document.querySelector(".cta-testimonial");
+    if (testimonial) {
+      testimonial.addEventListener("mouseenter", function () {
+        this.style.transform = "scale(1.03)";
+        this.style.boxShadow = "0 8px 25px rgba(0, 0, 0, 0.15)";
+      });
+
+      testimonial.addEventListener("mouseleave", function () {
+        this.style.transform = "scale(1)";
+        this.style.boxShadow = "0 5px 15px rgba(0, 0, 0, 0.1)";
+      });
+    }
+  });
 </script>
 {% endblock %}

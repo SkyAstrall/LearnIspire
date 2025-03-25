@@ -1,261 +1,610 @@
-{% extends 'base.html' %}
-{% load static %}
+{% extends 'base.html' %} {% load static %} {% block title %}Class Details -
+LearnIspire{% endblock %} {% block content %}
+<style>
+  :root {
+    --primary-color: #93f7f2;
+    --secondary-color: #f8cb0c;
+    --dark-color: #1e2732;
+    --light-color: #fbf9f8;
+  }
 
-{% block title %}Class Details - LearnIspire{% endblock %}
+  body {
+    background-color: var(--light-color);
+    color: var(--dark-color);
+  }
 
-{% block content %}
+  .card {
+    border: none;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background-color: var(--light-color);
+    transition: transform 0.2s ease;
+  }
+
+  .card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .card-header {
+    background: linear-gradient(
+      45deg,
+      var(--dark-color),
+      var(--primary-color)
+    ) !important;
+    color: var(--light-color) !important;
+    border-bottom: none;
+    position: relative;
+  }
+
+  .card-header::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(
+      to right,
+      var(--primary-color),
+      var(--secondary-color)
+    );
+  }
+
+  .list-group-item {
+    border: none;
+    background-color: var(--light-color);
+    color: var(--dark-color);
+    transition: all 0.3s ease;
+  }
+
+  .list-group-item:hover {
+    background-color: var(--primary-color);
+    color: var(--dark-color);
+  }
+
+  .list-group-item.active {
+    background-color: var(--primary-color);
+    color: var(--dark-color);
+    border: none;
+    position: relative;
+  }
+
+  .list-group-item.active::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 3px;
+    background-color: var(--secondary-color);
+  }
+
+  .btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    color: var(--dark-color);
+    transition: all 0.3s ease;
+  }
+
+  .btn-primary:hover {
+    background-color: var(--secondary-color);
+    border-color: var(--secondary-color);
+    color: var(--dark-color);
+    transform: translateY(-1px);
+  }
+
+  .btn-success {
+    background: linear-gradient(
+      45deg,
+      var(--primary-color),
+      var(--secondary-color)
+    );
+    border: none;
+    color: var(--dark-color);
+    transition: all 0.3s ease;
+  }
+
+  .btn-success:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .btn-outline-primary {
+    color: var(--dark-color);
+    border-color: var(--primary-color);
+    transition: all 0.3s ease;
+  }
+
+  .btn-outline-primary:hover {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    color: var(--dark-color);
+    transform: translateY(-1px);
+  }
+
+  .badge {
+    background-color: var(--primary-color);
+    color: var(--dark-color);
+    transition: all 0.3s ease;
+  }
+
+  .badge:hover {
+    transform: translateY(-1px);
+  }
+
+  .badge.bg-info {
+    background-color: var(--secondary-color) !important;
+  }
+
+  .badge.bg-success {
+    background: linear-gradient(
+      45deg,
+      var(--primary-color),
+      var(--secondary-color)
+    ) !important;
+  }
+
+  .badge.bg-warning {
+    background-color: var(--secondary-color) !important;
+  }
+
+  .badge.bg-danger {
+    background-color: #ff6b6b !important;
+  }
+
+  .table {
+    color: var(--dark-color);
+  }
+
+  .table thead th {
+    background-color: var(--dark-color);
+    color: var(--light-color);
+    border: none;
+  }
+
+  .table tbody tr:hover {
+    background-color: rgba(147, 247, 242, 0.1);
+  }
+
+  .text-muted {
+    color: var(--dark-color) !important;
+    opacity: 0.7;
+  }
+
+  .nav-tabs .nav-link {
+    color: var(--dark-color);
+    border: none;
+    border-bottom: 2px solid transparent;
+    transition: all 0.3s ease;
+  }
+
+  .nav-tabs .nav-link:hover {
+    border-color: var(--primary-color);
+    color: var(--dark-color);
+  }
+
+  .nav-tabs .nav-link.active {
+    color: var(--dark-color);
+    border-bottom: 2px solid var(--secondary-color);
+    background-color: transparent;
+  }
+
+  .alert {
+    background-color: var(--light-color);
+    border: 1px solid var(--primary-color);
+    color: var(--dark-color);
+  }
+
+  .alert-info {
+    border-color: var(--primary-color);
+    border-left: 4px solid var(--secondary-color);
+  }
+
+  .class-info-icon {
+    color: var(--primary-color);
+    transition: all 0.3s ease;
+  }
+
+  .class-info-icon:hover {
+    color: var(--secondary-color);
+    transform: scale(1.1);
+  }
+
+  .student-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--primary-color);
+    transition: all 0.3s ease;
+  }
+
+  .student-avatar:hover {
+    border-color: var(--secondary-color);
+    transform: scale(1.1);
+  }
+
+  .progress {
+    height: 8px;
+    background-color: var(--light-color);
+    border-radius: 4px;
+  }
+
+  .progress-bar {
+    background: linear-gradient(
+      45deg,
+      var(--primary-color),
+      var(--secondary-color)
+    );
+    border-radius: 4px;
+  }
+
+  .class-stats-card {
+    background: linear-gradient(
+      45deg,
+      var(--light-color),
+      var(--primary-color)
+    );
+    border: none;
+    transition: all 0.3s ease;
+  }
+
+  .class-stats-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  .class-stats-number {
+    font-size: 2rem;
+    font-weight: bold;
+    color: var(--dark-color);
+  }
+
+  .class-stats-label {
+    color: var(--dark-color);
+    opacity: 0.8;
+  }
+</style>
+
 <div class="container py-4">
-    <div class="row">
-        <!-- Sidebar -->
-        <div class="col-md-3">
-            <div class="card mb-4">
-                <div class="card-header bg-primary text-white">
-                    <h5 class="mb-0">Teacher Dashboard</h5>
-                </div>
-                <div class="list-group list-group-flush">
-                    <a href="{% url 'teacher_dashboard:home' %}" class="list-group-item list-group-item-action">
-                        <i class="fa fa-dashboard me-2"></i> Dashboard
-                    </a>
-                    <a href="{% url 'teacher_dashboard:profile' %}" class="list-group-item list-group-item-action">
-                        <i class="fa fa-user me-2"></i> My Profile
-                    </a>
-                    <a href="{% url 'teacher_dashboard:availability' %}" class="list-group-item list-group-item-action">
-                        <i class="fa fa-clock-o me-2"></i> Availability
-                    </a>
-                    <a href="{% url 'teacher_dashboard:classes' %}" class="list-group-item list-group-item-action active">
-                        <i class="fa fa-calendar me-2"></i> My Classes
-                    </a>
-                    <a href="{% url 'teacher_dashboard:leave_request' %}" class="list-group-item list-group-item-action">
-                        <i class="fa fa-calendar-minus-o me-2"></i> Leave Requests
-                    </a>
-                    <a href="{% url 'teacher_dashboard:earnings' %}" class="list-group-item list-group-item-action">
-                        <i class="fa fa-money me-2"></i> Earnings
-                    </a>
-                    <a href="{% url 'teacher_dashboard:bank_details' %}" class="list-group-item list-group-item-action">
-                        <i class="fa fa-university me-2"></i> Bank Details
-                    </a>
-                </div>
-            </div>
+  <div class="row">
+    <!-- Sidebar -->
+    <div class="col-md-3">
+      <div class="card mb-4">
+        <div class="card-header bg-primary text-white">
+          <h5 class="mb-0">Teacher Dashboard</h5>
         </div>
-        
-        <!-- Main Content -->
-        <div class="col-md-9">
-            <div class="d-flex justify-content-between align-items-center mb-4">
-                <h3>Class Details</h3>
-                <a href="{% url 'teacher_dashboard:classes' %}" class="btn btn-outline-primary">
-                    <i class="fa fa-arrow-left me-1"></i> Back to Classes
-                </a>
-            </div>
-            
-            <!-- Class Info Card -->
-            <div class="card mb-4">
-                <div class="card-header bg-primary text-white">
-                    <h5 class="mb-0">{{ class.subject.name }} 
-                    {% if is_demo %}
-                        <span class="badge bg-info ms-2">Demo Class</span>
-                    {% endif %}
-                    </h5>
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-4 mb-3">
-                            <div class="d-flex align-items-center">
-                                <div class="me-3">
-                                    <i class="fa fa-calendar fa-3x text-primary"></i>
-                                </div>
-                                <div>
-                                    <h6 class="mb-0">Date</h6>
-                                    <p class="mb-0 fs-5">{{ class.start_time|date:"D, M d, Y" }}</p>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="col-md-4 mb-3">
-                            <div class="d-flex align-items-center">
-                                <div class="me-3">
-                                    <i class="fa fa-clock-o fa-3x text-primary"></i>
-                                </div>
-                                <div>
-                                    <h6 class="mb-0">Time</h6>
-                                    <p class="mb-0 fs-5">{{ class.start_time|time:"h:i A" }} - {{ class.end_time|time:"h:i A" }}</p>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="col-md-4 mb-3">
-                            <div class="d-flex align-items-center">
-                                <div class="me-3">
-                                    <i class="fa fa-tag fa-3x text-primary"></i>
-                                </div>
-                                <div>
-                                    <h6 class="mb-0">Status</h6>
-                                    <span class="badge bg-{% if class.status == 'SCHEDULED' %}primary{% elif class.status == 'IN_PROGRESS' %}warning{% elif class.status == 'COMPLETED' %}success{% elif class.status == 'CANCELLED' %}danger{% else %}secondary{% endif %} fs-6 px-3 py-2">
-                                        {{ class.get_status_display }}
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <hr>
-                    
-                    <div class="row">
-                        <div class="col-md-6">
-                            <h5>Student Information</h5>
-                            <div class="card mb-3">
-                                <div class="card-body">
-                                    <div class="d-flex align-items-center mb-3">
-                                        {% if class.student.student_profile.profile_picture %}
-                                            <img src="{{ class.student.student_profile.profile_picture.url }}" alt="Student" class="rounded-circle me-3" width="60" height="60">
-                                        {% else %}
-                                            <div class="bg-light rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 60px; height: 60px;">
-                                                <i class="fa fa-user fa-2x text-secondary"></i>
-                                            </div>
-                                        {% endif %}
-                                        <div>
-                                            <h5 class="mb-0">{{ class.student.get_full_name }}</h5>
-                                            <p class="text-muted mb-0">{{ class.student.email }}</p>
-                                        </div>
-                                    </div>
-                                    
-                                    {% if class.student.student_profile.grade %}
-                                    <div class="mb-2">
-                                        <strong>Grade:</strong> {{ class.student.student_profile.grade }}
-                                    </div>
-                                    {% endif %}
-                                    
-                                    {% if class.student.student_profile.age %}
-                                    <div class="mb-2">
-                                        <strong>Age:</strong> {{ class.student.student_profile.age }} years
-                                    </div>
-                                    {% endif %}
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="col-md-6">
-                            <h5>Class Actions</h5>
-                            <div class="d-grid gap-3">
-                                {% if can_join %}
-                                    <a href="{% url 'teacher_dashboard:join_class' class.id %}" class="btn btn-success">
-                                        <i class="fa fa-video-camera me-1"></i> Join Class Now
-                                    </a>
-                                {% elif class.status == 'COMPLETED' %}
-                                    <button class="btn btn-success" disabled>
-                                        <i class="fa fa-check-circle me-1"></i> Class Completed
-                                    </button>
-                                {% elif class.status == 'CANCELLED' %}
-                                    <button class="btn btn-danger" disabled>
-                                        <i class="fa fa-times-circle me-1"></i> Class Cancelled
-                                    </button>
-                                {% else %}
-                                    <button class="btn btn-secondary" disabled>
-                                        <i class="fa fa-clock-o me-1"></i> Can't Join Yet
-                                    </button>
-                                    <small class="text-muted text-center">You can join 10 minutes before the scheduled time</small>
-                                {% endif %}
-                                
-                                {% if class.status == 'IN_PROGRESS' %}
-                                    <a href="{% url 'teacher_dashboard:complete_class' class.id %}" class="btn btn-primary">
-                                        <i class="fa fa-check me-1"></i> Complete Class
-                                    </a>
-                                {% endif %}
-                            </div>
-                            
-                            {% if class.topic %}
-                                <div class="card mt-3">
-                                    <div class="card-header bg-light">
-                                        <h6 class="mb-0">Topic</h6>
-                                    </div>
-                                    <div class="card-body">
-                                        <p class="mb-0">{{ class.topic }}</p>
-                                    </div>
-                                </div>
-                            {% endif %}
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Materials Tab -->
-            <div class="card mb-4">
-                <div class="card-header bg-primary text-white">
-                    <h5 class="mb-0">Class Materials</h5>
-                </div>
-                <div class="card-body">
-                    <!-- Materials List -->
-                    {% if materials %}
-                        <div class="table-responsive">
-                            <table class="table table-hover">
-                                <thead>
-                                    <tr>
-                                        <th>Title</th>
-                                        <th>Description</th>
-                                        <th>Uploaded On</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {% for material in materials %}
-                                        <tr>
-                                            <td>{{ material.title }}</td>
-                                            <td>{{ material.description|truncatechars:50 }}</td>
-                                            <td>{{ material.created_at|date:"M d, Y" }}</td>
-                                            <td>
-                                                <a href="{{ material.file.url }}" class="btn btn-sm btn-outline-primary" target="_blank">
-                                                    <i class="fa fa-download me-1"></i> Download
-                                                </a>
-                                            </td>
-                                        </tr>
-                                    {% endfor %}
-                                </tbody>
-                            </table>
-                        </div>
-                    {% else %}
-                        <div class="alert alert-info">
-                            <i class="fa fa-info-circle me-2"></i> No class materials have been uploaded yet.
-                        </div>
-                    {% endif %}
-                    
-                    <!-- Upload Material Form -->
-                    <form method="post" action="{% url 'teacher_dashboard:upload_material' class.id %}" enctype="multipart/form-data" class="mt-4">
-                        {% csrf_token %}
-                        <h5 class="mb-3">Upload New Material</h5>
-                        <div class="row g-3">
-                            <div class="col-md-6">
-                                <label for="material_title" class="form-label">Title</label>
-                                <input type="text" class="form-control" id="material_title" name="material_title" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="material_file" class="form-label">File</label>
-                                <input type="file" class="form-control" id="material_file" name="material_file" required>
-                            </div>
-                            <div class="col-md-12">
-                                <label for="material_description" class="form-label">Description</label>
-                                <textarea class="form-control" id="material_description" name="material_description" rows="3"></textarea>
-                            </div>
-                            <div class="col-12">
-                                <button type="submit" class="btn btn-primary">
-                                    <i class="fa fa-upload me-1"></i> Upload Material
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-            
-            {% if class.notes %}
-            <!-- Notes -->
-            <div class="card mb-4">
-                <div class="card-header bg-primary text-white">
-                    <h5 class="mb-0">Class Notes</h5>
-                </div>
-                <div class="card-body">
-                    <p class="mb-0">{{ class.notes|linebreaks }}</p>
-                </div>
-            </div>
-            {% endif %}
+        <div class="list-group list-group-flush">
+          <a
+            href="{% url 'teacher_dashboard:home' %}"
+            class="list-group-item list-group-item-action"
+          >
+            <i class="fa fa-dashboard me-2"></i> Dashboard
+          </a>
+          <a
+            href="{% url 'teacher_dashboard:profile' %}"
+            class="list-group-item list-group-item-action"
+          >
+            <i class="fa fa-user me-2"></i> My Profile
+          </a>
+          <a
+            href="{% url 'teacher_dashboard:availability' %}"
+            class="list-group-item list-group-item-action"
+          >
+            <i class="fa fa-clock-o me-2"></i> Availability
+          </a>
+          <a
+            href="{% url 'teacher_dashboard:classes' %}"
+            class="list-group-item list-group-item-action active"
+          >
+            <i class="fa fa-calendar me-2"></i> My Classes
+          </a>
+          <a
+            href="{% url 'teacher_dashboard:leave_request' %}"
+            class="list-group-item list-group-item-action"
+          >
+            <i class="fa fa-calendar-minus-o me-2"></i> Leave Requests
+          </a>
+          <a
+            href="{% url 'teacher_dashboard:earnings' %}"
+            class="list-group-item list-group-item-action"
+          >
+            <i class="fa fa-money me-2"></i> Earnings
+          </a>
+          <a
+            href="{% url 'teacher_dashboard:bank_details' %}"
+            class="list-group-item list-group-item-action"
+          >
+            <i class="fa fa-university me-2"></i> Bank Details
+          </a>
         </div>
+      </div>
     </div>
+
+    <!-- Main Content -->
+    <div class="col-md-9">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h3>Class Details</h3>
+        <a
+          href="{% url 'teacher_dashboard:classes' %}"
+          class="btn btn-outline-primary"
+        >
+          <i class="fa fa-arrow-left me-1"></i> Back to Classes
+        </a>
+      </div>
+
+      <!-- Class Info Card -->
+      <div class="card mb-4">
+        <div class="card-header bg-primary text-white">
+          <h5 class="mb-0">
+            {{ class.subject.name }} {% if is_demo %}
+            <span class="badge bg-info ms-2">Demo Class</span>
+            {% endif %}
+          </h5>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-4 mb-3">
+              <div class="d-flex align-items-center">
+                <div class="me-3">
+                  <i class="fas fa-chalkboard-teacher me-2 class-info-icon"></i>
+                </div>
+                <div>
+                  <h6 class="mb-0">Date</h6>
+                  <p class="mb-0 fs-5">
+                    {{ class.start_time|date:"D, M d, Y" }}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-4 mb-3">
+              <div class="d-flex align-items-center">
+                <div class="me-3">
+                  <i class="fa fa-clock-o fa-3x class-info-icon"></i>
+                </div>
+                <div>
+                  <h6 class="mb-0">Time</h6>
+                  <p class="mb-0 fs-5">
+                    {{ class.start_time|time:"h:i A" }} - {{
+                    class.end_time|time:"h:i A" }}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-4 mb-3">
+              <div class="d-flex align-items-center">
+                <div class="me-3">
+                  <i class="fa fa-tag fa-3x class-info-icon"></i>
+                </div>
+                <div>
+                  <h6 class="mb-0">Status</h6>
+                  <span
+                    class="badge bg-{% if class.status == 'SCHEDULED' %}primary{% elif class.status == 'IN_PROGRESS' %}warning{% elif class.status == 'COMPLETED' %}success{% elif class.status == 'CANCELLED' %}danger{% else %}secondary{% endif %} fs-6 px-3 py-2"
+                  >
+                    {{ class.get_status_display }}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <hr />
+
+          <div class="row">
+            <div class="col-md-6">
+              <h5>Student Information</h5>
+              <div class="card mb-3">
+                <div class="card-body">
+                  <div class="d-flex align-items-center mb-3">
+                    <img
+                      src="{{ class.student.student_profile.profile_picture.url }}"
+                      alt="Student"
+                      class="student-avatar me-3"
+                    />
+                    <div>
+                      <h5 class="mb-0">{{ class.student.get_full_name }}</h5>
+                      <p class="text-muted mb-0">{{ class.student.email }}</p>
+                    </div>
+                  </div>
+
+                  {% if class.student.student_profile.grade %}
+                  <div class="mb-2">
+                    <strong>Grade:</strong> {{
+                    class.student.student_profile.grade }}
+                  </div>
+                  {% endif %} {% if class.student.student_profile.age %}
+                  <div class="mb-2">
+                    <strong>Age:</strong> {{ class.student.student_profile.age
+                    }} years
+                  </div>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <h5>Class Actions</h5>
+              <div class="d-grid gap-3">
+                {% if can_join %}
+                <a
+                  href="{% url 'teacher_dashboard:join_class' class.id %}"
+                  class="btn btn-success"
+                >
+                  <i class="fa fa-video-camera me-1"></i> Join Class Now
+                </a>
+                {% elif class.status == 'COMPLETED' %}
+                <button class="btn btn-success" disabled>
+                  <i class="fa fa-check-circle me-1"></i> Class Completed
+                </button>
+                {% elif class.status == 'CANCELLED' %}
+                <button class="btn btn-danger" disabled>
+                  <i class="fa fa-times-circle me-1"></i> Class Cancelled
+                </button>
+                {% else %}
+                <button class="btn btn-secondary" disabled>
+                  <i class="fa fa-clock-o me-1"></i> Can't Join Yet
+                </button>
+                <small class="text-muted text-center"
+                  >You can join 10 minutes before the scheduled time</small
+                >
+                {% endif %} {% if class.status == 'IN_PROGRESS' %}
+                <a
+                  href="{% url 'teacher_dashboard:complete_class' class.id %}"
+                  class="btn btn-primary"
+                >
+                  <i class="fa fa-check me-1"></i> Complete Class
+                </a>
+                {% endif %}
+              </div>
+
+              {% if class.topic %}
+              <div class="card mt-3">
+                <div class="card-header bg-light">
+                  <h6 class="mb-0">Topic</h6>
+                </div>
+                <div class="card-body">
+                  <p class="mb-0">{{ class.topic }}</p>
+                </div>
+              </div>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Materials Tab -->
+      <div class="card mb-4">
+        <div class="card-header bg-primary text-white">
+          <h5 class="mb-0">Class Materials</h5>
+        </div>
+        <div class="card-body">
+          <!-- Materials List -->
+          {% if materials %}
+          <div class="table-responsive">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th>Title</th>
+                  <th>Description</th>
+                  <th>Uploaded On</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for material in materials %}
+                <tr>
+                  <td>{{ material.title }}</td>
+                  <td>{{ material.description|truncatechars:50 }}</td>
+                  <td>{{ material.created_at|date:"M d, Y" }}</td>
+                  <td>
+                    <a
+                      href="{{ material.file.url }}"
+                      class="btn btn-sm btn-outline-primary"
+                      target="_blank"
+                    >
+                      <i class="fa fa-download me-1"></i> Download
+                    </a>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+          {% else %}
+          <div class="alert alert-info">
+            <i class="fa fa-info-circle me-2"></i> No class materials have been
+            uploaded yet.
+          </div>
+          {% endif %}
+
+          <!-- Upload Material Form -->
+          <form
+            method="post"
+            action="{% url 'teacher_dashboard:upload_material' class.id %}"
+            enctype="multipart/form-data"
+            class="mt-4"
+          >
+            {% csrf_token %}
+            <h5 class="mb-3">Upload New Material</h5>
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label for="material_title" class="form-label">Title</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="material_title"
+                  name="material_title"
+                  required
+                />
+              </div>
+              <div class="col-md-6">
+                <label for="material_file" class="form-label">File</label>
+                <input
+                  type="file"
+                  class="form-control"
+                  id="material_file"
+                  name="material_file"
+                  required
+                />
+              </div>
+              <div class="col-md-12">
+                <label for="material_description" class="form-label"
+                  >Description</label
+                >
+                <textarea
+                  class="form-control"
+                  id="material_description"
+                  name="material_description"
+                  rows="3"
+                ></textarea>
+              </div>
+              <div class="col-12">
+                <button type="submit" class="btn btn-primary">
+                  <i class="fa fa-upload me-1"></i> Upload Material
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      {% if class.notes %}
+      <!-- Notes -->
+      <div class="card mb-4">
+        <div class="card-header bg-primary text-white">
+          <h5 class="mb-0">Class Notes</h5>
+        </div>
+        <div class="card-body">
+          <p class="mb-0">{{ class.notes|linebreaks }}</p>
+        </div>
+      </div>
+      {% endif %}
+
+      <!-- Stats Card -->
+      <div class="card mb-4 class-stats-card">
+        <div class="card-header bg-primary text-white">
+          <h5 class="mb-0">Class Stats</h5>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-4">
+              <h3 class="class-stats-number mb-0">{{ total_students }}</h3>
+              <p class="class-stats-label small">Total Students</p>
+            </div>
+            <div class="col-md-4">
+              <h3 class="class-stats-number mb-0">{{ total_classes }}</h3>
+              <p class="class-stats-label small">Total Classes</p>
+            </div>
+            <div class="col-md-4">
+              <h3 class="class-stats-number mb-0">{{ total_earnings }}</h3>
+              <p class="class-stats-label small">Total Earnings</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 {% endblock %}
