@@ -637,7 +637,8 @@ Personalized Online Learning Platform{% endblock %} {% block content %}
 
   body {
     line-height: 1.5;
-    color: rgba(0, 0, 0, 0.87);
+    color: #1e2732;
+    background-color: #fbf9f8;
   }
 
   /* ======================================================
@@ -660,7 +661,7 @@ Personalized Online Learning Platform{% endblock %} {% block content %}
     font-size: 1.5rem;
     font-weight: 500;
     margin-bottom: 2rem;
-    color: rgba(0, 0, 0, 0.6);
+    color: rgba(30, 39, 50, 0.8);
   }
 
   h5 {
@@ -673,7 +674,7 @@ Personalized Online Learning Platform{% endblock %} {% block content %}
     font-size: 1.1rem;
     font-weight: 400;
     margin-bottom: 2rem;
-    color: rgba(0, 0, 0, 0.6);
+    color: rgba(30, 39, 50, 0.7);
   }
 
   p {
@@ -686,7 +687,7 @@ Personalized Online Learning Platform{% endblock %} {% block content %}
 
   .body-2 {
     font-size: 0.875rem;
-    color: rgba(0, 0, 0, 0.6);
+    color: rgba(30, 39, 50, 0.7);
   }
 
   /* ======================================================
@@ -706,11 +707,22 @@ Personalized Online Learning Platform{% endblock %} {% block content %}
   }
 
   .section-light {
-    background-color: white;
+    background-color: #fbf9f8;
   }
 
   .section-dark {
-    background-color: #f5f5f5;
+    background-color: #1e2732;
+    color: #fbf9f8;
+  }
+
+  .section-dark .section-heading,
+  .section-dark h5,
+  .section-dark h6 {
+    color: #fbf9f8;
+  }
+
+  .section-dark .section-subheading {
+    color: rgba(251, 249, 248, 0.85);
   }
 
   .section-heading {
@@ -723,7 +735,7 @@ Personalized Online Learning Platform{% endblock %} {% block content %}
     font-size: 1.1rem;
     font-weight: 400;
     margin-bottom: 2rem;
-    color: rgba(0, 0, 0, 0.6);
+    color: rgba(30, 39, 50, 0.7);
   }
 
   /* ======================================================
@@ -759,14 +771,14 @@ Personalized Online Learning Platform{% endblock %} {% block content %}
   ====================================================== */
   .hero-section {
     min-height: 100vh;
-    background: linear-gradient(rgba(44, 44, 44, 0.5), rgba(21, 22, 22, 0.4)), 
+    background: linear-gradient(rgba(30, 39, 50, 0.8), rgba(30, 39, 50, 0.7)), 
                 url('https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=2070&auto=format&fit=crop');
     background-size: cover;
     background-position: center;
     display: flex;
     align-items: center;
     position: relative;
-    color: white;
+    color: #fbf9f8;
     text-align: center;
   }
 
@@ -780,13 +792,18 @@ Personalized Online Learning Platform{% endblock %} {% block content %}
     font-size: 6rem;
     line-height: 1.167;
     font-weight: 800;
-    background: linear-gradient(-45deg, rgb(255, 255, 255) 0%, rgb(241, 203, 69) 50%, rgb(25, 118, 210) 90%) text;
+    background: linear-gradient(-45deg, #fbf9f8 0%, #f8cb0c 50%, #93f7f2 90%) text;
     -webkit-text-fill-color: transparent;
     letter-spacing: -1px;
   }
   
-  .hero-title, .hero-content h4 {
-    color: white;
+  .hero-title span {
+    color: #93f7f2;
+    -webkit-text-fill-color: #93f7f2;
+  }
+  
+  .hero-content h4 {
+    color: #fbf9f8;
   }
 
   .scroll-indicator {
@@ -795,12 +812,12 @@ Personalized Online Learning Platform{% endblock %} {% block content %}
     left: 0;
     right: 0;
     text-align: center;
-    color: white;
+    color: #fbf9f8;
     animation: bounce 2s infinite;
   }
 
   .scroll-indicator p {
-    color: rgba(255, 255, 255, 0.9);
+    color: rgba(251, 249, 248, 0.9);
   }
 
   @keyframes bounce {
@@ -832,23 +849,25 @@ Personalized Online Learning Platform{% endblock %} {% block content %}
   }
 
   .btn-primary {
-    background-color: #1976d2;
-    color: white;
+    background-color: #f8cb0c;
+    color: #1e2732;
     border: none;
   }
 
   .btn-primary:hover {
-    background-color: #1565c0;
+    background-color: #e0b70a;
+    box-shadow: 0 4px 8px rgba(248, 203, 12, 0.3);
   }
 
   .btn-outline {
     background-color: transparent;
-    color: #1976d2;
-    border: 1px solid #1976d2;
+    color: #93f7f2;
+    border: 1px solid #93f7f2;
   }
 
   .btn-outline:hover {
-    background-color: rgba(25, 118, 210, 0.04);
+    background-color: rgba(147, 247, 242, 0.1);
+    box-shadow: 0 4px 8px rgba(147, 247, 242, 0.2);
   }
 
   .btn-large {
@@ -862,15 +881,16 @@ Personalized Online Learning Platform{% endblock %} {% block content %}
 
   .btn-icon {
     margin-left: 8px;
+    fill: currentColor;
   }
 
   /* ======================================================
      7. COURSE CARDS (Offerings Section)
   ====================================================== */
   .course-card {
-    background-color: white;
+    background-color: #fbf9f8;
     border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 10px rgba(30, 39, 50, 0.08);
     overflow: hidden;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     height: 100%;
@@ -881,7 +901,7 @@ Personalized Online Learning Platform{% endblock %} {% block content %}
 
   .course-card:hover {
     transform: translateY(-8px);
-    box-shadow: 0 12px 20px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 12px 20px rgba(30, 39, 50, 0.15);
   }
 
   .card-media-container {
@@ -906,8 +926,8 @@ Personalized Online Learning Platform{% endblock %} {% block content %}
     position: absolute;
     bottom: -20px;
     right: 20px;
-    background-color: #1976d2;
-    color: white;
+    background-color: #93f7f2;
+    color: #1e2732;
     width: 48px;
     height: 48px;
     border-radius: 50%;
@@ -915,12 +935,17 @@ Personalized Online Learning Platform{% endblock %} {% block content %}
     align-items: center;
     justify-content: center;
     z-index: 1;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 2px 8px rgba(147, 247, 242, 0.3);
     transition: transform 0.3s ease;
+  }
+
+  .card-icon-overlay .svg-icon {
+    fill: #1e2732;
   }
 
   .course-card:hover .card-icon-overlay {
     transform: scale(1.1);
+    background-color: #f8cb0c;
   }
 
   .card-content {
@@ -945,16 +970,17 @@ Personalized Online Learning Platform{% endblock %} {% block content %}
     flex-shrink: 0;
     margin-right: 12px;
     margin-top: 3px;
-    color: rgba(0, 0, 0, 0.54);
+    color: #93f7f2;
+    fill: #93f7f2;
   }
 
   /* ======================================================
      8. FEATURE CARDS
   ====================================================== */
   .feature-card {
-    background-color: white;
+    background-color: #1e2732;
     border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+    box-shadow: 0 4px 20px rgba(30, 39, 50, 0.2);
     padding: 56px 24px 30px;
     height: 100%;
     position: relative;
@@ -965,11 +991,12 @@ Personalized Online Learning Platform{% endblock %} {% block content %}
     margin-top: 40px;
     z-index: 1;
     overflow: visible;
+    color: #fbf9f8;
   }
 
   .feature-card:hover {
     transform: translateY(-8px);
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.12);
+    box-shadow: 0 15px 30px rgba(30, 39, 50, 0.3);
   }
 
   /* Feature Card Icons - IMPROVED */
@@ -984,7 +1011,7 @@ Personalized Online Learning Platform{% endblock %} {% block content %}
     display: flex;
     align-items: center;
     justify-content: center;
-    color: white;
+    color: #1e2732;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
     z-index: 10;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -998,32 +1025,22 @@ Personalized Online Learning Platform{% endblock %} {% block content %}
   .feature-card-icon .svg-icon {
     width: 38px;
     height: 38px;
-    fill: white;
+    fill: #1e2732;
   }
 
   /* Feature card icon colors with enhanced gradients */
-  .security-icon {
-    background: linear-gradient(145deg, #43a047, #1b5e20);
+  .security-icon, .sessions-icon, .access-icon, 
+  .mentor-icon, .schedule-icon, .progress-icon {
+    background: linear-gradient(145deg, #93f7f2, #65dbd6);
   }
   
-  .sessions-icon {
-    background: linear-gradient(145deg, #2196f3, #0d47a1);
-  }
-  
-  .access-icon {
-    background: linear-gradient(145deg, #9c27b0, #4a148c);
-  }
-  
-  .mentor-icon {
-    background: linear-gradient(145deg, #f44336, #b71c1c);
-  }
-  
-  .schedule-icon {
-    background: linear-gradient(145deg, #ff9800, #e65100);
-  }
-  
-  .progress-icon {
-    background: linear-gradient(145deg, #00bcd4, #006064);
+  .feature-card:hover .security-icon,
+  .feature-card:hover .sessions-icon,
+  .feature-card:hover .access-icon,
+  .feature-card:hover .mentor-icon,
+  .feature-card:hover .schedule-icon,
+  .feature-card:hover .progress-icon {
+    background: linear-gradient(145deg, #f8cb0c, #e0b70a);
   }
 
   /* Feature card content styling */
@@ -1032,11 +1049,12 @@ Personalized Online Learning Platform{% endblock %} {% block content %}
     margin-bottom: 16px;
     font-weight: 700;
     font-size: 1.3rem;
+    color: #fbf9f8;
   }
 
   .feature-card p {
     text-align: center;
-    color: rgba(0, 0, 0, 0.65);
+    color: rgba(251, 249, 248, 0.85);
     margin-bottom: 24px;
   }
 
@@ -1056,27 +1074,28 @@ Personalized Online Learning Platform{% endblock %} {% block content %}
     padding: 6px 12px;
     border-radius: 50px;
     font-size: 0.75rem;
-    background-color: rgba(25, 118, 210, 0.08);
-    color: #1976d2;
+    background-color: rgba(147, 247, 242, 0.15);
+    color: #93f7f2;
     transition: background-color 0.2s ease;
   }
 
   .feature-chip:hover {
-    background-color: rgba(25, 118, 210, 0.15);
+    background-color: rgba(248, 203, 12, 0.25);
+    color: #f8cb0c;
   }
 
   .chip-icon {
     margin-right: 6px;
     width: 16px;
     height: 16px;
-    fill: #1976d2;
+    fill: currentColor;
   }
 
   /* ======================================================
      9. TESTIMONIALS SECTION
   ====================================================== */
   .testimonials-section {
-    background-color: #f8f9fa;
+    background-color: #fbf9f8;
     position: relative;
     overflow: hidden;
     padding: 80px 0;
@@ -1089,7 +1108,7 @@ Personalized Online Learning Platform{% endblock %} {% block content %}
     width: 300px;
     height: 300px;
     border-radius: 50%;
-    background: radial-gradient(rgba(13, 110, 253, 0.05), transparent 70%);
+    background: radial-gradient(rgba(147, 247, 242, 0.15), transparent 70%);
     top: -150px;
     left: -150px;
     z-index: 0;
@@ -1101,7 +1120,7 @@ Personalized Online Learning Platform{% endblock %} {% block content %}
     width: 300px;
     height: 300px;
     border-radius: 50%;
-    background: radial-gradient(rgba(13, 110, 253, 0.05), transparent 70%);
+    background: radial-gradient(rgba(248, 203, 12, 0.15), transparent 70%);
     bottom: -150px;
     right: -150px;
     z-index: 0;
@@ -1110,14 +1129,14 @@ Personalized Online Learning Platform{% endblock %} {% block content %}
   .section-title {
     font-size: 2.25rem;
     margin-bottom: 15px;
-    color: #212529;
+    color: #1e2732;
     position: relative;
   }
 
   .section-divider {
     height: 4px;
     width: 60px;
-    background: linear-gradient(to right, #0d6efd, #0a58ca);
+    background: linear-gradient(to right, #93f7f2, #f8cb0c);
     margin-bottom: 20px;
     border-radius: 2px;
   }
@@ -1126,11 +1145,12 @@ Personalized Online Learning Platform{% endblock %} {% block content %}
     font-size: 1.1rem;
     max-width: 600px;
     margin: 0 auto;
+    color: rgba(30, 39, 50, 0.7);
   }
 
   .badge.text-bg-primary {
-    background-color: rgba(13, 110, 253, 0.1) !important;
-    color: #0d6efd !important;
+    background-color: rgba(147, 247, 242, 0.2) !important;
+    color: #1e2732 !important;
     font-weight: 600;
     letter-spacing: 1px;
     font-size: 0.75rem;
@@ -1176,18 +1196,20 @@ Personalized Online Learning Platform{% endblock %} {% block content %}
     background-color: #fff;
     border-radius: 16px;
     overflow: hidden;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 10px 30px rgba(30, 39, 50, 0.05);
     margin-bottom: 30px;
     position: relative;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     height: 100%;
     display: flex;
     flex-direction: column;
+    border-top: 4px solid #93f7f2;
   }
 
   .testimonial-card:hover {
     transform: translateY(-10px);
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 15px 35px rgba(30, 39, 50, 0.1);
+    border-top: 4px solid #f8cb0c;
   }
 
   .testimonial-content {
@@ -1197,18 +1219,17 @@ Personalized Online Learning Platform{% endblock %} {% block content %}
   }
 
   .quote-icon {
-    color: #e1ecff;
+    color: rgba(147, 247, 242, 0.3);
     font-size: 36px;
     position: absolute;
     top: 15px;
     left: 20px;
-    opacity: 0.6;
   }
 
   .testimonial-text {
     font-size: 15px;
     line-height: 1.7;
-    color: #495057;
+    color: #1e2732;
     margin-bottom: 20px;
     position: relative;
     z-index: 1;
@@ -1219,7 +1240,7 @@ Personalized Online Learning Platform{% endblock %} {% block content %}
   }
 
   .testimonial-rating i {
-    color: #ffc107;
+    color: #f8cb0c;
     margin-right: 2px;
     font-size: 14px;
   }
@@ -1228,8 +1249,8 @@ Personalized Online Learning Platform{% endblock %} {% block content %}
     display: flex;
     align-items: center;
     padding: 15px 25px;
-    background-color: #f8f9fa;
-    border-top: 1px solid rgba(0, 0, 0, 0.05);
+    background-color: rgba(147, 247, 242, 0.05);
+    border-top: 1px solid rgba(30, 39, 50, 0.05);
   }
 
   .author-image {
@@ -1239,7 +1260,7 @@ Personalized Online Learning Platform{% endblock %} {% block content %}
     overflow: hidden;
     margin-right: 15px;
     border: 3px solid #fff;
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 3px 10px rgba(30, 39, 50, 0.1);
   }
 
   .author-image img {
@@ -1256,12 +1277,12 @@ Personalized Online Learning Platform{% endblock %} {% block content %}
     font-size: 16px;
     font-weight: 600;
     margin-bottom: 2px;
-    color: #212529;
+    color: #1e2732;
   }
 
   .author-title {
     font-size: 13px;
-    color: #6c757d;
+    color: rgba(30, 39, 50, 0.7);
     margin: 0;
   }
 
@@ -1307,7 +1328,7 @@ Personalized Online Learning Platform{% endblock %} {% block content %}
   }
 
   .text-muted {
-    color: #6c757d;
+    color: rgba(30, 39, 50, 0.7);
   }
 
   .fw-bold {
@@ -1315,7 +1336,7 @@ Personalized Online Learning Platform{% endblock %} {% block content %}
   }
 
   .text-primary {
-    color: #1976d2 !important;
+    color: #93f7f2 !important;
   }
 
   /* ======================================================
