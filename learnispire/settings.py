@@ -171,7 +171,7 @@ LOGIN_URL = "/accounts/login/"
 # Twilio credentials for WhatsApp
 TWILIO_ACCOUNT_SID = "ACbddd51b0fd3a72e950ed4c641731aec3"
 TWILIO_AUTH_TOKEN = "45b3292bf21366207bda3e8fd03ca94e"
-TWILIO_WHATSAPP_FROM = "+916305886413"
+TWILIO_WHATSAPP_FROM = "+14155238886"
 ACCOUNT_FORMS = {
     "signup": "accounts.forms.CustomSignupForm",
 }

@@ -4,6 +4,153 @@
 {% block title %}Leave Requests - Admin Dashboard - LearnIspire{% endblock %}
 
 {% block content %}
+<style>
+    body {
+        background-color: #fbf9f8;
+    }
+    .card {
+        border: none;
+        box-shadow: 0 2px 4px rgba(30, 39, 50, 0.1);
+    }
+    .card-header {
+        background-color: #1e2732 !important;
+        color: #fbf9f8 !important;
+        border-bottom: none;
+    }
+    .list-group-item {
+        border-left: none;
+        border-right: none;
+    }
+    .list-group-item.active {
+        background-color: #f8cb0c;
+        border-color: #f8cb0c;
+        color: #1e2732;
+    }
+    .list-group-item:hover {
+        background-color: #93f7f2;
+        color: #1e2732;
+    }
+    .badge {
+        background-color: #f8cb0c;
+        color: #1e2732;
+    }
+    .badge.bg-info {
+        background-color: #93f7f2 !important;
+        color: #1e2732;
+    }
+    .badge.bg-warning {
+        background-color: #f8cb0c !important;
+        color: #1e2732;
+    }
+    .badge.bg-success {
+        background-color: #93f7f2 !important;
+        color: #1e2732;
+    }
+    .badge.bg-primary {
+        background-color: #1e2732 !important;
+        color: #fbf9f8;
+    }
+    .btn-primary {
+        background-color: #1e2732;
+        border-color: #1e2732;
+        color: #fbf9f8;
+    }
+    .btn-primary:hover {
+        background-color: #2a3744;
+        border-color: #2a3744;
+        color: #fbf9f8;
+    }
+    .btn-outline-primary {
+        color: #1e2732;
+        border-color: #1e2732;
+    }
+    .btn-outline-primary:hover {
+        background-color: #1e2732;
+        border-color: #1e2732;
+        color: #fbf9f8;
+    }
+    .btn-outline-info {
+        color: #93f7f2;
+        border-color: #93f7f2;
+    }
+    .btn-outline-info:hover {
+        background-color: #93f7f2;
+        border-color: #93f7f2;
+        color: #1e2732;
+    }
+    .btn-outline-warning {
+        color: #f8cb0c;
+        border-color: #f8cb0c;
+    }
+    .btn-outline-warning:hover {
+        background-color: #f8cb0c;
+        border-color: #f8cb0c;
+        color: #1e2732;
+    }
+    .table-light {
+        background-color: #fbf9f8;
+    }
+    .table-light th {
+        background-color: #1e2732;
+        color: #fbf9f8;
+    }
+    .table-hover tbody tr:hover {
+        background-color: #93f7f2;
+        color: #1e2732;
+    }
+    h2 {
+        color: #1e2732;
+    }
+    .text-success {
+        color: #93f7f2 !important;
+    }
+    .text-muted {
+        color: #1e2732 !important;
+        opacity: 0.7;
+    }
+    .alert-warning {
+        background-color: #f8cb0c;
+        border-color: #f8cb0c;
+        color: #1e2732;
+    }
+    .alert-info {
+        background-color: #93f7f2;
+        border-color: #93f7f2;
+        color: #1e2732;
+    }
+    .modal-header {
+        background-color: #1e2732;
+        color: #fbf9f8;
+    }
+    .modal-header .btn-close {
+        color: #fbf9f8;
+    }
+    .form-control:focus {
+        border-color: #93f7f2;
+        box-shadow: 0 0 0 0.2rem rgba(147, 247, 242, 0.25);
+    }
+    .btn-success {
+        background-color: #93f7f2;
+        border-color: #93f7f2;
+        color: #1e2732;
+    }
+    .btn-success:hover {
+        background-color: #7ee6e0;
+        border-color: #7ee6e0;
+        color: #1e2732;
+    }
+    .btn-danger {
+        background-color: #1e2732;
+        border-color: #1e2732;
+        color: #fbf9f8;
+    }
+    .btn-danger:hover {
+        background-color: #2a3744;
+        border-color: #2a3744;
+        color: #fbf9f8;
+    }
+</style>
+
 <div class="container-fluid py-4">
     <div class="row">
         <!-- Sidebar -->
