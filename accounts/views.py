@@ -50,7 +50,7 @@ class ResendOTPView(LoginRequiredMixin, View):
         adapter.generate_otp(request.user, request.user.phone_number)
         
         messages.success(request, "A new OTP has been sent to your WhatsApp account.")
-        return redirect('accounts:verify_phone')
+        return redirect('account:verify_phone')
 
 
 class LoginRedirectView(LoginRequiredMixin, View):
