@@ -537,10 +537,9 @@ Personalized Online Learning Platform{% endblock %} {% block content %}
           </div>
           <div class="testimonial-author">
             <div class="author-image">
-              <img
-                src="{% static 'images/testimonials/student1.jpg' %}"
-                alt="Priya Sharma"
-              />
+              <div class="author-initial">
+                <span>P</span>
+              </div>
             </div>
             <div class="author-info">
               <h5 class="author-name">Priya Sharma</h5>
@@ -572,10 +571,9 @@ Personalized Online Learning Platform{% endblock %} {% block content %}
           </div>
           <div class="testimonial-author">
             <div class="author-image">
-              <img
-                src="{% static 'images/testimonials/student2.jpg' %}"
-                alt="Arjun Patel"
-              />
+              <div class="author-initial">
+                <span>A</span>
+              </div>
             </div>
             <div class="author-info">
               <h5 class="author-name">Arjun Patel</h5>
@@ -606,10 +604,9 @@ Personalized Online Learning Platform{% endblock %} {% block content %}
           </div>
           <div class="testimonial-author">
             <div class="author-image">
-              <img
-                src="{% static 'images/testimonials/student3.jpg' %}"
-                alt="Neha Gupta"
-              />
+              <div class="author-initial">
+                <span>N</span>
+              </div>
             </div>
             <div class="author-info">
               <h5 class="author-name">Neha Gupta</h5>
@@ -1263,6 +1260,15 @@ Personalized Online Learning Platform{% endblock %} {% block content %}
     box-shadow: 0 3px 10px rgba(30, 39, 50, 0.1);
   }
 
+  .author-initial{
+    font: 1.5em sans-serif;
+    padding: 6px 12px;
+    font-weight: bolder;
+    background: #d15555;
+    /* background: #87d155; */
+    /* background: #7a55d1; */
+  }
+  
   .author-image img {
     width: 100%;
     height: 100%;
