@@ -63,21 +63,16 @@
         border-radius: 0.5rem;
       }
 
-      footer {
-        margin-top: auto;
-      }
-
-      /* Footer Styles */
+      /* Footer Styles - Add to base.html */
       .learnispire-footer {
-        background: linear-gradient(
-          135deg,
-          #1e2a3a 0%,
-          #0f172a 100%
-        ) !important;
+        background: linear-gradient(135deg, #1e2a3a 0%, #0f172a 100%) !important;
         margin-top: 0;
         padding-top: 3rem;
         padding-bottom: 1.5rem;
         color: white;
+        width: 100%;
+        position: relative;
+        z-index: 10;
       }
 
       .learnispire-footer .footer-links li {
@@ -127,18 +122,15 @@
       }
 
       .learnispire-footer hr {
-        border-color: rgba(255, 255, 255, 0.1);
-      }
-
-      .payment-methods {
-        height: 30px;
-      }
-      body {
-        background-color: #fbf9f8;
+        border-color: rgba(255, 255, 255, 0.9);
       }
 
       main {
-        background-color: #fbf9f8;
+        flex: 1 0 auto;
+      }
+
+      footer {
+        flex-shrink: 0;
       }
     </style>
 
@@ -323,8 +315,8 @@
           </div>
 
           <!-- Quick Links -->
-          <div class="col-lg-2">
-            <h5 class="mb-4 fw-semibold text-white">Quick Links</h5>
+          <div class="col-lg-3">
+            <p class="mb-4 text-white">Quick Links</p>
             <ul class="list-unstyled footer-links">
               <li><a href="{% url 'landing:home' %}">Home</a></li>
               <li><a href="{% url 'landing:about' %}">About Us</a></li>
@@ -334,8 +326,8 @@
           </div>
 
           <!-- Legal -->
-          <div class="col-lg-2">
-            <h5 class="mb-4 fw-semibold text-white">Legal</h5>
+          <div class="col-lg-3">
+            <p class="mb-4 text-white">Legal</p>
             <ul class="list-unstyled footer-links">
               <li><a href="{% url 'landing:privacy' %}">Privacy Policy</a></li>
               <li>
@@ -345,8 +337,8 @@
           </div>
 
           <!-- Contact Information -->
-          <div class="col-lg-5">
-            <h5 class="mb-4 fw-semibold text-white">Contact Us</h5>
+          <div class="col-lg-3">
+            <p class="mb-4 text-white">Contact Us</p>
             <div class="contact-info">
               <div class="d-flex mb-3 align-items-start">
                 <div class="icon-box me-3">
@@ -378,7 +370,7 @@
         <!-- Copyright Information -->
         <div class="row align-items-center">
           <div class="col-md-6 text-center text-md-start">
-            <p class="mb-0 small opacity-75">
+            <p class="mb-0 small text-white">
               &copy; {% now "Y" %} LearnIspire. All rights reserved.
             </p>
           </div>
