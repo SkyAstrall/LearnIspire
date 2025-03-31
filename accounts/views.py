@@ -7,7 +7,7 @@ from .forms import PhoneVerificationForm, StudentProfileForm, TeacherProfileForm
 from .adapters import CustomAccountAdapter
 
 class VerifyPhoneView(LoginRequiredMixin, View):
-    template_name = 'accounts/verify_phone.html'
+    template_name = 'account/verify_phone.html'
     
     def get(self, request):
         # Check if already verified
@@ -57,7 +57,7 @@ class LoginRedirectView(LoginRequiredMixin, View):
     def get(self, request):
         # Redirect based on verification status and role
         if not request.user.is_phone_verified:
-            return redirect('accounts:verify_phone')
+            return redirect('account:verify_phone')
         
         if request.user.is_student:
             return redirect('student_dashboard:home')
@@ -70,7 +70,7 @@ class LoginRedirectView(LoginRequiredMixin, View):
 
 
 class StudentProfileUpdateView(LoginRequiredMixin, View):
-    template_name = 'accounts/student_profile_update.html'
+    template_name = 'account/student_profile_update.html'
     
     def get(self, request):
         if not request.user.is_student:
@@ -117,7 +117,7 @@ class StudentProfileUpdateView(LoginRequiredMixin, View):
 
 
 class TeacherProfileUpdateView(LoginRequiredMixin, View):
-    template_name = 'accounts/teacher_profile_update.html'
+    template_name = 'account/teacher_profile_update.html'
     
     def get(self, request):
         if not request.user.is_teacher:

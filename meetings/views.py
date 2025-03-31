@@ -34,7 +34,7 @@ class JoinMeetingView(LoginRequiredMixin, View):
 
         # If meeting link doesn't exist, create one
         if not class_obj.meeting_link:
-            result = GoogleMeetService.create_meeting(class_obj)
+            result = GoogleMeetService.create_real_meeting(class_obj)
             if not result["success"]:
                 messages.error(
                     request, "Failed to create meeting link. Please try again."
