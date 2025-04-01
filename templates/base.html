@@ -65,7 +65,11 @@
 
       /* Footer Styles - Add to base.html */
       .learnispire-footer {
-        background: linear-gradient(135deg, #1e2a3a 0%, #0f172a 100%) !important;
+        background: linear-gradient(
+          135deg,
+          #1e2a3a 0%,
+          #0f172a 100%
+        ) !important;
         margin-top: 0;
         padding-top: 3rem;
         padding-bottom: 1.5rem;
@@ -73,6 +77,8 @@
         width: 100%;
         position: relative;
         z-index: 10;
+        font-weight: 100;
+        font-size: small !important;
       }
 
       .learnispire-footer .footer-links li {
@@ -132,6 +138,87 @@
       footer {
         flex-shrink: 0;
       }
+
+      /* Footer Styles */
+.learnispire-footer {
+  background: linear-gradient(
+    135deg,
+    #1e2a3a 0%,
+    #0f172a 100%
+  ) !important;
+  margin-top: 0;
+  padding-top: 3rem;
+  padding-bottom: 1.5rem;
+  color: white;
+  width: 100%;
+  position: relative;
+  z-index: 10;
+}
+
+.learnispire-footer .footer-links li {
+  margin-bottom: 12px;
+}
+
+.learnispire-footer .footer-links a {
+  color: rgba(255, 255, 255, 0.75);
+  text-decoration: none;
+  transition: color 0.3s ease, padding-left 0.3s ease;
+  display: inline-block;
+}
+
+.learnispire-footer .footer-links a:hover {
+  color: white;
+  padding-left: 5px;
+}
+
+.learnispire-footer .social-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  color: white;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.learnispire-footer .social-icon:hover {
+  background-color: #3a86ff;
+  color: white;
+  transform: translateY(-3px);
+}
+
+.learnispire-footer .icon-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  color: white;
+}
+
+.learnispire-footer hr {
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Ensure footer stays at bottom */
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex: 1 0 auto;
+}
+
+footer {
+  flex-shrink: 0;
+}
     </style>
 
     {% block extra_css %}{% endblock %}
@@ -287,96 +374,106 @@
     <!-- Main Content -->
     <main>{% block content %}{% endblock %}</main>
 
-    <!-- Footer -->
-    <footer class="learnispire-footer">
-      <div class="container">
-        <div class="row">
-          <!-- Company Information -->
-          <div class="col-lg-3">
-            <h4 class="mb-4 fw-bold text-white">LearnIspire</h4>
-            <p class="mb-4 text-white">
-              Transforming education through personalized online learning
-              experiences.
-            </p>
-            <div class="d-flex social-icons gap-3 mb-4">
-              <a href="#" class="social-icon" aria-label="Facebook"
-                ><i class="fab fa-facebook-f"></i
-              ></a>
-              <a href="#" class="social-icon" aria-label="Twitter"
-                ><i class="fab fa-twitter"></i
-              ></a>
-              <a href="#" class="social-icon" aria-label="Instagram"
-                ><i class="fab fa-instagram"></i
-              ></a>
-              <a href="#" class="social-icon" aria-label="LinkedIn"
-                ><i class="fab fa-linkedin-in"></i
-              ></a>
-            </div>
-          </div>
-
-          <!-- Quick Links -->
-          <div class="col-lg-3">
-            <p class="mb-4 text-white">Quick Links</p>
-            <ul class="list-unstyled footer-links">
-              <li><a href="{% url 'landing:home' %}">Home</a></li>
-              <li><a href="{% url 'landing:about' %}">About Us</a></li>
-              <li><a href="{% url 'landing:pricing' %}">Pricing</a></li>
-              <li><a href="{% url 'landing:contact' %}">Contact</a></li>
-            </ul>
-          </div>
-
-          <!-- Legal -->
-          <div class="col-lg-3">
-            <p class="mb-4 text-white">Legal</p>
-            <ul class="list-unstyled footer-links">
-              <li><a href="{% url 'landing:privacy' %}">Privacy Policy</a></li>
-              <li>
-                <a href="{% url 'landing:terms' %}">Terms & Conditions</a>
-              </li>
-            </ul>
-          </div>
-
-          <!-- Contact Information -->
-          <div class="col-lg-3">
-            <p class="mb-4 text-white">Contact Us</p>
-            <div class="contact-info">
-              <div class="d-flex mb-3 align-items-start">
-                <div class="icon-box me-3">
-                  <i class="fas fa-map-marker-alt"></i>
-                </div>
-                <p class="mb-0 text-white">
-                  123 Education Street<br />City, State, India
-                </p>
-              </div>
-              <div class="d-flex mb-3 align-items-center">
-                <div class="icon-box me-3">
-                  <i class="fas fa-phone"></i>
-                </div>
-                <a href="tel:+916305886413" class="mb-0 text-white text-decoration-none"> +91 63058 86413</a>
-              </div>
-              <div class="d-flex mb-3 align-items-center">
-                <div class="icon-box me-3">
-                  <i class="fas fa-envelope"></i>
-                </div>
-                <a href="mailto:info@learnispire.com" class="mb-0 text-white text-decoration-none"> info@learnispire.com</a>
-              </div>
-            </div>
-          </div>
+<!-- Footer -->
+<footer class="learnispire-footer">
+  <div class="container">
+    <div class="row">
+      <!-- Company Information -->
+      <div class="col-lg-3">
+        <h4 class="mb-4 fw-bold text-white">LearnIspire</h4>
+        <p class="mb-4 text-white">
+          Transforming education through personalized online learning
+          experiences.
+        </p>
+        <div class="d-flex social-icons gap-3 mb-4">
+          <a href="#" class="social-icon" aria-label="Facebook"
+            ><i class="fab fa-facebook-f"></i
+          ></a>
+          <a href="#" class="social-icon" aria-label="Twitter"
+            ><i class="fab fa-twitter"></i
+          ></a>
+          <a href="#" class="social-icon" aria-label="Instagram"
+            ><i class="fab fa-instagram"></i
+          ></a>
+          <a href="#" class="social-icon" aria-label="LinkedIn"
+            ><i class="fab fa-linkedin-in"></i
+          ></a>
         </div>
+      </div>
 
-        <!-- Divider Line -->
-        <hr class="my-4 opacity-25" />
+      <!-- Quick Links -->
+      <div class="col-lg-3">
+        <p class="mb-4 text-white">Quick Links</p>
+        <ul class="list-unstyled footer-links">
+          <li><a href="{% url 'landing:home' %}">Home</a></li>
+          <li><a href="{% url 'landing:about' %}">About Us</a></li>
+          <li><a href="{% url 'landing:pricing' %}">Pricing</a></li>
+          <li><a href="{% url 'landing:contact' %}">Contact</a></li>
+        </ul>
+      </div>
 
-        <!-- Copyright Information -->
-        <div class="row align-items-center">
-          <div class="col-md-6 text-center text-md-start">
-            <p class="mb-0 small text-white">
-              &copy; {% now "Y" %} LearnIspire. All rights reserved.
+      <!-- Legal -->
+      <div class="col-lg-3">
+        <p class="mb-4 text-white">Legal</p>
+        <ul class="list-unstyled footer-links">
+          <li><a href="{% url 'landing:privacy' %}">Privacy Policy</a></li>
+          <li>
+            <a href="{% url 'landing:terms' %}">Terms & Conditions</a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Contact Information -->
+      <div class="col-lg-3">
+        <p class="mb-4 text-white">Contact Us</p>
+        <div id="contact-info">
+          <div class="d-flex mb-3 align-items-start">
+            <div class="icon-box me-3">
+              <i class="fas fa-map-marker-alt"></i>
+            </div>
+            <p class="mb-0 text-white">
+              123 Education Street<br />City, State, India
             </p>
+          </div>
+          <div class="d-flex mb-3 align-items-center">
+            <div class="icon-box me-3">
+              <i class="fas fa-phone"></i>
+            </div>
+            <a
+              href="tel:+916305886413"
+              class="mb-0 text-white text-decoration-none"
+            >
+              +91 63058 86413</a
+            >
+          </div>
+          <div class="d-flex mb-3 align-items-center">
+            <div class="icon-box me-3">
+              <i class="fas fa-envelope"></i>
+            </div>
+            <a
+              href="mailto:info@learnispire.com"
+              class="mb-0 text-white text-decoration-none"
+            >
+              info@learnispire.com</a
+            >
           </div>
         </div>
       </div>
-    </footer>
+    </div>
+
+    <!-- Divider Line -->
+    <hr class="my-4 opacity-25" />
+
+    <!-- Copyright Information -->
+    <div class="row align-items-center">
+      <div class="col-md-6 text-center text-md-start">
+        <p class="mb-0 small text-white">
+          &copy; {% now "Y" %} LearnIspire. All rights reserved.
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
