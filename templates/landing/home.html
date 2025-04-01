@@ -1423,5 +1423,135 @@ Personalized Online Learning Platform{% endblock %} {% block content %}
         font-size:small !important;
         font-weight: 100;
     }
+
+    /* Updated Feature Cards - Add visual distinction */
+.feature-card {
+    background-color: #1e2732; /* Default background */
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(30, 39, 50, 0.2);
+    padding: 36px 24px 30px;
+    height: 100%;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    margin-top: 40px;
+    margin-bottom: 40px;
+    z-index: 1;
+    overflow: visible;
+    color: #fbf9f8;
+}
+
+/* Apply different background gradients to each feature card */
+.security-icon {
+    background: linear-gradient(145deg, #93f7f2, #65dbd6);
+}
+
+.feature-card:nth-child(1) {
+    background: linear-gradient(180deg, #1c242f 0%, #263141 100%);
+    border-left: 3px solid #93f7f2;
+}
+
+.feature-card:nth-child(2) {
+    background: linear-gradient(180deg, #222d3a 0%, #2a3647 100%); 
+    border-left: 3px solid #f8cb0c;
+}
+
+.feature-card:nth-child(3) {
+    background: linear-gradient(180deg, #263345 0%, #2e3d4d 100%);
+    border-left: 3px solid #93f7f2;
+}
+
+.feature-card:nth-child(4) {
+    background: linear-gradient(180deg, #1a212b 0%, #232b38 100%);
+    border-left: 3px solid #f8cb0c;
+}
+
+.feature-card:nth-child(5) {
+    background: linear-gradient(180deg, #212c39 0%, #293544 100%);
+    border-left: 3px solid #93f7f2;
+}
+
+.feature-card:nth-child(6) {
+    background: linear-gradient(180deg, #242f3d 0%, #2d3a4a 100%);
+    border-left: 3px solid #f8cb0c;
+}
+
+/* Card hover effect */
+.feature-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 30px rgba(30, 39, 50, 0.3);
+    border-left-width: 5px;
+}
+
+/* Modified Feature Card Icons */
+.security-icon, .mentor-icon {
+    background: linear-gradient(145deg, #93f7f2, #65dbd6);
+}
+
+.sessions-icon, .progress-icon {
+    background: linear-gradient(145deg, #f8cb0c, #e0b70a);
+}
+
+.access-icon, .schedule-icon {
+    background: linear-gradient(145deg, #8c9eff, #536dfe);
+}
+
+/* Hover effect for icons */
+.feature-card:hover .security-icon,
+.feature-card:hover .mentor-icon {
+    background: linear-gradient(145deg, #65dbd6, #93f7f2);
+}
+
+.feature-card:hover .sessions-icon,
+.feature-card:hover .progress-icon {
+    background: linear-gradient(145deg, #e0b70a, #f8cb0c);
+}
+
+.feature-card:hover .access-icon,
+.feature-card:hover .schedule-icon {
+    background: linear-gradient(145deg, #536dfe, #8c9eff);
+}
+
+/* Feature chips styling update */
+.feature-chip {
+    display: flex;
+    align-items: center;
+    padding: 6px 12px;
+    border-radius: 50px;
+    font-size: 0.75rem;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    transition: all 0.2s ease;
+}
+
+/* Different chip colors based on parent card */
+.feature-card:nth-child(1) .feature-chip,
+.feature-card:nth-child(3) .feature-chip,
+.feature-card:nth-child(5) .feature-chip {
+    background-color: rgba(147, 247, 242, 0.15);
+    color: #93f7f2;
+}
+
+.feature-card:nth-child(2) .feature-chip,
+.feature-card:nth-child(4) .feature-chip,
+.feature-card:nth-child(6) .feature-chip {
+    background-color: rgba(248, 203, 12, 0.15);
+    color: #f8cb0c;
+}
+
+/* Chip hover effects */
+.feature-card:nth-child(1) .feature-chip:hover,
+.feature-card:nth-child(3) .feature-chip:hover,
+.feature-card:nth-child(5) .feature-chip:hover {
+    background-color: rgba(147, 247, 242, 0.25);
+}
+
+.feature-card:nth-child(2) .feature-chip:hover,
+.feature-card:nth-child(4) .feature-chip:hover,
+.feature-card:nth-child(6) .feature-chip:hover {
+    background-color: rgba(248, 203, 12, 0.25);
+}
 </style>
 {% endblock %}
