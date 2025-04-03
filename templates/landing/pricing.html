@@ -274,9 +274,9 @@
         <div class="card h-100 border-0 shadow-sm">
           <div class="card-body p-4">
             <div
-              class="feature-icon bg-primary bg-gradient text-white rounded-circle mb-3"
+              class="feature-icon icon-wrapper mb-3"
             >
-              <i class="fas fa-calendar-check fa-2x"></i>
+              <i class="fas fa-calendar-check fa-2x "></i>
             </div>
             <h4 class="card-title">Pay As You Learn</h4>
             <p class="card-text">
@@ -304,7 +304,7 @@
         <div class="card h-100 border-0 shadow-sm">
           <div class="card-body p-4">
             <div
-              class="feature-icon bg-primary bg-gradient text-white rounded-circle mb-3"
+              class="feature-icon icon-wrapper mb-3"
             >
               <i class="fas fa-users fa-2x"></i>
             </div>
@@ -335,7 +335,7 @@
         <div class="card h-100 border-0 shadow-sm">
           <div class="card-body p-4">
             <div
-              class="feature-icon bg-primary bg-gradient text-white rounded-circle mb-3"
+              class="feature-icon icon-wrapper mb-3"
             >
               <i class="fas fa-award fa-2x"></i>
             </div>
@@ -792,16 +792,18 @@
 <style>
   /* Base Styling */
   :root {
-    --primary-color: #1976d2;
-    --primary-light: #e3f2fd;
-    --primary-dark: #1565c0;
-    --success-color: #4caf50;
-    --error-color: #f44336;
-    --text-dark: #333;
-    --text-medium: #555;
-    --text-light: #666;
+    --primary-color: #93f7f2;
+    --primary-light: rgba(147, 247, 242, 0.1);
+    --primary-dark: #7ee6e0;
+    --accent-color: #f8cb0c;
+    --accent-light: rgba(248, 203, 12, 0.1);
+    --accent-dark: #e0b70a;
+    --text-dark: #1e2732;
+    --text-medium: rgba(30, 39, 50, 0.8);
+    --text-light: rgba(30, 39, 50, 0.6);
+    --background: #fbf9f8;
     --border-radius: 8px;
-    --box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    --box-shadow: 0 2px 8px rgba(30, 39, 50, 0.05);
     --transition-standard: all 0.3s ease;
   }
 
@@ -809,6 +811,7 @@
     max-width: 1200px;
     margin: 0 auto;
     padding: 3rem 1.5rem;
+    background-color: var(--background);
   }
 
   .header {
@@ -849,7 +852,7 @@
 
   /* Paper and Form Container */
   .paper {
-    background-color: #fff;
+    background-color: var(--background);
     border-radius: var(--border-radius);
     padding: 2rem;
     box-shadow: var(--box-shadow);
@@ -857,6 +860,7 @@
     z-index: 1;
     overflow: hidden;
     transition: var(--transition-standard);
+    border: 1px solid rgba(147, 247, 242, 0.2);
   }
 
   .paper:before {
@@ -866,13 +870,14 @@
     right: -20px;
     width: 100px;
     height: 100px;
-    background: linear-gradient(135deg, rgba(25, 118, 210, 0.1), transparent);
+    background: linear-gradient(135deg, var(--primary-light), transparent);
     transform: rotate(45deg);
     z-index: -1;
   }
 
   .paper:hover {
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 12px rgba(30, 39, 50, 0.1);
+    border-color: var(--primary-color);
   }
 
   .form-container {
@@ -934,28 +939,30 @@
   select {
     width: 100%;
     padding: 0.875rem 1rem;
-    border: 1px solid #ccc;
+    border: 1px solid rgba(147, 247, 242, 0.3);
     border-radius: 4px;
     font-size: 1rem;
     transition: var(--transition-standard);
+    background-color: var(--background);
+    color: var(--text-dark);
   }
 
   input:focus,
   select:focus {
     outline: none;
     border-color: var(--primary-color);
-    box-shadow: 0 0 0 3px rgba(25, 118, 210, 0.1);
+    box-shadow: 0 0 0 3px var(--primary-light);
   }
 
   .asterisk {
-    color: var(--error-color);
+    color: var(--accent-color);
   }
 
   /* Animated Input Styling */
   .input-animated,
   select.input-animated {
     border: none;
-    border-bottom: 2px solid #e0e0e0;
+    border-bottom: 2px solid rgba(147, 247, 242, 0.3);
     border-radius: 0;
     padding: 0.875rem 1rem 0.625rem 0;
     background-color: transparent;
@@ -988,6 +995,7 @@
     pointer-events: none;
     transform-origin: 0 0;
     transition: transform 0.2s, color 0.2s;
+    color: var(--text-medium);
   }
 
   .form-floating input:focus ~ label,
@@ -1011,8 +1019,8 @@
     right: 1rem;
     width: 0.625rem;
     height: 0.625rem;
-    border-right: 2px solid #666;
-    border-bottom: 2px solid #666;
+    border-right: 2px solid var(--text-light);
+    border-bottom: 2px solid var(--text-light);
     transform: translateY(-50%) rotate(45deg);
     pointer-events: none;
     transition: transform 0.3s ease;
@@ -1041,17 +1049,19 @@
     display: flex;
     align-items: center;
     padding: 0.75rem 1rem;
-    background-color: #f5f5f5;
+    background-color: var(--background);
     border-radius: 4px;
     cursor: pointer;
     transition: all 0.2s;
     position: relative;
     overflow: hidden;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(147, 247, 242, 0.2);
   }
 
   .subject-label:hover {
     background-color: var(--primary-light);
+    border-color: var(--primary-color);
   }
 
   .subject-label:after {
@@ -1061,7 +1071,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(to right, rgba(25, 118, 210, 0.1), transparent);
+    background: linear-gradient(to right, var(--primary-light), transparent);
     transform: translateX(-100%);
     transition: transform 0.3s ease;
     pointer-events: none;
@@ -1087,8 +1097,8 @@
   .btn {
     width: 100%;
     padding: 0.875rem;
-    background-color: var(--primary-color);
-    color: white;
+    background-color: var(--accent-color);
+    color: var(--text-dark);
     border: none;
     border-radius: 4px;
     font-size: 1rem;
@@ -1103,7 +1113,7 @@
   }
 
   .btn:hover {
-    background-color: var(--primary-dark);
+    background-color: var(--accent-dark);
     transform: translateY(-2px);
   }
 
@@ -1174,18 +1184,16 @@
 
   /* Success state animation */
   .btn-success {
-    background-color: var(--success-color) !important;
-    transform: scale(1.02);
-    transition: all 0.3s ease;
+    background-color: var(--primary-color) !important;
   }
 
   /* Validation States */
   .is-valid {
-    border-color: var(--success-color) !important;
+    border-color: var(--primary-color) !important;
   }
 
   .is-invalid {
-    border-color: var(--error-color) !important;
+    border-color: var(--accent-color) !important;
   }
 
   .invalid-feedback {
@@ -1193,7 +1201,7 @@
     width: 100%;
     margin-top: 0.25rem;
     font-size: 0.85rem;
-    color: var(--error-color);
+    color: var(--accent-color);
   }
 
   .is-invalid + .invalid-feedback,
@@ -1226,17 +1234,19 @@
   }
 
   .card {
-    background-color: #fff;
+    background-color: var(--background);
     border-radius: var(--border-radius);
     padding: 1.25rem;
     box-shadow: var(--box-shadow);
     transition: transform 0.3s, box-shadow 0.3s;
     animation: fadeIn 0.5s ease;
+    border: 1px solid rgba(147, 247, 242, 0.2);
   }
 
   .card:hover {
     transform: translateY(-5px);
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    border-color: var(--primary-color);
   }
 
   .price-card:hover {
@@ -1260,6 +1270,7 @@
     justify-content: center;
     flex-shrink: 0;
     transition: background-color 0.3s;
+    border: 1px solid rgba(147, 247, 242, 0.2);
   }
 
   .card:hover .icon-wrapper {
@@ -1267,7 +1278,7 @@
   }
 
   .card:hover .icon {
-    fill: white;
+    fill: var(--text-dark);
   }
 
   .icon {
@@ -1291,7 +1302,7 @@
   }
 
   .help-card {
-    background-color: #f0f7ff;
+    background-color: var(--primary-light);
     margin-top: 1.5rem;
     border-left: 4px solid var(--primary-color);
   }
@@ -1322,7 +1333,7 @@
     height: 200px;
     background: radial-gradient(
       circle,
-      rgba(25, 118, 210, 0.05) 0%,
+      var(--primary-light) 0%,
       transparent 70%
     );
     border-radius: 50%;
@@ -1353,7 +1364,7 @@
   }
 
   .accordion-button:focus {
-    box-shadow: 0 0 0 0.25rem rgba(25, 118, 210, 0.25);
+    box-shadow: 0 0 0 0.25rem var(--primary-light);
   }
 
   /* Enhanced CTA Section Styling */
@@ -1380,12 +1391,13 @@
   }
 
   .cta-card {
-    background: #fff;
+    background: var(--background);
     border-radius: 12px;
     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
     overflow: hidden;
     transition: all 0.3s ease;
     position: relative;
+    border: 1px solid rgba(147, 247, 242, 0.2);
   }
 
   .cta-card:hover {
@@ -1431,7 +1443,7 @@
     justify-content: center;
     width: 24px;
     height: 24px;
-    background-color: rgba(25, 118, 210, 0.1);
+    background-color: var(--primary-light);
     border-radius: 50%;
     margin-right: 8px;
     color: var(--primary-color);
@@ -1464,12 +1476,12 @@
     justify-content: center;
     gap: 0.5rem;
     transition: all 0.3s ease;
-    box-shadow: 0 5px 15px rgba(25, 118, 210, 0.2);
+    box-shadow: 0 5px 15px rgba(147, 247, 242, 0.2);
   }
 
   .cta-btn-primary:hover {
     transform: translateY(-3px);
-    box-shadow: 0 8px 25px rgba(25, 118, 210, 0.3);
+    box-shadow: 0 8px 25px rgba(147, 247, 242, 0.3);
   }
 
   .cta-btn-primary svg {
@@ -1489,7 +1501,7 @@
   }
 
   .cta-btn-secondary:hover {
-    background-color: rgba(25, 118, 210, 0.1);
+    background-color: var(--primary-light);
   }
 
   .cta-image-col {
@@ -1511,25 +1523,26 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(135deg, #1976d2, #64b5f6);
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
     z-index: 0;
   }
 
   .cta-testimonial {
     position: relative;
     z-index: 1;
-    background-color: white;
+    background-color: var(--background);
     border-radius: 8px;
     padding: 1.5rem;
     margin: 2rem;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
     max-width: 350px;
+    border: 1px solid rgba(147, 247, 242, 0.2);
   }
 
   .cta-stars {
     display: flex;
     margin-bottom: 1rem;
-    color: #ffd700;
+    color: var(--accent-color);
   }
 
   .cta-quote {
@@ -1752,6 +1765,11 @@
       font-size: 0.85rem;
     }
   }
+
+  .learnispire-footer{
+        font-size:small !important;
+        font-weight: 100;
+    }
 </style>
 {% endblock %} {% block extra_js %}
 <script>
