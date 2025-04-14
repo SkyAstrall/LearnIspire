@@ -7,6 +7,7 @@ attrs==25.1.0
 cachetools==5.5.2
 certifi==2025.1.31
 charset-normalizer==3.4.1
+dj-database-url==2.3.0
 Django==5.1.7
 django-allauth==65.4.1
 frozenlist==1.5.0
@@ -32,6 +33,7 @@ requests==2.32.3
 rsa==4.9
 sqlparse==0.5.3
 twilio==9.4.6
+typing_extensions==4.13.1
 tzdata==2025.1
 uritemplate==4.1.1
 urllib3==2.3.0
