@@ -104,6 +104,7 @@ class CustomAccountAdapter(DefaultAccountAdapter):
             # Update user verification status
             user = verification.user
             user.is_phone_verified = True
+            
             user.save()
 
             return True

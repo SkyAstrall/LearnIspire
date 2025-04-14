@@ -14,14 +14,13 @@ logger = logging.getLogger(__name__)
 class GoogleMeetService:
     """Service for managing Google Meet meetings."""
 
-
     @classmethod
     def create_real_meeting(cls, class_session):
         """Create a real Google Meet meeting using Calendar API."""
         print(f"Attempting to create real meeting for class {class_session.id}")
 
-            # Try to get service using settings
-        SERVICE_ACCOUNT_FILE = "edulance-452011-f1970b2af93f.json"
+        # Try to get service using settings
+        SERVICE_ACCOUNT_FILE = "edulance-452011-b9968bd8012a.json"
         USER_EMAIL = "admin@learnispire.com"
         credentials = service_account.Credentials.from_service_account_file(
         SERVICE_ACCOUNT_FILE,
@@ -30,15 +29,11 @@ class GoogleMeetService:
         )
 
         service = build("calendar", "v3", credentials=credentials)
-                
-        
-
 
         try:
             # Format event details
             start_time = class_session.start_time.isoformat()
             end_time = class_session.end_time.isoformat()
-
 
             # Define event details
             event = {
@@ -74,7 +69,6 @@ class GoogleMeetService:
                 },
             }
 
-
             # Create the event with conference data
             event = (
                 service.events()
@@ -85,7 +79,6 @@ class GoogleMeetService:
                 )
                 .execute()
             )
-
 
             # Extract meeting link and ID
             meeting_link = event.get("hangoutLink")

@@ -5,6 +5,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
 from .forms import PhoneVerificationForm, StudentProfileForm, TeacherProfileForm
 from .adapters import CustomAccountAdapter
+from .models import CustomUser
 
 class VerifyPhoneView(LoginRequiredMixin, View):
     template_name = 'account/verify_phone.html'
@@ -55,10 +56,12 @@ class ResendOTPView(LoginRequiredMixin, View):
 
 class LoginRedirectView(LoginRequiredMixin, View):
     def get(self, request):
-        # Redirect based on verification status and role
-        if not request.user.is_phone_verified:
+        user = request.user
+        user_data = CustomUser.objects.get(email=user.email)
+        # Redirect based on verificatio status and rol
+        if not user_data.is_phone_verified:
             return redirect('account:verify_phone')
-        
+
         if request.user.is_student:
             return redirect('student_dashboard:home')
         elif request.user.is_teacher:
