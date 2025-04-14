@@ -8,7 +8,7 @@ urlpatterns = [
     # Landing pages
     path("", include("landing.urls")),
     # Authentication
-    path("accounts/", include("accounts.urls")),
+    path("accounts/", include("accounts.urls", namespace="account")),
     path("accounts/", include("allauth.urls")),
     # Dashboard URLs
     path("student/", include("student_dashboard.urls")),

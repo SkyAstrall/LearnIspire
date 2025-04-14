@@ -149,6 +149,17 @@ class LeaveRequest(models.Model):
         """Validate date range."""
         if self.start_date > self.end_date:
             raise ValidationError("End date must be on or after start date.")
+        overlapping = Availability.objects.filter(
+            user=self.user,
+            day_of_week=self.day_of_week,
+            start_time__lt=self.end_time,
+            end_time__gt=self.start_time,
+        )
+        if self.pk:
+            overlapping = overlapping.exclude(pk=self.pk)
+
+        if overlapping.exists():
+            raise ValidationError("This availability overlaps with an existing one.")
 
     def approve(self, admin_user, comments=None):
         """Approve leave request."""
