@@ -4,12 +4,136 @@
 {% block title %}Schedule Demo - {{ student.get_full_name }} - LearnIspire{% endblock %}
 
 {% block content %}
+<style>
+  body {
+    background-color: #fbf9f8;
+  }
+  .card {
+    border: none;
+    box-shadow: 0 2px 4px rgba(30, 39, 50, 0.1);
+  }
+  .card-header {
+    background-color: #1e2732 !important;
+    color: #ffffff !important;
+    border-bottom: none;
+  }
+  .list-group-item {
+    border-left: none;
+    border-right: none;
+  }
+  .list-group-item.active {
+    background-color: #f8cb0c;
+    border-color: #f8cb0c;
+    color: #1e2732;
+  }
+  .list-group-item:hover {
+    background-color: #93f7f2;
+    color: #1e2732;
+  }
+  .badge {
+    background-color: #f8cb0c;
+    color: #1e2732;
+  }
+  .badge.bg-info {
+    background-color: #93f7f2 !important;
+    color: #1e2732;
+  }
+  .badge.bg-warning {
+    background-color: #f8cb0c !important;
+    color: #1e2732;
+  }
+  .badge.bg-success {
+    background-color: #93f7f2 !important;
+    color: #1e2732;
+  }
+  .badge.bg-primary {
+    background-color: #1e2732 !important;
+    color: #ffffff;
+  }
+  .btn-primary {
+    background-color: #1e2732;
+    border-color: #1e2732;
+    color: #ffffff;
+  }
+  .btn-primary:hover {
+    background-color: #2a3744;
+    border-color: #2a3744;
+    color: #ffffff;
+  }
+  .btn-outline-secondary {
+    color: #1e2732;
+    border-color: #1e2732;
+  }
+  .btn-outline-secondary:hover {
+    background-color: #93f7f2;
+    color: #1e2732;
+    border-color: #93f7f2;
+  }
+  .table-light {
+    background-color: #fbf9f8;
+  }
+  .table-light th {
+    background-color: #1e2732;
+    color: #ffffff;
+  }
+  .table-hover tbody tr:hover {
+    background-color: #93f7f2;
+    color: #1e2732;
+  }
+  h5 {
+    color: #ffffff;
+  }
+  .card-body h5 {
+    color: #1e2732;
+  }
+  .text-success {
+    color: #93f7f2 !important;
+  }
+  .text-muted {
+    color: #1e2732 !important;
+    opacity: 0.7;
+  }
+  .alert-info {
+    background-color: #93f7f2;
+    border-color: #93f7f2;
+    color: #1e2732;
+  }
+  .alert-warning {
+    background-color: #f8cb0c;
+    border-color: #f8cb0c;
+    color: #1e2732;
+  }
+  a {
+    color: #1e2732;
+    text-decoration: none;
+  }
+  a:hover {
+    color: #2a3744;
+  }
+  .breadcrumb-item.active {
+    color: #1e2732;
+  }
+  .breadcrumb-item a {
+    color: #1e2732;
+  }
+  .breadcrumb-item a:hover {
+    color: #93f7f2;
+  }
+  .form-select:focus, .form-control:focus {
+    border-color: #93f7f2;
+    box-shadow: 0 0 0 0.25rem rgba(147, 247, 242, 0.25);
+  }
+  .spinner-border.text-primary {
+    color: #93f7f2 !important;
+  }
+</style>
+
 <div class="container-fluid py-4">
     <div class="row">
         <!-- Sidebar -->
         <div class="col-md-2">
             <div class="card mb-4">
-                <div class="card-header bg-dark text-white">
+                <div class="card-header">
                     <h5 class="mb-0">Admin Portal</h5>
                 </div>
                 <div class="list-group list-group-flush">
@@ -58,7 +182,7 @@
                 <div class="col-md-4">
                     <!-- Student Info Card -->
                     <div class="card mb-4">
-                        <div class="card-header bg-white">
+                        <div class="card-header">
                             <h5 class="mb-0">Student Information</h5>
                         </div>
                         <div class="card-body">
@@ -86,7 +210,7 @@
                                 <label class="form-label text-muted">Selected Subjects</label>
                                 <div>
                                     {% for subject in subjects %}
-                                        <span class="badge bg-primary mb-1 me-1">{{ subject.name }}</span>
+                                        <span class="badge bg-info mb-1 me-1">{{ subject.name }}</span>
                                     {% empty %}
                                         <p class="text-muted">No subjects selected</p>
                                     {% endfor %}
@@ -97,7 +221,7 @@
                     
                     <!-- Student Availability Card -->
                     <div class="card">
-                        <div class="card-header bg-white">
+                        <div class="card-header">
                             <h5 class="mb-0">Student Availability</h5>
                         </div>
                         <div class="card-body">
@@ -136,7 +260,7 @@
                 <div class="col-md-8">
                     <!-- Schedule Demo Form Card -->
                     <div class="card">
-                        <div class="card-header bg-white">
+                        <div class="card-header">
                             <h5 class="mb-0">Schedule Demo Class</h5>
                         </div>
                         <div class="card-body">
@@ -156,10 +280,7 @@
                                     <div class="col-md-6">
                                         <label for="teacher" class="form-label">Teacher <span class="text-danger">*</span></label>
                                         <select class="form-select" id="teacher" name="teacher" required>
-                                            <option value="">Select Teacher</option>
-                                            {% for teacher in eligible_teachers %}
-                                                <option value="{{ teacher.user.id }}">{{ teacher.user.get_full_name }} ({{ teacher.years_of_experience }} yrs exp)</option>
-                                            {% endfor %}
+                                            <option value="">Select Subject First</option>
                                         </select>
                                     </div>
                                 </div>
@@ -190,7 +311,7 @@
                                 <div class="alert alert-warning">
                                     <i class="fas fa-info-circle me-2"></i>
                                     <strong>Note:</strong> As an admin, you can schedule demos regardless of availability constraints. The selected time will be confirmed for both student and teacher.
-</div>
+                                </div>
                                 
                                 <div class="d-flex justify-content-end mt-4">
                                     <a href="{% url 'admin_dashboard:pending_demos' %}" class="btn btn-outline-secondary me-2">Cancel</a>
@@ -202,7 +323,7 @@
                     
                     <!-- Teacher Availability Section -->
                     <div class="card mt-4">
-                        <div class="card-header bg-white">
+                        <div class="card-header">
                             <h5 class="mb-0">Teacher Availability</h5>
                         </div>
                         <div class="card-body">
@@ -227,37 +348,46 @@
         const subjectSelect = document.getElementById('subject');
         const teacherSelect = document.getElementById('teacher');
         const teachersBySubject = {};
-         {% for teacher in eligible_teachers %}
+        
+        {% for teacher in eligible_teachers %}
             {% for subject in teacher.subjects.all %}
-                const subjectId = {{ subject.id }};
-                if (!teachersBySubject[subjectId]) {
-                    teachersBySubject[subjectId] = [];
+                if (!teachersBySubject[{{ subject.id }}]) {
+                    teachersBySubject[{{ subject.id }}] = [];
                 }
-                const teacherData = {
+                teachersBySubject[{{ subject.id }}].push({
                     id: {{ teacher.user.id }},
                     name: "{{ teacher.user.get_full_name }}",
                     experience: {{ teacher.years_of_experience|default:0 }}
-                };
-                teachersBySubject[subjectId].push(teacherData);
-                console.log(`Added teacher ${teacherData.name} to subject ${subjectId}`);
+                });
             {% endfor %}
         {% endfor %}
-        console.log("Teacher mapping by subject:", teachersBySubject);
+        
         subjectSelect.addEventListener('change', function() {
-            const subjectId = this.value;
-            console.log(`Subject selected: ${subjectId}`);
+            const subjectId = parseInt(this.value);
             
             // Reset teacher dropdown
             teacherSelect.innerHTML = '<option value="">Select Teacher</option>';
             
-            if (!subjectId) return;
+            if (!subjectId) {
+                teacherSelect.innerHTML = '<option value="">Select Subject First</option>';
+                return;
+            }
             
-            // Filter teachers based on subject
-            // This would typically be an AJAX call to get teachers for this subject
-            // For demo purposes, we're using the initial list and just filtering it
+            // Get teachers for this subject
+            const teachers = teachersBySubject[subjectId] || [];
             
-            // Then populate teacher dropdown with filtered teachers
-            // This is a placeholder for the actual implementation
+            if (teachers.length === 0) {
+                teacherSelect.innerHTML = '<option value="">No teachers available for this subject</option>';
+                return;
+            }
+            
+            // Populate teacher dropdown
+            teachers.forEach(teacher => {
+                const option = document.createElement('option');
+                option.value = teacher.id;
+                option.textContent = `${teacher.name} (${teacher.experience} yrs exp)`;
+                teacherSelect.appendChild(option);
+            });
         });
         
         // Teacher change handler - to show teacher availability
@@ -270,76 +400,156 @@
                 return;
             }
             
-            // Fetch and display teacher availability
-            // This would typically be an AJAX call to get teacher availability
-            // For demo purposes, we'll just show a placeholder
+            // Show loading state
             availabilitySection.innerHTML = '<div class="text-center"><div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div><p class="mt-2">Loading availability...</p></div>';
             
-            // Simulate loading
-            setTimeout(() => {
-                availabilitySection.innerHTML = `
-                    <div class="table-responsive">
-                        <table class="table table-sm">
-                            <thead>
-                                <tr>
-                                    <th>Day</th>
-                                    <th>Time Slots</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>Monday</td>
-                                    <td>
-                                        <span class="badge bg-info me-1">09:00 AM - 11:00 AM</span>
-                                        <span class="badge bg-info me-1">02:00 PM - 04:00 PM</span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Tuesday</td>
-                                    <td>
-                                        <span class="badge bg-info me-1">10:00 AM - 12:00 PM</span>
-                                        <span class="badge bg-info me-1">03:00 PM - 05:00 PM</span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Wednesday</td>
-                                    <td>
-                                        <span class="badge bg-info me-1">09:00 AM - 11:00 AM</span>
-                                        <span class="badge bg-info me-1">01:00 PM - 03:00 PM</span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Thursday</td>
-                                    <td>
-                                        <span class="badge bg-info me-1">10:00 AM - 12:00 PM</span>
-                                        <span class="badge bg-info me-1">04:00 PM - 06:00 PM</span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Friday</td>
-                                    <td>
-                                        <span class="badge bg-info me-1">11:00 AM - 01:00 PM</span>
-                                        <span class="badge bg-info me-1">03:00 PM - 05:00 PM</span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Saturday</td>
-                                    <td>
-                                        <span class="badge bg-info me-1">09:00 AM - 11:00 AM</span>
-                                        <span class="badge bg-info me-1">02:00 PM - 04:00 PM</span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Sunday</td>
-                                    <td>
-                                        <span class="text-muted">Not available</span>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                `;
-            }, 1000);
+            // Fetch teacher availability from the server
+            fetch(`/api/teacher-availability/${teacherId}/`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // Process and display the availability data
+                    let tableHTML = `
+                        <div class="table-responsive">
+                            <table class="table table-sm">
+                                <thead>
+                                    <tr>
+                                        <th>Day</th>
+                                        <th>Time Slots</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                    `;
+                    
+                    const daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+                    
+                    daysOfWeek.forEach((day, index) => {
+                        const daySlots = data.filter(slot => slot.day_of_week === index);
+                        
+                        tableHTML += `<tr><td>${day}</td><td>`;
+                        
+                        if (daySlots.length > 0) {
+                            daySlots.forEach(slot => {
+                                tableHTML += `<span class="badge bg-info me-1">${slot.start_time} - ${slot.end_time}</span>`;
+                            });
+                        } else {
+                            tableHTML += `<span class="text-muted">Not available</span>`;
+                        }
+                        
+                        tableHTML += `</td></tr>`;
+                    });
+                    
+                    tableHTML += `</tbody></table></div>`;
+                    availabilitySection.innerHTML = tableHTML;
+                })
+                .catch(error => {
+                    console.error('Error fetching teacher availability:', error);
+                    
+                    // Fallback to show sample data if API fails
+                    availabilitySection.innerHTML = `
+                        <div class="alert alert-info">
+                            <i class="fas fa-info-circle me-2"></i>
+                            Could not fetch real-time availability. Showing sample data instead.
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-sm">
+                                <thead>
+                                    <tr>
+                                        <th>Day</th>
+                                        <th>Time Slots</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Monday</td>
+                                        <td>
+                                            <span class="badge bg-info me-1">09:00 AM - 11:00 AM</span>
+                                            <span class="badge bg-info me-1">02:00 PM - 04:00 PM</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Tuesday</td>
+                                        <td>
+                                            <span class="badge bg-info me-1">10:00 AM - 12:00 PM</span>
+                                            <span class="badge bg-info me-1">03:00 PM - 05:00 PM</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Wednesday</td>
+                                        <td>
+                                            <span class="badge bg-info me-1">09:00 AM - 11:00 AM</span>
+                                            <span class="badge bg-info me-1">01:00 PM - 03:00 PM</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Thursday</td>
+                                        <td>
+                                            <span class="badge bg-info me-1">10:00 AM - 12:00 PM</span>
+                                            <span class="badge bg-info me-1">04:00 PM - 06:00 PM</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Friday</td>
+                                        <td>
+                                            <span class="badge bg-info me-1">11:00 AM - 01:00 PM</span>
+                                            <span class="badge bg-info me-1">03:00 PM - 05:00 PM</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Saturday</td>
+                                        <td>
+                                            <span class="badge bg-info me-1">09:00 AM - 11:00 AM</span>
+                                            <span class="badge bg-info me-1">02:00 PM - 04:00 PM</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Sunday</td>
+                                        <td>
+                                            <span class="text-muted">Not available</span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    `;
+                });
+        });
+
+        // Date and time validation
+        const dateInput = document.getElementById('date');
+        const timeInput = document.getElementById('start_time');
+        const form = document.querySelector('form');
+
+        form.addEventListener('submit', function(event) {
+            const selectedDate = new Date(dateInput.value);
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+
+            if (selectedDate < today) {
+                event.preventDefault();
+                alert('Please select a date that is today or in the future.');
+                return;
+            }
+
+            // Ensure a teacher is selected
+            if (!teacherSelect.value) {
+                event.preventDefault();
+                alert('Please select a teacher for the demo class.');
+                return;
+            }
+
+            // Ensure a subject is selected
+            if (!subjectSelect.value) {
+                event.preventDefault();
+                alert('Please select a subject for the demo class.');
+                return;
+            }
+
+            // Additional validation could be added here
         });
     });
 </script>
