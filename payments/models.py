@@ -29,7 +29,7 @@ class Payment(models.Model):
         max_length=20, choices=PAYMENT_METHODS, blank=True
     )
     status = models.CharField(max_length=10, choices=PAYMENT_STATUS, default="PENDING")
-    month_year = models.DateField(help_text="Month and year this payment is for")
+    month_year = models.DateField(help_text="Month and year this payment is for",blank=True, null=True)
     order_id = models.CharField(max_length=50, unique=True, default=uuid.uuid4)
     payment_details = models.JSONField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)

@@ -7,39 +7,68 @@ from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 
+from django.conf import settings
+from django.urls import reverse
 from .models import Payment, TeacherEarning
 from .services import PayUService
-from accounts.models import StudentProfile
+from accounts.models import StudentProfile,CustomUser
+import string
+import random
+from paywix.payu import Payu
+payu = Payu(
+    settings.PAYU_CONFIG["MERCHANT_KEY"],
+    settings.PAYU_CONFIG["MERCHANT_SALT"],
+    settings.PAYU_CONFIG["MODE"],
+)
+def generate_transaction_id(length=10):
+    """Generate a random transaction ID"""
+    return "".join(random.choices(string.ascii_uppercase + string.digits, k=length))
 
 
 class InitiatePaymentView(LoginRequiredMixin, View):
-    def get(self, request, payment_id):
-        payment = get_object_or_404(Payment, id=payment_id, student=request.user)
+    def post(self, request,course):
+        try:
+            # Extract data from request
+            user = request.user
+            data = request.data
+            user_data = StudentProfile.objects.get(user=user)
+            amount = data.get("final_price")
+            first_name = user_data.first_name
+            email = user.email
+            phone = user_data.mobile
+            txnid = generate_transaction_id()
+            try:
+
+                product = course
+                product_info = product.name
+                Payment.objects.create(
+                    amount=amount,
+                    student=CustomUser.objects.get(email=user.email),
+                    transaction_id=txnid,
+                    status = "INITIATED",
+                )
+            except:
+                pass
+        except Exception as e:
+            messages.error(request, f"Error initiating payment: {str(e)}")
+            return redirect("student_dashboard:payments")
+        payu_data = {
+                "amount": str(amount),
+                "firstname": first_name,
+                "email": email,
+                "phone": phone,
+                "lastname": first_name,
+                "productinfo": product_info,
+                "txnid": txnid,
+                "furl": settings.PAYU_CONFIG["FAILURE_URL"],
+                "surl": settings.PAYU_CONFIG["SUCCESS_URL"],
+                "curl": settings.PAYU_CONFIG["CANCEL_URL"],
+            }
+        response = payu.transaction(**payu_data)
+        html = payu.make_html(response)
 
         # Check if payment is pending
-        if payment.status not in ["PENDING", "INITIATED"]:
-            messages.error(request, "This payment has already been processed.")
-            return redirect("student_dashboard:payments")
-
-        # Generate payment request
-        payment_request = PayUService.create_payment_request(
-            request.user, payment.amount, payment.month_year
-        )
-
-        if not payment_request["success"]:
-            messages.error(request, "Failed to initiate payment. Please try again.")
-            return redirect("student_dashboard:payments")
-
-        # Render payment form
-        return render(
-            request,
-            "payments/initiate.html",
-            {
-                "payment": payment,
-                "params": payment_request["params"],
-                "payu_url": payment_request["url"],
-            },
-        )
+        return html
 
 
 @method_decorator(csrf_exempt, name="dispatch")
