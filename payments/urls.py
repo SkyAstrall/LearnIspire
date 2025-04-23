@@ -6,7 +6,7 @@ app_name = "payments"
 urlpatterns = [
     # Payment processing
     path(
-        "initiate/<int:payment_id>/",
+        "initiate/",
         views.InitiatePaymentView.as_view(),
         name="initiate",
     ),
