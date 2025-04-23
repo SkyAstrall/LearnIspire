@@ -10,7 +10,7 @@ from common.models import Subject, Grade, Board
 from scheduling.models import Availability, Class
 from payments.models import Payment
 from payments.services import PayUService
-
+from accounts.models import CustomUser
 
 class StudentAccessMixin(LoginRequiredMixin):
     """Mixin to ensure only students can access a view."""
@@ -67,7 +67,8 @@ class StudentProfileView(StudentAccessMixin, View):
             profile = request.user.student_profile
         except StudentProfile.DoesNotExist:
             profile = StudentProfile.objects.create(user=request.user)
-
+        r_user = CustomUser.objects.get(id=request.user.id)
+        demo_count = StudentProfile.objects.get(user=request.user).demo_count
         # Get available grades and boards
         grades = Grade.objects.filter(is_active=True)
         boards = Board.objects.filter(is_active=True)
@@ -76,6 +77,7 @@ class StudentProfileView(StudentAccessMixin, View):
             "profile": profile,
             "grades": grades,
             "boards": boards,
+            "demo_count": demo_count,
         }
 
         return render(request, self.template_name, context)

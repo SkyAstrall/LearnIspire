@@ -71,6 +71,35 @@ class InitiatePaymentView(LoginRequiredMixin, View):
         return html
 
 
+class PaymentCallbackView(LoginRequiredMixin, View):
+
+    def Post(self, request):
+        data = {k: v[0] for k, v in dict(request.POST).items()}
+        pay = payu.check_transaction(**data)
+        txnid = pay["payment_response"]["transaction_id"]
+        if (
+            pay["payment_response"]["status"] == "success"
+            
+        ):
+            status = "success"
+        if response["success"]:
+            payment = response["payment"]
+
+            if response["status"] == "success":
+                messages.success(request, "Payment completed successfully!")
+                return redirect("student_dashboard:payments")
+            else:
+                messages.warning(
+                    request, "Payment was not successful. Please try again."
+                )
+                return redirect("student_dashboard:payments")
+        else:
+            messages.error(
+                request,
+                f"Error processing payment: {response.get('error', 'Unknown error')}",
+            )
+            return redirect("student_dashboard:payments")
+
 @method_decorator(csrf_exempt, name="dispatch")
 class PaymentSuccessView(View):
     def post(self, request):
