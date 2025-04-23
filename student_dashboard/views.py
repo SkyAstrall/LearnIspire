@@ -336,9 +336,14 @@ class DemoRequestView(StudentAccessMixin, View):
         if existing_demo:
             messages.error(request, "You already have a demo class scheduled.")
             return redirect("student_dashboard:classes")
-
+        student_profile = request.user.student_profile
+        if student_profile.demo_count > 3:
+            messages.error(request, "You have already used your demo class.")
+            return redirect("student_dashboard:classes")
         # Update status to demo pending
         profile.update_status("DEMO_PENDING")
+        student_profile.demo_count += 1
+        student_profile.save()
 
         messages.success(
             request,
@@ -368,6 +373,7 @@ class ClassesListView(StudentAccessMixin, View):
             "upcoming_classes": upcoming_classes,
             "past_classes": past_classes,
             "meetings": Class.meeting_link,
+            "class_link": class_link,
         }
 
         return render(request, self.template_name, context)

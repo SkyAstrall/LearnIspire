@@ -61,6 +61,7 @@ class StudentProfile(models.Model):
     )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    demo_count = models.IntegerField(default=0)
 
     def __str__(self):
         return f"{self.user.email} - {self.get_status_display()}"
