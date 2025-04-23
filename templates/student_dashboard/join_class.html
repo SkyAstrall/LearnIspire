@@ -87,14 +87,36 @@
                     </div>
                 </div>
                 <div class="card-body p-0">
-                    <!-- Google Meet iFrame -->
+                    <!-- Google Meet Integration -->
                     <div class="ratio ratio-16x9" style="min-height: 80vh;">
                         {% if class.meeting_link %}
-                            <iframe 
-                                src="{{ class.meeting_link }}" 
-                                allow="camera; microphone; fullscreen; display-capture; autoplay" 
-                                class="meet-frame"
-                            ></iframe>
+                            <div id="meet-container" class="d-flex flex-column align-items-center justify-content-center h-100">
+                                <!-- Direct Join Link Option -->
+                                <div class="text-center mb-4">
+                                    <h4>Your class meeting is ready</h4>
+                                    <p>Click below to join the Google Meet session</p>
+                                    <a href="{{ class.meeting_link }}" 
+                                       target="_blank" 
+                                       id="direct-join-link" 
+                                       class="btn btn-lg btn-primary">
+                                        <i class="fas fa-video me-2"></i> Join Class Meeting
+                                    </a>
+                                    <p class="mt-3 text-muted small">If the meeting doesn't open automatically, click the button above</p>
+                                </div>
+                                
+                                <!-- Alternative Embed Method -->
+                                <div class="mt-3 w-100">
+                                    <div class="embed-responsive">
+                                        <iframe 
+                                            src="{{ class.meeting_link }}" 
+                                            allow="camera; microphone; fullscreen; display-capture; autoplay" 
+                                            class="meet-frame w-100"
+                                            style="height: 60vh; border: none;"
+                                            id="meet-frame"
+                                        ></iframe>
+                                    </div>
+                                </div>
+                            </div>
                         {% else %}
                             <div class="d-flex justify-content-center align-items-center flex-column text-center p-5">
                                 <i class="fas fa-video-slash fa-4x text-secondary mb-3"></i>
@@ -177,6 +199,46 @@
     // Initialize and update timer every second
     updateClassTimer();
     setInterval(updateClassTimer, 1000);
+    
+    // Google Meet handling
+    document.addEventListener('DOMContentLoaded', function() {
+        const meetingLink = "{{ class.meeting_link }}";
+        const meetFrame = document.getElementById('meet-frame');
+        const directJoinLink = document.getElementById('direct-join-link');
+        
+        if (meetingLink && directJoinLink) {
+            // Ensure the meeting link is properly formatted
+            let formattedLink = meetingLink;
+            
+            // Handle common meeting link format issues
+            if (!meetingLink.includes('authuser=')) {
+                // Add authuser parameter if missing
+                formattedLink += (meetingLink.includes('?') ? '&' : '?') + 'authuser=0';
+            }
+            
+            // Update links with properly formatted URL
+            directJoinLink.href = formattedLink;
+            
+            if (meetFrame) {
+                meetFrame.src = formattedLink;
+                
+                // Monitor for iframe loading issues
+                meetFrame.addEventListener('load', function() {
+                    console.log('Meeting frame loaded');
+                });
+                
+                meetFrame.addEventListener('error', function() {
+                    console.error('Error loading meeting frame');
+                    // Show only the direct join button if iframe fails
+                    document.querySelector('.embed-responsive').style.display = 'none';
+                });
+            }
+            
+            // Auto-open in new tab for better compatibility
+            // Comment out this line if you don't want auto-open behavior
+            // window.open(formattedLink, '_blank');
+        }
+    });
     
     // Confirm before leaving page
     window.addEventListener('beforeunload', function(e) {
