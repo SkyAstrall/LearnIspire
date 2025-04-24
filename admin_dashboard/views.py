@@ -727,18 +727,131 @@ class PaymentsView(AdminAccessMixin, View):
             or 0
         )
 
+        # Get months and years for filter dropdown
+        months = [(i, calendar.month_name[i]) for i in range(1, 13)]
+        current_year = timezone.now().year
+        years = range(current_year - 2, current_year + 1)
+
+        # Enhance payment data with subject information
+        payment_subject_data = {}
+        for payment in payments:
+            try:
+                student_profile = payment.student.student_profile
+                selected_subjects = student_profile.selected_subjects.all()
+                
+                # Get subject pricing details
+                subject_details = []
+                for subject in selected_subjects:
+                    try:
+                        pricing_rule = PricingRule.objects.get(
+                            subject=subject,
+                            grade=student_profile.grade,
+                            board=student_profile.board,
+                            is_active=True
+                        )
+                        
+                        # Calculate monthly cost (price per session × 3 classes/week × 4 weeks)
+                        monthly_cost = pricing_rule.price_per_session * 12
+                        
+                        subject_details.append({
+                            'name': subject.name,
+                            'price_per_session': pricing_rule.price_per_session,
+                            'monthly_cost': monthly_cost
+                        })
+                    except PricingRule.DoesNotExist:
+                        subject_details.append({
+                            'name': subject.name,
+                            'price_per_session': "Not set",
+                            'monthly_cost': "Not set"
+                        })
+                
+                payment_subject_data[payment.id] = {
+                    'subjects': subject_details,
+                    'profile': student_profile
+                }
+            except Exception as e:
+                # If student profile doesn't exist or other error
+                payment_subject_data[payment.id] = {
+                    'subjects': [],
+                    'profile': None
+                }
+
         context = {
             "payments": payments,
+            "payment_subject_data": payment_subject_data,
             "status_choices": Payment.PAYMENT_STATUS,
             "current_status": status,
             "current_month": month,
             "current_year": year,
             "total_amount": total_amount,
             "pending_amount": pending_amount,
+            "months": months,
+            "years": years,
+            "now": timezone.now(),
         }
 
         return render(request, self.template_name, context)
 
+    def post(self, request):
+        """Process payment actions from admin."""
+        action = request.POST.get("action")
+        payment_id = request.POST.get("payment_id")
+        
+        if not payment_id:
+            messages.error(request, "Payment ID is required.")
+            return redirect("admin_dashboard:payments")
+        
+        try:
+            payment = Payment.objects.get(id=payment_id)
+            
+            if action == "mark_paid":
+                payment_method = request.POST.get("payment_method")
+                transaction_id = request.POST.get("transaction_id", "")
+                payment_date_str = request.POST.get("payment_date")
+                notes = request.POST.get("notes", "")
+                
+                try:
+                    payment_date = datetime.strptime(payment_date_str, "%Y-%m-%d").date()
+                except:
+                    payment_date = timezone.now().date()
+                
+                # Mark payment as completed
+                payment.status = "COMPLETED"
+                payment.payment_method = payment_method
+                payment.transaction_id = transaction_id
+                payment.payment_date = payment_date
+                payment.notes = notes
+                payment.save()
+                
+                # Update student status if needed
+                student_profile = payment.student.student_profile
+                if student_profile.status == "DEMO_ACCEPTED":
+                    student_profile.status = "ACTIVE"
+                    student_profile.save()
+                
+                messages.success(request, f"Payment #{payment.id} marked as paid successfully.")
+            
+            elif action == "mark_completed":
+                # For initiated payments that need to be marked as completed
+                payment.status = "COMPLETED"
+                payment.payment_date = timezone.now().date()
+                payment.save()
+                
+                # Update student status if needed
+                student_profile = payment.student.student_profile
+                if student_profile.status == "DEMO_ACCEPTED":
+                    student_profile.status = "ACTIVE"
+                    student_profile.save()
+                
+                messages.success(request, f"Payment #{payment.id} marked as completed successfully.")
+        
+        except Payment.DoesNotExist:
+            messages.error(request, "Payment not found.")
+            
+        except Exception as e:
+            messages.error(request, f"Error processing payment: {str(e)}")
+        
+        return redirect("admin_dashboard:payments")
 
 class TeacherEarningsView(AdminAccessMixin, View):
     template_name = "admin_dashboard/teacher_earnings.html"

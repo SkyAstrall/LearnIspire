@@ -344,7 +344,7 @@
                                 <!-- Mark Paid Modal -->
                                 {% if payment.status == 'PENDING' %}
                                 <div class="modal fade" id="markPaidModal{{ payment.id }}" tabindex="-1" aria-labelledby="markPaidModalLabel{{ payment.id }}" aria-hidden="true">
-                                    <div class="modal-dialog">
+                                    <div class="modal-dialog modal-lg">
                                         <div class="modal-content">
                                             <div class="modal-header">
                                                 <h5 class="modal-title" id="markPaidModalLabel{{ payment.id }}">Mark Payment as Paid</h5>
@@ -356,39 +356,84 @@
                                                 <input type="hidden" name="action" value="mark_paid">
                                                 
                                                 <div class="modal-body">
-                                                    <div class="alert alert-info">
-                                                        <div class="fw-bold">Payment Details:</div>
-                                                        <div>Student: {{ payment.student.get_full_name }}</div>
-                                                        <div>Month: {{ payment.month_year|date:"F Y" }}</div>
-                                                        <div>Amount: ₹{{ payment.amount }}</div>
-                                                    </div>
-                                                    
-                                                    <div class="mb-3">
-                                                        <label for="payment_method{{ payment.id }}" class="form-label">Payment Method</label>
-                                                        <select class="form-select" id="payment_method{{ payment.id }}" name="payment_method" required>
-                                                            <option value="">Select Payment Method</option>
-                                                            <option value="CASH">Cash</option>
-                                                            <option value="BANK_TRANSFER">Bank Transfer</option>
-                                                            <option value="UPI">UPI</option>
-                                                            <option value="CHEQUE">Cheque</option>
-                                                            <option value="OTHER">Other</option>
-                                                        </select>
-                                                    </div>
-                                                    
-                                                    <div class="mb-3">
-                                                        <label for="transaction_id{{ payment.id }}" class="form-label">Transaction ID/Reference</label>
-                                                        <input type="text" class="form-control" id="transaction_id{{ payment.id }}" name="transaction_id">
-                                                        <small class="form-text text-muted">Optional for cash payments</small>
-                                                    </div>
-                                                    
-                                                    <div class="mb-3">
-                                                        <label for="payment_date{{ payment.id }}" class="form-label">Payment Date</label>
-                                                        <input type="date" class="form-control" id="payment_date{{ payment.id }}" name="payment_date" value="{{ now|date:'Y-m-d' }}" required>
-                                                    </div>
-                                                    
-                                                    <div class="mb-3">
-                                                        <label for="notes{{ payment.id }}" class="form-label">Notes</label>
-                                                        <textarea class="form-control" id="notes{{ payment.id }}" name="notes" rows="3"></textarea>
+                                                    <div class="row">
+                                                        <div class="col-md-6">
+                                                            <div class="alert alert-info">
+                                                                <div class="fw-bold">Payment Details:</div>
+                                                                <div>Student: {{ payment.student.get_full_name }}</div>
+                                                                <div>Month: {{ payment.month_year|date:"F Y" }}</div>
+                                                                <div>Amount: ₹{{ payment.amount }}</div>
+                                                            </div>
+                                                            
+                                                            <div class="mb-3">
+                                                                <label for="payment_method{{ payment.id }}" class="form-label">Payment Method</label>
+                                                                <select class="form-select" id="payment_method{{ payment.id }}" name="payment_method" required>
+                                                                    <option value="">Select Payment Method</option>
+                                                                    <option value="CASH">Cash</option>
+                                                                    <option value="BANK_TRANSFER">Bank Transfer</option>
+                                                                    <option value="UPI">UPI</option>
+                                                                    <option value="CHEQUE">Cheque</option>
+                                                                    <option value="OTHER">Other</option>
+                                                                </select>
+                                                            </div>
+                                                            
+                                                            <div class="mb-3">
+                                                                <label for="transaction_id{{ payment.id }}" class="form-label">Transaction ID/Reference</label>
+                                                                <input type="text" class="form-control" id="transaction_id{{ payment.id }}" name="transaction_id">
+                                                                <small class="form-text text-muted">Optional for cash payments</small>
+                                                            </div>
+                                                            
+                                                            <div class="mb-3">
+                                                                <label for="payment_date{{ payment.id }}" class="form-label">Payment Date</label>
+                                                                <input type="date" class="form-control" id="payment_date{{ payment.id }}" name="payment_date" value="{{ now|date:'Y-m-d' }}" required>
+                                                            </div>
+                                                            
+                                                            <div class="mb-3">
+                                                                <label for="notes{{ payment.id }}" class="form-label">Notes</label>
+                                                                <textarea class="form-control" id="notes{{ payment.id }}" name="notes" rows="3"></textarea>
+                                                            </div>
+                                                        </div>
+                                                        
+                                                        <div class="col-md-6">
+                                                            <h6 class="mb-3">Subjects & Pricing Breakdown</h6>
+                                                            {% with payment_data=payment_subject_data|get_item:payment.id %}
+                                                                {% if payment_data.subjects %}
+                                                                    <div class="table-responsive">
+                                                                        <table class="table table-sm table-bordered">
+                                                                            <thead class="table-light">
+                                                                                <tr>
+                                                                                    <th>Subject</th>
+                                                                                    <th>Rate</th>
+                                                                                    <th>Monthly Cost</th>
+                                                                                </tr>
+                                                                            </thead>
+                                                                            <tbody>
+                                                                                {% for subject in payment_data.subjects %}
+                                                                                    <tr>
+                                                                                        <td>{{ subject.name }}</td>
+                                                                                        <td>₹{{ subject.price_per_session }}</td>
+                                                                                        <td>₹{{ subject.monthly_cost }}</td>
+                                                                                    </tr>
+                                                                                {% endfor %}
+                                                                            </tbody>
+                                                                            <tfoot>
+                                                                                <tr class="table-active">
+                                                                                    <th colspan="2">Total</th>
+                                                                                    <th>₹{{ payment.amount }}</th>
+                                                                                </tr>
+                                                                            </tfoot>
+                                                                        </table>
+                                                                    </div>
+                                                                    <div class="small text-muted mt-2">
+                                                                        <i class="fas fa-info-circle me-1"></i> Monthly cost is calculated as: Price per session × 3 classes/week × 4 weeks
+                                                                    </div>
+                                                                {% else %}
+                                                                    <div class="alert alert-info">
+                                                                        <i class="fas fa-info-circle me-2"></i> No subject information available for this payment.
+                                                                    </div>
+                                                                {% endif %}
+                                                            {% endwith %}
+                                                        </div>
                                                     </div>
                                                 </div>
                                                 <div class="modal-footer">
@@ -442,54 +487,99 @@
                                 
                                 <!-- Payment Details Modal -->
                                 <div class="modal fade" id="paymentDetailModal{{ payment.id }}" tabindex="-1" aria-labelledby="paymentDetailModalLabel{{ payment.id }}" aria-hidden="true">
-                                    <div class="modal-dialog">
+                                    <div class="modal-dialog modal-lg">
                                         <div class="modal-content">
                                             <div class="modal-header">
                                                 <h5 class="modal-title" id="paymentDetailModalLabel{{ payment.id }}">Payment Details</h5>
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                             </div>
                                             <div class="modal-body">
-                                                <div class="mb-3 row">
-                                                    <label class="col-sm-4 fw-bold">Invoice Number</label>
-                                                    <div class="col-sm-8">INV-{{ payment.id }}</div>
-                                                </div>
-                                                <div class="mb-3 row">
-                                                    <label class="col-sm-4 fw-bold">Student</label>
-                                                    <div class="col-sm-8">{{ payment.student.get_full_name }}</div>
-                                                </div>
-                                                <div class="mb-3 row">
-                                                    <label class="col-sm-4 fw-bold">Month</label>
-                                                    <div class="col-sm-8">{{ payment.month_year|date:"F Y" }}</div>
-                                                </div>
-                                                <div class="mb-3 row">
-                                                    <label class="col-sm-4 fw-bold">Amount</label>
-                                                    <div class="col-sm-8">₹{{ payment.amount }}</div>
-                                                </div>
-                                                <div class="mb-3 row">
-                                                    <label class="col-sm-4 fw-bold">Status</label>
-                                                    <div class="col-sm-8">
-                                                        <span class="badge bg-{% if payment.status == 'COMPLETED' %}success{% elif payment.status == 'PENDING' %}warning{% elif payment.status == 'INITIATED' %}info{% else %}danger{% endif %}">
-                                                            {{ payment.get_status_display }}
-                                                        </span>
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="mb-3 row">
+                                                            <label class="col-sm-4 fw-bold">Invoice Number</label>
+                                                            <div class="col-sm-8">INV-{{ payment.id }}</div>
+                                                        </div>
+                                                        <div class="mb-3 row">
+                                                            <label class="col-sm-4 fw-bold">Student</label>
+                                                            <div class="col-sm-8">{{ payment.student.get_full_name }}</div>
+                                                        </div>
+                                                        <div class="mb-3 row">
+                                                            <label class="col-sm-4 fw-bold">Month</label>
+                                                            <div class="col-sm-8">{{ payment.month_year|date:"F Y" }}</div>
+                                                        </div>
+                                                        <div class="mb-3 row">
+                                                            <label class="col-sm-4 fw-bold">Amount</label>
+                                                            <div class="col-sm-8">₹{{ payment.amount }}</div>
+                                                        </div>
+                                                        <div class="mb-3 row">
+                                                            <label class="col-sm-4 fw-bold">Status</label>
+                                                            <div class="col-sm-8">
+                                                                <span class="badge bg-{% if payment.status == 'COMPLETED' %}success{% elif payment.status == 'PENDING' %}warning{% elif payment.status == 'INITIATED' %}info{% else %}danger{% endif %}">
+                                                                    {{ payment.get_status_display }}
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                        {% if payment.status == 'COMPLETED' %}
+                                                        <div class="mb-3 row">
+                                                            <label class="col-sm-4 fw-bold">Payment Date</label>
+                                                            <div class="col-sm-8">{{ payment.payment_date|date:"d M Y" }}</div>
+                                                        </div>
+                                                        <div class="mb-3 row">
+                                                            <label class="col-sm-4 fw-bold">Payment Method</label>
+                                                            <div class="col-sm-8">{{ payment.get_payment_method_display|default:"Not provided" }}</div>
+                                                        </div>
+                                                        <div class="mb-3 row">
+                                                            <label class="col-sm-4 fw-bold">Transaction ID</label>
+                                                            <div class="col-sm-8">{{ payment.transaction_id|default:"Not available" }}</div>
+                                                        </div>
+                                                        {% endif %}
+                                                        <div class="mb-3 row">
+                                                            <label class="col-sm-4 fw-bold">Notes</label>
+                                                            <div class="col-sm-8">{{ payment.notes|default:"No notes" }}</div>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                {% if payment.status == 'COMPLETED' %}
-                                                <div class="mb-3 row">
-                                                    <label class="col-sm-4 fw-bold">Payment Date</label>
-                                                    <div class="col-sm-8">{{ payment.payment_date|date:"d M Y" }}</div>
-                                                </div>
-                                                <div class="mb-3 row">
-                                                    <label class="col-sm-4 fw-bold">Payment Method</label>
-                                                    <div class="col-sm-8">{{ payment.get_payment_method_display|default:"Not provided" }}</div>
-                                                </div>
-                                                <div class="mb-3 row">
-                                                    <label class="col-sm-4 fw-bold">Transaction ID</label>
-                                                    <div class="col-sm-8">{{ payment.transaction_id|default:"Not available" }}</div>
-                                                </div>
-                                                {% endif %}
-                                                <div class="mb-3 row">
-                                                    <label class="col-sm-4 fw-bold">Notes</label>
-                                                    <div class="col-sm-8">{{ payment.notes|default:"No notes" }}</div>
+                                                    
+                                                    <div class="col-md-6">
+                                                        <h6 class="mb-3">Subjects & Pricing Breakdown</h6>
+                                                        {% with payment_data=payment_subject_data|get_item:payment.id %}
+                                                            {% if payment_data.subjects %}
+                                                                <div class="table-responsive">
+                                                                    <table class="table table-sm table-bordered">
+                                                                        <thead class="table-light">
+                                                                            <tr>
+                                                                                <th>Subject</th>
+                                                                                <th>Rate</th>
+                                                                                <th>Monthly Cost</th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                            {% for subject in payment_data.subjects %}
+                                                                                <tr>
+                                                                                    <td>{{ subject.name }}</td>
+                                                                                    <td>₹{{ subject.price_per_session }}</td>
+                                                                                    <td>₹{{ subject.monthly_cost }}</td>
+                                                                                </tr>
+                                                                            {% endfor %}
+                                                                        </tbody>
+                                                                        <tfoot>
+                                                                            <tr class="table-active">
+                                                                                <th colspan="2">Total</th>
+                                                                                <th>₹{{ payment.amount }}</th>
+                                                                            </tr>
+                                                                        </tfoot>
+                                                                    </table>
+                                                                </div>
+                                                                <div class="small text-muted mt-2">
+                                                                    <i class="fas fa-info-circle me-1"></i> Monthly cost is calculated as: Price per session × 3 classes/week × 4 weeks
+                                                                </div>
+                                                            {% else %}
+                                                                <div class="alert alert-info">
+                                                                    <i class="fas fa-info-circle me-2"></i> No subject information available for this payment.
+                                                                </div>
+                                                            {% endif %}
+                                                        {% endwith %}
+                                                    </div>
                                                 </div>
                                             </div>
                                             <div class="modal-footer">

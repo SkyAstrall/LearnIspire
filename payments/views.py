@@ -20,72 +20,113 @@ logger = logging.getLogger('payments')
 class InitiatePaymentView(LoginRequiredMixin, View):
     """View to initiate a payment for monthly classes."""
     
-    def get(self, request):
-        """Show payment form."""
-        # Get current month
-        current_date = timezone.now().date()
-        
-        # Check if payment for current month already exists
-        existing_payment = Payment.objects.filter(
-            student=request.user,
-            month_year__year=current_date.year,
-            month_year__month=current_date.month,
-            status__in=["COMPLETED", "INITIATED"]
-        ).first()
-        
-        if existing_payment:
-            if existing_payment.status == "COMPLETED":
-                messages.info(request, "You've already paid for this month.")
-                return redirect("student_dashboard:payments")
-            else:
-                # Continue with existing payment
-                payment = existing_payment
-        else:
-            # Create new payment object
-            payment = Payment(
-                student=request.user,
-                amount=2000.00,  # Replace with your actual fee amount
-                month_year=current_date.replace(day=1),
-                status="PENDING"
-            )
-            payment.save()
-        
-        # Generate payment parameters
-        params = payment.generate_payment_params()
-        payu_url = PayUService.get_payu_url()
-        
-        return render(request, "payments/payment.html", {
-            "payment": payment,
-            "params": params,
-            "payu_url": payu_url
-        })
-    
-    def post(self, request):
-        """Process payment initiation request."""
+    def calculate_monthly_amount(self, user):
+        """Calculate monthly amount based on selected subjects."""
         try:
-            logger.info(f"Initiating payment for user: {request.user.email}")
+            profile = user.student_profile
+            selected_subjects = profile.selected_subjects.all()
+            
+            total_amount = 0
+            for subject in selected_subjects:
+                # Get pricing rule for this subject and student's grade/board
+                from pricing.models import PricingRule
+                
+                pricing_rule = PricingRule.objects.filter(
+                    subject=subject,
+                    grade=profile.grade,
+                    board=profile.board,
+                    is_active=True
+                ).first()
+                
+                if pricing_rule:
+                    # Calculate monthly cost (price per session × 3 classes/week × 4 weeks)
+                    subject_monthly = pricing_rule.price_per_session * 12
+                    total_amount += subject_monthly
+            
+            # If no subjects or pricing rules found, use default amount
+            if total_amount == 0:
+                total_amount = 2000.00
+                
+            return total_amount
+            
+        except Exception as e:
+            logger.exception(f"Error calculating payment amount: {str(e)}")
+            return 2000.00  # Default fallback amount
+    
+    def get(self, request):
+        """Show payment form with all details ready to submit to PayU."""
+        try:
+            logger.info(f"Preparing payment page for user: {request.user.email}")
             # Get current month
             current_date = timezone.now().date()
             
-            # Create payment request
-            response = PayUService.create_payment_request(
+            # Check if payment for current month already exists
+            existing_payment = Payment.objects.filter(
                 student=request.user,
-                amount=2000.00,  # Replace with your actual fee amount
-                month_year=current_date.replace(day=1)
-            )
+                month_year__year=current_date.year,
+                month_year__month=current_date.month,
+                status__in=["COMPLETED", "INITIATED"]
+            ).first()
             
-            if response["success"]:
-                logger.info(f"Payment initiated successfully: {response['payment'].order_id}")
-                # Render payment page with PayU form
-                return render(request, "payments/payment.html", {
-                    "payment": response["payment"],
-                    "params": response["params"],
-                    "payu_url": response["url"]
-                })
+            if existing_payment:
+                if existing_payment.status == "COMPLETED":
+                    messages.info(request, "You've already paid for this month.")
+                    return redirect("student_dashboard:payments")
+                else:
+                    # Continue with existing payment
+                    payment = existing_payment
             else:
-                logger.error(f"Error initiating payment: {response.get('error', 'Unknown error')}")
-                messages.error(request, f"Error initiating payment: {response.get('error', 'Unknown error')}")
-                return redirect("student_dashboard:payments")
+                # Calculate amount based on selected subjects
+                amount = self.calculate_monthly_amount(request.user)
+                
+                # Create payment record with INITIATED status
+                payment = Payment(
+                    student=request.user,
+                    amount=amount,
+                    month_year=current_date.replace(day=1),
+                    status="INITIATED"  # Changed from PENDING to INITIATED
+                )
+                payment.save()
+                logger.info(f"Created new payment: {payment.order_id}")
+            
+            # Get student profile and selected subjects
+            try:
+                profile = request.user.student_profile
+                selected_subjects = profile.selected_subjects.all()
+            except:
+                profile = None
+                selected_subjects = []
+            
+            # Generate payment parameters
+            params = payment.generate_payment_params()
+            payu_url = PayUService.get_payu_url()
+            
+            logger.info(f"Payment page ready with order ID: {payment.order_id}")
+            
+            return render(request, "payments/payment.html", {
+                "payment": payment,
+                "params": params,
+                "payu_url": payu_url,
+                "profile": profile,
+                "selected_subjects": selected_subjects,
+                "debug": settings.DEBUG  # Only show debug info in DEBUG mode
+            })
+        
+        except Exception as e:
+            logger.exception(f"Exception in payment page preparation: {str(e)}")
+            messages.error(request, f"Error preparing payment page: {str(e)}")
+            return redirect("student_dashboard:payments")
+    
+    def post(self, request):
+        """
+        This method is now just a fallback in case someone submits the form
+        to this URL instead of directly to the payment gateway.
+        """
+        try:
+            logger.info(f"POST request to initiate payment for user: {request.user.email}")
+            # In case the form on student dashboard submits here, redirect to GET
+            # to ensure proper payment initialization
+            return self.get(request)
                 
         except Exception as e:
             logger.exception(f"Exception in payment initiation: {str(e)}")

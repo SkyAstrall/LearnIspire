@@ -117,3 +117,38 @@ def time_ago(value):
             return value.strftime("%d %b %Y")
     except Exception:
         return str(value)
+
+
+# New filters for payment system
+
+@register.filter
+def get_pricing_rule(subject, profile):
+    """
+    Get pricing rule for a subject based on student profile.
+    
+    Usage: {{ subject|get_pricing_rule:profile }}
+    """
+    from common.models import PricingRule
+    
+    if not subject or not profile or not profile.grade or not profile.board:
+        return None
+    
+    return PricingRule.objects.filter(
+        subject=subject,
+        grade=profile.grade,
+        board=profile.board,
+        is_active=True
+    ).first()
+
+
+@register.filter
+def multiply(value, arg):
+    """
+    Multiply the value by the argument.
+    
+    Usage: {{ value|multiply:arg }}
+    """
+    try:
+        return float(value) * float(arg)
+    except (ValueError, TypeError):
+        return 0

@@ -11,6 +11,10 @@ from scheduling.models import Availability, Class
 from payments.models import Payment
 from payments.services import PayUService
 from accounts.models import CustomUser
+import logging
+
+# Set up logger
+logger = logging.getLogger('payments')
 
 class StudentAccessMixin(LoginRequiredMixin):
     """Mixin to ensure only students can access a view."""
@@ -423,22 +427,271 @@ class JoinClassView(StudentAccessMixin, View):
 class PaymentsView(StudentAccessMixin, View):
     template_name = "student_dashboard/payments.html"
 
+    def calculate_monthly_amount(self, user):
+        """Calculate monthly amount based on selected subjects."""
+        try:
+            profile = user.student_profile
+            selected_subjects = profile.selected_subjects.all()
+            
+            if not selected_subjects.exists():
+                print("No subjects selected for user:", user.email)
+                return 2000.00  # Default amount if no subjects selected
+            
+            total_amount = 0
+            for subject in selected_subjects:
+                try:
+                    # Get pricing rule for this subject and student's grade/board
+                    from common.models import PricingRule
+                    
+                    if not profile.grade or not profile.board:
+                        print(f"Missing grade or board for user: {user.email}")
+                        continue
+                    
+                    pricing_rule = PricingRule.objects.filter(
+                        subject=subject,
+                        grade=profile.grade,
+                        board=profile.board,
+                        is_active=True
+                    ).first()
+                    
+                    if pricing_rule:
+                        # Calculate monthly cost (price per session × 3 classes/week × 4 weeks)
+                        subject_monthly = float(pricing_rule.price_per_session) * 12
+                        total_amount += subject_monthly
+                        print(f"Subject {subject.name}: {pricing_rule.price_per_session} per session, {subject_monthly} monthly")
+                    else:
+                        print(f"No pricing rule found for subject: {subject.name}, grade: {profile.grade}, board: {profile.board}")
+                except Exception as subject_error:
+                    print(f"Error calculating price for subject {subject.name}: {str(subject_error)}")
+                    continue
+            
+            # If no subjects or pricing rules found, use default amount
+            if total_amount == 0:
+                print(f"No valid pricing found for any subject. Using default amount for user: {user.email}")
+                total_amount = 2000.00
+                
+            print(f"Total calculated amount for {user.email}: {total_amount}")
+            return total_amount
+            
+        except Exception as e:
+            print(f"Error calculating payment amount: {str(e)}")
+            import traceback
+            traceback.print_exc()
+            return 2000.00  # Default fallback amount
+
     def get(self, request):
         # Get all payments
         payments = Payment.objects.filter(student=request.user).order_by("-created_at")
 
         # Get pending payment if exists
         pending_payment = payments.filter(status__in=["PENDING", "INITIATED"]).first()
+        
+        # Get student profile and selected subjects
+        try:
+            profile = request.user.student_profile
+            selected_subjects = profile.selected_subjects.all()
+            
+            # Process the subjects to add pricing information
+            subject_pricing = []
+            for subject in selected_subjects:
+                try:
+                    from common.models import PricingRule
+                    
+                    pricing_rule = PricingRule.objects.filter(
+                        subject=subject,
+                        grade=profile.grade,
+                        board=profile.board,
+                        is_active=True
+                    ).first()
+                    
+                    if pricing_rule:
+                        monthly_cost = float(pricing_rule.price_per_session) * 12
+                        subject_pricing.append({
+                            'subject': subject,
+                            'price_per_session': pricing_rule.price_per_session,
+                            'monthly_cost': monthly_cost
+                        })
+                    else:
+                        subject_pricing.append({
+                            'subject': subject,
+                            'price_per_session': 'N/A',
+                            'monthly_cost': 'N/A'
+                        })
+                except Exception as e:
+                    print(f"Error processing subject {subject.name}: {str(e)}")
+                    subject_pricing.append({
+                        'subject': subject,
+                        'price_per_session': 'Error',
+                        'monthly_cost': 'Error'
+                    })
+            
+        except Exception as e:
+            print(f"Error getting profile or subjects: {str(e)}")
+            profile = None
+            selected_subjects = []
+            subject_pricing = []
+        
+        # Calculate current month payment if needed
+        current_date = timezone.now().date()
+        current_month_payment = payments.filter(
+            month_year__year=current_date.year,
+            month_year__month=current_date.month
+        ).first()
+        
+        # If no payment exists for current month, calculate amount
+        if not current_month_payment and profile and selected_subjects.exists():
+            try:
+                # Calculate amount based on selected subjects
+                total_amount = self.calculate_monthly_amount(request.user)
+                
+                # If subjects and pricing found, create a new pending payment
+                if total_amount > 0:
+                    current_month_payment = Payment.objects.create(
+                        student=request.user,
+                        amount=total_amount,
+                        month_year=current_date.replace(day=1),
+                        status="PENDING"
+                    )
+                    print(f"Created new payment for {request.user.email}: Payment ID {current_month_payment.id}, Amount {total_amount}")
+                    
+                    # Update pending_payment if this is the first one
+                    if not pending_payment:
+                        pending_payment = current_month_payment
+            except Exception as e:
+                print(f"Error creating new payment: {str(e)}")
+                import traceback
+                traceback.print_exc()
 
         context = {
             "payments": payments,
             "pending_payment": pending_payment,
+            "profile": profile,
+            "selected_subjects": selected_subjects,
+            "subject_pricing": subject_pricing
         }
 
         return render(request, self.template_name, context)
+        
+    def post(self, request):
+        """Handle POST requests for payments page."""
+        try:
+            # Get current month
+            current_date = timezone.now().date()
+            
+            # Calculate amount based on selected subjects
+            amount = self.calculate_monthly_amount(request.user)
+            print(f"Initiating payment for {request.user.email} with amount: {amount}")
+            
+            # Create payment request
+            response = PayUService.create_payment_request(
+                student=request.user,
+                amount=amount,
+                month_year=current_date.replace(day=1)
+            )
+            
+            # Get student profile and selected subjects
+            try:
+                profile = request.user.student_profile
+                selected_subjects = profile.selected_subjects.all()
+                
+                # Process the subjects to add pricing information
+                subject_pricing = []
+                for subject in selected_subjects:
+                    try:
+                        from common.models import PricingRule
+                        
+                        pricing_rule = PricingRule.objects.filter(
+                            subject=subject,
+                            grade=profile.grade,
+                            board=profile.board,
+                            is_active=True
+                        ).first()
+                        
+                        if pricing_rule:
+                            monthly_cost = float(pricing_rule.price_per_session) * 12
+                            subject_pricing.append({
+                                'subject': subject,
+                                'price_per_session': pricing_rule.price_per_session,
+                                'monthly_cost': monthly_cost
+                            })
+                        else:
+                            subject_pricing.append({
+                                'subject': subject,
+                                'price_per_session': 'N/A',
+                                'monthly_cost': 'N/A'
+                            })
+                    except Exception as e:
+                        print(f"Error processing subject {subject.name}: {str(e)}")
+                        subject_pricing.append({
+                            'subject': subject,
+                            'price_per_session': 'Error',
+                            'monthly_cost': 'Error'
+                        })
+            except Exception as e:
+                print(f"Error getting profile or subjects: {str(e)}")
+                profile = None
+                selected_subjects = []
+                subject_pricing = []
+            
+            if response["success"]:
+                print(f"Payment initiated successfully: {response['payment'].order_id}")
+                # Render payment page with PayU form
+                return render(request, "payments/payment.html", {
+                    "payment": response["payment"],
+                    "params": response["params"],
+                    "payu_url": response["url"],
+                    "profile": profile,
+                    "selected_subjects": selected_subjects,
+                    "subject_pricing": subject_pricing
+                })
+            else:
+                print(f"Error initiating payment: {response.get('error', 'Unknown error')}")
+                messages.error(request, f"Error initiating payment: {response.get('error', 'Unknown error')}")
+                return redirect("student_dashboard:payments")
+                
+        except Exception as e:
+            print(f"Exception in payment initiation: {str(e)}")
+            import traceback
+            traceback.print_exc()
+            messages.error(request, f"Error initiating payment: {str(e)}")
+            return redirect("student_dashboard:payments")
 
 
 class InitiatePaymentView(StudentAccessMixin, View):
+    def calculate_monthly_amount(self, user):
+        """Calculate monthly amount based on selected subjects."""
+        try:
+            profile = user.student_profile
+            selected_subjects = profile.selected_subjects.all()
+            
+            total_amount = 0
+            for subject in selected_subjects:
+                # Get pricing rule for this subject and student's grade/board
+                from common.models import PricingRule
+                
+                pricing_rule = PricingRule.objects.filter(
+                    subject=subject,
+                    grade=profile.grade,
+                    board=profile.board,
+                    is_active=True
+                ).first()
+                
+                if pricing_rule:
+                    # Calculate monthly cost (price per session × 3 classes/week × 4 weeks)
+                    subject_monthly = pricing_rule.price_per_session * 12
+                    total_amount += subject_monthly
+            
+            # If no subjects or pricing rules found, use default amount
+            if total_amount == 0:
+                total_amount = 2000.00
+                
+            return total_amount
+            
+        except Exception as e:
+            # Log error but continue with default amount
+            print(f"Error calculating payment amount: {str(e)}")
+            return 2000.00  # Default fallback amount
+    
     def get(self, request, payment_id):
         payment = get_object_or_404(Payment, id=payment_id, student=request.user)
 
@@ -447,26 +700,51 @@ class InitiatePaymentView(StudentAccessMixin, View):
             messages.error(request, "This payment has already been processed.")
             return redirect("student_dashboard:payments")
 
+        # Get student profile and selected subjects for the context
+        try:
+            profile = request.user.student_profile
+            selected_subjects = profile.selected_subjects.all()
+        except:
+            profile = None
+            selected_subjects = []
+
+        # Update payment amount if needed
+        if payment.status == "PENDING":
+            calculated_amount = self.calculate_monthly_amount(request.user)
+            if payment.amount != calculated_amount:
+                payment.amount = calculated_amount
+                payment.save()
+
         # Generate payment request
         payment_request = PayUService.create_payment_request(
             request.user, payment.amount, payment.month_year
         )
 
         if not payment_request["success"]:
-            messages.error(request, "Failed to initiate payment. Please try again.")
+            messages.error(request, f"Failed to initiate payment: {payment_request.get('error', 'Unknown error')}")
             return redirect("student_dashboard:payments")
 
-        # Render payment form
-        return render(
-            request,
-            "student_dashboard/payment_initiate.html",
-            {
-                "payment": payment,
-                "params": payment_request["params"],
-                "payu_url": payment_request["url"],
-            },
-        )
+        # Add a debug print to see what's in the payment object
+        print(f"Payment object before rendering: {payment.__dict__}")
+        print(f"Payment request: {payment_request}")
 
+        # Make sure all required fields are present in the context
+        context = {
+            "payment": payment_request["payment"],  # Use the payment from the response
+            "params": payment_request["params"],
+            "payu_url": payment_request["url"],
+            "profile": profile,
+            "selected_subjects": selected_subjects
+        }
+
+        try:
+            # Try to render the template with the context
+            return render(request, "payments/payment.html", context)
+        except Exception as e:
+            # If template rendering fails, log the error
+            print(f"Template rendering error: {str(e)}")
+            messages.error(request, f"Error initiating payment: {str(e)}")
+            return redirect("student_dashboard:payments")
 
 class DemoFeedbackView(StudentAccessMixin, View):
     template_name = "student_dashboard/demo_feedback.html"
