@@ -1,5 +1,10 @@
-{% extends 'base.html' %} {% load static %} {% load custom_tags %} {% block
-title %}Complete Payment - LearnIspire{% endblock %} {% block content %}
+{% extends 'base.html' %}
+{% load static %}
+{% load custom_tags %}
+
+{% block title %}Complete Payment - LearnIspire{% endblock %}
+
+{% block content %}
 <style>
   :root {
     --primary-color: #93f7f2;
@@ -168,7 +173,7 @@ title %}Complete Payment - LearnIspire{% endblock %} {% block content %}
   .secure-badge i {
     color: var(--secondary-color);
   }
-
+  
   .subject-item {
     display: flex;
     justify-content: space-between;
@@ -177,15 +182,15 @@ title %}Complete Payment - LearnIspire{% endblock %} {% block content %}
     border-radius: 4px;
     background-color: rgba(255, 255, 255, 0.5);
   }
-
+  
   .subject-name {
     font-weight: 500;
   }
-
+  
   .subject-price {
     font-weight: 600;
   }
-
+  
   .subject-details {
     font-size: 0.8rem;
     color: var(--dark-color);
@@ -239,47 +244,45 @@ title %}Complete Payment - LearnIspire{% endblock %} {% block content %}
           <div class="card payment-summary-card mb-4">
             <div class="card-body">
               <h5 class="mb-3">Subjects & Pricing</h5>
-
-              {% if selected_subjects %} {% for subject in selected_subjects %}
-              <div class="subject-item">
-                <div>
-                  <div class="subject-name">{{ subject.name }}</div>
-                  <div class="subject-details">3 classes/week × 4 weeks</div>
-                </div>
-                <div>
-                  {% with pricing_rule=subject|get_pricing_rule:profile %} {% if
-                  pricing_rule %}
-                  <div class="subject-price">
-                    ₹{{ pricing_rule.price_per_session|multiply:12 }}
+              
+              {% if selected_subjects %}
+                {% for subject in selected_subjects %}
+                  <div class="subject-item">
+                    <div>
+                      <div class="subject-name">{{ subject.name }}</div>
+                      <div class="subject-details">3 classes/week × 4 weeks</div>
+                    </div>
+                    <div>
+                      {% with pricing_rule=subject|get_pricing_rule:profile %}
+                        {% if pricing_rule %}
+                          <div class="subject-price">₹{{ pricing_rule.price_per_session|multiply:12 }}</div>
+                          <div class="subject-details">₹{{ pricing_rule.price_per_session }}/session</div>
+                        {% else %}
+                          <div class="subject-price">Contact for pricing</div>
+                        {% endif %}
+                      {% endwith %}
+                    </div>
                   </div>
-                  <div class="subject-details">
-                    ₹{{ pricing_rule.price_per_session }}/session
-                  </div>
-                  {% else %}
-                  <div class="subject-price">Contact for pricing</div>
-                  {% endif %} {% endwith %}
+                {% endfor %}
+                <hr>
+                <div class="d-flex justify-content-between fw-bold">
+                  <span>Total Amount</span>
+                  <span class="amount-highlight">₹{{ payment.amount }}</span>
                 </div>
-              </div>
-              {% endfor %}
-              <hr />
-              <div class="d-flex justify-content-between fw-bold">
-                <span>Total Amount</span>
-                <span class="amount-highlight">₹{{ payment.amount }}</span>
-              </div>
               {% else %}
-              <div class="d-flex justify-content-between mb-2">
-                <span>Monthly Classes Fee</span>
-                <span>₹{{ payment.amount }}</span>
-              </div>
-              <div class="d-flex justify-content-between mb-2">
-                <span>Taxes & Processing Fee</span>
-                <span>₹0.00</span>
-              </div>
-              <hr />
-              <div class="d-flex justify-content-between fw-bold">
-                <span>Total Amount</span>
-                <span class="amount-highlight">₹{{ payment.amount }}</span>
-              </div>
+                <div class="d-flex justify-content-between mb-2">
+                  <span>Monthly Classes Fee</span>
+                  <span>₹{{ payment.amount }}</span>
+                </div>
+                <div class="d-flex justify-content-between mb-2">
+                  <span>Taxes & Processing Fee</span>
+                  <span>₹0.00</span>
+                </div>
+                <hr />
+                <div class="d-flex justify-content-between fw-bold">
+                  <span>Total Amount</span>
+                  <span class="amount-highlight">₹{{ payment.amount }}</span>
+                </div>
               {% endif %}
             </div>
           </div>
@@ -295,8 +298,10 @@ title %}Complete Payment - LearnIspire{% endblock %} {% block content %}
               </p>
               {% endcomment %}
 
+
               <form action="{{ payu_url }}" method="post" id="payment-form">
-                {% csrf_token %} {% for key, value in params.items %}
+                {% csrf_token %}
+                {% for key, value in params.items %}
                 <input type="hidden" name="{{ key }}" value="{{ value }}" />
                 {% endfor %}
 
@@ -363,7 +368,9 @@ title %}Complete Payment - LearnIspire{% endblock %} {% block content %}
     </div>
   </div>
 </div>
-{% endblock %} {% block extra_js %}
+{% endblock %}
+
+{% block extra_js %}
 <script>
   document.addEventListener("DOMContentLoaded", function () {
     const form = document.getElementById("payment-form");
