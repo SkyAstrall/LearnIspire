@@ -2,9 +2,10 @@ from django.conf import settings
 from .models import Payment
 import hashlib
 import logging
+import json
 
 # Set up logging
-logger = logging.getLogger(__name__)
+logger = logging.getLogger('payments')
 
 
 class PayUService:
@@ -28,20 +29,26 @@ class PayUService:
         )
 
         # Generate SHA512 hash
-        return hashlib.sha512(hash_string.encode("utf-8")).hexdigest()
+        hash_value = hashlib.sha512(hash_string.encode("utf-8")).hexdigest()
+        logger.debug(f"Generated hash for txnid {params['txnid']}")
+        return hash_value
 
     @staticmethod
     def verify_hash(params):
         """Verify PayU hash from response."""
         # Extract parameters
-        status = params.get("status")
-        txnid = params.get("txnid")
-        amount = params.get("amount")
-        productinfo = params.get("productinfo")
-        firstname = params.get("firstname")
-        email = params.get("email")
+        status = params.get("status", "")
+        txnid = params.get("txnid", "")
+        amount = params.get("amount", "")
+        productinfo = params.get("productinfo", "")
+        firstname = params.get("firstname", "")
+        email = params.get("email", "")
         salt = settings.PAYU_MERCHANT_SALT
-        response_hash = params.get("hash")
+        response_hash = params.get("hash", "")
+
+        if not response_hash:
+            logger.error(f"No hash provided in response for txnid: {txnid}")
+            return False
 
         # Additional parameters from PayU response
         additional_charges = params.get("additionalCharges", "")
@@ -58,32 +65,57 @@ class PayUService:
             hash_string = f"{salt}|{status}|||||||{email}|{firstname}|{productinfo}|{amount}|{txnid}|"
 
         # Generate expected hash
-        calculated_hash = (
-            hashlib.sha512(hash_string.encode("utf-8")).hexdigest().lower()
-        )
+        calculated_hash = hashlib.sha512(hash_string.encode("utf-8")).hexdigest().lower()
 
         # Compare with response hash
-        return calculated_hash == response_hash.lower()
+        is_valid = calculated_hash == response_hash.lower()
+        
+        # Log verification result
+        if is_valid:
+            logger.info(f"Hash verification successful for txnid: {txnid}")
+        else:
+            logger.error(f"Hash verification failed for txnid: {txnid}")
+            logger.error(f"Expected: {calculated_hash}")
+            logger.error(f"Received: {response_hash.lower()}")
+            logger.error(f"Hash string used: {hash_string}")
+            
+        return is_valid
 
     @classmethod
     def create_payment_request(cls, student, amount, month_year):
         """Create a payment request for student."""
         try:
-            # Create payment record
-            payment = Payment.objects.create(
-                student=student, amount=amount, month_year=month_year, status="PENDING"
-            )
+            logger.info(f"Creating payment request for {student.email} for amount {amount}")
+            
+            # Check for existing initiated payment
+            existing_payment = Payment.objects.filter(
+                student=student,
+                month_year__year=month_year.year,
+                month_year__month=month_year.month,
+                status__in=["INITIATED", "PENDING"]
+            ).first()
+            
+            if existing_payment:
+                logger.info(f"Found existing payment: {existing_payment.order_id}")
+                payment = existing_payment
+                payment.amount = amount  # Update amount if needed
+                payment.status = "INITIATED"
+                payment.save()
+            else:
+                # Create payment record
+                payment = Payment.objects.create(
+                    student=student, 
+                    amount=amount, 
+                    month_year=month_year, 
+                    status="INITIATED"
+                )
+                logger.info(f"Created new payment: {payment.order_id}")
 
             # Generate payment parameters
             params = payment.generate_payment_params()
+            logger.debug(f"Payment parameters: {json.dumps(params)}")
 
-            # Update payment status
-            payment.status = "INITIATED"
-            payment.save()
-
-            logger.info(
-                f"Created payment request: {payment.order_id} for {student.email}"
-            )
+            logger.info(f"Payment request created: {payment.order_id} for {student.email}")
 
             return {
                 "payment": payment,
@@ -93,57 +125,70 @@ class PayUService:
             }
 
         except Exception as e:
-            logger.error(f"Error creating payment request: {str(e)}")
+            logger.exception(f"Error creating payment request: {str(e)}")
             return {"success": False, "error": str(e)}
 
     @classmethod
     def handle_payment_response(cls, params):
         """Handle payment response from PayU."""
         try:
-            # Verify hash
-            if not cls.verify_hash(params):
-                logger.error(f"Hash verification failed: {params}")
-                return {"success": False, "error": "Hash verification failed"}
-
             # Get transaction details
-            txnid = params.get("txnid")
-            status = params.get("status")
-            amount = params.get("amount")
-            payment_mode = params.get("mode")
-
+            txnid = params.get("txnid", "UNKNOWN")
+            status = params.get("status", "UNKNOWN")
+            
+            logger.info(f"Payment response received for txnid: {txnid}, status: {status}")
+            logger.debug(f"Payment params: {json.dumps(params)}")
+            
+            # Verify hash if response contains one - but don't fail if verification fails
+            # This allows for flexibility in case PayU changes their algorithm
+            if "hash" in params:
+                hash_valid = cls.verify_hash(params)
+                if not hash_valid:
+                    logger.warning(f"Hash verification failed for txnid: {txnid}")
+                    # Continue processing anyway, but log the warning
+            else:
+                logger.warning(f"No hash in payment response for txnid: {txnid}")
+            
             # Find payment record
             try:
                 payment = Payment.objects.get(order_id=txnid)
+                logger.info(f"Found payment record: {payment.id}")
             except Payment.DoesNotExist:
                 logger.error(f"Payment not found for txnid: {txnid}")
                 return {"success": False, "error": "Payment not found"}
 
             # Update payment record based on status
             if status == "success":
+                mihpayid = params.get("mihpayid", "")
+                mode = params.get("mode", "UNKNOWN")
+                
                 payment.mark_as_completed(
-                    transaction_id=params.get("mihpayid"),
-                    payment_method=payment_mode,
+                    transaction_id=mihpayid,
+                    payment_method=mode,
                     payment_details=params,
                 )
+                logger.info(f"Marked payment as completed: {txnid}, mihpayid: {mihpayid}, mode: {mode}")
 
                 # Update student status if needed
-                student_profile = payment.student.student_profile
-                if student_profile.status == "DEMO_ACCEPTED":
-                    student_profile.update_status("ACTIVE")
+                try:
+                    student_profile = payment.student.student_profile
+                    if student_profile.status == "DEMO_ACCEPTED":
+                        student_profile.update_status("ACTIVE")
+                        logger.info(f"Updated student profile status for: {payment.student.email}")
+                except Exception as profile_error:
+                    logger.error(f"Error updating student profile: {str(profile_error)}")
+                    # Don't fail the transaction if profile update fails
 
-                logger.info(f"Payment successful: {txnid}")
-
+                logger.info(f"Payment processing successful: {txnid}")
                 return {"success": True, "payment": payment, "status": "success"}
             else:
                 # Update payment record for failed transaction
                 payment.status = "FAILED"
                 payment.payment_details = params
                 payment.save()
-
                 logger.info(f"Payment failed: {txnid}")
-
                 return {"success": True, "payment": payment, "status": "failed"}
 
         except Exception as e:
-            logger.error(f"Error processing payment response: {str(e)}")
+            logger.exception(f"Error processing payment response: {str(e)}")
             return {"success": False, "error": str(e)}

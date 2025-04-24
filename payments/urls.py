@@ -11,16 +11,32 @@ urlpatterns = [
         name="initiate",
     ),
     path(
-        "<str:status_type>/",
+        "callback/<str:status_type>/",
         views.PaymentCallbackView.as_view(),
         name="payment_callback",
     ),
-    path("success/", views.PaymentSuccessView.as_view(), name="success"),
-    path("failure/", views.PaymentFailureView.as_view(), name="failure"),
+    path(
+        "success/", 
+        views.PaymentSuccessView.as_view(), 
+        name="success"
+    ),
+    path(
+        "failure/", 
+        views.PaymentFailureView.as_view(), 
+        name="failure"
+    ),
     # Payment API endpoints
-    path("verify/<str:order_id>/", views.VerifyPaymentView.as_view(), name="verify"),
+    path(
+        "verify/<str:order_id>/", 
+        views.VerifyPaymentView.as_view(), 
+        name="verify"
+    ),
     # Teacher earnings
-    path("earnings/", views.TeacherEarningsView.as_view(), name="earnings"),
+    path(
+        "earnings/", 
+        views.TeacherEarningsView.as_view(), 
+        name="earnings"
+    ),
     path(
         "earnings/<int:year>/<int:month>/",
         views.MonthlyEarningsView.as_view(),

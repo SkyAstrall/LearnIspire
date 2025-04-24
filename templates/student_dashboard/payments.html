@@ -1,5 +1,9 @@
-{% extends 'base.html' %} {% load static %} {% block title %}Complete Payment -
-LearnIspire{% endblock %} {% block content %}
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Complete Payment - LearnIspire{% endblock %}
+
+{% block content %}
 <style>
   :root {
     --primary-color: #93f7f2;
@@ -239,7 +243,8 @@ LearnIspire{% endblock %} {% block content %}
               </p>
 
               <form action="{{ payu_url }}" method="post" id="payment-form">
-                {% csrf_token %} {% for key, value in params.items %}
+                {% csrf_token %}
+                {% for key, value in params.items %}
                 <input type="hidden" name="{{ key }}" value="{{ value }}" />
                 {% endfor %}
 
@@ -266,8 +271,7 @@ LearnIspire{% endblock %} {% block content %}
                   </div>
                   <div>
                     <button type="submit" class="btn btn-primary">
-                      <i class="fas fa-lock me-1"></i> Pay Now ₹{{
-                      payment.amount }}
+                      <i class="fas fa-lock me-1"></i> Pay Now ₹{{ payment.amount }}
                     </button>
                   </div>
                 </div>
@@ -303,7 +307,9 @@ LearnIspire{% endblock %} {% block content %}
     </div>
   </div>
 </div>
-{% endblock %} {% block extra_js %}
+{% endblock %}
+
+{% block extra_js %}
 <script>
   document.addEventListener("DOMContentLoaded", function () {
     const form = document.getElementById("payment-form");
