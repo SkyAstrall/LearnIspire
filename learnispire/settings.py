@@ -205,9 +205,8 @@ LOGOUT_REDIRECT_URL = "/"
 LOGIN_URL = "/accounts/login/"
 
 # Twilio credentials for WhatsApp
-TWILIO_ACCOUNT_SID = "ACbddd51b0fd3a72e950ed4c641731aec3"
-TWILIO_AUTH_TOKEN = "1a1350e26c9ad8cade6567177dd913aa"
-TWILIO_WHATSAPP_FROM = "+15557325365"
+TWILIO_ACCOUNT_SID = os.getenv['TWILIO_ACCOUNT_SID',]
+TWILIO_AUTH_TOKEN = os.getenv['TWILIO_AUTH_TOKEN',]
 ACCOUNT_FORMS = {
     "signup": "accounts.forms.CustomSignupForm",
 }

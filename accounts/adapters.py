@@ -7,7 +7,7 @@ from django.urls import reverse
 from allauth.account.adapter import DefaultAccountAdapter
 from twilio.rest import Client
 from .models import PhoneVerification, CustomUser
-
+import json
 
 class CustomAccountAdapter(DefaultAccountAdapter):
     def save_user(self, request, user, form, commit=True):
@@ -65,7 +65,6 @@ class CustomAccountAdapter(DefaultAccountAdapter):
             client = Client(settings.TWILIO_ACCOUNT_SID, settings.TWILIO_AUTH_TOKEN)
 
             # Format message
-            message_body = f"Your LearnIspire verification code is: {otp}. This code will expire in 15 minutes."
 
             # Format phone number to international format for WhatsApp
             # Make sure phone number starts with + and country code
@@ -74,9 +73,10 @@ class CustomAccountAdapter(DefaultAccountAdapter):
 
             # Send message
             message = client.messages.create(
-                from_=f"whatsapp:{settings.TWILIO_WHATSAPP_FROM}",
-                body=message_body,
-                to=f"whatsapp:{phone_number}",
+                content_sid="HXc7189bf45b4e392153d7f485572594de",
+                to="whatsapp:+919391132531",
+                from_="MGce523938d2bf6506c4ac2896e80cf270",
+                content_variables=json.dumps({"1": f"{otp}"}),
             )
 
             return message.sid
@@ -104,7 +104,7 @@ class CustomAccountAdapter(DefaultAccountAdapter):
             # Update user verification status
             user = verification.user
             user.is_phone_verified = True
-            
+
             user.save()
 
             return True
