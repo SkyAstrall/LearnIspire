@@ -178,3 +178,4 @@ cython_debug/
 # PyPI configuration file
 .pypirc
 edulance-452011-b9968bd8012a.json
+m.py
