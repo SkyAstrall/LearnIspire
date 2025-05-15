@@ -15,57 +15,170 @@ import logging
 # Set up logger
 logger = logging.getLogger('payments')
 
+# Updated InitiatePaymentView class in views.py
+
+
 class InitiatePaymentView(LoginRequiredMixin, View):
     """View to initiate a payment for monthly classes."""
-    
+
     def calculate_monthly_amount(self, user):
-        """Calculate monthly amount based on selected subjects."""
+        """Calculate monthly amount based on selected subjects that need payment."""
         try:
             profile = user.student_profile
             selected_subjects = profile.selected_subjects.all()
-            
+
             total_amount = 0
-            for subject in selected_subjects:
+            subjects_to_pay = self.get_subjects_requiring_payment(user)
+
+            for subject in subjects_to_pay:
                 # Get pricing rule for this subject and student's grade/board
                 from pricing.models import PricingRule
-                
+
                 pricing_rule = PricingRule.objects.filter(
                     subject=subject,
                     grade=profile.grade,
                     board=profile.board,
-                    is_active=True
+                    is_active=True,
                 ).first()
-                
+
                 if pricing_rule:
                     # Calculate monthly cost (price per session × 3 classes/week × 4 weeks)
                     subject_monthly = pricing_rule.price_per_session * 12
                     total_amount += subject_monthly
-            
+
             # If no subjects or pricing rules found, use default amount
             if total_amount == 0:
                 total_amount = 2000.00
-                
+
             return total_amount
-            
+
         except Exception as e:
             logger.exception(f"Error calculating payment amount: {str(e)}")
             return 2000.00  # Default fallback amount
-    
+
+    def get_subjects_requiring_payment(self, user):
+        """Get subjects that require payment (not active in subscription)."""
+        try:
+            import datetime
+            from django.utils import timezone
+
+            profile = user.student_profile
+            selected_subjects = profile.selected_subjects.all()
+            today = timezone.now().date()
+
+            # If no subscriptions data, all subjects need payment
+            if not profile.subject_subscriptions:
+                return selected_subjects
+
+            subjects_to_pay = []
+
+            for subject in selected_subjects:
+                subject_id = str(subject.id)
+
+                # Check if subject has an active subscription
+                if subject_id in profile.subject_subscriptions:
+                    try:
+                        end_date = datetime.datetime.strptime(
+                            profile.subject_subscriptions[subject_id]["end_date"],
+                            "%Y-%m-%d",
+                        ).date()
+
+                        # If subscription expired, add to payment list
+                        if end_date < today:
+                            subjects_to_pay.append(subject)
+                    except (ValueError, KeyError):
+                        # If there's an error parsing the date, assume it needs payment
+                        subjects_to_pay.append(subject)
+                else:
+                    # No subscription found, add to payment list
+                    subjects_to_pay.append(subject)
+
+            return subjects_to_pay
+
+        except Exception as e:
+            logger.exception(f"Error checking subjects requiring payment: {str(e)}")
+            return selected_subjects  # Return all subjects as fallback
+
+    def get_active_subscriptions(self, user):
+        """Get active subscriptions from student profile."""
+        try:
+            import datetime
+            from django.utils import timezone
+
+            profile = user.student_profile
+            today = timezone.now().date()
+
+            # If no subscriptions data, return empty
+            if not profile.subject_subscriptions:
+                return []
+
+            active_subscriptions = []
+
+            for subject_id, data in profile.subject_subscriptions.items():
+                try:
+                    end_date = datetime.datetime.strptime(
+                        data["end_date"], "%Y-%m-%d"
+                    ).date()
+
+                    # If subscription is still active
+                    if end_date >= today:
+                        subject_name = data.get("subject_name", "Unknown Subject")
+                        active_subscriptions.append(
+                            {
+                                "subject_id": subject_id,
+                                "subject_name": subject_name,
+                                "end_date": end_date,
+                            }
+                        )
+                except (ValueError, KeyError):
+                    # Skip invalid entries
+                    continue
+
+            return active_subscriptions
+
+        except Exception as e:
+            logger.exception(f"Error checking active subscriptions: {str(e)}")
+            return []  # Return empty list as fallback
+
     def get(self, request):
         """Show payment form with all details ready to submit to PayU."""
         try:
             logger.info(f"Preparing payment page for user: {request.user.email}")
+
             # Get current month
             current_date = timezone.now().date()
-            
+
+            # Get subjects that require payment
+            subjects_to_pay = self.get_subjects_requiring_payment(request.user)
+
+            # Get active subscriptions
+            active_subscriptions = self.get_active_subscriptions(request.user)
+
+            # If no subjects need payment, show message and redirect
+            if not subjects_to_pay:
+                # User has active subscriptions for all selected subjects
+                messages.info(
+                    request,
+                    "You already have active subscriptions for all your selected subjects.",
+                )
+
+                # Provide details about active subscriptions
+                for subscription in active_subscriptions:
+                    messages.info(
+                        request,
+                        f"Your subscription for {subscription['subject_name']} is valid until {subscription['end_date'].strftime('%d %B, %Y')}",
+                    )
+
+                return redirect("student_dashboard:payments")
+
             # Check if payment for current month already exists
             existing_payment = Payment.objects.filter(
                 student=request.user,
                 month_year__year=current_date.year,
                 month_year__month=current_date.month,
-                status__in=["COMPLETED", "INITIATED"]
+                status__in=["COMPLETED", "INITIATED"],
             ).first()
-            
+
             if existing_payment:
                 if existing_payment.status == "COMPLETED":
                     messages.info(request, "You've already paid for this month.")
@@ -74,19 +187,19 @@ class InitiatePaymentView(LoginRequiredMixin, View):
                     # Continue with existing payment
                     payment = existing_payment
             else:
-                # Calculate amount based on selected subjects
+                # Calculate amount based on subjects requiring payment
                 amount = self.calculate_monthly_amount(request.user)
-                
+
                 # Create payment record with INITIATED status
                 payment = Payment(
                     student=request.user,
                     amount=amount,
                     month_year=current_date.replace(day=1),
-                    status="INITIATED"  # Changed from PENDING to INITIATED
+                    status="INITIATED",
                 )
                 payment.save()
                 logger.info(f"Created new payment: {payment.order_id}")
-            
+
             # Get student profile and selected subjects
             try:
                 profile = request.user.student_profile
@@ -94,38 +207,50 @@ class InitiatePaymentView(LoginRequiredMixin, View):
             except:
                 profile = None
                 selected_subjects = []
-            
+
             # Generate payment parameters
             params = payment.generate_payment_params()
             payu_url = PayUService.get_payu_url()
-            
+
             logger.info(f"Payment page ready with order ID: {payment.order_id}")
-            
-            return render(request, "payments/payment.html", {
-                "payment": payment,
-                "params": params,
-                "payu_url": payu_url,
-                "profile": profile,
-                "selected_subjects": selected_subjects,
-                "debug": settings.DEBUG  # Only show debug info in DEBUG mode
-            })
-        
+
+            subscription_status = {
+                "active_subscriptions": active_subscriptions,
+                "subjects_to_pay": subjects_to_pay,
+            }
+
+            return render(
+                request,
+                "payments/payment.html",
+                {
+                    "payment": payment,
+                    "params": params,
+                    "payu_url": payu_url,
+                    "profile": profile,
+                    "selected_subjects": selected_subjects,
+                    "subscription_status": subscription_status,
+                    "debug": settings.DEBUG,  # Only show debug info in DEBUG mode
+                },
+            )
+
         except Exception as e:
             logger.exception(f"Exception in payment page preparation: {str(e)}")
             messages.error(request, f"Error preparing payment page: {str(e)}")
             return redirect("student_dashboard:payments")
-    
+
     def post(self, request):
         """
         This method is now just a fallback in case someone submits the form
         to this URL instead of directly to the payment gateway.
         """
         try:
-            logger.info(f"POST request to initiate payment for user: {request.user.email}")
+            logger.info(
+                f"POST request to initiate payment for user: {request.user.email}"
+            )
             # In case the form on student dashboard submits here, redirect to GET
             # to ensure proper payment initialization
             return self.get(request)
-                
+
         except Exception as e:
             logger.exception(f"Exception in payment initiation: {str(e)}")
             messages.error(request, f"Error initiating payment: {str(e)}")
