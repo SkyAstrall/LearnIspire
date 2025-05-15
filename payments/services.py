@@ -241,7 +241,8 @@ class PayUService:
                     payment_details=params,
                 )
                 logger.info(f"Marked payment as completed: {txnid}, mihpayid: {mihpayid}, mode: {mode}")
-
+                subscriptions = cls.update_student_subscriptions(payment)
+                logger.info(f"Updated subject subscriptions for payment {txnid}")
                 # Update student status if needed
                 try:
                     student_profile = payment.student.student_profile
