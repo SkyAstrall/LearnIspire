@@ -15,7 +15,7 @@ class GoogleMeetService:
     """Service for managing Google Meet meetings."""
 
     @classmethod
-    def create_real_meeting(cls, class_session):
+    def create_real_meeting(cls, class_session,end_time=None):
         """Create a real Google Meet meeting using Calendar API."""
         print(f"Attempting to create real meeting for class {class_session.id}")
 
@@ -33,7 +33,8 @@ class GoogleMeetService:
         try:
             # Format event details
             start_time = class_session.start_time.isoformat()
-            end_time = class_session.end_time.isoformat()
+            if end_time is None:
+                end_time = class_session.end_time.isoformat()
 
             # Define event details
             event = {

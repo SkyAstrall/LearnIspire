@@ -62,6 +62,7 @@ class CustomAccountAdapter(DefaultAccountAdapter):
         try:
             print(otp)
             # Initialize Twilio client
+            print(settings.TWILIO_ACCOUNT_SID, settings.TWILIO_AUTH_TOKEN,phone_number,otp)
             client = Client(settings.TWILIO_ACCOUNT_SID, settings.TWILIO_AUTH_TOKEN)
 
             # Format message
@@ -74,7 +75,7 @@ class CustomAccountAdapter(DefaultAccountAdapter):
             # Send message
             message = client.messages.create(
                 content_sid="HXc7189bf45b4e392153d7f485572594de",
-                to="whatsapp:+919391132531",
+                to=f"whatsapp:{phone_number}",
                 from_="MGce523938d2bf6506c4ac2896e80cf270",
                 content_variables=json.dumps({"1": f"{otp}"}),
             )

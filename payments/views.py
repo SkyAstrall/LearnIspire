@@ -7,8 +7,6 @@ from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 from django.conf import settings
-from django.urls import reverse
-
 from .models import Payment, TeacherEarning
 from .services import PayUService
 from accounts.models import StudentProfile, CustomUser

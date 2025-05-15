@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.utils.translation import gettext_lazy as _
-
+import datetime
 
 class CustomUser(AbstractUser):
     USER_ROLES = (
@@ -18,7 +18,6 @@ class CustomUser(AbstractUser):
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = ["username", "phone_number"]
 
-
     @property
     def is_student(self):
         return self.role == "student"
@@ -30,6 +29,9 @@ class CustomUser(AbstractUser):
     @property
     def is_admin_user(self):
         return self.role == "admin"
+
+
+# Update to the StudentProfile model in accounts/models.py
 
 
 class StudentProfile(models.Model):
@@ -57,6 +59,9 @@ class StudentProfile(models.Model):
     selected_subjects = models.ManyToManyField(
         "common.Subject", related_name="interested_students", blank=True
     )
+    subject_subscriptions = models.JSONField(
+        null=True, blank=True
+    )  # New field to store subject end dates
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     demo_count = models.IntegerField(default=0)
@@ -70,6 +75,44 @@ class StudentProfile(models.Model):
             self.save()
             return True
         return False
+
+    def get_active_subscriptions(self):
+        """Get active subject subscriptions."""
+        if not self.subject_subscriptions:
+            return {}
+
+        import datetime
+        from django.utils import timezone
+
+        today = timezone.now().date()
+        active_subscriptions = {}
+
+        for subject_id, data in self.subject_subscriptions.items():
+            end_date = datetime.datetime.strptime(data["end_date"], "%Y-%m-%d").date()
+            if end_date >= today:
+                active_subscriptions[subject_id] = data
+
+        return active_subscriptions
+
+    def update_subject_subscription(self, subject_id, end_date):
+        """Update subscription end date for a subject."""
+        if not self.subject_subscriptions:
+            self.subject_subscriptions = {}
+
+        # Convert subject_id to string for JSON compatibility
+        subject_id = str(subject_id)
+
+        # Format date as string
+        if isinstance(end_date, datetime.date):
+            end_date_str = end_date.isoformat()
+        else:
+            end_date_str = end_date
+
+        # Update subject subscription data
+        self.subject_subscriptions[subject_id] = {"end_date": end_date_str}
+
+        self.save()
+        return True
 
 
 class TeacherProfile(models.Model):

@@ -7,6 +7,79 @@ import json
 # Set up logging
 logger = logging.getLogger('payments')
 
+# Add to PayUService class in services.py
+
+
+@classmethod
+def update_student_subscriptions(cls, payment):
+    """Update subject subscriptions in student profile."""
+    import datetime
+    from django.utils import timezone
+
+    logger.info(f"Updating subscriptions for payment: {payment.order_id}")
+
+    try:
+        student = payment.student
+        profile = student.student_profile
+        today = timezone.now().date()
+
+        # Default subscription duration - one month from today
+        end_date = today + datetime.timedelta(days=30)
+
+        # Get selected subjects from student profile
+        selected_subjects = profile.selected_subjects.all()
+
+        # Initialize subscriptions dictionary if not present
+        if not profile.subject_subscriptions:
+            profile.subject_subscriptions = {}
+
+        # Update subscription end dates for each subject
+        for subject in selected_subjects:
+            subject_id = str(subject.id)
+
+            # Check if subject already has an active subscription
+            if (
+                profile.subject_subscriptions
+                and subject_id in profile.subject_subscriptions
+            ):
+
+                # Get current end date
+                try:
+                    current_end_date = datetime.datetime.strptime(
+                        profile.subject_subscriptions[subject_id]["end_date"],
+                        "%Y-%m-%d",
+                    ).date()
+
+                    # Only extend if current end date is in the future
+                    if current_end_date >= today:
+                        new_end_date = current_end_date + datetime.timedelta(days=30)
+                    else:
+                        new_end_date = end_date
+                except (ValueError, KeyError):
+                    new_end_date = end_date
+            else:
+                new_end_date = end_date
+
+            # Update the subscription
+            profile.subject_subscriptions[subject_id] = {
+                "subject_id": subject.id,
+                "subject_name": subject.name,
+                "end_date": new_end_date.isoformat(),
+            }
+
+        # Save the profile
+        profile.save()
+        logger.info(f"Updated subscriptions for student: {student.email}")
+
+        # Schedule and create meetings for these subjects
+        cls.schedule_classes_for_month(payment)
+
+        return profile.subject_subscriptions
+
+    except Exception as e:
+        logger.exception(f"Error updating subscriptions: {str(e)}")
+        return {}
+
 
 class PayUService:
     """Service for handling PayU payment gateway integration."""
