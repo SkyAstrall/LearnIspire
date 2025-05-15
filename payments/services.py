@@ -10,6 +10,244 @@ logger = logging.getLogger('payments')
 # Add to PayUService class in services.py
 
 
+
+@classmethod
+def schedule_classes_for_month(cls, payment):
+    """Schedule classes for the subscription period and create meeting links."""
+    try:
+        from scheduling.models import Class
+        from meetings.services import GoogleMeetService
+        from django.utils import timezone
+        import datetime
+
+        student = payment.student
+        profile = student.student_profile
+
+        # Get today's date
+        today = timezone.now().date()
+
+        # Define the period for which to schedule classes (30 days)
+        end_date = today + datetime.timedelta(days=30)
+
+        logger.info(
+            f"Scheduling classes from {today} to {end_date} for student {student.email}"
+        )
+
+        # Get existing classes for this period to avoid duplicates
+        existing_classes = Class.objects.filter(
+            student=student, start_time__date__gte=today, start_time__date__lt=end_date
+        )
+
+        # Get selected subjects from student profile
+        selected_subjects = profile.selected_subjects.all()
+
+        # For each subject, schedule classes based on student and teacher availability
+        for subject in selected_subjects:
+            # Make sure this subject has an active subscription
+            if (
+                not profile.subject_subscriptions
+                or str(subject.id) not in profile.subject_subscriptions
+            ):
+                logger.warning(
+                    f"No active subscription found for subject {subject.name}"
+                )
+                continue
+
+            # Find assigned teacher for this subject (implement your logic here)
+            # This is a simplified example - you'll need to adapt this to your teacher assignment logic
+            from accounts.models import TeacherProfile
+
+            teacher = None
+            teacher_profiles = TeacherProfile.objects.filter(
+                subjects=subject, status="ACTIVE"
+            ).select_related("user")
+
+            if teacher_profiles:
+                teacher = teacher_profiles.first().user
+
+            if not teacher:
+                logger.warning(f"No active teacher found for subject {subject.name}")
+                continue
+
+            # Schedule 3 classes per week for 4 weeks
+            # Get student and teacher availabilities and find matching slots
+            from scheduling.models import Availability
+
+            student_availabilities = Availability.objects.filter(user=student)
+            teacher_availabilities = Availability.objects.filter(user=teacher)
+
+            # If no availabilities set, use default schedule
+            if (
+                not student_availabilities.exists()
+                or not teacher_availabilities.exists()
+            ):
+                # Default schedule: Monday, Wednesday, Friday at fixed times
+                days_of_week = [0, 2, 4]  # Monday, Wednesday, Friday
+                class_time = datetime.time(hour=16, minute=0)  # 4:00 PM
+                class_duration = datetime.timedelta(hours=1)
+
+                # Create a date range for the next 30 days
+                current_date = today
+                while current_date < end_date:
+                    # Check if this is one of our scheduled days
+                    if current_date.weekday() in days_of_week:
+                        # Create datetime for class start
+                        start_datetime = datetime.datetime.combine(
+                            current_date,
+                            class_time,
+                            tzinfo=timezone.get_current_timezone(),
+                        )
+
+                        # Calculate end time
+                        end_datetime = start_datetime + class_duration
+
+                        # Check if this class already exists
+                        if not existing_classes.filter(
+                            subject=subject,
+                            start_time=start_datetime,
+                            end_time=end_datetime,
+                        ).exists():
+                            # Create new class
+                            new_class = Class.objects.create(
+                                student=student,
+                                teacher=teacher,
+                                subject=subject,
+                                start_time=start_datetime,
+                                end_time=end_datetime,
+                                status="SCHEDULED",
+                            )
+
+                            # Create Google Meet link for the class
+                            meeting_result = GoogleMeetService.create_real_meeting(
+                                new_class
+                            )
+
+                            if meeting_result and meeting_result.get("success"):
+                                logger.info(
+                                    f"Created meeting for class {new_class.id}: {meeting_result.get('meeting_link')}"
+                                )
+                            else:
+                                logger.warning(
+                                    f"Failed to create meeting for class {new_class.id}"
+                                )
+
+                            logger.info(
+                                f"Created class for {student.email} - {subject.name} on {start_datetime}"
+                            )
+
+                    # Move to next day
+                    current_date += datetime.timedelta(days=1)
+            else:
+                # Advanced scheduling based on availabilities
+                # This is a simplified example - in a real implementation, you would
+                # find matching slots between student and teacher availabilities
+
+                # Get matching days of the week from availabilities
+                matching_days = set()
+                for s_avail in student_availabilities:
+                    for t_avail in teacher_availabilities:
+                        if s_avail.day_of_week == t_avail.day_of_week:
+                            matching_days.add(s_avail.day_of_week)
+
+                # If we have at least 3 matching days, schedule classes
+                class_days = list(matching_days)[:3]  # Take up to 3 days
+
+                if class_days:
+                    # Create a date range for the next 30 days
+                    current_date = today
+                    while current_date < end_date:
+                        # Check if this day of week matches our schedule
+                        if current_date.weekday() in class_days:
+                            # Find a matching time slot for this day
+                            for s_avail in student_availabilities.filter(
+                                day_of_week=current_date.weekday()
+                            ):
+                                for t_avail in teacher_availabilities.filter(
+                                    day_of_week=current_date.weekday()
+                                ):
+                                    # Check if time slots overlap
+                                    if (
+                                        s_avail.start_time < t_avail.end_time
+                                        and s_avail.end_time > t_avail.start_time
+                                    ):
+                                        # Find the overlapping time window
+                                        start_time = max(
+                                            s_avail.start_time, t_avail.start_time
+                                        )
+                                        end_time = min(
+                                            s_avail.end_time, t_avail.end_time
+                                        )
+
+                                        # Make sure we have at least 1 hour
+                                        duration = datetime.datetime.combine(
+                                            today, end_time
+                                        ) - datetime.datetime.combine(today, start_time)
+                                        if (
+                                            duration.total_seconds() >= 3600
+                                        ):  # 1 hour in seconds
+                                            # Create datetime for class start
+                                            start_datetime = datetime.datetime.combine(
+                                                current_date,
+                                                start_time,
+                                                tzinfo=timezone.get_current_timezone(),
+                                            )
+
+                                            # Calculate end time (1 hour class)
+                                            end_datetime = (
+                                                start_datetime
+                                                + datetime.timedelta(hours=1)
+                                            )
+
+                                            # Check if this class already exists
+                                            if not existing_classes.filter(
+                                                subject=subject,
+                                                start_time__date=current_date,
+                                            ).exists():
+                                                # Create new class
+                                                new_class = Class.objects.create(
+                                                    student=student,
+                                                    teacher=teacher,
+                                                    subject=subject,
+                                                    start_time=start_datetime,
+                                                    end_time=end_datetime,
+                                                    status="SCHEDULED",
+                                                )
+
+                                                # Create Google Meet link for the class
+                                                meeting_result = GoogleMeetService.create_real_meeting(
+                                                    new_class
+                                                )
+
+                                                if (
+                                                    meeting_result
+                                                    and meeting_result.get("success")
+                                                ):
+                                                    logger.info(
+                                                        f"Created meeting for class {new_class.id}: {meeting_result.get('meeting_link')}"
+                                                    )
+                                                else:
+                                                    logger.warning(
+                                                        f"Failed to create meeting for class {new_class.id}"
+                                                    )
+
+                                                logger.info(
+                                                    f"Created class for {student.email} - {subject.name} on {start_datetime}"
+                                                )
+                                                break  # Only create one class per day
+
+                        # Move to next day
+                        current_date += datetime.timedelta(days=1)
+                else:
+                    logger.warning(
+                        f"No matching availability days found for student {student.email} and subject {subject.name}"
+                    )
+
+        logger.info(f"Finished scheduling classes for student {student.email}")
+
+    except Exception as e:
+        logger.exception(f"Error scheduling classes: {str(e)}")
+
+
 @classmethod
 def update_student_subscriptions(cls, payment):
     """Update subject subscriptions in student profile."""
